@@ -454,6 +454,13 @@ f: gold medal - jewel
 
 ## 13. Gotchas críticos descubiertos en sesiones
 
+- **Persistence SourceGenerator empty bin → build falla con MSB3073 exit code 1.**
+  Los proyectos `Persistence` y `Persistence.EntityFramework` tienen un PreBuild que
+  corre `dotnet run -p SourceGenerator --no-build`. Si la SourceGenerator no fue
+  compilada antes (bin/obj vacíos), el run sale con código 1 y la build entera muere.
+  Fix puntual: `dotnet build Persistence\SourceGenerator\MUnique.OpenMU.Persistence.SourceGenerator.csproj -c Release` antes de `Recompilar.bat`.
+  Fix definitivo: sacar `--no-build` de los dos PreBuild targets.
+
 - **`SpecialItemType` enum** (`DataModel/Configuration/DropItemGroup.cs`):
   ```
   0 = None        3 = RandomItem
