@@ -1,5 +1,10 @@
 @echo off
 title BarnaMu AutoRestart
+
+REM Iniciar la web en una ventana aparte solo al arrancar el script
+echo [%date% %time%] Lanzando BarnaMu Web...
+start "BarnaMu Web" cmd /c StartWeb.bat
+
 :loop
 echo [%date% %time%] Iniciando BarnaMu Server...
 cd /d C:\MuDev\OpenMU\src\Startup
