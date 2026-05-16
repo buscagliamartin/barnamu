@@ -39,18 +39,22 @@ public class MoveItemAction
     /// <param name="toStorage">To storage.</param>
     public async ValueTask MoveItemAsync(Player player, byte fromSlot, Storages fromStorage, byte toSlot, Storages toStorage)
     {
+        var fromStorageInfo = this.GetStorageInfo(player, fromStorage);
+        var fromItemStorage = fromStorageInfo?.Storage;
+        var item = fromItemStorage?.GetItem(fromSlot);
+
         if (toSlot == 0xFF)
         {
-            var fromStorageInfo = this.GetStorageInfo(player, fromStorage);
-            var item = fromStorageInfo?.Storage?.GetItem(fromSlot);
             if (item != null)
             {
-                toSlot = await this.FindTargetSlotAsync(player, item, toStorage).ConfigureAwait(false);
+                // If it's already in an equippable slot, we want to move it to the inventory area
+                bool isEquipped = fromSlot < EquippableSlotsCount;
+                toSlot = await this.FindTargetSlotAsync(player, item, toStorage, !isEquipped).ConfigureAwait(false);
             }
 
             if (toSlot == 0xFF)
             {
-                await player.InvokeViewPlugInAsync<IItemMoveFailedPlugIn>(p => p.ItemMoveFailedAsync(null)).ConfigureAwait(false);
+                await player.InvokeViewPlugInAsync<IItemMoveFailedPlugIn>(p => p.ItemMoveFailedAsync(item)).ConfigureAwait(false);
                 return;
             }
         }
@@ -60,10 +64,6 @@ public class MoveItemAction
             await player.InvokeViewPlugInAsync<IItemMoveFailedPlugIn>(p => p.ItemMoveFailedAsync(null)).ConfigureAwait(false);
             return;
         }
-
-        var fromStorageInfo = this.GetStorageInfo(player, fromStorage);
-        var fromItemStorage = fromStorageInfo?.Storage;
-        var item = fromItemStorage?.GetItem(fromSlot);
 
         if (item is null)
         {
@@ -444,7 +444,7 @@ public class MoveItemAction
         };
     }
 
-    private async ValueTask<byte> FindTargetSlotAsync(Player player, Item item, Storages toStorage)
+    private async ValueTask<byte> FindTargetSlotAsync(Player player, Item item, Storages toStorage, bool preferEquip)
     {
         var storageInfo = this.GetStorageInfo(player, toStorage);
         if (storageInfo is null)
@@ -452,7 +452,7 @@ public class MoveItemAction
             return 0xFF;
         }
 
-        if (toStorage == Storages.Inventory)
+        if (toStorage == Storages.Inventory && preferEquip)
         {
             // Try to find equippable slot
             if (item.Definition?.ItemSlot is { } itemSlot)
