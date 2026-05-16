@@ -1,0 +1,14 @@
+BarnaMu-Client/
+Backups/
+bin/
+obj/
+
+*.log
+*.bak
+*.pdb
+*.tmp
+Screen(*).jpg
+Screen*.jpg
+# Windows thumbnails
+Thumbs.db
+Desktop.ini

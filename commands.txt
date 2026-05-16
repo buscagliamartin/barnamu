@@ -1,0 +1,207 @@
+AddAgilityStatChatCommandPlugIn  
+    private const CharacterStatus MinimumStatus = CharacterStatus.Normal;
+    public override CharacterStatus MinCharacterStatusRequirement => MinimumStatus;
+AddCommandStatChatCommandPlugIn  
+    private const CharacterStatus MinimumStatus = CharacterStatus.Normal;
+    public override CharacterStatus MinCharacterStatusRequirement => MinimumStatus;
+AddEnergyStatChatCommandPlugIn  
+    private const CharacterStatus MinimumStatus = CharacterStatus.Normal;
+    public override CharacterStatus MinCharacterStatusRequirement => MinimumStatus;
+AddStatChatCommandPlugIn  
+    private const CharacterStatus MinimumStatus = CharacterStatus.Normal;
+    public override CharacterStatus MinCharacterStatusRequirement => MinimumStatus;
+AddStrengthStatChatCommandPlugIn  
+    private const CharacterStatus MinimumStatus = CharacterStatus.Normal;
+    public override CharacterStatus MinCharacterStatusRequirement => MinimumStatus;
+AddVitalityStatChatCommandPlugIn  
+    private const CharacterStatus MinimumStatus = CharacterStatus.Normal;
+    public override CharacterStatus MinCharacterStatusRequirement => MinimumStatus;
+BanAccChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(BanAccChatCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+BanCharChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(BanCharChatCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+ChangeLanguageChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(ChangeLanguageChatCommandArgs), CharacterStatus.Normal)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.Normal;
+CharInfoChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(CharInfoChatCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+            .AppendLine($"Status: {Enum.GetName(character.CharacterStatus)}")
+ChatBanCharChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(ChatBanCharChatCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+ChatCommandHelpAttribute  
+        : this(command, CharacterStatus.Normal)
+    /// <param name="minimumCharacterStatus">The minimum character status.</param>
+    public ChatCommandHelpAttribute(string command, CharacterStatus minimumCharacterStatus)
+        : this(command, (Type?)null, minimumCharacterStatus)
+        : this(command, argumentsType, CharacterStatus.Normal)
+    /// <param name="minimumCharacterStatus">The minimum character status.</param>
+    public ChatCommandHelpAttribute(string command, Type? argumentsType, CharacterStatus minimumCharacterStatus)
+        this.MinimumCharacterStatus = minimumCharacterStatus;
+    public CharacterStatus MinimumCharacterStatus { get; }
+ChatCommandPlugInBase  
+    public abstract CharacterStatus MinCharacterStatusRequirement { get; }
+ChatCommandTypeExtensions  
+            .Where(attribute => player.SelectedCharacter?.CharacterStatus >= attribute!.MinimumCharacterStatus)
+ChatUnbanCharChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(ChatUnbanCharChatCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+ClearInventoryChatCommandPlugIn  
+    private const CharacterStatus MinimumStatus = CharacterStatus.Normal;
+    public override CharacterStatus MinCharacterStatusRequirement => MinimumStatus;
+        bool isGameMaster = selectedCharacter?.CharacterStatus >= CharacterStatus.GameMaster;
+CreateMonsterChatCommand  
+[ChatCommandHelp(Command, typeof(CreateMonsterChatCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+DisconnectChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(DisconnectChatCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+GetLevelChatCommandPlugIn  
+    private const CharacterStatus MinimumStatus = CharacterStatus.GameMaster;
+    public override CharacterStatus MinCharacterStatusRequirement => MinimumStatus;
+GetLevelUpPointsChatCommandPlugIn  
+    private const CharacterStatus MinimumStatus = CharacterStatus.GameMaster;
+    public override CharacterStatus MinCharacterStatusRequirement => MinimumStatus;
+GetMasterLevelChatCommandPlugIn  
+    private const CharacterStatus MinimumStatus = CharacterStatus.GameMaster;
+    public override CharacterStatus MinCharacterStatusRequirement => MinimumStatus;
+GetMasterLevelUpPointsChatCommandPlugIn  
+    private const CharacterStatus MinimumStatus = CharacterStatus.GameMaster;
+    public override CharacterStatus MinCharacterStatusRequirement => MinimumStatus;
+GetMoneyChatCommandPlugIn  
+    private const CharacterStatus MinimumStatus = CharacterStatus.GameMaster;
+    public override CharacterStatus MinCharacterStatusRequirement => MinimumStatus;
+GetResetsChatCommandPlugIn  
+    private const CharacterStatus MinimumStatus = CharacterStatus.GameMaster;
+    public override CharacterStatus MinCharacterStatusRequirement => MinimumStatus;
+GetStatChatCommandPlugIn  
+    private const CharacterStatus MinimumStatus = CharacterStatus.GameMaster;
+    public override CharacterStatus MinCharacterStatusRequirement => MinimumStatus;
+GuildBattleSoccerChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(GuildWarChatCommandArgs), CharacterStatus.Normal)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.Normal;
+GuildDisconnectChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(GuildDisconnectChatCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+GuildMoveChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(GuildMoveChatCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+GuildWarChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(GuildWarChatCommandArgs), CharacterStatus.Normal)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.Normal;
+HelpCommand  
+    public CharacterStatus MinCharacterStatusRequirement => CharacterStatus.Normal;
+HideChatCommandPlugIn  
+[ChatCommandHelp(Command, CharacterStatus.GameMaster)]
+    public CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+IChatCommandPlugIn  
+    public CharacterStatus MinCharacterStatusRequirement { get; }
+ItemChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(ItemChatCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+ListCommand  
+    public CharacterStatus MinCharacterStatusRequirement => CharacterStatus.Normal;
+MoveChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(MoveChatCommandArgs), CharacterStatus.Normal)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.Normal;
+        var senderIsGameMaster = sender.SelectedCharacter?.CharacterStatus == CharacterStatus.GameMaster;
+MoveMonsterChatCommand  
+[ChatCommandHelp(Command, typeof(MoveMonsterCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+NoticeChatCommandPlugIn  
+    public CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+NpcChatCommandPlugIn  
+    private const CharacterStatus MinimumStatus = CharacterStatus.Normal;
+    public override CharacterStatus MinCharacterStatusRequirement => MinimumStatus;
+        if (player.SelectedCharacter?.CharacterStatus >= CharacterStatus.GameMaster && arguments?.NpcId is { } npcIdStr)
+            if (player.SelectedCharacter?.CharacterStatus >= CharacterStatus.GameMaster)
+OfflineLevelingChatCommandPlugIn  
+[ChatCommandHelp(Command, CharacterStatus.Normal)]
+    public CharacterStatus MinCharacterStatusRequirement => CharacterStatus.Normal;
+OnlineChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(EmptyChatCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+            switch (player.SelectedCharacter?.CharacterStatus)
+                case CharacterStatus.Normal:
+                case CharacterStatus.GameMaster:
+OpenWarehouseChatCommandPlugIn  
+    private const CharacterStatus MinimumStatus = CharacterStatus.Normal;
+    public override CharacterStatus MinCharacterStatusRequirement => MinimumStatus;
+            if (player.SelectedCharacter?.CharacterStatus >= CharacterStatus.GameMaster)
+PKChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(PkChatCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+PKClearChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(PkClearChatCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+PostChatCommandPlugIn  
+    public CharacterStatus MinCharacterStatusRequirement => CharacterStatus.Normal;
+RemoveNpcChatCommand  
+[ChatCommandHelp(Command, typeof(IdCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+SetLevelChatCommandPlugIn  
+    private const CharacterStatus MinimumStatus = CharacterStatus.GameMaster;
+    public override CharacterStatus MinCharacterStatusRequirement => MinimumStatus;
+SetLevelUpPointsChatCommandPlugIn  
+    private const CharacterStatus MinimumStatus = CharacterStatus.GameMaster;
+    public override CharacterStatus MinCharacterStatusRequirement => MinimumStatus;
+SetMasterLevelChatCommandPlugIn  
+    private const CharacterStatus MinimumStatus = CharacterStatus.GameMaster;
+    public override CharacterStatus MinCharacterStatusRequirement => MinimumStatus;
+SetMasterLevelUpPointsChatCommandPlugIn  
+    private const CharacterStatus MinimumStatus = CharacterStatus.GameMaster;
+    public override CharacterStatus MinCharacterStatusRequirement => MinimumStatus;
+SetMoneyChatCommandPlugIn  
+    private const CharacterStatus MinimumStatus = CharacterStatus.GameMaster;
+    public override CharacterStatus MinCharacterStatusRequirement => MinimumStatus;
+SetResetsChatCommandPlugIn  
+    private const CharacterStatus MinimumStatus = CharacterStatus.GameMaster;
+    public override CharacterStatus MinCharacterStatusRequirement => MinimumStatus;
+SetStatChatCommandPlugIn  
+    private const CharacterStatus MinimumStatus = CharacterStatus.GameMaster;
+    public override CharacterStatus MinCharacterStatusRequirement => MinimumStatus;
+ShowFireworksEffectChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(CoordinatesCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+ShowNpcIdsChatCommand  
+[ChatCommandHelp(Command, CharacterStatus.GameMaster)]
+    public CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+ShowXmasFireworksEffectChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(CoordinatesCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+SkinChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(SkinChatCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+StartBloodCastleEventChatCommandPlugIn  
+[ChatCommandHelp(Command, CharacterStatus.GameMaster)]
+    public CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+StartChaosCastleEventChatCommandPlugIn  
+[ChatCommandHelp(Command, CharacterStatus.GameMaster)]
+    public CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+StartDevilSquareEventChatCommandPlugIn  
+[ChatCommandHelp(Command, CharacterStatus.GameMaster)]
+    public CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+TeleportChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(CoordinatesCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+TraceChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(TraceChatCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+TrackChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(TraceChatCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+UnBanAccChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(UnBanAccChatCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+UnBanCharChatCommandPlugIn  
+[ChatCommandHelp(Command, typeof(UnBanCharChatCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+UnHideChatCommandPlugIn  
+[ChatCommandHelp(Command, CharacterStatus.GameMaster)]
+    public CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;
+WalkMonsterChatCommand  
+[ChatCommandHelp(Command, typeof(MoveMonsterCommandArgs), CharacterStatus.GameMaster)]
+    public override CharacterStatus MinCharacterStatusRequirement => CharacterStatus.GameMaster;

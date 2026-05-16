@@ -1,0 +1,14 @@
+@page
+@model ErrorModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="card" style="max-width: 600px; margin: 0 auto;">
+    <h1>Algo salió mal</h1>
+    <p>Ocurrió un error procesando tu pedido. Probá refrescar; si persiste, avisanos en Discord o por <a asp-page="/ReportBug">/reportbug</a>.</p>
+    @if (Model.ShowRequestId)
+    {
+        <p class="muted" style="font-size: 12px;">Request ID: <code>@Model.RequestId</code></p>
+    }
+</div>

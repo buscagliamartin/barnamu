@@ -1,0 +1,30 @@
+v1 con mis valores, bien duros:
+"Golden Budge Dragon"	150000	0.35	0.35	0.35	0.35
+"Golden Goblin"	300000	0.35	0.35	0.35	0.35
+"Golden Soldier"	600000	0.35	0.35	0.35	0.35
+"Golden Titan"	1.2e+06	0.35	0.35	0.35	0.35
+"Golden Vepar"	2.5e+06				0.35
+"Golden Wheel"	4e+06	0.35	0.35	0.35	0.35
+"Golden Dragon"	6.5e+06	0.5	0.5	0.5	0.5
+"Golden Lizard King"	9e+06	0.55	0.55	0.55	0.55
+"Golden Tantallos"	1.5e+07	0.65	0.65	0.65	0.65
+"Red Dragon"	2e+07	0.75	0.75	0.9	0.75
+"Erohim"	2.5e+07	0.8	0.8	0.95	
+"Dark Elf (Trainee Soldier)"	2.5e+07	0.8	0.8	0.95	
+"Selupan"	2.5e+07	0.8	0.8	0.95	0.8
+
+falto actualizar vepar y no entiendo por que. 
+a erohim, darkelf y selupan les puse mas y el mismo nivel de dureza ya que dropean los mismos items.
+al red dragon lo hice un tier 7.5/8 por dropear items ancient.
+decime que opinas de los valores o si actualizarias algo.
+
+
+v2:
+"Designation"	"RespawnDelay"
+"Dark Elf (Trainee Soldier)"	"08:00:00"
+"Selupan"	"08:00:00"
+"Erohim"	"08:00:00"
+
+COMMIT
+
+Query returned successfully in 57 msec.

@@ -1,0 +1,289 @@
+═══════════════════════════════════════════════════════════════════════
+COMANDOS DE CHAT — BARNAMU (OpenMU)
+═══════════════════════════════════════════════════════════════════════
+
+⚠ IMPORTANTE — MUCHOS COMANDOS ESTÁN DESHABILITADOS POR DEFAULT
+─────────────────────────────────────────────────────────────────────
+Si un comando "no funciona", muy probablemente esté deshabilitado.
+Para habilitarlo:
+  Admin Panel → Game Configuration → PlugIns → buscar el plugin por
+  nombre (ej. "SetStatChatCommandPlugIn") → activarlo → Save.
+  Después de guardar, los cambios aplican sin reiniciar el server.
+
+Los comandos marcados con [DEFAULT OFF] vienen apagados.
+Los comandos sin marca vienen habilitados de fábrica.
+
+═══════════════════════════════════════════════════════════════════════
+COMANDOS DE JUGADOR (CharacterStatus.Normal)
+═══════════════════════════════════════════════════════════════════════
+
+/add <stat> <amount>           [DEFAULT OFF]
+  Suma puntos a un stat. <stat> = str | agi | vit | ene | cmd
+  Ejemplo: /add str 100
+
+/addstr <amount>               [DEFAULT OFF]
+  Suma puntos de fuerza.
+  Ejemplo: /addstr 100
+
+/addagi <amount>               [DEFAULT OFF]
+  Suma puntos de agilidad.
+
+/addvit <amount>               [DEFAULT OFF]
+  Suma puntos de vitalidad.
+
+/addene <amount>               [DEFAULT OFF]
+  Suma puntos de energía.
+
+/addcmd <amount>               [DEFAULT OFF]
+  Suma puntos de comando (Dark Lord).
+
+/clearinv                      [DEFAULT OFF]
+  Limpia el inventario del personaje (solo el inventory, NO baúl).
+
+/openware                      [DEFAULT OFF]
+  Abre el almacén/baúl.
+
+/post <mensaje>
+  Manda un Gens Post / mensaje global.
+
+/pkclear
+  Quita el estado de PK del personaje (caro en zen).
+
+/pk <nombre>                   [DEFAULT OFF]
+  Marca a un jugador como PK.
+
+/help [comando]
+  Muestra ayuda. Sin args lista todos los comandos disponibles.
+
+/list
+  Lista comandos.
+
+/language <lang>               [DEFAULT OFF]
+  Cambia el idioma del cliente (English, Español, etc.).
+
+/move <mapa> | /move <X> <Y>
+  Te teletransporta a un mapa o coordenada.
+
+/re                            [DEFAULT OFF]
+  Modo party-auto: /re auto = aceptar invitaciones automáticamente.
+                   /re off  = rechazar todas.
+                   /re      = volver a modo normal (popup).
+  (Plugin custom de BarnaMu — PartyAutoCommandPlugIn)
+
+/offlevel                      [DEFAULT OFF]
+  Activar offline leveling (solo VIP/GM en BarnaMu).
+
+/skin <id>                     [DEFAULT OFF]
+  Cambia la skin del personaje.
+
+═══════════════════════════════════════════════════════════════════════
+COMANDOS DE GUILD (CharacterStatus.Normal — guild master)
+═══════════════════════════════════════════════════════════════════════
+
+/war <guild>                   [DEFAULT OFF]
+  Declara guerra a una guild.
+
+/battlesoccer <guild>          [DEFAULT OFF]
+  Reto de soccer entre guilds (en Arena).
+
+/guildmove <mapa>              [DEFAULT OFF]
+  Mueve toda la guild al mapa.
+
+/guilddisconnect <pj>          [DEFAULT OFF]
+  Desconecta a un miembro de la guild.
+
+═══════════════════════════════════════════════════════════════════════
+COMANDOS DE GAME MASTER (CharacterStatus.GameMaster)
+═══════════════════════════════════════════════════════════════════════
+
+⚠ El estado GameMaster se asigna en Admin Panel → Accounts → State.
+
+──── STATS Y NIVEL ────
+
+/set <stat> <amount> [pj]      [DEFAULT OFF]   ← LO QUE VOS QUERÍAS
+  SETEA un stat a un valor exacto. <stat> = str|agi|vit|ene|cmd
+  Si omitís <pj>, lo aplica a vos mismo.
+  Ejemplos:
+    /set ene 32000
+    /set str 1000 NombreDelPJ
+
+/get <stat> [pj]               [DEFAULT OFF]
+  Lee el valor actual de un stat.
+  Ejemplo: /get ene
+
+/setlevel <level> [pj]
+  Setea el nivel del PJ.
+
+/getlevel [pj]
+  Lee el nivel actual.
+
+/setmasterlevel <level> [pj]
+  Setea el master level.
+
+/getmasterlevel [pj]
+  Lee el master level.
+
+/setleveluppoints <amount> [pj]
+  Setea los puntos disponibles para subir stats.
+
+/getleveluppoints [pj]
+  Lee puntos disponibles.
+
+/setmasterleveluppoints <amount> [pj]
+  Setea puntos disponibles de master.
+
+/getmasterleveluppoints [pj]   [DEFAULT OFF]
+  Lee puntos master disponibles.
+
+──── MONEY Y RESETS ────
+
+/setmoney <amount> [pj]
+  Setea el zen del PJ.
+
+/getmoney [pj]                 [DEFAULT OFF]
+  Lee el zen actual.
+
+/setresets <amount> [pj]
+  Setea el contador de resets.
+
+/getresets [pj]                [DEFAULT OFF]
+  Lee resets actuales.
+
+──── ITEMS ────
+
+/item group:<G> number:<N> lvl:<L> ex:<E> sk:<S> lu:<LU> opt:<O>
+  Genera un item con specs precisas.
+  Ejemplo: /item group:5 number:8 lvl:15 ex:63 sk:1 lu:1 opt:4
+  - group:  grupo del item (0-15)
+  - number: número del item dentro del grupo
+  - lvl:    nivel del item (+0 a +15)
+  - ex:     bitmask de excellent options (0-63)
+  - sk:     skill (0/1)
+  - lu:     luck (0/1)
+  - opt:    option (0-4)
+
+──── MONSTERS ────
+
+/createmonster <id> [x] [y]
+  Spawnea un monstruo. Si no pasás coords, aparece donde estás.
+
+/movemonster <id> <x> <y>
+  Mueve un monstruo creado.
+
+/walkmonster <id> <x> <y>
+  Hace que un monstruo camine a una posición.
+
+/removenpc <id>
+  Elimina un NPC del mapa.
+
+/showids                       [DEFAULT OFF]
+  Muestra los IDs de monstruos cercanos.
+
+/npc <id>                      [DEFAULT OFF]
+  Crea un NPC.
+
+──── INFO Y BÚSQUEDA ────
+
+/charinfo <pj>
+  Info del personaje (level, stats, inventario, etc.).
+
+/online
+  Lista todos los jugadores online.
+
+/trace <pj>
+  Te lleva a la posición del jugador.
+
+/track <pj>
+  Track de un PJ (info de ubicación).
+
+──── BAN / UNBAN ────
+
+/banchar <pj>
+  Banea un personaje.
+
+/banacc <cuenta>
+  Banea una cuenta entera.
+
+/unbanchar <pj>
+  Levanta el ban de un personaje.
+
+/unbanacc <cuenta>
+  Levanta el ban de una cuenta.
+
+/chatban <pj> [horas]
+  Mute / chat ban a un jugador.
+
+/chatunban <pj>
+  Levanta el chat ban.
+
+/disconnect <pj>
+  Desconecta a un jugador.
+
+──── EVENTOS ────
+
+/startbc
+  Inicia evento Blood Castle.
+
+/startds
+  Inicia evento Devil Square.
+
+/startcc
+  Inicia evento Chaos Castle.
+
+──── UTILIDADES GM ────
+
+/hide
+  Vuelve invisible al GM.
+
+/unhide
+  Sale del modo invisible.
+
+/goldnotice <texto>
+  Anuncio dorado en pantalla para todos.
+
+/teleport <x> <y>              [DEFAULT OFF]
+  Teleport a coords del mapa actual.
+
+/fireworks                     [DEFAULT OFF]
+  Efecto fireworks.
+
+/xmasfireworks                 [DEFAULT OFF]
+  Efecto fireworks navideño.
+
+═══════════════════════════════════════════════════════════════════════
+NOTAS RÁPIDAS — TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════════════
+
+❶ "El comando no responde" o "Unknown command":
+   → Plugin probablemente OFF. Habilitalo en Admin Panel → PlugIns.
+
+❷ "Me dice no autorizado":
+   → Tu cuenta no tiene CharacterStatus = GameMaster.
+   → Admin Panel → Accounts → tu cuenta → State: GameMaster
+
+❸ Para chequear permisos rápidamente: tipeá /help. Solo deberían
+   aparecer los que tu nivel de status puede usar.
+
+❹ Algunos comandos toman <pj> como ÚLTIMO argumento opcional.
+   Si lo omitís, se aplica a tu propio personaje.
+
+❺ Stats válidos para /set y /get:  str, agi, vit, ene, cmd
+
+═══════════════════════════════════════════════════════════════════════
+COMANDOS CUSTOM DE BARNAMU (modificados/agregados en código)
+═══════════════════════════════════════════════════════════════════════
+
+/re                Comando nuevo. PartyAutoCommandPlugIn.
+                   /re auto = auto-aceptar party requests
+                   /re off  = auto-rechazar party requests
+                   /re      = volver a modo normal (popup)
+
+/offlevel          Modificado: ahora restringido a VIP/GM en BarnaMu.
+
+/pkclear           Modificado: accesible para todos los jugadores
+                   (en vanilla era solo GM).
+
+═══════════════════════════════════════════════════════════════════════
+Generado leyendo C:\MuDev\OpenMU\src\GameLogic\PlugIns\ChatCommands\
+Última actualización: 2026-05-09
+═══════════════════════════════════════════════════════════════════════

@@ -1,0 +1,125 @@
+@page "{mode?}"
+@model RankingsModel
+@{
+    ViewData["Title"] = "Rankings";
+}
+
+<div class="hero hero-small">
+    <h1>Rankings</h1>
+    <p class="hero-subtitle">Top 50 — actualizado en tiempo real con la DB del server.</p>
+</div>
+
+<div class="card">
+    <div class="tabs">
+        <a asp-page="/Rankings" asp-route-mode="resets" class="@(Model.Mode == "resets" ? "active" : "")">Resets</a>
+        <a asp-page="/Rankings" asp-route-mode="level"  class="@(Model.Mode == "level"  ? "active" : "")">Level</a>
+        <a asp-page="/Rankings" asp-route-mode="guilds" class="@(Model.Mode == "guilds" ? "active" : "")">Guilds</a>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.Error))
+    {
+        <div class="alert alert-danger">No se pudo cargar el ranking: @Model.Error</div>
+    }
+    else if (Model.Mode == "guilds")
+    {
+        @if (Model.GuildRows.Count == 0)
+        {
+            <p class="muted">Todavía no hay guilds creadas.</p>
+        }
+        else
+        {
+            <div class="table-wrap">
+                <table class="ranking">
+                    <thead>
+                        <tr>
+                            <th class="num">#</th>
+                            <th>Guild</th>
+                            <th class="num">Score</th>
+                            <th class="num">Miembros</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.GuildRows.Count; i++)
+                        {
+                            var row = Model.GuildRows[i];
+                            <tr>
+                                <td class="num">@(i + 1)</td>
+                                <td>@row.Name</td>
+                                <td class="num">@row.Score.ToString("N0")</td>
+                                <td class="num">@row.MemberCount</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <p class="muted" style="margin-top: 8px;">Ordenado por <em>Score</em> (Castle Siege / batallas), después por miembros.</p>
+        }
+    }
+    else if (Model.Rows.Count == 0)
+    {
+        <p class="muted">
+            @(Model.Mode == "resets"
+                ? "Todavía no hay personajes con resets."
+                : "Todavía no hay personajes para mostrar.")
+        </p>
+    }
+    else if (Model.Mode == "resets")
+    {
+        <div class="table-wrap">
+            <table class="ranking">
+                <thead>
+                    <tr>
+                        <th class="num">#</th>
+                        <th>Personaje</th>
+                        <th class="num">Resets</th>
+                        <th class="num">Level</th>
+                        <th class="num">Master Lvl</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Rows.Count; i++)
+                    {
+                        var row = Model.Rows[i];
+                        <tr>
+                            <td class="num">@(i + 1)</td>
+                            <td>@row.Name</td>
+                            <td class="num gold-cell">@row.Resets</td>
+                            <td class="num">@row.Level</td>
+                            <td class="num">@row.MasterLevel</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        @* Mode == "level" *@
+        <div class="table-wrap">
+            <table class="ranking">
+                <thead>
+                    <tr>
+                        <th class="num">#</th>
+                        <th>Personaje</th>
+                        <th class="num">Level</th>
+                        <th class="num">Master Lvl</th>
+                        <th class="num">Resets</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Rows.Count; i++)
+                    {
+                        var row = Model.Rows[i];
+                        <tr>
+                            <td class="num">@(i + 1)</td>
+                            <td>@row.Name</td>
+                            <td class="num gold-cell">@row.Level</td>
+                            <td class="num">@row.MasterLevel</td>
+                            <td class="num">@row.Resets</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

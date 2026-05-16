@@ -1,0 +1,54 @@
+@inject IOptions<BarnaMuOptions> BarnaMuOpts
+@{
+    var opts = BarnaMuOpts.Value;
+    var hasDiscord = !string.IsNullOrWhiteSpace(opts.DiscordInviteUrl) && !opts.DiscordInviteUrl.Contains("REEMPLAZAR");
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@(ViewData["Title"] ?? opts.ServerName) — @opts.ServerName</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-row">
+            <a class="brand" asp-page="/Index">
+                <span class="brand-mark">⚔</span>
+                <span class="brand-name">@opts.ServerName</span>
+            </a>
+            <nav class="primary-nav">
+                <a asp-page="/Index">Inicio</a>
+                <a asp-page="/Register">Registrarse</a>
+                <a asp-page="/Vip">VIP</a>
+                <a asp-page="/Guide">Guía</a>
+                <a asp-page="/Rankings">Rankings</a>
+                <a asp-page="/Status">Estado</a>
+                <a asp-page="/Download">Descarga</a>
+                <a asp-page="/ReportBug">Reportar bug</a>
+                @if (hasDiscord)
+                {
+                    <a href="@opts.DiscordInviteUrl" target="_blank" rel="noopener" class="discord-link">Discord</a>
+                }
+            </nav>
+        </div>
+    </header>
+
+    <main class="site-main">
+        <div class="container">
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-row">
+            <span>© @DateTime.UtcNow.Year @opts.ServerName · MU Online private server</span>
+            <span class="muted">Server custom basado en <a href="https://github.com/MUnique/OpenMU" target="_blank" rel="noopener">OpenMU</a></span>
+        </div>
+    </footer>
+</body>
+</html>

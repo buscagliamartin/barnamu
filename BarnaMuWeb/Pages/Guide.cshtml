@@ -1,0 +1,46 @@
+@page
+@model GuideModel
+@{
+    ViewData["Title"] = "Guía";
+}
+
+<div class="hero hero-small">
+    <h1>Guía del servidor</h1>
+    <p class="hero-subtitle">Todo lo que necesitás saber para arrancar y entender el contenido de BarnaMu.</p>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.Error))
+{
+    <div class="alert alert-danger">@Model.Error</div>
+}
+
+@if (Model.Sections.Count > 0)
+{
+    <aside class="card guide-toc">
+        <h3 style="margin-top: 0;">Contenidos</h3>
+        <ul>
+            @foreach (var sec in Model.Sections)
+            {
+                <li><a href="#@sec.Id">@sec.Title</a></li>
+            }
+        </ul>
+    </aside>
+
+    @foreach (var sec in Model.Sections)
+    {
+        <section class="card" id="@sec.Id">
+            <h2>@sec.Title</h2>
+            <div class="guide-body">
+                @Html.Raw(sec.BodyHtml)
+            </div>
+        </section>
+    }
+}
+else if (string.IsNullOrEmpty(Model.Error))
+{
+    <p class="muted">Todavía no hay contenido cargado en la guía. Editá <code>Content/guide.json</code>.</p>
+}
+
+<div class="card" style="background: var(--bg-card-2); border-color: var(--gold-soft);">
+    <p class="muted" style="margin: 0;">¿Falta algo importante en la guía? Pedinos que lo agreguemos por <a asp-page="/ReportBug">/reportbug</a> o por Discord. El contenido vive en <code>Content/guide.json</code> y se actualiza sin recompilar.</p>
+</div>

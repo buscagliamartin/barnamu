@@ -1,0 +1,62 @@
+@page
+@model IndexModel
+@inject IOptions<BarnaMuOptions> BarnaMuOpts
+@{
+    ViewData["Title"] = "Inicio";
+    var opts = BarnaMuOpts.Value;
+    var anyOnline = Model.Status.ConnectServerOnline && Model.Status.GameServersOnline > 0;
+    var statusKnown = Model.Status.CheckedAtUtc != DateTime.MinValue;
+}
+
+<section class="hero">
+    <h1>@opts.ServerName</h1>
+    <p class="hero-subtitle">@(string.IsNullOrWhiteSpace(opts.ServerTagline) ? "MU Online Season 6 — server privado con VIP, invasiones y drops balanceados." : opts.ServerTagline)</p>
+    <div class="hero-actions">
+        <a asp-page="/Register" class="btn">Crear cuenta</a>
+        <a asp-page="/Download" class="btn btn-secondary">Descargar cliente</a>
+    </div>
+    <div class="hero-meta">
+        @if (anyOnline)
+        {
+            <span class="pill pill-online">Online</span>
+        }
+        else if (statusKnown)
+        {
+            <span class="pill pill-offline">Offline</span>
+        }
+        <span style="margin-left: 12px;">@Model.TotalAccounts cuenta(s) · @Model.TotalCharacters personaje(s) · @Model.NewAccounts7d nueva(s) en 7 días</span>
+    </div>
+</section>
+
+<div class="grid-2">
+    <section class="card">
+        <h2>Novedades</h2>
+        @if (Model.News.Count == 0)
+        {
+            <p class="muted">No hay novedades publicadas.</p>
+        }
+        else
+        {
+            foreach (var item in Model.News)
+            {
+                <article style="margin-bottom: 22px;">
+                    <h3 style="margin-bottom: 4px;">@item.Title</h3>
+                    <div class="muted" style="font-size: 12px; margin-bottom: 8px; letter-spacing: 0.5px;">@item.Date</div>
+                    <div>@item.Body</div>
+                </article>
+            }
+        }
+    </section>
+
+    <section class="card">
+        <h2>¿Por qué jugar acá?</h2>
+        <ul class="perk-list">
+            <li><strong>Rates balanceadas</strong> — slow-medium, pensado para que jugar valga la pena.</li>
+            <li><strong>VIP con timer</strong> — pagás @opts.Vip.DurationDays días y ves exactamente cuánto te queda.</li>
+            <li><strong>Invasiones</strong> — Goldens cada 4h, Red Dragon cada 6h, T9 bosses cada 8h.</li>
+            <li><strong>Drops curados</strong> — cajas Kundun por tier (Heaven → K+5) + Pink Chocolate Box T9.</li>
+            <li><strong>Resets sin límite</strong> — desde lvl 400, costo escalado por reset.</li>
+        </ul>
+        <p style="margin-top: 14px;"><a asp-page="/Vip">Ver detalles de VIP →</a> · <a asp-page="/Guide">Guía completa →</a></p>
+    </section>
+</div>

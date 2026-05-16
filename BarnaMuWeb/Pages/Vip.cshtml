@@ -1,0 +1,127 @@
+@page
+@model VipModel
+@inject IOptions<BarnaMuOptions> BarnaMuOpts
+@{
+    ViewData["Title"] = "VIP";
+    var opts = BarnaMuOpts.Value;
+    var rates = opts.Rates;
+    var vip = opts.Vip;
+    var hasPayPal = !string.IsNullOrWhiteSpace(vip.PayPalUrl) && !vip.PayPalUrl.Contains("REEMPLAZAR");
+    var hasWhatsApp = !string.IsNullOrWhiteSpace(vip.WhatsAppUrl) && !vip.WhatsAppUrl.Contains("REEMPLAZAR");
+}
+
+<div class="hero hero-small">
+    <h1>VIP en @opts.ServerName</h1>
+    <p class="hero-subtitle">Más rates, almacén extendido, acceso anticipado a mapas y un timer claro: pagás @vip.DurationDays días y te quedan exactamente eso.</p>
+</div>
+
+<div class="grid-2">
+    <section class="card">
+        <h2>¿Cuánto cuesta?</h2>
+        <p class="price-tag">@(string.IsNullOrWhiteSpace(vip.PriceText) ? "USD 5 / 30 días" : vip.PriceText)<span class="muted" style="font-size: 14px; margin-left: 8px;">por @vip.DurationDays días</span></p>
+
+        <h3 style="margin-top: 20px;">Cómo lo comprás</h3>
+        <ol>
+            <li>
+                @if (hasPayPal)
+                {
+                    <span>Pagás por </span><a href="@vip.PayPalUrl" target="_blank" rel="noopener"><strong>PayPal</strong></a><span>.</span>
+                }
+                else
+                {
+                    <span class="muted">PayPal: pendiente de configurar (editar <code>appsettings.json</code> → <code>Vip.PayPalUrl</code>).</span>
+                }
+            </li>
+            <li>
+                @if (hasWhatsApp)
+                {
+                    <span>Nos mandás el comprobante por </span><a href="@vip.WhatsAppUrl" target="_blank" rel="noopener"><strong>WhatsApp @vip.WhatsAppDisplay</strong></a><span> indicando tu nombre de cuenta.</span>
+                }
+                else
+                {
+                    <span class="muted">WhatsApp: pendiente de configurar.</span>
+                }
+            </li>
+            <li>Un GM te activa el VIP con <code>/setvip TuCuenta @vip.DurationDays</code>. Lo ves en el juego con <code>/vipinfo</code>.</li>
+        </ol>
+
+        @if (!string.IsNullOrWhiteSpace(vip.Instructions))
+        {
+            <div class="alert" style="margin-top: 14px;">@vip.Instructions</div>
+        }
+
+        @if (hasPayPal || hasWhatsApp)
+        {
+            <p style="margin-top: 16px;">
+                @if (hasPayPal)  { <a class="btn" href="@vip.PayPalUrl" target="_blank" rel="noopener">Pagar con PayPal</a> }
+                @if (hasWhatsApp) { <a class="btn btn-secondary" href="@vip.WhatsAppUrl" target="_blank" rel="noopener" style="margin-left: 8px;">WhatsApp</a> }
+            </p>
+        }
+    </section>
+
+    <section class="card">
+        <h2>Qué incluye</h2>
+        <ul class="perk-list">
+            <li><strong>Más rates</strong> en experiencia, master, zen y drop (ver tabla abajo).</li>
+            <li><strong>Almacén extendido</strong> automáticamente al login.</li>
+            <li><strong>+10% Chaos Machine</strong> en todas las combinaciones.</li>
+            <li><strong>Comando <code>/offlevel</code></strong> exclusivo VIP.</li>
+            <li><strong>Acceso anticipado</strong> a Kanturu, Swamp y Raklion.</li>
+            <li><strong>Tag [VIP]</strong> en el chat.</li>
+            <li><strong>Timer transparente:</strong> ves los días restantes con <code>/vipinfo</code>, y cuando vence vuelve a Normal solito sin sorpresas.</li>
+        </ul>
+    </section>
+</div>
+
+<section class="card">
+    <h2>Rates</h2>
+    <div class="table-wrap">
+        <table class="ranking">
+            <thead>
+                <tr><th></th><th class="num">Normal</th><th class="num">VIP</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Experiencia</td><td class="num">@rates.ExpNormal x</td><td class="num gold-cell">@rates.ExpVip x</td></tr>
+                <tr><td>Master Exp</td><td class="num">@rates.MasterExpNormal x</td><td class="num gold-cell">@rates.MasterExpVip x</td></tr>
+                <tr><td>Zen</td><td class="num">@rates.ZenNormal x</td><td class="num gold-cell">@rates.ZenVip x</td></tr>
+                <tr><td>Drop</td><td class="num">@rates.DropNormal x</td><td class="num gold-cell">@rates.DropVip x</td></tr>
+                <tr><td>Drop excelente</td><td class="num">~@rates.ExcellentDropNormal x</td><td class="num gold-cell">~@rates.ExcellentDropVip x</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="card">
+    <h2>Niveles de entrada a mapas</h2>
+    @if (opts.Maps.Length == 0)
+    {
+        <p class="muted">No hay mapas configurados.</p>
+    }
+    else
+    {
+        <div class="table-wrap">
+            <table class="ranking">
+                <thead>
+                    <tr>
+                        <th>Mapa</th>
+                        <th class="num">Normal</th>
+                        <th class="num">VIP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var map in opts.Maps)
+                    {
+                        <tr>
+                            <td>@map.Name</td>
+                            <td class="num">@(map.NormalLevel > 0 ? map.NormalLevel.ToString() : "—")</td>
+                            <td class="num @(map.VipLevel.HasValue ? "gold-cell" : "")">
+                                @(map.VipLevel.HasValue ? map.VipLevel.Value.ToString() : "—")
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <p class="muted" style="font-size: 12px; margin-top: 10px;">Los mapas con "—" en VIP requieren el mismo nivel que un jugador normal. Los marcados con — en Normal todavía no tienen entry-level configurado en la web.</p>
+    }
+</section>

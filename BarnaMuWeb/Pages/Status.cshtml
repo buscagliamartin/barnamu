@@ -1,0 +1,68 @@
+@page
+@model StatusModel
+@{
+    ViewData["Title"] = "Estado del servidor";
+}
+
+<div class="hero hero-small">
+    <h1>Estado del servidor</h1>
+    <p class="hero-subtitle">Chequeado @Model.Status.CheckedAtUtc.ToString("yyyy-MM-dd HH:mm") UTC · caché ~15s · refrescá la página para volver a probar.</p>
+</div>
+
+<section class="card">
+    <h2>Servicios</h2>
+    <div class="table-wrap">
+        <table class="ranking">
+            <thead>
+                <tr><th>Servicio</th><th>Estado</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var port in Model.Status.Ports)
+                {
+                    <tr>
+                        <td>@port.Label</td>
+                        <td>
+                            @if (port.IsOnline)
+                            {
+                                <span class="pill pill-online">Online</span>
+                            }
+                            else
+                            {
+                                <span class="pill pill-offline">Offline</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="card">
+    <h2>Estadísticas</h2>
+    @if (Model.DbError is not null)
+    {
+        <div class="alert alert-danger">No se pudo conectar a la DB: @Model.DbError</div>
+    }
+    else
+    {
+        <div class="grid-2">
+            <div class="stat-block">
+                <h3>@Model.TotalAccounts</h3>
+                <div class="muted">Cuentas registradas</div>
+            </div>
+            <div class="stat-block">
+                <h3>@Model.TotalCharacters</h3>
+                <div class="muted">Personajes creados</div>
+            </div>
+            <div class="stat-block">
+                <h3>@Model.NewAccounts7d</h3>
+                <div class="muted">Nuevas cuentas (7 días)</div>
+            </div>
+            <div class="stat-block">
+                <h3>@Model.NewAccounts30d</h3>
+                <div class="muted">Nuevas cuentas (30 días)</div>
+            </div>
+        </div>
+    }
+</section>

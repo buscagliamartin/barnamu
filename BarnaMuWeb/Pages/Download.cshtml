@@ -1,0 +1,44 @@
+@page
+@model DownloadModel
+@inject IOptions<BarnaMuOptions> BarnaMuOpts
+@{
+    ViewData["Title"] = "Descarga del cliente";
+    var opts = BarnaMuOpts.Value;
+    var hasUrl = !string.IsNullOrWhiteSpace(opts.ClientDownloadUrl) && !opts.ClientDownloadUrl.Contains("REEMPLAZAR");
+}
+
+<div class="card" style="max-width: 720px; margin: 0 auto;">
+    <h1>Descargar el cliente</h1>
+    <p>Cliente de @opts.ServerName (versión: @opts.ClientVersion). Acordate de <strong>ejecutar como Administrador</strong> al menos la primera vez.</p>
+
+    @if (hasUrl)
+    {
+        <p>
+            <a class="btn" href="@opts.ClientDownloadUrl" target="_blank" rel="noopener">Descargar cliente</a>
+        </p>
+        @if (!string.IsNullOrWhiteSpace(opts.ClientChecksum) && !opts.ClientChecksum.Contains("REEMPLAZAR"))
+        {
+            <p class="muted" style="font-size: 12px;">SHA256: <code>@opts.ClientChecksum</code></p>
+        }
+    }
+    else
+    {
+        <div class="alert">
+            El link de descarga todavía no está configurado. Avisame por Discord cuando tengas el cliente subido y lo pongo en <code>appsettings.json</code> → <code>BarnaMu.ClientDownloadUrl</code>.
+        </div>
+    }
+
+    <h2 style="margin-top: 22px;">Cómo conectarse</h2>
+    <ol>
+        <li>Descargá y descomprimí el cliente.</li>
+        <li>Abrí el launcher (o directamente <code>main.exe</code>) — ya viene listo para conectar al servidor.</li>
+        <li>Si todavía no tenés cuenta, <a asp-page="/Register">creala acá</a>.</li>
+    </ol>
+
+    <h2 style="margin-top: 22px;">Problemas comunes</h2>
+    <ul>
+        <li>Si no abre, instalá los <a href="https://aka.ms/vs/17/release/vc_redist.x86.exe" target="_blank" rel="noopener">Visual C++ Redistributables x86</a>.</li>
+        <li>MU Helper requiere nivel 80 (restricción del cliente).</li>
+        <li>Cualquier otro problema, reportalo en <a asp-page="/ReportBug">/reportbug</a> o en Discord.</li>
+    </ul>
+</div>

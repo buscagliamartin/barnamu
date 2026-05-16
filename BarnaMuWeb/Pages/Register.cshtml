@@ -1,0 +1,55 @@
+@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Registrarse";
+}
+
+<div class="card" style="max-width: 520px; margin: 0 auto;">
+    <h1>Crear cuenta</h1>
+    <p class="muted">Una cuenta sirve para todos tus personajes. Vas a usar el security code numérico cuando quieras borrar un personaje.</p>
+
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+        <div class="alert alert-success">@Model.SuccessMessage</div>
+    }
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">@Model.ErrorMessage</div>
+    }
+
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+        <div class="field">
+            <label asp-for="Input.LoginName"></label>
+            <input asp-for="Input.LoginName" autocomplete="username" maxlength="10" autofocus />
+            <span asp-validation-for="Input.LoginName" class="field-validation-error"></span>
+        </div>
+
+        <div class="field">
+            <label asp-for="Input.Password"></label>
+            <input asp-for="Input.Password" autocomplete="new-password" maxlength="20" />
+            <span asp-validation-for="Input.Password" class="field-validation-error"></span>
+        </div>
+
+        <div class="field">
+            <label asp-for="Input.ConfirmPassword"></label>
+            <input asp-for="Input.ConfirmPassword" autocomplete="new-password" maxlength="20" />
+            <span asp-validation-for="Input.ConfirmPassword" class="field-validation-error"></span>
+        </div>
+
+        <div class="field">
+            <label asp-for="Input.SecurityCode"></label>
+            <input asp-for="Input.SecurityCode" inputmode="numeric" pattern="[0-9]*" maxlength="10" />
+            <span asp-validation-for="Input.SecurityCode" class="field-validation-error"></span>
+        </div>
+
+        <div class="field">
+            <label asp-for="Input.Email"></label>
+            <input asp-for="Input.Email" type="email" autocomplete="email" />
+            <span asp-validation-for="Input.Email" class="field-validation-error"></span>
+        </div>
+
+        <button class="btn" type="submit">Crear cuenta</button>
+    </form>
+</div>

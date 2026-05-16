@@ -1,0 +1,160 @@
+Estamos desarrollando BarnaMu, servidor privado de Mu Online con OpenMU.
+
+STACK TÉCNICO:
+- OpenMU (C# / .NET 10) compilado desde source
+- PostgreSQL 16
+- Windows 10 en VMware
+- IP pública: 83.43.3.212 / barnamu.ddns.net
+- Carpeta servidor: C:\MuDev\OpenMU\
+- Carpeta cliente: C:\MuDev\BarnaMu-Client\
+- Base de datos: openmu / usuario: postgres / pass: W3l.c0m3
+
+INFRAESTRUCTURA COMPLETADA:
+- OpenMU compilado y corriendo
+- AutoRestart.bat (reinicio automático si cae)
+- StartServer.bat llama al AutoRestart
+- Recompilar.bat (doble click para recompilar cuando se cambia código C#)
+- Backup diario a las 4am (Task Scheduler "BarnaMu-Backup")
+- Auto-inicio con Windows (Task Scheduler "BarnaMu-Server")
+- No-IP DUC instalado (barnamu.ddns.net → 83.43.3.212)
+- Port Forwarding: 44405, 55901-55906, 80 → 192.168.1.52
+- IP fija en VM
+- Admin Panel protegido desde internet
+- PostgreSQL bloqueado externamente
+- Límite 2 conexiones por IP (ClientListener.cs)
+
+SERVIDOR ÚNICO:
+- BarnaMu: 30x exp, PvP (un solo servidor)
+
+RATES BASE:
+- Experience: 30x
+- Master Exp: 15x
+- Drop normal: 5x
+- Drop excellent: ~3x
+- Zen: 10x
+
+RATES VIP (implementado en código C#):
+- Experience: 35x (+17%)
+- Master Exp: 20x (+33%)
+- Drop normal: ~7x (+40%)
+- Drop excellent: ~4x (+40%)
+- Zen: 13x (+30%)
+
+SISTEMA DE RESETS:
+- Nivel requerido: 400
+- Nivel tras reset: 1
+- Costo zen: 10,000,000 (x reset count)
+- Stats tras reset: se resetean
+- Puntos por reset: 500 (x reset count)
+- Log out al resetear: activado
+- Sin límite de resets
+- Comandos: /reset, /resetinfo, /getresets
+
+PATH DE LEVELEO (niveles de entrada configurados en DB):
+- Lorencia: 10
+- Devias: 20-40
+- Dungeon: 50 (todos los pisos)
+- Lost Tower: 100 (todos los pisos)
+- Tarkan: 140
+- Arena: 200
+- Aida: 220
+- Kanturu Ruins: 240
+- Kanturu Relics: 260 | VIP: 200
+- Swamp of Calmness: 280 | VIP: 250
+- Raklion (La Cleon): 350 | VIP: 300
+
+NOTAS BMD:
+- El menú M usa movereq_eng.bmd del cliente (C:\MuDev\BarnaMu-Client\Data\Local\)
+- El nivel real se valida server-side (WarpAction.cs y WarpGateAction.cs)
+- El BMD ya fue editado con MagicHand para mostrar niveles correctos
+
+MODIFICACIONES DE CÓDIGO COMPILADAS:
+- Character.cs → CharacterStatus.Vip agregado
+- Account.cs → AccountState.Vip agregado
+- PKClearChatCommandPlugIn.cs → Normal (todos los jugadores)
+- OfflineLevelingChatCommandPlugIn.cs → solo VIP/GM
+- ShowCharacterListPlugIn.cs (y 075/095/Extended) → tag [GM] en nombre
+- LoginAction.cs → almacén extendido automático para VIP/GM
+- ChatMessageNormalProcessor.cs → tag [VIP]/[GM] en chat
+- SimpleItemCraftingHandler.cs → +10% Chaos Machine para VIP/GM
+- ClientListener.cs → límite 2 conexiones por IP
+- WarpAction.cs → nivel diferenciado VIP (Kanturu Relics 200, Swamp 250, Raklion 300)
+- WarpGateAction.cs → nivel diferenciado VIP (mismos mapas)
+- Player.cs → exp VIP solo (35/30) y master exp VIP (20/15)
+- Party.cs → exp VIP party (35/30), master exp VIP (20/15), zen VIP party (+30%)
+- DefaultDropGenerator.cs → drop VIP +40% (item drops)
+- AttackableNpcBase.cs → zen VIP solo +30%; zen party auto-distribuido entre miembros
+
+NOTA IMPORTANTE - TAG [VIP] EN CHARACTER LIST:
+El tag [VIP] fue REMOVIDO de la pantalla de selección porque el cliente envía el nombre
+mostrado al servidor → [VIP]Nombre excede 10 chars → truncado → login falla.
+El tag [VIP] sigue en el CHAT (ChatMessageNormalProcessor.cs).
+
+SISTEMA VIP COMPLETO:
+- Rates superiores: 35x exp, 20x master exp, 13x zen, ~7x drop, ~4x exe
+- Tag [VIP] en chat
+- Almacén extendido automático al login
+- /offlevel exclusivo VIP
+- +10% Chaos Machine
+- Acceso anticipado a mapas: Kanturu Relics (200), Swamp (250), Raklion (300)
+- Zen de party auto-distribuido con bonus VIP individual
+
+COMO ASIGNAR VIP:
+Admin Panel → Accounts → [cuenta] → State: Vip → Save
+
+PARTY SYSTEM:
+- Zen: se distribuye automáticamente entre miembros del mismo mapa (no cae al piso)
+- Cada miembro recibe su porción proporcional con su propio MoneyAmountRate y bonus VIP
+- Exp: distribuida con bonus VIP individual por jugador
+
+COMANDOS JUGADORES:
+/addstr, /addagi, /addvit, /addene, /addcmd
+/reset, /resetinfo, /getresets
+/post, /pkclear, /ware, /clearinv
+/move, /help, /changelanguage
+/offlevel (solo VIP)
+/re auto (auto-aceptar party) | /re off (auto-rechazar) | /re (normal)
+
+COMANDOS GM:
+/item group:X number:Y lvl:15 ex:63 sk:1 lu:1 opt:4
+/set str/agi/vit/ene/cmd [valor] [nombre_pj]   ← setstat
+/setlevel, /setmoney, /getmoney
+/setresets, /getstat
+/ban, /banacc, /unban, /unacc
+/chatban, /dc, /hide, /notice
+/online, /trace, /track
+/move nombre mapa
+/startbc, /startds, /startcc
+/setmasterlevel, /getlevel
+
+DROPS (DB, sin recompilar):
+- NumberOfMaximumItemDrops: 330 monstruos cambiados de 1 → 3
+  * Slot 1: zen (drop group money, guaranteed)
+  * Slot 2: item random (drop group items, guaranteed)
+  * Slot 3: lotería joyas (12.5%) o excelente (0.27%)
+- Arena: 9 áreas de spawn agregadas (Iron Wheel, Tantallos, Zaikan, Bloody Wolf, Beam Knight, Mutant, Death Beam Knight, Alquamos, Queen Rainer)
+  * ~66 monstruos total distribuidos en todo el mapa
+
+PENDIENTE:
+1. Rearmar spots de monsters en otros mapas (Arena OK)
+2. Revisar y limpiar items de NPCs (sin items "fast")
+3. Configurar horarios de eventos (BC, DS, CC)
+4. Balance de clases (BK, DW, SM, Elf, MG, DL, Summoner, RF)
+5. Página web del servidor
+6. Discord del servidor
+7. Cliente final para distribución pública
+8. Sistema de ranking
+9. Castle Siege configuración
+10. Bug /item ex:63 solo agrega reflect en algunos items
+11. Vulcanus - entender sistema Gens antes de activar
+12. Mapa exclusivo VIP - evaluar opciones
+
+NOTAS IMPORTANTES:
+- Para asignar VIP: Admin Panel → Accounts → State: Vip
+- Para asignar GM: Admin Panel → Accounts → State: GameMaster
+- Comando /item sintaxis: /item group:X number:Y lvl:15 ex:63 sk:1 lu:1 opt:4
+- Comando /set sintaxis: /set str 500 [NombrePj] (valor final, no incremento)
+- Cliente necesita ejecutarse como Administrador
+- No-IP se renueva cada 30 días (confirmar en noip.com)
+- Solo recompilar cuando se cambia código C# (no para cambios de DB)
+- La Cleon = Raklion (nombre en DB ya cambiado)

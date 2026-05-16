@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"C:\\\\MuDev\\\\OpenMU\\\\src\" -Directory)",
+      "Bash(Select-Object Name)",
+      "Bash(Get-ChildItem *)",
+      "Bash(grep -i -E \"\\\\.cs$\")",
+      "Bash(xargs grep -l \"Tarkan\\\\|Arena\")",
+      "Bash(Select-Object FullName)",
+      "Bash(Sort-Object FullName)",
+      "Bash(psql *)",
+      "PowerShell(psql *)",
+      "Bash(xargs grep -l \"MuHelper\")",
+      "Bash(xargs grep -l \"MuHelper\\\\|helper\")",
+      "PowerShell($env:PGPASSWORD = \"W3l.c0m3\"; & \"C:\\\\Program Files\\\\PostgreSQL\\\\16\\\\bin\\\\psql.exe\" -U postgres -d openmu -c \"\\\\dn\")",
+      "PowerShell($env:PGPASSWORD = \"W3l.c0m3\"; & \"C:\\\\Program Files\\\\PostgreSQL\\\\16\\\\bin\\\\psql.exe\" -U postgres -d openmu -c \"SELECT tablename FROM pg_tables WHERE schemaname='config' ORDER BY tablename;\")",
+      "PowerShell(Get-Process *)",
+      "PowerShell(Start-Process -FilePath \"cmd.exe\" -ArgumentList \"/c C:\\\\MuDev\\\\AutoRestart.bat\" -WorkingDirectory \"C:\\\\MuDev\" -WindowStyle Normal)",
+      "PowerShell(netstat *)"
+    ]
+  }
+}
