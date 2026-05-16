@@ -24,8 +24,6 @@
       "id": "sockets",
       "title": "Sistema de Sockets",
       "bodyHtml": "<h3>1. Extracción de Seeds</h3><p>NPC: <strong>Seed Master</strong> (Elbeland). Requiere Item Exc +4 (min), Harmony, Chaos y Creation. El item se destruye.</p><h3>2. Obtención de Spheres</h3><p>Las Spheres (Mono a Penta) caen en Raklion, Vulcanus y Kanturu Relics.</p><h3>3. Fabricación de Seed Sphere</h3><p>NPC: <strong>Seed Master</strong>. Combina Seed + Sphere + Chaos + Creation.</p><h3>4. Inserción</h3><p>NPC: <strong>Seed Researcher</strong> (Elbeland). Inserta la Seed Sphere en un item con socket vacío.</p>"
-    }
-/move &lt;mapa&gt;</code> o usá la ventana 'M'.</p>"
     },
     {
       "id": "quests",
