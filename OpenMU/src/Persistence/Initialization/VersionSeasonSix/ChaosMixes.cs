@@ -1,4 +1,4 @@
-﻿// <copyright file="ChaosMixes.cs" company="MUnique">
+// <copyright file="ChaosMixes.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -373,7 +373,7 @@ public class ChaosMixes : InitializerBase
         var craftingSettings = this.Context.CreateNew<SimpleCraftingSettings>();
         crafting.SimpleCraftingSettings = craftingSettings;
         craftingSettings.MoneyPerFinalSuccessPercentage = 200_000;
-        craftingSettings.SuccessPercent = 1;
+        craftingSettings.SuccessPercent = 10;
         craftingSettings.MaximumSuccessPercent = 60;
 
         // Requirements:
@@ -398,7 +398,7 @@ public class ChaosMixes : InitializerBase
         randomAncientItem.MinimumAmount = 1;
         randomAncientItem.MinimumItemLevel = 7;
         randomAncientItem.MaximumItemLevel = 15;
-        randomAncientItem.NpcPriceDivisor = 300_000;
+        randomAncientItem.NpcPriceDivisor = 200_000;
         randomAncientItem.FailResult = MixResult.ThirdWingsDowngradedRandom;
         randomAncientItem.RequiredItemOptions.Add(this.GameConfiguration.ItemOptionTypes.First(o => o == ItemOptionTypes.AncientBonus));
         randomAncientItem.RequiredItemOptions.Add(this.GameConfiguration.ItemOptionTypes.First(o => o == ItemOptionTypes.Option));
@@ -446,8 +446,8 @@ public class ChaosMixes : InitializerBase
         var craftingSettings = this.Context.CreateNew<SimpleCraftingSettings>();
         crafting.SimpleCraftingSettings = craftingSettings;
         craftingSettings.MoneyPerFinalSuccessPercentage = 200_000;
-        craftingSettings.SuccessPercent = 1;
-        craftingSettings.MaximumSuccessPercent = 40;
+        craftingSettings.SuccessPercent = 10;
+        craftingSettings.MaximumSuccessPercent = 60;
 
         // Requirements:
         var randomExcItem = this.Context.CreateNew<ItemCraftingRequiredItem>();

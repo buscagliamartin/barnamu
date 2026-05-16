@@ -1,4 +1,4 @@
-﻿// <copyright file="MoveItemAction.cs" company="MUnique">
+// <copyright file="MoveItemAction.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -39,6 +39,22 @@ public class MoveItemAction
     /// <param name="toStorage">To storage.</param>
     public async ValueTask MoveItemAsync(Player player, byte fromSlot, Storages fromStorage, byte toSlot, Storages toStorage)
     {
+        if (toSlot == 0xFF)
+        {
+            var fromStorageInfo = this.GetStorageInfo(player, fromStorage);
+            var item = fromStorageInfo?.Storage?.GetItem(fromSlot);
+            if (item != null)
+            {
+                toSlot = await this.FindTargetSlotAsync(player, item, toStorage).ConfigureAwait(false);
+            }
+
+            if (toSlot == 0xFF)
+            {
+                await player.InvokeViewPlugInAsync<IItemMoveFailedPlugIn>(p => p.ItemMoveFailedAsync(null)).ConfigureAwait(false);
+                return;
+            }
+        }
+
         if (!this.IsMoveAllowed(player, fromStorage, toStorage))
         {
             await player.InvokeViewPlugInAsync<IItemMoveFailedPlugIn>(p => p.ItemMoveFailedAsync(null)).ConfigureAwait(false);
@@ -426,6 +442,36 @@ public class MoveItemAction
             Storages.SeedUnmountCrafting => state == PlayerState.NpcDialogOpened && openedWindow == NpcWindow.SeedResearcher,
             _ => false,
         };
+    }
+
+    private async ValueTask<byte> FindTargetSlotAsync(Player player, Item item, Storages toStorage)
+    {
+        var storageInfo = this.GetStorageInfo(player, toStorage);
+        if (storageInfo is null)
+        {
+            return 0xFF;
+        }
+
+        if (toStorage == Storages.Inventory)
+        {
+            // Try to find equippable slot
+            if (item.Definition?.ItemSlot is { } itemSlot)
+            {
+                foreach (var slot in itemSlot.ItemSlots.OrderBy(s => s))
+                {
+                    if (player.Inventory?.GetItem((byte)slot) == null)
+                    {
+                        var movement = await this.CanMoveAsync(player, item, (byte)slot, 0, storageInfo, storageInfo).ConfigureAwait(false);
+                        if (movement == Movement.Normal)
+                        {
+                            return (byte)slot;
+                        }
+                    }
+                }
+            }
+        }
+
+        return storageInfo.Storage.CheckInvSpace(item) ?? 0xFF;
     }
 
     private record StorageInfo(IStorage Storage, byte Rows, byte StartIndex, byte EndIndex);

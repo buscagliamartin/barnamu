@@ -26,6 +26,10 @@ echo ============================================
 echo Mensaje: %MSG%
 echo.
 
+echo [INFO] Realizando backup de base de datos antes del push...
+call Backup.bat
+echo.
+
 cd /d C:\MuDev
 
 git add -A

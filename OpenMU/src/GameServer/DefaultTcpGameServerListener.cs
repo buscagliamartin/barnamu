@@ -1,4 +1,4 @@
-﻿// <copyright file="DefaultTcpGameServerListener.cs" company="MUnique">
+// <copyright file="DefaultTcpGameServerListener.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -165,6 +165,19 @@ public class DefaultTcpGameServerListener : IGameServerListener
             this.Log(l => l.LogDebug($"The server is full... disconnecting the game client {e.AcceptingSocket.RemoteEndPoint}"));
 
             e.Cancel = true;
+            return;
+        }
+
+        var remoteIp = (e.AcceptingSocket.RemoteEndPoint as IPEndPoint)?.Address;
+        if (remoteIp != null)
+        {
+            var players = await this._gameContext.GetPlayersAsync().ConfigureAwait(false);
+            var connectionsFromIp = players.OfType<RemotePlayer>().Count(p => (p.Connection?.EndPoint as IPEndPoint)?.Address.Equals(remoteIp) ?? false);
+            if (connectionsFromIp >= 2)
+            {
+                this.Log(l => l.LogInformation("Rejected connection from {0}: max connections per IP reached.", remoteIp));
+                e.Cancel = true;
+            }
         }
     }
 

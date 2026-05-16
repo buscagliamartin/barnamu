@@ -1,4 +1,4 @@
-﻿// <copyright file="SocketSystem.cs" company="MUnique">
+// <copyright file="SocketSystem.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -488,6 +488,7 @@ public class SocketSystem : InitializerBase
         itemDefinition.Width = 1;
         itemDefinition.Height = 1;
         itemDefinition.DropLevel = 150;
+        itemDefinition.DropsFromMonsters = true;
         itemDefinition.MaximumItemLevel = (byte)options.PossibleOptions.Max(o => o.Number);
         itemDefinition.PossibleItemOptions.Add(options);
         itemDefinition.SetGuid(itemDefinition.Group, itemDefinition.Number);

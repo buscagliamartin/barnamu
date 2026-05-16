@@ -3,7 +3,6 @@ bin/
 obj/
 
 *.log
-*.bak
 *.pdb
 *.tmp
 Screen(*).jpg

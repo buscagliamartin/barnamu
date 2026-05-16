@@ -1,4 +1,4 @@
-﻿// <copyright file="WarpGateAction.cs" company="MUnique">
+// <copyright file="WarpGateAction.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -50,9 +50,15 @@ public class WarpGateAction
         {
             levelReq = enterGate.TargetGate.Map.Number switch
             {
-                38 => 200, // Kanturu Relics - VIP
-                56 => 300, // Swamp of Calmness - VIP
-                57 => 250, // Raklion (La Cleon) - VIP
+                38 => 200, // Kanturu Relics
+                57 => 250, // Raklion
+                56 => 300, // Swamp of Calmness
+                80 => 200, // Karutan 1
+                81 => 200, // Karutan 2
+                37 => 300, // Vulcanus
+                34 => 300, // Crywolf
+                41 => 300, // Barracks
+                42 => 300, // Balgass Refuge
                 _ => levelReq,
             };
         }

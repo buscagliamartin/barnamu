@@ -10,6 +10,9 @@ set FILENAME=%BACKUP_DIR%\barnamu_%TIMESTAMP%.sql
 
 "C:\Program Files\PostgreSQL\16\bin\pg_dump.exe" -U postgres -d openmu -f "%FILENAME%"
 
+copy /y "%FILENAME%" "%BACKUP_DIR%\barnamu_latest.sql"
+
 echo Backup completado: %FILENAME%
+echo Actualizado: %BACKUP_DIR%\barnamu_latest.sql
 
 forfiles /p "%BACKUP_DIR%" /s /m *.sql /d -7 /c "cmd /c del @path" 2>nul
