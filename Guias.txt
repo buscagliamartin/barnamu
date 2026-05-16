@@ -1,0 +1,162 @@
+Guias:
+
+Sistema de Quests
+Las quests son fundamentales para desbloquear el potencial de tu personaje. 
+Se dividen por nivel y clase, y son obligatorias para avanzar en el juego.
+1. Primera Evolución (Lvl 150)
+NPC: Priest Sevina (Devias).
+Requisitos: Nivel 150 y 1.000.000 Zen por fase. No aplica a Magic Gladiator ni Dark Lord.
+Fase 1: Conseguir 1 Scroll of Emperor (Dropea en LostTower pisos 1 al 3, Atlans y Dungeon 3).
+Fase 2: Conseguir el ítem de clase: Broken Sword (Dark Knight), Soul of Prophet (Dark Wizard), Tear of Elf (Fairy Elf), Eye of Abyssal (Summoner). (Dropean en LostTower 7, Tarkan y Atlans 2/3).
+Recompensa: Evolución de clase (ej: Dark Wizard $\rightarrow$ Soul Master) y +10 puntos extra de stats.
+
+2. Quest de Héroe / Marlon (Lvl 220)
+NPC: Marlon (Aparece aleatoriamente en Lorencia, Devias, Noria o Atlans).
+Requisitos: Nivel 220, tener la Primera Evolución completada y 2.000.000 Zen. No aplica a Magic Gladiator ni Dark Lord.
+
+Fase 1 (Todas las clases permitidas): Conseguir 1 Ring of Honor (Dropea en Tarkan, Icarus o Kanturu).
+Fase 2 (Solo Blade Knight): Conseguir 1 Dark Stone (Dropea en Tarkan o Icarus).
+Recompensa: Otorga 6 puntos de stats por nivel subido a partir de ese momento (en lugar de 5). Para el Blade Knight habilita el uso del Combo, y para el Soul Master habilita el uso del skill Nova.3. 
+
+Tercera Evolución: Objetos de Poder (Lvl 380/400)
+NPC: Priest Devin (Crywolf o Lorencia, según la configuración del servidor).
+
+Requisitos: Nivel 380 mínimo (400 recomendado), Quest de Marlon completada y 5.000.000 Zen.
+Objetivo: Conseguir 3 Flame of Death Beam Knight (Dropean del Death Beam Knight en Tarkan), 3 Horn of Hell Maine (Dropean del Hell Maine en Aida) y 3 Feather of Phoenix of Darkness (Dropean del Phoenix of Darkness en Icarus).
+Recompensa: +20 puntos extra de stats y habilitación para las misiones de asesinato.
+
+4. Tercera Evolución: Master Quest (Lvl 400)
+
+NPC: Priest Devin (Crywolf o Lorencia).
+Requisitos: Nivel 400 exacto, haber completado la fase anterior y 10.000.000 Zen (5.000.000 por fase). El ingreso a las zonas se realiza hablando con el NPC Werewolf Quarrel (Crywolf).
+Fase 1: Matar 20 Balram (Hero), 20 Death Spirit (Hero) y 20 Soram (Hero) dentro del mapa Barracks of Balgass.
+Fase 2: Ingresar a la zona de Refuge (al final de Barracks) y matar a 1 Dark Elf (Hero).
+Recompensa: Tercera evolución definitiva (ej: Soul Master $\rightarrow$ Grand Master), habilitación para equipar Alas Nivel 3 y acceso directo al Master Skill Tree (tecla 'A').
+
+··············································································································································································
+
+Guía de Creación de Alas Nivel 3
+
+La creación de las Alas Nivel 3 se realiza en la Máquina del Chaos (Chaos Goblin) ubicada en Noria. Es un proceso de dos fases con un porcentaje de éxito variable. Si la combinación falla, los materiales se perderán parcial o totalmente.
+Fase 1: Creación de la Pluma Cóndor (Feather of Condor)
+
+La Feather of Condor es el material base. Para crearla, debés combinar:
+
+    1x Alas Nivel 2 con opciones mínimas de +9 y +4 Adicional (mientras mayor nivel, más % de éxito).
+
+    1x Ítem Ancient (Acc) con opciones mínimas de +7 y +4 Adicional.
+
+    1x Jewel of Chaos.
+
+    1x Jewel of Creation.
+
+    1x Pack de 10 Jewel of Soul (Soul en paquete).
+
+    Zen requerido según el porcentaje de éxito.
+
+    Tasa máxima de éxito: 60%.
+
+Fase 2: Creación de las Alas Nivel 3
+
+Con la Feather of Condor en el inventario, procedemos a la combinación final:
+
+    1x Feather of Condor.
+
+    1x Flame of Condor: Este ítem no se crea, es un drop directo y muy raro de los monstruos ubicados en Barracks of Balgass o Refuge.
+
+    1x Ítem Excellent (Exc) con opciones mínimas de +9 y +4 Adicional.
+
+    1x Jewel of Chaos.
+
+    1x Jewel of Creation.
+
+    1x Pack de 10 Jewel of Bless.
+
+    1x Pack de 10 Jewel of Soul.
+
+    Zen requerido.
+
+    Tasa máxima de éxito: 40%.
+
+    Resultado: Un par de Alas Nivel 3 aleatorias (puede salir para cualquier clase).
+	
+··············································································································································································
+!!!!!!!!!!!!! ESTA SOLO AGREGAR LUEGO DE ARREGLAR EL NPC, O SI DECIDIMOS POR PONERLAS EN LOS DROPS DE MOBS, ACTUALIZAR GUIA. !!!!!!!!!!!!!
+
+Guía del Sistema de Sockets (Seed & Sphere) 
+
+El Sistema de Sockets permite personalizar ítems de Nivel 380+ o 400 (dependiendo la configuración del servidor) que contengan "ranuras" (Sockets) vacías. El proceso se realiza en Elbeland, interactuando con dos NPCs: Seed Master y Seed Researcher.
+Paso 1: Extracción de Seeds (Semillas)
+
+Las Seeds son la esencia elemental que contiene el poder mágico.
+
+    NPC: Seed Master.
+
+    Ingredientes necesarios: * 1x Ítem Excellent de nivel 380 o superior (mínimo +4).
+
+        1x Jewel of Harmony.
+
+        1x Jewel of Chaos.
+
+        1x Jewel of Creation.
+
+        Zen.
+
+    Resultado: Al realizar la extracción, el ítem Excellent se destruye y obtendrás una Seed aleatoria.
+
+    Tipos de Seeds y sus propiedades generales:
+
+        🔥 Fuego (Fire): Enfocadas en el Daño y Velocidad de Ataque (Ej: Aumento de daño por nivel, Maximum Attack Power).
+
+        💧 Agua (Water): Enfocadas en la Defensa y Bloqueo (Ej: Shield Defense, Damage Reduction).
+
+        ❄️ Hielo (Ice): Enfocadas en la supervivencia tras recibir daño y durabilidad (Ej: Monster kill HP recovery, Item durability increase).
+
+        🌪️ Viento (Wind): Enfocadas en la recuperación pasiva (Ej: Maximum HP increase, Automatic HP recovery).
+
+        ⚡ Rayo (Lightning): Enfocadas en el Daño Crítico y Excelente (Ej: Critical damage increase, Excellent damage rate).
+
+        🌍 Tierra (Earth): Enfocadas en la salud básica (Ej: Vitality increase).
+
+Paso 2: Obtención de Esferas (Spheres)
+
+Las Spheres son el "contenedor" físico de la Seed. No se craftean, se dropean.
+
+    Dónde caen: Principalmente en monstruos de nivel alto en mapas como Raklion, Vulcanus y Kanturu Relics.
+
+    Niveles de Spheres: Cuanto mayor sea el nivel de la Sphere, más potentes serán las estadísticas finales cuando se ensamble.
+
+        Sphere (Mono) - Nivel 1
+
+        Sphere (Di) - Nivel 2
+
+        Sphere (Tri) - Nivel 3
+
+        Sphere (Tetra) - Nivel 4
+
+        Sphere (Penta) - Nivel 5
+
+Paso 3: Fabricación de la Seed Sphere
+
+Ahora debés fusionar la Seed (elemento) con la Sphere (contenedor).
+
+    NPC: Seed Master.
+
+    Ingredientes: 1x Seed + 1x Sphere (cualquier nivel) + 1x Jewel of Chaos + 1x Jewel of Creation.
+
+    Resultado: Una Seed Sphere lista para ser insertada. (Ej: Seed Sphere (Fire) Nivel 3). Si la combinación falla, los materiales se destruyen.
+
+Paso 4: Inserción en el Ítem Socket
+
+El último paso es colocar la Seed Sphere terminada en la ranura vacía del arma o armadura.
+
+    NPC: Seed Researcher.
+
+    Ingredientes: 1x Ítem con Socket vacío + 1x Seed Sphere + 1x Jewel of Chaos + 1x Jewel of Creation.
+
+    Condiciones: No podés poner dos Seed Spheres del mismo elemento en un solo ítem (Ejemplo: no podés poner dos de Fuego en la misma espada, pero sí una de Fuego y una de Rayo).
+
+    Bonus de Sistema: Si armás tu set y armas respetando ciertos patrones elementales (Ej: Fuego + Rayo + Hielo en un arma), se puede activar una Bonus Option oculta que otorga estadísticas pasivas extra (como +11 de Daño en armas o +24 de Defensa en sets).
+	
+··············································································································································································
+

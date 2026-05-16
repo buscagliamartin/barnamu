@@ -1,4 +1,4 @@
-﻿// <copyright file="Wings.cs" company="MUnique">
+// <copyright file="Wings.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -142,6 +142,7 @@ public class Wings : WingsInitializerBase
         feather.Number = 52;
         feather.Group = 13;
         feather.DropLevel = 120;
+        feather.DropsFromMonsters = true;
         feather.Width = 1;
         feather.Height = 2;
         feather.Durability = 1;

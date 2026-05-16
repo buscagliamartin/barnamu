@@ -1,4 +1,4 @@
-﻿// <copyright file="ItemMoveHandlerPlugIn.cs" company="MUnique">
+// <copyright file="ItemMoveHandlerPlugIn.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -32,18 +32,39 @@ internal class ItemMoveHandlerPlugIn : IPacketHandlerPlugIn
     /// <inheritdoc/>
     public async ValueTask HandlePacketAsync(Player player, Memory<byte> packet)
     {
-        ItemMoveRequest message = packet;
+        var header = packet.Span[0];
+        var length = packet.Length;
 
-        // to make it compatible with multiple versions, we just handle the data which is coming after that manually
-        var itemSize = 12;
-        if (player is RemotePlayer remotePlayer)
+        ItemStorageKind fromStorage;
+        byte fromSlot;
+        ItemStorageKind toStorage;
+        byte toSlot;
+
+        if (length == 7)
         {
-            itemSize = remotePlayer.ItemSerializer.NeededSpace;
+            // Extended move (e.g. Right click)
+            fromStorage = (ItemStorageKind)packet.Span[3];
+            fromSlot = packet.Span[4];
+            toStorage = (ItemStorageKind)packet.Span[5];
+            toSlot = packet.Span[6];
+        }
+        else
+        {
+            // Standard move with item data
+            ItemMoveRequest message = packet;
+            fromStorage = message.FromStorage;
+            fromSlot = message.FromSlot;
+            
+            var itemSize = 12;
+            if (player is RemotePlayer remotePlayer)
+            {
+                itemSize = remotePlayer.ItemSerializer.NeededSpace;
+            }
+
+            toStorage = (ItemStorageKind)packet.Span[5 + itemSize];
+            toSlot = packet.Span[6 + itemSize];
         }
 
-        var toStorage = (ItemStorageKind)packet.Span[5 + itemSize];
-        byte toSlot = packet.Span[6 + itemSize];
-
-        await this._moveAction.MoveItemAsync(player, message.FromSlot, message.FromStorage.Convert(), toSlot, toStorage.Convert()).ConfigureAwait(false);
+        await this._moveAction.MoveItemAsync(player, fromSlot, fromStorage.Convert(), toSlot, toStorage.Convert()).ConfigureAwait(false);
     }
 }

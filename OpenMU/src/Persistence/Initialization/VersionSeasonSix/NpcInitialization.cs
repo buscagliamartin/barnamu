@@ -1,4 +1,4 @@
-﻿// <copyright file="NpcInitialization.cs" company="MUnique">
+// <copyright file="NpcInitialization.cs" company="MUnique">
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // </copyright>
 
@@ -750,7 +750,7 @@ internal partial class NpcInitialization : Version095d.NpcInitialization
             var def = this.Context.CreateNew<MonsterDefinition>();
             def.Number = 543;
             def.Designation = "Gens Duprian";
-            def.NpcWindow = NpcWindow.NpcDialog;
+            def.NpcWindow = NpcWindow.Undefined;
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             this.GameConfiguration.Monsters.Add(def);
             def.SetGuid(def.Number);
@@ -760,7 +760,7 @@ internal partial class NpcInitialization : Version095d.NpcInitialization
             var def = this.Context.CreateNew<MonsterDefinition>();
             def.Number = 544;
             def.Designation = "Gens Vanert";
-            def.NpcWindow = NpcWindow.NpcDialog;
+            def.NpcWindow = NpcWindow.Undefined;
             def.ObjectKind = NpcObjectKind.PassiveNpc;
             this.GameConfiguration.Monsters.Add(def);
             def.SetGuid(def.Number);
