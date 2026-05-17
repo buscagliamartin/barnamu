@@ -1,54 +1,127 @@
 @inject IOptions<BarnaMuOptions> BarnaMuOpts
 @{
     var opts = BarnaMuOpts.Value;
-    var hasDiscord = !string.IsNullOrWhiteSpace(opts.DiscordInviteUrl) && !opts.DiscordInviteUrl.Contains("REEMPLAZAR");
 }
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@(ViewData["Title"] ?? opts.ServerName) — @opts.ServerName</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@opts.ServerName — MU Online S6</title>
+    
+    <link rel="stylesheet" href="~/templates/webzen_new/css/bootstrap.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/templates/webzen_new/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/barnamed.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/templates/default_assets/css/font-awesome.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Exo+2:wght@300;400;500;600&display=swap" />
+
+    <style>
+        /* HEADER Y BOTONERA ORIGINAL */
+        .barna-navbar { background: #000; border-bottom: 2px solid #111; padding: 12px 0; }
+        .barna-nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1250px; margin: 0 auto; padding: 0 15px; }
+        .barna-logo-text { font-family: 'Cinzel', serif; color: #d4af37; font-size: 1.4rem; margin: 0; letter-spacing: 2px; text-transform: uppercase; }
+        .barna-nav-links { display: flex; gap: 15px; list-style: none; margin: 0; padding: 0; align-items: center; }
+        .barna-nav-links a { color: #d4af37; text-decoration: none; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-btn-highlight { background: #b02a2a; color: #fff !important; padding: 6px 12px; border-radius: 2px; }
+
+        /* SIDEBAR ESTILO MEJORADO */
+        .barna-sidebar { display: flex; flex-direction: column; gap: 15px; }
+        .barna-widget { background: #161618; border: 1px solid #2d2d30; border-radius: 6px; overflow: hidden; }
+        .barna-widget__header { background: #212124; padding: 10px 15px; border-bottom: 1px solid #333; }
+        .barna-widget__title { font-family: 'Cinzel', serif; color: #d4af37; font-size: 0.8rem; margin: 0; text-transform: uppercase; letter-spacing: 1.5px; }
+
+        /* ACCESOS RÁPIDOS */
+        .barna-quicklink { display: flex; align-items: center; padding: 10px 15px; color: #d4af37 !important; text-decoration: none !important; font-size: 0.85rem; border-bottom: 1px solid #222; }
+        .barna-quicklink:last-child { border-bottom: none; }
+        .barna-quicklink i { width: 22px; margin-right: 10px; color: #777; font-size: 0.9rem; }
+        .barna-quicklink:hover { background: #212124; }
+
+        /* SERVIDOR (Limpio) */
+        .barna-info-list { list-style: none; padding: 10px 15px; margin: 0; }
+        .barna-info-list li { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #222; font-size: 0.8rem; }
+        .barna-info-list li:last-child { border-bottom: none; }
+        .barna-key { color: #666; }
+        .barna-val { color: #eee; font-weight: 500; }
+        .barna-val--gold { color: #d4af37; font-weight: bold; }
+
+        /* RELOJ CEST VISIBLE */
+        .barna-clock-row { display: flex; justify-content: space-between; padding: 10px 15px; align-items: center; }
+        .barna-clock-label { color: #d4af37; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; }
+        .barna-clock-time { font-family: 'Exo 2', sans-serif; color: #fff; font-size: 1rem; }
+    </style>
 </head>
-<body>
-    <header class="site-header">
-        <div class="container header-row">
-            <a class="brand" asp-page="/Index">
-                <span class="brand-mark">⚔</span>
-                <span class="brand-name">@opts.ServerName</span>
-            </a>
-            <nav class="primary-nav">
-                <a asp-page="/Index">Inicio</a>
-                <a asp-page="/Register">Registrarse</a>
-                <a asp-page="/Vip">VIP</a>
-                <a asp-page="/Guide">Guía</a>
-                <a asp-page="/Rankings">Rankings</a>
-                <a asp-page="/Status">Estado</a>
-                <a asp-page="/Download">Descarga</a>
-                <a asp-page="/ReportBug">Reportar bug</a>
-                @if (hasDiscord)
-                {
-                    <a href="@opts.DiscordInviteUrl" target="_blank" rel="noopener" class="discord-link">Discord</a>
-                }
-            </nav>
-        </div>
-    </header>
+<body class="wz barna-skin">
 
-    <main class="site-main">
-        <div class="container">
-            @RenderBody()
+    <nav class="barna-navbar">
+        <div class="barna-nav-container">
+            <h1 class="barna-logo-text">BARNAMU <small style="font-size: 0.6rem; color: #555;">MU ONLINE S6</small></h1>
+            <ul class="barna-nav-links">
+                <li><a asp-page="/Index">Inicio</a></li>
+                <li><a asp-page="/Rankings">Rankings</a></li>
+                <li><a asp-page="/Vip">Vip</a></li>
+                <li><a asp-page="/Guide">Guía</a></li>
+                <li><a asp-page="/Status">Estado</a></li>
+                <li><a asp-page="/Download">Descarga</a></li>
+                <li><a asp-page="/Register" class="nav-btn-highlight">Registrarse</a></li>
+            </ul>
         </div>
-    </main>
+    </nav>
 
-    <footer class="site-footer">
-        <div class="container footer-row">
-            <span>© @DateTime.UtcNow.Year @opts.ServerName · MU Online private server</span>
-            <span class="muted">Server custom basado en <a href="https://github.com/MUnique/OpenMU" target="_blank" rel="noopener">OpenMU</a></span>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-lg-9">
+                @RenderBody() 
+            </div>
+
+            <aside class="col-lg-3 barna-sidebar">
+                <div class="barna-widget">
+                    <div class="barna-widget__header"><h4 class="barna-widget__title">Accesos Rápidos</h4></div>
+                    <div class="barna-widget__body">
+                        <a asp-page="/Register" class="barna-quicklink"><i class="fa fa-user-plus"></i> Crear Cuenta</a>
+                        <a asp-page="/Download" class="barna-quicklink"><i class="fa fa-download"></i> Descargar Cliente</a>
+                        <a asp-page="/Vip" class="barna-quicklink"><i class="fa fa-star"></i> Obtener VIP</a>
+                        <a asp-page="/Rankings" class="barna-quicklink"><i class="fa fa-trophy"></i> Rankings</a>
+                        <a asp-page="/ReportBug" class="barna-quicklink"><i class="fa fa-bug"></i> Reportar Bug</a>
+                    </div>
+                </div>
+
+                <div class="barna-widget">
+                    <div class="barna-widget__header"><h4 class="barna-widget__title">Servidor</h4></div>
+                    <ul class="barna-info-list">
+                        <li><span class="barna-key">Versión</span><span class="barna-val">Season 6 Episode 3</span></li>
+                        <li><span class="barna-key">Exp Normal</span><span class="barna-val">x30</span></li>
+                        <li><span class="barna-key">Exp VIP</span><span class="barna-val barna-val--gold">x35</span></li>
+                        <li><span class="barna-key">Drop Normal</span><span class="barna-val">x5</span></li>
+                        <li><span class="barna-key">Drop VIP</span><span class="barna-val barna-val--gold">x7</span></li>
+                    </ul>
+                </div>
+
+                <div class="barna-widget">
+                    <div class="barna-widget__header"><h4 class="barna-widget__title">Horario</h4></div>
+                    <div class="barna-clock-row">
+                        <span class="barna-clock-label">Servidor (CEST)</span>
+                        <span class="barna-clock-time" id="serverClock">00:00:00</span>
+                    </div>
+                    <div class="barna-clock-row">
+                        <span class="barna-clock-label">Tu hora local</span>
+                        <span class="barna-clock-time" id="localClock">00:00:00</span>
+                    </div>
+                </div>
+            </aside>
         </div>
-    </footer>
+    </div>
+
+    <script>
+        function updateClocks() {
+            const pad = (n) => n < 10 ? '0' + n : n;
+            const now = new Date();
+            document.getElementById('localClock').textContent = pad(now.getHours()) + ":" + pad(now.getMinutes()) + ":" + pad(now.getSeconds());
+            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+            const cest = new Date(utc + (3600000 * 2)); // CEST es UTC+2
+            document.getElementById('serverClock').textContent = pad(cest.getHours()) + ":" + pad(cest.getMinutes()) + ":" + pad(cest.getSeconds());
+        }
+        setInterval(updateClocks, 1000);
+        updateClocks();
+    </script>
 </body>
 </html>

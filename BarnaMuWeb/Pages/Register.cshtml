@@ -4,52 +4,136 @@
     ViewData["Title"] = "Registrarse";
 }
 
-<div class="card" style="max-width: 520px; margin: 0 auto;">
-    <h1>Crear cuenta</h1>
-    <p class="muted">Una cuenta sirve para todos tus personajes. Vas a usar el security code numérico cuando quieras borrar un personaje.</p>
-
-    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
-    {
-        <div class="alert alert-success">@Model.SuccessMessage</div>
+<style>
+    .register-container { max-width: 520px; margin: 40px auto; padding: 20px; }
+    
+    /* Card principal con estilo de piedra/metal */
+    .register-card {
+        background: #111;
+        border: 1px solid #333;
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
-    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
-    {
-        <div class="alert alert-danger">@Model.ErrorMessage</div>
+
+    .register-card h1 { 
+        color: #d4af37; 
+        margin-top: 0; 
+        font-size: 1.8rem; 
+        text-transform: uppercase;
+        border-bottom: 1px solid #222;
+        padding-bottom: 10px;
     }
 
-    <form method="post">
-        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+    .register-card p.muted { color: #888; font-size: 0.9rem; line-height: 1.4; margin-bottom: 25px; }
 
-        <div class="field">
-            <label asp-for="Input.LoginName"></label>
-            <input asp-for="Input.LoginName" autocomplete="username" maxlength="10" autofocus />
-            <span asp-validation-for="Input.LoginName" class="field-validation-error"></span>
-        </div>
+    /* Estilo de los campos de entrada */
+    .field { margin-bottom: 20px; }
+    .field label { 
+        display: block; 
+        color: #ccc; 
+        margin-bottom: 8px; 
+        font-weight: bold; 
+        font-size: 0.85rem; 
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
 
-        <div class="field">
-            <label asp-for="Input.Password"></label>
-            <input asp-for="Input.Password" autocomplete="new-password" maxlength="20" />
-            <span asp-validation-for="Input.Password" class="field-validation-error"></span>
-        </div>
+    .field input {
+        width: 100%;
+        padding: 12px 15px;
+        background: #0a0a0a;
+        border: 1px solid #444;
+        border-radius: 4px;
+        color: #fff;
+        font-size: 1rem;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
 
-        <div class="field">
-            <label asp-for="Input.ConfirmPassword"></label>
-            <input asp-for="Input.ConfirmPassword" autocomplete="new-password" maxlength="20" />
-            <span asp-validation-for="Input.ConfirmPassword" class="field-validation-error"></span>
-        </div>
+    .field input:focus {
+        outline: none;
+        border-color: #d4af37;
+        box-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
+    }
 
-        <div class="field">
-            <label asp-for="Input.SecurityCode"></label>
-            <input asp-for="Input.SecurityCode" inputmode="numeric" pattern="[0-9]*" maxlength="10" />
-            <span asp-validation-for="Input.SecurityCode" class="field-validation-error"></span>
-        </div>
+    /* Botón de creación estilo Mu */
+    .btn-register {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(180deg, #d4af37 0%, #a68a2d 100%);
+        border: none;
+        border-radius: 4px;
+        color: #000;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: transform 0.2s, filter 0.2s;
+        margin-top: 10px;
+    }
 
-        <div class="field">
-            <label asp-for="Input.Email"></label>
-            <input asp-for="Input.Email" type="email" autocomplete="email" />
-            <span asp-validation-for="Input.Email" class="field-validation-error"></span>
-        </div>
+    .btn-register:hover {
+        filter: brightness(1.1);
+        transform: translateY(-2px);
+    }
 
-        <button class="btn" type="submit">Crear cuenta</button>
-    </form>
+    /* Validaciones y Alertas */
+    .field-validation-error { color: #ff4444; font-size: 0.8rem; margin-top: 5px; display: block; }
+    .alert { padding: 15px; border-radius: 4px; margin-bottom: 20px; font-weight: bold; }
+    .alert-success { background: rgba(40, 167, 69, 0.2); color: #28a745; border: 1px solid #28a745; }
+    .alert-danger { background: rgba(220, 53, 69, 0.2); color: #dc3545; border: 1px solid #dc3545; }
+    
+    .validation-summary ul { list-style: none; padding: 0; color: #ff4444; font-size: 0.85rem; }
+</style>
+
+<div class="register-container">
+    <div class="register-card">
+        <h1>Crear cuenta</h1>
+        <p class="muted">Una cuenta sirve para todos tus personajes. Vas a usar el <strong>security code</strong> numérico cuando quieras borrar un personaje.</p>
+
+        @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+        {
+            <div class="alert alert-success">@Model.SuccessMessage</div>
+        }
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger">@Model.ErrorMessage</div>
+        }
+
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+            <div class="field">
+                <label>Nombre de cuenta</label>
+                <input asp-for="Input.LoginName" placeholder="Máximo 10 caracteres" autocomplete="username" maxlength="10" autofocus />
+                <span asp-validation-for="Input.LoginName" class="field-validation-error"></span>
+            </div>
+
+            <div class="field">
+                <label>Contraseña</label>
+                <input asp-for="Input.Password" type="password" placeholder="Tu clave secreta" autocomplete="new-password" maxlength="20" />
+                <span asp-validation-for="Input.Password" class="field-validation-error"></span>
+            </div>
+
+            <div class="field">
+                <label>Confirmar contraseña</label>
+                <input asp-for="Input.ConfirmPassword" type="password" placeholder="Repetí tu clave" autocomplete="new-password" maxlength="20" />
+                <span asp-validation-for="Input.ConfirmPassword" class="field-validation-error"></span>
+            </div>
+
+            <div class="field">
+                <label>Security code (numérico)</label>
+                <input asp-for="Input.SecurityCode" placeholder="Ej: 123456" inputmode="numeric" pattern="[0-9]*" maxlength="10" />
+                <span asp-validation-for="Input.SecurityCode" class="field-validation-error"></span>
+            </div>
+
+            <div class="field">
+                <label>Email (opcional)</label>
+                <input asp-for="Input.Email" type="email" placeholder="Para recuperar tu cuenta" autocomplete="email" />
+                <span asp-validation-for="Input.Email" class="field-validation-error"></span>
+            </div>
+
+            <button class="btn-register" type="submit">Crear cuenta ahora</button>
+        </form>
+    </div>
 </div>

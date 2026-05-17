@@ -1,138 +1,106 @@
 @page
-@model VipModel
-@inject IOptions<BarnaMuOptions> BarnaMuOpts
 @{
-    ViewData["Title"] = "VIP";
-    var opts = BarnaMuOpts.Value;
-    var rates = opts.Rates;
-    var vip = opts.Vip;
-    var hasPayPal = !string.IsNullOrWhiteSpace(vip.PayPalUrl) && !vip.PayPalUrl.Contains("REEMPLAZAR");
-    var hasWhatsApp = !string.IsNullOrWhiteSpace(vip.WhatsAppUrl) && !vip.WhatsAppUrl.Contains("REEMPLAZAR");
+    ViewData["Title"] = "Membresía VIP";
 }
 
+<style>
+    .vip-container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+    .vip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
+    
+    .vip-card { background: #111; border: 1px solid #333; border-radius: 8px; padding: 25px; }
+    .vip-card h2 { color: #d4af37; margin-top: 0; border-bottom: 1px solid #222; padding-bottom: 10px; font-size: 1.4rem; }
+    
+    .price-tag { font-size: 2rem; color: #fff; font-weight: bold; margin: 15px 0; }
+    .price-tag span { font-size: 1rem; color: #888; }
+
+    .benefit-list { list-style: none; padding: 0; margin: 0; }
+    .benefit-list li { padding: 8px 0; border-bottom: 1px solid #1a1a1a; color: #ccc; display: flex; align-items: center; }
+    .benefit-list li::before { content: "✔"; color: #d4af37; margin-right: 10px; font-weight: bold; }
+
+    .rate-table { width: 100%; border-collapse: collapse; background: #0f0f0f; border-radius: 8px; overflow: hidden; margin-top: 10px; }
+    .rate-table th { background: #161616; padding: 12px; text-align: left; color: #d4af37; border-bottom: 2px solid #222; }
+    .rate-table td { padding: 12px; border-bottom: 1px solid #1a1a1a; color: #fff; }
+    
+    .badge-vip { background: #d4af37; color: #000; padding: 2px 6px; border-radius: 3px; font-weight: bold; font-size: 0.8rem; }
+    .command { background: #222; padding: 2px 5px; border-radius: 3px; color: #ff8080; font-family: monospace; }
+</style>
+
 <div class="hero hero-small">
-    <h1>VIP en @opts.ServerName</h1>
-    <p class="hero-subtitle">Más rates, almacén extendido, acceso anticipado a mapas y un timer claro: pagás @vip.DurationDays días y te quedan exactamente eso.</p>
+    <h1>Membresía VIP</h1>
+    <p class="hero-subtitle">Potenciá tu progreso y obtené beneficios exclusivos en el servidor.</p>
 </div>
 
-<div class="grid-2">
-    <section class="card">
-        <h2>¿Cuánto cuesta?</h2>
-        <p class="price-tag">@(string.IsNullOrWhiteSpace(vip.PriceText) ? "USD 5 / 30 días" : vip.PriceText)<span class="muted" style="font-size: 14px; margin-left: 8px;">por @vip.DurationDays días</span></p>
+<div class="vip-container">
+    <div class="vip-grid">
+        <div class="vip-card">
+            <h2>¿Cuánto cuesta?</h2>
+            <div class="price-tag">USD 10 <span>por 30 días</span></div>
+            
+			<div style="margin-top: 20px; text-align: center;">
+				<p><strong>Cómo comprar:</strong><br>
+					Pagás por <a href="https://paypal.me/buscagliamartin" target="_blank" style="color: #0070ba; text-decoration: underline; font-weight: bold;">PayPal</a> 
+				y mandás el comprobante por WhatsApp con tu nombre de cuenta.
+				Un GM te activa el rango en minutos con el comando <span class="command">/setvip</span>.
+				</p>
+			</div>
+            <div style="margin-top: 20px;">
+                <a href="https://wa.me/+34697207339" class="tab-link active" style="display: inline-block; text-align: center;">Contactar Soporte</a>
+            </div>
+        </div>
 
-        <h3 style="margin-top: 20px;">Cómo lo comprás</h3>
-        <ol>
-            <li>
-                @if (hasPayPal)
-                {
-                    <span>Pagás por </span><a href="@vip.PayPalUrl" target="_blank" rel="noopener"><strong>PayPal</strong></a><span>.</span>
-                }
-                else
-                {
-                    <span class="muted">PayPal: pendiente de configurar (editar <code>appsettings.json</code> → <code>Vip.PayPalUrl</code>).</span>
-                }
-            </li>
-            <li>
-                @if (hasWhatsApp)
-                {
-                    <span>Nos mandás el comprobante por </span><a href="@vip.WhatsAppUrl" target="_blank" rel="noopener"><strong>WhatsApp @vip.WhatsAppDisplay</strong></a><span> indicando tu nombre de cuenta.</span>
-                }
-                else
-                {
-                    <span class="muted">WhatsApp: pendiente de configurar.</span>
-                }
-            </li>
-            <li>Un GM te activa el VIP con <code>/setvip TuCuenta @vip.DurationDays</code>. Lo ves en el juego con <code>/vipinfo</code>.</li>
-        </ol>
+        <div class="vip-card">
+            <h2>Beneficios Únicos</h2>
+            <ul class="benefit-list">
+                <li>Más rates en experiencia, master y drop.</li>
+                <li>Almacén (Vault) extendido automáticamente.</li>
+                <li><strong>+10%</strong> Éxito en Chaos Machine.</li>
+                <li>Comando <span class="command">/offlevel</span> exclusivo.</li>
+                <li>Acceso anticipado a mapas de alto nivel.</li>
+                <li>Tag <span class="badge-vip">VIP</span> exclusivo en el chat.</li>
+            </ul>
+        </div>
+    </div>
 
-        @if (!string.IsNullOrWhiteSpace(vip.Instructions))
-        {
-            <div class="alert" style="margin-top: 14px;">@vip.Instructions</div>
-        }
-
-        @if (hasPayPal || hasWhatsApp)
-        {
-            <p style="margin-top: 16px;">
-                @if (hasPayPal)  { <a class="btn" href="@vip.PayPalUrl" target="_blank" rel="noopener">Pagar con PayPal</a> }
-                @if (hasWhatsApp) { <a class="btn btn-secondary" href="@vip.WhatsAppUrl" target="_blank" rel="noopener" style="margin-left: 8px;">WhatsApp</a> }
-            </p>
-        }
-    </section>
-
-    <section class="card">
-        <h2>Qué incluye</h2>
-        <ul class="perk-list">
-            <li><strong>Más rates</strong> en experiencia, master, zen y drop (ver tabla abajo).</li>
-            <li><strong>Almacén extendido</strong> automáticamente al login.</li>
-            <li><strong>+10% Chaos Machine</strong> en todas las combinaciones (confirmado en código).</li>
-            <li><strong>Comando <code>/offlevel</code></strong> exclusivo VIP.</li>
-            <li><strong>Acceso anticipado</strong> a mapas:
-                <ul>
-                    <li>Kanturu Relics (280 → <strong>200</strong>)</li>
-                    <li>Raklion / La Cleon (300 → <strong>250</strong>)</li>
-                    <li>Karutan 1 y 2 (280 → <strong>200</strong>)</li>
-                    <li>Swamp of Calmness (350 → <strong>300</strong>)</li>
-                    <li>Vulcanus (350 → <strong>300</strong>)</li>
-                    <li>Crywolf (350 → <strong>300</strong>)</li>
-                    <li>Barracks (350 → <strong>300</strong>)</li>
-                    <li>Balgass Refuge (350 → <strong>300</strong>)</li>
-                </ul>
-            </li>
-            <li><strong>Tag [VIP]</strong> en el chat.</li>
-            <li><strong>Timer transparente:</strong> ves los días restantes con <code>/vipinfo</code>, y cuando vence vuelve a Normal solito sin sorpresas.</li>
-        </ul>
-    </section>
-</div>
-
-<section class="card">
-    <h2>Rates</h2>
-    <div class="table-wrap">
-        <table class="ranking">
+    <div class="vip-card">
+        <h2>Comparativa de Rates</h2>
+        <table class="rate-table">
             <thead>
-                <tr><th></th><th class="num">Normal</th><th class="num">VIP</th></tr>
+                <tr>
+                    <th>Concepto</th>
+                    <th style="text-align: center;">Usuario Normal</th>
+                    <th style="text-align: center; color: #d4af37;">Usuario VIP</th>
+                </tr>
             </thead>
             <tbody>
-                <tr><td>Experiencia</td><td class="num">@rates.ExpNormal x</td><td class="num gold-cell">@rates.ExpVip x</td></tr>
-                <tr><td>Master Exp</td><td class="num">@rates.MasterExpNormal x</td><td class="num gold-cell">@rates.MasterExpVip x</td></tr>
-                <tr><td>Zen</td><td class="num">@rates.ZenNormal x</td><td class="num gold-cell">@rates.ZenVip x</td></tr>
-                <tr><td>Drop</td><td class="num">@rates.DropNormal x</td><td class="num gold-cell">@rates.DropVip x</td></tr>
-                <tr><td>Drop excelente</td><td class="num">~@rates.ExcellentDropNormal x</td><td class="num gold-cell">~@rates.ExcellentDropVip x</td></tr>
+                <tr>
+                    <td>Experiencia Base</td>
+                    <td style="text-align: center;">30 x</td>
+                    <td style="text-align: center; font-weight: bold;">35 x</td>
+                </tr>
+                <tr>
+                    <td>Master Exp</td>
+                    <td style="text-align: center;">15 x</td>
+                    <td style="text-align: center; font-weight: bold;">20 x</td>
+                </tr>
+                <tr>
+                    <td>Zen Drop</td>
+                    <td style="text-align: center;">10 x</td>
+                    <td style="text-align: center; font-weight: bold;">13 x</td>
+                </tr>
+                <tr>
+                    <td>Drop General</td>
+                    <td style="text-align: center;">5 %</td>
+                    <td style="text-align: center; font-weight: bold;">7 %</td>
+                </tr>
+                <tr>
+                    <td>Drop Items Excelentes</td>
+                    <td style="text-align: center;">~3 x</td>
+                    <td style="text-align: center; font-weight: bold;">~4 x</td>
+                </tr>
             </tbody>
         </table>
+        <p class="muted-text" style="text-align: center;">
+            Consultá tu tiempo restante en tiempo real usando el comando <span class="command">/vipinfo</span> dentro del juego.
+        </p>
     </div>
-</section>
-
-<section class="card">
-    <h2>Niveles de entrada a mapas</h2>
-    @if (opts.Maps.Length == 0)
-    {
-        <p class="muted">No hay mapas configurados.</p>
-    }
-    else
-    {
-        <div class="table-wrap">
-            <table class="ranking">
-                <thead>
-                    <tr>
-                        <th>Mapa</th>
-                        <th class="num">Normal</th>
-                        <th class="num">VIP</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var map in opts.Maps)
-                    {
-                        <tr>
-                            <td>@map.Name</td>
-                            <td class="num">@(map.NormalLevel > 0 ? map.NormalLevel.ToString() : "—")</td>
-                            <td class="num @(map.VipLevel.HasValue ? "gold-cell" : "")">
-                                @(map.VipLevel.HasValue ? map.VipLevel.Value.ToString() : "—")
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-        <p class="muted" style="font-size: 12px; margin-top: 10px;">Los mapas con "—" en VIP requieren el mismo nivel que un jugador normal. Los marcados con — en Normal todavía no tienen entry-level configurado en la web.</p>
-    }
-</section>
+</div>

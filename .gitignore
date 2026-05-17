@@ -1,12 +1,36 @@
+# BarnaMu — root .gitignore
+# Note: C:\MuDev\OpenMU\ has its own (much fuller) .gitignore which handles
+# all VS/build cruft inside the OpenMU tree. Patterns here apply to the rest.
+
+# === Game client(s) — never push these to the public repo ===
 BarnaMu-Client/
+Client/
+*.exe.bak
+*.exe
+
+# === .NET build output ===
 bin/
 obj/
+publish/
+[Pp]ublish/
 
+# === IDE / editor / OS noise ===
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.cache
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# === Logs, temps, debug artifacts ===
 *.log
 *.pdb
 *.tmp
+*.bak
+
+# === Screenshots ===
 Screen(*).jpg
 Screen*.jpg
-# Windows thumbnails
-Thumbs.db
-Desktop.ini

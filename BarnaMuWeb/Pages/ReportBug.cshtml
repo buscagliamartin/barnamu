@@ -4,46 +4,138 @@
     ViewData["Title"] = "Reportar un bug";
 }
 
-<div class="card" style="max-width: 720px; margin: 0 auto;">
-    <h1>Reportar un bug</h1>
-    <p class="muted">Si encontraste algo raro en el servidor (drops, mapas, skills, lag, etc.), contanos lo más detallado posible. Lo leemos.</p>
-
-    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
-    {
-        <div class="alert alert-success">@Model.SuccessMessage</div>
+<style>
+    .report-container { max-width: 720px; margin: 40px auto; padding: 20px; }
+    
+    /* Card con estética de soporte técnico */
+    .report-card {
+        background: #111;
+        border: 1px solid #333;
+        border-radius: 8px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
-    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
-    {
-        <div class="alert alert-danger">@Model.ErrorMessage</div>
+
+    .report-card h1 { 
+        color: #d4af37; 
+        margin-top: 0; 
+        font-size: 1.8rem; 
+        text-transform: uppercase;
+        border-bottom: 1px solid #222;
+        padding-bottom: 10px;
+        letter-spacing: 1px;
     }
 
-    <form method="post">
-        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+    .report-card p.muted { 
+        color: #888; 
+        font-size: 0.95rem; 
+        line-height: 1.5; 
+        margin-bottom: 30px; 
+    }
 
-        <div class="field">
-            <label asp-for="Input.Reporter"></label>
-            <input asp-for="Input.Reporter" maxlength="50" />
-            <span asp-validation-for="Input.Reporter" class="field-validation-error"></span>
-        </div>
+    /* Estilo de los campos de formulario */
+    .field { margin-bottom: 25px; }
+    .field label { 
+        display: block; 
+        color: #ccc; 
+        margin-bottom: 8px; 
+        font-weight: bold; 
+        font-size: 0.85rem; 
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
 
-        <div class="field">
-            <label asp-for="Input.Email"></label>
-            <input asp-for="Input.Email" type="email" />
-            <span asp-validation-for="Input.Email" class="field-validation-error"></span>
-        </div>
+    .field input, .field textarea {
+        width: 100%;
+        padding: 12px 15px;
+        background: #0a0a0a;
+        border: 1px solid #444;
+        border-radius: 4px;
+        color: #fff;
+        font-size: 1rem;
+        font-family: inherit;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
 
-        <div class="field">
-            <label asp-for="Input.Title"></label>
-            <input asp-for="Input.Title" maxlength="120" />
-            <span asp-validation-for="Input.Title" class="field-validation-error"></span>
-        </div>
+    .field input:focus, .field textarea:focus {
+        outline: none;
+        border-color: #d4af37;
+        box-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
+    }
 
-        <div class="field">
-            <label asp-for="Input.Body"></label>
-            <textarea asp-for="Input.Body" rows="8" maxlength="4000"></textarea>
-            <span asp-validation-for="Input.Body" class="field-validation-error"></span>
-        </div>
+    /* Botón de envío */
+    .btn-report {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(180deg, #d4af37 0%, #a68a2d 100%);
+        border: none;
+        border-radius: 4px;
+        color: #000;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: transform 0.2s, filter 0.2s;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
 
-        <button class="btn" type="submit">Enviar reporte</button>
-    </form>
+    .btn-report:hover {
+        filter: brightness(1.1);
+        transform: translateY(-2px);
+    }
+
+    /* Feedback visual */
+    .field-validation-error { color: #ff4444; font-size: 0.8rem; margin-top: 5px; display: block; }
+    .alert { padding: 15px; border-radius: 4px; margin-bottom: 25px; font-weight: bold; }
+    .alert-success { background: rgba(40, 167, 69, 0.15); color: #28a745; border: 1px solid #28a745; }
+    .alert-danger { background: rgba(220, 53, 69, 0.15); color: #dc3545; border: 1px solid #dc3545; }
+</style>
+
+<div class="report-container">
+    <div class="report-card">
+        <h1>Reportar un bug</h1>
+        <p class="muted">
+            Si encontraste algo raro en el servidor (drops, mapas, skills, lag, etc.), contanos lo más detallado posible. 
+            <strong>Tu feedback nos ayuda a mejorar la experiencia de todos.</strong>
+        </p>
+
+        @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+        {
+            <div class="alert alert-success">@Model.SuccessMessage</div>
+        }
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger">@Model.ErrorMessage</div>
+        }
+
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="validation-summary" style="color: #ff4444; margin-bottom: 15px;"></div>
+
+            <div class="field">
+                <label>Tu nombre o Nick</label>
+                <input asp-for="Input.Reporter" maxlength="50" placeholder="¿Cómo te conocemos en el server?" />
+                <span asp-validation-for="Input.Reporter" class="field-validation-error"></span>
+            </div>
+
+            <div class="field">
+                <label>Email (opcional)</label>
+                <input asp-for="Input.Email" type="email" placeholder="Por si necesitamos contactarte" />
+                <span asp-validation-for="Input.Email" class="field-validation-error"></span>
+            </div>
+
+            <div class="field">
+                <label>Título del reporte</label>
+                <input asp-for="Input.Title" maxlength="120" placeholder="Un resumen corto del problema" />
+                <span asp-validation-for="Input.Title" class="field-validation-error"></span>
+            </div>
+
+            <div class="field">
+                <label>Descripción detallada</label>
+                <textarea asp-for="Input.Body" rows="6" maxlength="4000" placeholder="Pasos para reproducir el bug, qué esperabas que pase y qué pasó realmente..."></textarea>
+                <span asp-validation-for="Input.Body" class="field-validation-error"></span>
+            </div>
+
+            <button class="btn-report" type="submit">Enviar reporte al Staff</button>
+        </form>
+    </div>
 </div>

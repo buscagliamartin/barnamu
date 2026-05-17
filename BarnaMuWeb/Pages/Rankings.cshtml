@@ -4,122 +4,127 @@
     ViewData["Title"] = "Rankings";
 }
 
+<style>
+    /* Estilos rápidos para levantar el diseño sin tocar el CSS global */
+    .rankings-container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+    .tabs-nav { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+    .tab-link { 
+        padding: 10px 25px; border-radius: 4px; background: #1a1a1a; color: #888; 
+        text-decoration: none; transition: 0.3s; border: 1px solid #333; font-weight: bold;
+    }
+    .tab-link:hover { background: #252525; color: #fff; }
+    .tab-link.active { background: #d4af37; color: #000; border-color: #d4af37; }
+    
+    .ranking-table { width: 100%; border-collapse: collapse; background: #0f0f0f; border-radius: 8px; overflow: hidden; }
+    .ranking-table thead { background: #161616; }
+    .ranking-table th { padding: 15px; text-align: left; color: #d4af37; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; border-bottom: 2px solid #222; }
+    .ranking-table td { padding: 12px 15px; border-bottom: 1px solid #1a1a1a; color: #ccc; }
+    .ranking-table tr:hover { background: #151515; }
+    
+    .num-col { width: 60px; font-weight: bold; color: #666; }
+    .gold-cell { color: #d4af37; font-weight: bold; }
+    .top-1 { background: rgba(212, 175, 55, 0.05); }
+    .top-1 .num-col { color: #d4af37; }
+    
+    .char-name { color: #fff; font-weight: 600; }
+    .muted-text { color: #555; font-size: 0.9rem; margin-top: 15px; display: block; }
+</style>
+
 <div class="hero hero-small">
     <h1>Rankings</h1>
     <p class="hero-subtitle">Top 50 — actualizado en tiempo real con la DB del server.</p>
 </div>
 
-<div class="card">
-    <div class="tabs">
-        <a asp-page="/Rankings" asp-route-mode="resets" class="@(Model.Mode == "resets" ? "active" : "")">Resets</a>
-        <a asp-page="/Rankings" asp-route-mode="level"  class="@(Model.Mode == "level"  ? "active" : "")">Level</a>
-        <a asp-page="/Rankings" asp-route-mode="guilds" class="@(Model.Mode == "guilds" ? "active" : "")">Guilds</a>
+<div class="rankings-container">
+    <div class="tabs-nav">
+        <a asp-page="/Rankings" asp-route-mode="resets" class="tab-link @(Model.Mode == "resets" ? "active" : "")">Resets</a>
+        <a asp-page="/Rankings" asp-route-mode="level"  class="tab-link @(Model.Mode == "level"  ? "active" : "")">Level</a>
+        <a asp-page="/Rankings" asp-route-mode="guilds" class="tab-link @(Model.Mode == "guilds" ? "active" : "")">Guilds</a>
     </div>
 
     @if (!string.IsNullOrEmpty(Model.Error))
     {
-        <div class="alert alert-danger">No se pudo cargar el ranking: @Model.Error</div>
-    }
-    else if (Model.Mode == "guilds")
-    {
-        @if (Model.GuildRows.Count == 0)
-        {
-            <p class="muted">Todavía no hay guilds creadas.</p>
-        }
-        else
-        {
-            <div class="table-wrap">
-                <table class="ranking">
-                    <thead>
-                        <tr>
-                            <th class="num">#</th>
-                            <th>Guild</th>
-                            <th class="num">Score</th>
-                            <th class="num">Miembros</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @for (int i = 0; i < Model.GuildRows.Count; i++)
-                        {
-                            var row = Model.GuildRows[i];
-                            <tr>
-                                <td class="num">@(i + 1)</td>
-                                <td>@row.Name</td>
-                                <td class="num">@row.Score.ToString("N0")</td>
-                                <td class="num">@row.MemberCount</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-            <p class="muted" style="margin-top: 8px;">Ordenado por <em>Score</em> (Castle Siege / batallas), después por miembros.</p>
-        }
-    }
-    else if (Model.Rows.Count == 0)
-    {
-        <p class="muted">
-            @(Model.Mode == "resets"
-                ? "Todavía no hay personajes con resets."
-                : "Todavía no hay personajes para mostrar.")
-        </p>
-    }
-    else if (Model.Mode == "resets")
-    {
-        <div class="table-wrap">
-            <table class="ranking">
-                <thead>
-                    <tr>
-                        <th class="num">#</th>
-                        <th>Personaje</th>
-                        <th class="num">Resets</th>
-                        <th class="num">Level</th>
-                        <th class="num">Master Lvl</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (int i = 0; i < Model.Rows.Count; i++)
-                    {
-                        var row = Model.Rows[i];
-                        <tr>
-                            <td class="num">@(i + 1)</td>
-                            <td>@row.Name</td>
-                            <td class="num gold-cell">@row.Resets</td>
-                            <td class="num">@row.Level</td>
-                            <td class="num">@row.MasterLevel</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+        <div class="alert alert-danger" style="background: #3a0000; color: #ff8080; padding: 15px; border-radius: 5px;">
+            <strong>Error:</strong> @Model.Error
         </div>
     }
     else
     {
-        @* Mode == "level" *@
-        <div class="table-wrap">
-            <table class="ranking">
-                <thead>
-                    <tr>
-                        <th class="num">#</th>
-                        <th>Personaje</th>
-                        <th class="num">Level</th>
-                        <th class="num">Master Lvl</th>
-                        <th class="num">Resets</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (int i = 0; i < Model.Rows.Count; i++)
-                    {
-                        var row = Model.Rows[i];
+        <div class="card" style="background: transparent; border: none; padding: 0;">
+            @if (Model.Mode == "guilds")
+            {
+                @if (Model.GuildRows.Count == 0)
+                {
+                    <p class="muted-text">Todavía no hay guilds creadas.</p>
+                }
+                else
+                {
+                    <table class="ranking-table">
+                        <thead>
+                            <tr>
+                                <th class="num-col">#</th>
+                                <th>Guild</th>
+                                <th style="text-align:center;">Score</th>
+                                <th style="text-align:center;">Miembros</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.GuildRows.Count; i++)
+                            {
+                                var row = Model.GuildRows[i];
+                                <tr class="@(i == 0 ? "top-1" : "")">
+                                    <td class="num-col">@(i + 1)</td>
+                                    <td class="char-name">@row.Name</td>
+                                    <td class="gold-cell" style="text-align:center;">@row.Score.ToString("N0")</td>
+                                    <td style="text-align:center;">@row.MemberCount</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <span class="muted-text">Ordenado por <em>Score</em> (Castle Siege / batallas), después por miembros.</span>
+                }
+            }
+            else if (Model.Rows.Count == 0)
+            {
+                <p class="muted-text">
+                    @(Model.Mode == "resets" ? "Todavía no hay personajes con resets." : "Todavía no hay personajes para mostrar.")
+                </p>
+            }
+            else
+            {
+                <table class="ranking-table">
+                    <thead>
                         <tr>
-                            <td class="num">@(i + 1)</td>
-                            <td>@row.Name</td>
-                            <td class="num gold-cell">@row.Level</td>
-                            <td class="num">@row.MasterLevel</td>
-                            <td class="num">@row.Resets</td>
+                            <th class="num-col">#</th>
+                            <th>Personaje</th>
+                            <th style="text-align:center;">@(Model.Mode == "resets" ? "Resets" : "Level")</th>
+                            <th style="text-align:center;">@(Model.Mode == "resets" ? "Level" : "Resets")</th>
+                            <th style="text-align:center;">Master Lvl</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Rows.Count; i++)
+                        {
+                            var row = Model.Rows[i];
+                            <tr class="@(i == 0 ? "top-1" : "")">
+                                <td class="num-col">@(i + 1)</td>
+                                <td class="char-name">@row.Name</td>
+                                @if (Model.Mode == "resets")
+                                {
+                                    <td class="gold-cell" style="text-align:center;">@row.Resets</td>
+                                    <td style="text-align:center;">@row.Level</td>
+                                }
+                                else
+                                {
+                                    <td class="gold-cell" style="text-align:center;">@row.Level</td>
+                                    <td style="text-align:center;">@row.Resets</td>
+                                }
+                                <td style="text-align:center; color: #00bcd4;">@row.MasterLevel</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
         </div>
     }
 </div>

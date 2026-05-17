@@ -115,7 +115,7 @@ public class MountSeedSphereCrafting : SimpleItemCraftingHandler
             .Where(link => link.ItemOption?.OptionType == ItemOptionTypes.SocketOption && link.Index < 3)
             .OrderBy(link => link.Index)
             .Select(link => link.ItemOption!)
-            .Distinct()
+            //.Distinct()
             .ToList();
 
         if (options.Count < 3)

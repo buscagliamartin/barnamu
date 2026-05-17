@@ -43,17 +43,23 @@ public class WarpAction
 
         if (isVip)
         {
+            // BarnaMu (2026-05): tabla de niveles VIP de entrada por mapa.
+            // OJO: map 37 = Kanturu Ruins (NO Vulcanus), Vulcanus = 63.
+            // El switch anterior tenía 37 marcado como Vulcanus y nunca mencionaba 63,
+            // así que VIPs no entraban a Vulcanus con bonus y eran castigados en Kanturu Ruins.
             levelReq = warpInfo.Gate?.Map?.Number switch
             {
+                37 => 130, // Kanturu Ruins
                 38 => 200, // Kanturu Relics
-                57 => 250, // Raklion
-                56 => 300, // Swamp of Calmness
-                80 => 200, // Karutan 1
-                81 => 200, // Karutan 2
-                37 => 300, // Vulcanus
-                34 => 300, // Crywolf
-                41 => 300, // Barracks
+                80 => 160, // Karutan 1
+                81 => 160, // Karutan 2
+                57 => 240, // Raklion (La Cleon)
+                63 => 260, // Vulcanus
+                31 => 250, // Land of Trials (Erohim)
+                34 => 280, // Crywolf Fortress
+                41 => 300, // Barracks of Balgass
                 42 => 300, // Balgass Refuge
+                56 => 300, // Swamp of Calmness
                 _ => levelReq,
             };
         }

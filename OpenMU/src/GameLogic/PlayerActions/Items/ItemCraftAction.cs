@@ -42,8 +42,18 @@ public class ItemCraftAction
         {
             result = await craftingHandler.DoMixAsync(player, socketSlot).ConfigureAwait(false);
         }
-        catch
+        catch (Exception ex)
         {
+            // BarnaMu: log the actual exception instead of silently swallowing it.
+            // The vanilla `catch` (no var, no log) hid every error inside the crafting
+            // handlers — for the Seed Master / Seed Sphere it made "click does nothing"
+            // impossible to diagnose because no trace ever reached the console.
+            player.Logger.LogError(
+                ex,
+                "Exception while mixing items at NPC '{Npc}' (MixTypeId={MixTypeId}, SocketSlot={SocketSlot}).",
+                npcStats?.Designation ?? "?",
+                mixTypeId,
+                socketSlot);
             result = (CraftingResult.LackingMixItems, null);
         }
 

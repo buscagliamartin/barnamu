@@ -8,23 +8,93 @@
     var statusKnown = Model.Status.CheckedAtUtc != DateTime.MinValue;
 }
 
+<style>
+    /* Usamos la ruta exacta de tu proyecto apuntando a la carpeta del template */
+    .hero {
+        text-align: center;
+        padding: 60px 40px;
+        background-image: linear-gradient(90deg, rgba(18,18,18,1) 0%, rgba(18,18,18,0.7) 45%, rgba(18,18,18,0) 100%), 
+                          url('/templates/webzen_new/images/bg_main_banner_default.jpg'); 
+        background-size: cover;
+        background-position: right center;
+        background-repeat: no-repeat;
+        border-radius: 8px;
+        border: 1px solid #333;
+        margin-bottom: 30px;
+        min-height: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .hero h1 { 
+        font-size: 3.5rem; 
+        color: #fff; 
+        text-transform: uppercase; 
+        margin-bottom: 10px;
+        letter-spacing: 5px;
+        text-shadow: 2px 2px 10px rgba(0,0,0,0.9);
+    }
+
+    .hero-subtitle { 
+        color: #ccc; 
+        font-size: 1.1rem; 
+        max-width: 800px; 
+        margin-bottom: 35px;
+        text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+    }
+
+    /* Arreglo del botón: Letras negras sobre el amarillo del template */
+    .btn-create-account {
+        padding: 12px 35px;
+        background: #d4af37;
+        color: #000 !important; /* Texto negro para que se lea bien */
+        font-weight: bold;
+        text-transform: uppercase;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: 0.3s;
+        display: inline-block;
+    }
+
+    .btn-download {
+        padding: 12px 35px;
+        background: rgba(45, 45, 45, 0.8);
+        color: #fff !important;
+        border: 1px solid #444;
+        text-transform: uppercase;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: 0.3s;
+        display: inline-block;
+        margin-left: 10px;
+    }
+
+    .hero-meta {
+        margin-top: 25px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        color: #fff;
+        font-size: 0.9rem;
+    }
+
+    .pill-online { background: #28a745; padding: 4px 12px; border-radius: 4px; font-weight: bold; }
+</style>
+
 <section class="hero">
     <h1>@opts.ServerName</h1>
     <p class="hero-subtitle">@(string.IsNullOrWhiteSpace(opts.ServerTagline) ? "MU Online Season 6 — server privado con VIP, invasiones y drops balanceados." : opts.ServerTagline)</p>
+    
     <div class="hero-actions">
-        <a asp-page="/Register" class="btn">Crear cuenta</a>
-        <a asp-page="/Download" class="btn btn-secondary">Descargar cliente</a>
+        <a asp-page="/Register" class="btn-create-account">Crear cuenta</a>
+        <a asp-page="/Download" class="btn-download">Descargar cliente</a>
     </div>
+
     <div class="hero-meta">
-        @if (anyOnline)
-        {
-            <span class="pill pill-online">Online</span>
-        }
-        else if (statusKnown)
-        {
-            <span class="pill pill-offline">Offline</span>
-        }
-        <span style="margin-left: 12px;">@Model.TotalAccounts cuenta(s) · @Model.TotalCharacters personaje(s) · @Model.NewAccounts7d nueva(s) en 7 días</span>
+        @if (anyOnline) { <span class="pill pill-online">Online</span> }
+        <span><strong>@Model.TotalAccounts</strong> cuentas · <strong>@Model.TotalCharacters</strong> personajes</span>
     </div>
 </section>
 
@@ -37,26 +107,29 @@
         }
         else
         {
-            foreach (var item in Model.News)
+            @foreach (var item in Model.News)
             {
                 <article style="margin-bottom: 22px;">
-                    <h3 style="margin-bottom: 4px;">@item.Title</h3>
-                    <div class="muted" style="font-size: 12px; margin-bottom: 8px; letter-spacing: 0.5px;">@item.Date</div>
-                    <div>@item.Body</div>
+                    <h3 style="color: #d4af37; margin-bottom: 4px;">@item.Title</h3>
+                    <div class="muted" style="font-size: 11px; margin-bottom: 8px;">@item.Date</div>
+                    <div style="color: #ccc;">@item.Body</div>
                 </article>
             }
         }
     </section>
 
     <section class="card">
-        <h2>¿Por qué jugar acá?</h2>
-        <ul class="perk-list">
-            <li><strong>Rates balanceadas</strong> — slow-medium, pensado para que jugar valga la pena.</li>
-            <li><strong>VIP con timer</strong> — pagás @opts.Vip.DurationDays días y ves exactamente cuánto te queda.</li>
-            <li><strong>Invasiones</strong> — Goldens cada 4h, Red Dragon cada 6h, T9 bosses cada 8h.</li>
-            <li><strong>Drops curados</strong> — cajas Kundun por tier (Heaven → K+5) + Pink Chocolate Box T9.</li>
-            <li><strong>Resets sin límite</strong> — desde lvl 400, costo escalado por reset.</li>
+        <h2>¿Por qué elegirnos?</h2>
+        <ul style="list-style: none; padding: 0; color: #ccc;">
+            <li style="margin-bottom: 12px;"><strong style="color: #d4af37;">✦ Balance Garantizado</strong> — Rates <code>x30/x35</code>.</li>
+            <li style="margin-bottom: 12px;"><strong style="color: #d4af37;">✦ Clases disponibles</strong> — Dark Knight, Dark Wizard, Fairy Elf, Magic Gladiator, Dark Lord, Summoner y Rage Fighter.</li>
+            <li style="margin-bottom: 12px;"><strong style="color: #d4af37;">✦ 42 Mapas Disponibles</strong> </li>
+            <li style="margin-bottom: 12px;"><strong style="color: #d4af37;">✦ Sistema VIP</strong></li>
+			<li style="margin-bottom: 12px;"><strong style="color: #d4af37;">✦ Comandos Exclusivos</strong> — Disponibilidad de <code>/offlevel</code> para usuarios VIP.</li>
+			<li style="margin-bottom: 12px;"><strong style="color: #d4af37;">✦ Sistema Sockets <code>Seed Sphere</code></strong></li>
+			<li style="margin-bottom: 12px;"><strong style="color: #d4af37;">✦ Invasiones cada 4h, 6h y 8h</strong> — <code>Goldens, Red Dragon, T9 Bosses</code>.</li>
+			<li style="margin-bottom: 12px;"><strong style="color: #d4af37;">✦ Server Anti Pay To Win</strong> — No se venden items de ningun tipo.</li>
+			<li style="margin-bottom: 12px;"><strong style="color: #d4af37;">✦ Maximo 2 cuentas por IP</strong>.</li>
         </ul>
-        <p style="margin-top: 14px;"><a asp-page="/Vip">Ver detalles de VIP →</a> · <a asp-page="/Guide">Guía completa →</a></p>
     </section>
 </div>

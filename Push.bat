@@ -26,11 +26,12 @@ echo ============================================
 echo Mensaje: %MSG%
 echo.
 
+REM Anchor to the repo root FIRST, so Backup.bat resolves and git runs in the right dir.
+cd /d C:\MuDev
+
 echo [INFO] Realizando backup de base de datos antes del push...
 call Backup.bat
 echo.
-
-cd /d C:\MuDev
 
 git add -A
 if %ERRORLEVEL% NEQ 0 goto :error
