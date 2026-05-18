@@ -1,0 +1,186 @@
+
+JET RUNTIME HAS DETECTED UNRECOVERABLE ERROR #3 (system exception).
+Please, contact the vendor of the application.
+
+Exception 0xC0000005 (EXCEPTION_ACCESS_VIOLATION) at 0x9C41C1A (C:\MuDev\Tools\Pentium Tools\jogl_qss.dll+0x1c1a)
+Failed to read memory at 0xc
+
+PID 3560, TID 5400
+
+Registers:
+
+  EAX = 0x0  EBX = 0x0
+  ECX = 0x0  EDX = 0x39D0000
+  ESI = 0x206CA  EDI = 0xFCABFD8
+  EBP = 0xEE6FAF4  ESP = 0xEE6FAF0
+  EIP = 0x9C41C1A (C:\MuDev\Tools\Pentium Tools\jogl_qss.dll+0x1c1a)
+
+Stack:
+
+  0xEE6FAF0:  0x0 0xEE6FB04 0x9C4D47D 0x206CA
+  0xEE6FB00:  0x0 0x76D49600 0x98C23AF 0x206CA
+  0xEE6FB10:  0x206CA 0x3B08008 0x98C24F6 0x206CA
+  0xEE6FB20:  0xFCABFD8 0x3B08008 0x0 0x0
+
+Version Information:
+
+  Java version: 1.6.0_18
+  Excelsior JET 7.00 Professional edition
+  Build info: RT: Professional edition, build jet-700-mp2 (Mon Apr 12 14:26:10 NOVST 2010)
+  JET Profile: 1.6.0_18
+  Runtime: Desktop
+  Application was deployed
+
+Options and system properties:
+
+  -Djet.jit.fast=
+  -Djet.gc.heaplimit=1073741824
+
+Entry point type: exe/splash (Java 6)
+
+Command line: "C:\MuDev\Tools\Pentium Tools\PentiumTools.b.19.exe" 
+
+OS: Unknown Windows NT 6.2 build 9200
+
+Process Modules:
+
+0x400000 - 0x3435000     C:\MuDev\Tools\Pentium Tools\PentiumTools.b.19.exe
+0x77100000 - 0x772a4000     C:\Windows\SYSTEM32\ntdll.dll
+0x76ac0000 - 0x76bb0000     C:\Windows\System32\KERNEL32.DLL
+0x75410000 - 0x75649000     C:\Windows\System32\KERNELBASE.dll
+0x76d10000 - 0x76ead000     C:\Windows\System32\user32.dll
+0x76640000 - 0x76658000     C:\Windows\System32\win32u.dll
+0x75b70000 - 0x75b93000     C:\Windows\System32\GDI32.dll
+0x76800000 - 0x768e7000     C:\Windows\System32\gdi32full.dll
+0x76c90000 - 0x76d0b000     C:\Windows\System32\msvcp_win.dll
+0x764f0000 - 0x76610000     C:\Windows\System32\ucrtbase.dll
+0x76980000 - 0x769fd000     C:\Windows\System32\advapi32.dll
+0x75650000 - 0x7570f000     C:\Windows\System32\msvcrt.dll
+0x75770000 - 0x757e7000     C:\Windows\System32\sechost.dll
+0x76bd0000 - 0x76c89000     C:\Windows\System32\RPCRT4.dll
+0x764d0000 - 0x764e9000     C:\Windows\System32\bcrypt.dll
+0x77050000 - 0x770e6000     C:\Windows\System32\oleaut32.dll
+0x757f0000 - 0x75a70000     C:\Windows\System32\combase.dll
+0x75d10000 - 0x75df3000     C:\Windows\System32\ole32.dll
+0x753b0000 - 0x753f9000     C:\Windows\System32\shlwapi.dll
+0x726f0000 - 0x726f6000     C:\Windows\SYSTEM32\SHFolder.dll
+0x75e00000 - 0x763db000     C:\Windows\System32\SHELL32.dll
+0x76610000 - 0x76635000     C:\Windows\System32\IMM32.DLL
+0x74950000 - 0x74f69000     C:\Windows\SYSTEM32\windows.storage.dll
+0x74920000 - 0x74945000     C:\Windows\SYSTEM32\Wldp.dll
+0x768f0000 - 0x76977000     C:\Windows\System32\SHCORE.dll
+0x744b0000 - 0x744cb000     C:\Windows\SYSTEM32\profapi.dll
+0x746a0000 - 0x746af000     C:\Windows\SYSTEM32\WTSAPI32.dll
+0x10000000 - 0x10021000     C:\MuDev\Tools\Pentium Tools\rt\bin\splashscreen.dll
+0x64d0000 - 0x718f000     C:\MuDev\Tools\Pentium Tools\rt\jetrt\XKRN70018.dll
+0x715b0000 - 0x715d8000     C:\Windows\SYSTEM32\WINMM.DLL
+0x7f00000 - 0x7f7e000     C:\MuDev\Tools\Pentium Tools\rt\jetrt\XJCE70018.dll
+0x7190000 - 0x7445000     C:\MuDev\Tools\Pentium Tools\rt\jetrt\XMNG70018.dll
+0x7450000 - 0x774b000     C:\MuDev\Tools\Pentium Tools\rt\jetrt\XMIS70018.dll
+0x7f80000 - 0x87d3000     C:\MuDev\Tools\Pentium Tools\rt\jetrt\XXML70018.dll
+0x71530000 - 0x715a4000     C:\Windows\system32\uxtheme.dll
+0x77a0000 - 0x7847000     C:\MuDev\Tools\Pentium Tools\rt\jetrt\XSQL70018.dll
+0x76f70000 - 0x77044000     C:\Windows\System32\MSCTF.dll
+0x7850000 - 0x79d3000     C:\MuDev\Tools\Pentium Tools\rt\jetrt\XSEC70018.dll
+0x79e0000 - 0x7a6b000     C:\MuDev\Tools\Pentium Tools\rt\jetrt\XPKC70018.dll
+0x9a00000 - 0x9c3b000     C:\MuDev\Tools\Pentium Tools\rt\jetrt\XSWN70018.dll
+0x7e00000 - 0x7e95000     C:\MuDev\Tools\Pentium Tools\rt\jetrt\XSND70018.dll
+0x87e0000 - 0x93fe000     C:\MuDev\Tools\Pentium Tools\rt\jetrt\XAWT70018.dll
+0x7a70000 - 0x7ab4000     C:\MuDev\Tools\Pentium Tools\rt\jetrt\XRMI70018.dll
+0x74490000 - 0x7449f000     C:\Windows\SYSTEM32\kernel.appcore.dll
+0x75710000 - 0x7576f000     C:\Windows\System32\bcryptPrimitives.dll
+0x9c40000 - 0xa2fb000     C:\MuDev\Tools\Pentium Tools\jogl_qss.dll
+0x71470000 - 0x71529000     C:\Windows\SYSTEM32\textinputframework.dll
+0x711f0000 - 0x7146f000     C:\Windows\System32\CoreUIComponents.dll
+0x71150000 - 0x711eb000     C:\Windows\System32\CoreMessaging.dll
+0x75b00000 - 0x75b63000     C:\Windows\System32\WS2_32.dll
+0x71120000 - 0x71149000     C:\Windows\SYSTEM32\ntmarta.dll
+0x71040000 - 0x7111d000     C:\Windows\SYSTEM32\wintypes.dll
+0xab00000 - 0xb976000     C:\MuDev\Tools\Pentium Tools\info.dll
+0x70fc0000 - 0x7103d000     C:\Windows\SYSTEM32\winspool.drv
+0x70da0000 - 0x70fb1000     C:\Windows\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.19041.6456_none_a865dda286726b5c\comctl32.dll
+0x746b0000 - 0x746b8000     C:\Windows\SYSTEM32\version.dll
+0x746c0000 - 0x746d4000     C:\Windows\SYSTEM32\netapi32.dll
+0x74690000 - 0x7469b000     C:\Windows\SYSTEM32\NETUTILS.DLL
+0x70d40000 - 0x70d93000     C:\Windows\system32\Oleacc.dll
+0x74390000 - 0x743b1000     C:\Windows\SYSTEM32\SspiCli.dll
+0x7ac0000 - 0x7ac5000     C:\MuDev\Tools\Pentium Tools\rt\bin\jetvm\jvm.dll
+0x7c340000 - 0x7c396000     C:\MuDev\Tools\Pentium Tools\rt\bin\msvcr71.dll
+0x7ad0000 - 0x7ad8000     C:\MuDev\Tools\Pentium Tools\rt\bin\hpi.dll
+0x7ae0000 - 0x7af1000     C:\MuDev\Tools\Pentium Tools\rt\bin\java.dll
+0x7b00000 - 0x7b20000     C:\MuDev\Tools\Pentium Tools\rt\bin\zip.dll
+0x9850000 - 0x999b000     C:\MuDev\Tools\Pentium Tools\rt\bin\awt.dll
+0x742e0000 - 0x74384000     C:\Windows\SYSTEM32\apphelp.dll
+0x70ae0000 - 0x70d33000     C:\Windows\SYSTEM32\AcGenral.DLL
+0x70ac0000 - 0x70ad5000     C:\Windows\SYSTEM32\samcli.dll
+0x70aa0000 - 0x70ab9000     C:\Windows\SYSTEM32\MSACM32.dll
+0x70a70000 - 0x70a95000     C:\Windows\SYSTEM32\USERENV.dll
+0x70a40000 - 0x70a66000     C:\Windows\SYSTEM32\dwmapi.dll
+0x70890000 - 0x70a3d000     C:\Windows\SYSTEM32\urlmon.dll
+0x70870000 - 0x70889000     C:\Windows\SYSTEM32\MPR.dll
+0x70850000 - 0x7086d000     C:\Windows\SYSTEM32\winmmbase.dll
+0x71600000 - 0x71838000     C:\Windows\SYSTEM32\iertutil.dll
+0x715e0000 - 0x715fd000     C:\Windows\SYSTEM32\srvcli.dll
+0xe0b0000 - 0xe148000     C:\MuDev\Tools\Pentium Tools\rt\jetrt\XSSE70018.dll
+0x7c30000 - 0x7c43000     C:\MuDev\Tools\Pentium Tools\rt\bin\net.dll
+0x72040000 - 0x72092000     C:\Windows\system32\mswsock.dll
+0x70830000 - 0x70841000     C:\Windows\system32\napinsp.dll
+0x70810000 - 0x70826000     C:\Windows\system32\pnrpnsp.dll
+0x707f0000 - 0x70806000     C:\Windows\system32\wshbth.dll
+0x707d0000 - 0x707e6000     C:\Windows\system32\NLAapi.dll
+0x71e50000 - 0x71e82000     C:\Windows\SYSTEM32\IPHLPAPI.DLL
+0x71e90000 - 0x71f20000     C:\Windows\SYSTEM32\DNSAPI.dll
+0x75400000 - 0x75407000     C:\Windows\System32\NSI.dll
+0x707c0000 - 0x707ce000     C:\Windows\System32\winrnr.dll
+0x71e20000 - 0x71e28000     C:\Windows\System32\rasadhlp.dll
+0x71cf0000 - 0x71d48000     C:\Windows\System32\fwpuclnt.dll
+0x7ee0000 - 0x7ef9000     C:\Users\Martin\AppData\Local\Temp\d9960b.tmp
+0x73b00000 - 0x73b9b000     C:\Windows\WinSxS\x86_microsoft.vc80.crt_1fc8b3b9a1e18e3b_8.0.50727.9672_none_d08f9da24428a513\MSVCR80.dll
+0x76450000 - 0x764ce000     C:\Windows\System32\clbcatq.dll
+0x70780000 - 0x707bf000     C:\Windows\system32\wbem\wbemdisp.dll
+0x70710000 - 0x70780000     C:\Windows\SYSTEM32\wbemcomn.dll
+0x70700000 - 0x7070d000     C:\Windows\system32\wbem\wbemprox.dll
+0x70670000 - 0x706f7000     C:\Windows\SYSTEM32\sxs.dll
+0x70650000 - 0x7066d000     C:\Windows\system32\wbem\wmiutils.dll
+0x70640000 - 0x70650000     C:\Windows\system32\wbem\wbemsvc.dll
+0x70570000 - 0x7063a000     C:\Windows\system32\wbem\fastprox.dll
+0x70550000 - 0x70568000     C:\Windows\SYSTEM32\amsi.dll
+0x704c0000 - 0x7054c000     C:\ProgramData\Microsoft\Windows Defender\platform\4.18.26030.3011-0\X86\MpOav.dll
+0xf8c0000 - 0xf914000     C:\MuDev\Tools\Pentium Tools\rt\bin\fontmanager.dll
+0x70320000 - 0x704b2000     C:\Windows\SYSTEM32\d3d9.dll
+0x702e0000 - 0x7031e000     C:\Windows\System32\DriverStore\FileRepository\vm3d.inf_amd64_174242d922f826ca\vm3dum_loader.dll
+0x70260000 - 0x702dc000     C:\Windows\System32\DriverStore\FileRepository\vm3d.inf_amd64_174242d922f826ca\vm3dum.dll
+0xfd90000 - 0xfdb8000     C:\MuDev\Tools\Pentium Tools\rt\jetrt\baseline700.dll
+0x21020000 - 0x2126d000     C:\MuDev\Tools\Pentium Tools\rt\jetrt\xjitb_j70018.dll
+0xfe00000 - 0xfe09000     C:\MuDev\Tools\Pentium Tools\rt\bin\nio.dll
+0x70220000 - 0x70251000     C:\Windows\system32\dataexchange.dll
+0x70040000 - 0x70220000     C:\Windows\system32\d3d11.dll
+0x6fed0000 - 0x70035000     C:\Windows\system32\dcomp.dll
+0x6fe00000 - 0x6fec5000     C:\Windows\system32\dxgi.dll
+0x6fc60000 - 0x6fdf1000     C:\Windows\system32\twinapi.appcore.dll
+0x6fbc0000 - 0x6fc55000     C:\Windows\SYSTEM32\TextShaping.dll
+0x76eb0000 - 0x76eb6000     C:\Windows\System32\psapi.dll
+
+JET-compiled Components:
+
+C:\MuDev\Tools\Pentium Tools\rt\jetrt\XKRN70018.dll: dll, version info: jet-700-mp2 (pro, en)
+C:\MuDev\Tools\Pentium Tools\rt\jetrt\XMNG70018.dll: dll, version info: jet-700-mp2 (pro, en)
+C:\MuDev\Tools\Pentium Tools\rt\jetrt\XMIS70018.dll: dll, version info: jet-700-mp2 (pro, en)
+C:\MuDev\Tools\Pentium Tools\rt\jetrt\XXML70018.dll: dll, version info: jet-700-mp2 (pro, en)
+C:\MuDev\Tools\Pentium Tools\rt\jetrt\XJCE70018.dll: dll, version info: jet-700-mp2 (pro, en)
+C:\MuDev\Tools\Pentium Tools\rt\jetrt\XSQL70018.dll: dll, version info: jet-700-mp2 (pro, en)
+C:\MuDev\Tools\Pentium Tools\rt\jetrt\XPKC70018.dll: dll, version info: jet-700-mp2 (pro, en)
+C:\MuDev\Tools\Pentium Tools\rt\jetrt\XSEC70018.dll: dll, version info: jet-700-mp2 (pro, en)
+C:\MuDev\Tools\Pentium Tools\rt\jetrt\XSND70018.dll: dll, version info: jet-700-mp2 (pro, en)
+C:\MuDev\Tools\Pentium Tools\rt\jetrt\XRMI70018.dll: dll, version info: jet-700-mp2 (pro, en)
+C:\MuDev\Tools\Pentium Tools\rt\jetrt\XAWT70018.dll: dll, version info: jet-700-mp2 (pro, en)
+C:\MuDev\Tools\Pentium Tools\rt\jetrt\XSWN70018.dll: dll, version info: jet-700-mp2 (pro, en)
+C:\MuDev\Tools\Pentium Tools\PentiumTools.b.19.exe: exe, version info: jet-700-mp2 (pro, en)
+C:\MuDev\Tools\Pentium Tools\rt\jetrt\XSSE70018.dll: dll, version info: jet-700-mp2 (pro, en)
+C:\MuDev\Tools\Pentium Tools\rt\jetrt\xjitb_j70018.dll: dll, version info: jet-700-mp2 (pro, en)
+
+Java Stack Trace:
+
+  sun.awt.windows.WToolkit.eventLoop(Unknown Source)
+  sun.awt.windows.WToolkit.run(Unknown Source)
+  java.lang.Thread.run(Unknown Source)
