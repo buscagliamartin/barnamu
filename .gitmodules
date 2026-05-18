@@ -1,0 +1,6 @@
+[submodule "MuMain/src/ThirdParty/SDL"]
+	path = MuMain/src/ThirdParty/SDL
+	url = https://github.com/libsdl-org/SDL.git
+[submodule "MuMain/src/ThirdParty/SDL_mixer"]
+	path = MuMain/src/ThirdParty/SDL_mixer
+	url = https://github.com/libsdl-org/SDL_mixer.git
