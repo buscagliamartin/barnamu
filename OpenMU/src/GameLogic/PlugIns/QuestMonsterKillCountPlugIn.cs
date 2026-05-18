@@ -29,7 +29,15 @@ public class QuestMonsterKillCountPlugIn : IAttackableGotKilledPlugIn, ISupportC
     {
         var configuration = this.Configuration ??= CreateDefaultConfiguration();
 
-        if (!(killer is Player player && killed is Monster monster)
+        // BarnaMu fix: vanilla required `killer is Player`, which silently dropped
+        // every kill done by a Summon (BK mascot, Summoner pet) or any IPlayerSurrogate
+        // (skill projectiles, area-skill emitters, etc.). The result was that quests
+        // like "Into the Darkness" (kill Dark Elf #412) never registered kills when
+        // the player used skills. Unwrap the player the same way AttackableNpcBase
+        // does in GetHitNotificationTarget.
+        var player = killer as Player ?? (killer as IPlayerSurrogate)?.Owner;
+        if (player is null
+            || killed is not Monster monster
             || player.SelectedCharacter?.QuestStates is null)
         {
             return;

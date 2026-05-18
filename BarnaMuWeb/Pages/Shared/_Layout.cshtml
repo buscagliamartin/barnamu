@@ -107,6 +107,38 @@
                         <span class="barna-clock-time" id="localClock">00:00:00</span>
                     </div>
                 </div>
+				<div class="barna-widget">
+					<div class="barna-widget__header"><h4 class="barna-widget__title">Próximos eventos</h4></div>
+						<ul class="barna-info-list">
+							<li><span class="barna-key">Golden Invasion</span><span class="barna-val barna-val--gold" id="evGolden">—</span></li>
+							<li><span class="barna-key">Red Dragon</span><span class="barna-val barna-val--gold" id="evDragon">—</span></li>
+							<li><span class="barna-key">T9 Bosses</span><span class="barna-val barna-val--gold" id="evT9">—</span></li>
+						</ul>
+				</div>
+
+				<script>
+				function nextFire(periodHours, anchorHourUtc) {
+					const now = new Date();
+					const utcMs = now.getTime();
+					const periodMs = periodHours * 3600 * 1000;
+					// anchor = next occurrence at the anchor hour going forward
+					const anchorDay = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), anchorHourUtc, 0, 0));
+					let base = anchorDay.getTime();
+					while (base <= utcMs) base += periodMs;
+					const remainMs = base - utcMs;
+					const h = Math.floor(remainMs / 3600000);
+					const m = Math.floor((remainMs % 3600000) / 60000);
+					const s = Math.floor((remainMs % 60000) / 1000);
+					return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+				}
+				function updateEvents() {
+					document.getElementById('evGolden').textContent = nextFire(4, 0);
+					document.getElementById('evDragon').textContent = nextFire(6, 2);
+					document.getElementById('evT9').textContent = nextFire(8, 4);
+				}
+				setInterval(updateEvents, 1000);
+				updateEvents();
+				</script>
             </aside>
         </div>
     </div>
