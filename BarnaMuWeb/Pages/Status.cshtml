@@ -2,135 +2,51 @@
 @model StatusModel
 @{
     ViewData["Title"] = "Estado del Servidor";
-    // Si todos los servicios están operativos, el servidor está online
     bool isServerOnline = Model.Status.Ports.All(p => p.IsOnline);
+    string statusClass = isServerOnline ? "online" : "offline";
 }
-
-<style>
-    .status-container { max-width: 900px; margin: 0 auto; padding: 20px; }
-    
-    /* Indicador Principal de Estado */
-    .status-indicator {
-        background: #111;
-        border: 1px solid #333;
-        border-radius: 12px;
-        padding: 40px;
-        text-align: center;
-        margin-bottom: 30px;
-        position: relative;
-        overflow: hidden;
-    }
-    .status-indicator::before {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; width: 4px; height: 100%;
-        background: @(isServerOnline ? "#28a745" : "#dc3545");
-    }
-    .status-glow {
-        display: inline-block;
-        width: 15px;
-        height: 15px;
-        border-radius: 50%;
-        background: @(isServerOnline ? "#28a745" : "#dc3545");
-        box-shadow: 0 0 15px @(isServerOnline ? "#28a745" : "#dc3545");
-        margin-right: 15px;
-    }
-    .status-text {
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: #fff;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-    }
-
-    /* Tarjeta y Grilla de Estadísticas */
-    .stats-card {
-        background: #111;
-        border: 1px solid #333;
-        border-radius: 8px;
-        padding: 25px;
-    }
-    .stats-title {
-        color: #d4af37;
-        font-size: 1.4rem;
-        margin-bottom: 25px;
-        margin-top: 0;
-        border-bottom: 1px solid #222;
-        padding-bottom: 10px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
-    }
-    .stat-item {
-        background: #161616;
-        border: 1px solid #222;
-        padding: 25px;
-        border-radius: 8px;
-        text-align: center;
-        transition: transform 0.3s ease;
-    }
-    .stat-item:hover { transform: translateY(-5px); border-color: #d4af37; }
-    .stat-value { font-size: 2.2rem; color: #d4af37; font-weight: bold; display: block; }
-    .stat-label { color: #888; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; margin-top: 5px; }
-</style>
 
 <div class="hero hero-small">
     <h1>Estado del Servidor</h1>
     <p class="hero-subtitle">
-        Última sincronización: 
-        @* Convertimos UTC a CEST (UTC+2) directamente en C# *@
-        <strong>@Model.Status.CheckedAtUtc.AddHours(2).ToString("HH:mm") CEST</strong>
-        
-        <span style="margin: 0 10px; color: #444;">|</span> 
-        
-        Tu hora local: <span id="syncLocal" style="font-weight: bold;">--:--</span>
-        
-        <span style="margin: 0 10px; color: #444;">|</span> Caché: ~15s
+        Última sync: <strong>@Model.Status.CheckedAtUtc.AddHours(2).ToString("HH:mm") CEST</strong>
+        <span style="margin:0 8px;color:var(--barna-border2)">|</span>
+        Tu hora: <span id="syncLocal" style="font-weight:700;">--:--</span>
+        <span style="margin:0 8px;color:var(--barna-border2)">|</span>
+        <span class="muted">Caché ~15s</span>
     </p>
 </div>
 
 <script>
-    (function() {
-        // Tomamos la fecha UTC que viene del servidor
-        const utcDateStr = "@Model.Status.CheckedAtUtc.ToString("yyyy-MM-ddTHH:mm:ssZ")";
-        const date = new Date(utcDateStr);
-        
-        const pad = (n) => n < 10 ? '0' + n : n;
-        const localTime = pad(date.getHours()) + ":" + pad(date.getMinutes());
-        
-        // Inyectamos la hora local del navegador del usuario
+    (function () {
+        const d = new Date("@Model.Status.CheckedAtUtc.ToString("yyyy-MM-ddTHH:mm:ssZ")");
         const el = document.getElementById('syncLocal');
-        if(el) el.textContent = localTime;
+        if (el) el.textContent = (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
     })();
 </script>
 
-<div class="status-container">
-    <div class="status-indicator">
-        <div class="status-glow"></div>
-        <span class="status-text">
-            @(isServerOnline ? "Servidor Online" : "Mantenimiento")
-        </span>
-        <p style="color: #666; margin-top: 10px; font-size: 1.1rem;">
+<div class="page-medium">
+
+    <div class="status-indicator @statusClass">
+        <span class="status-glow @statusClass"></span>
+        <span class="status-text">@(isServerOnline ? "Servidor Online" : "Mantenimiento")</span>
+        <p style="color:var(--barna-text-muted);margin-top:12px;font-size:14px;">
             @(isServerOnline ? "Todos los sistemas funcionan correctamente. ¡A levelear!" : "Estamos trabajando para volver lo antes posible.")
         </p>
     </div>
 
-    <div class="stats-card">
-        <h2 class="stats-title">Estadísticas de la Comunidad</h2>
+    <div class="card">
+        <h2>Estadísticas de la Comunidad</h2>
 
         @if (Model.DbError is not null)
         {
-            <div class="alert alert-danger" style="background: #3a0000; border-radius: 8px; padding: 15px; color: #ff8080;">
+            <div class="alert alert-danger">
                 <strong>Error de base de datos:</strong> No se pudieron cargar los datos en este momento.
             </div>
         }
         else
         {
-            <div class="stats-grid">
+            <div class="stat-grid">
                 <div class="stat-item">
                     <span class="stat-value">@Model.TotalAccounts</span>
                     <span class="stat-label">Cuentas Registradas</span>
@@ -150,4 +66,5 @@
             </div>
         }
     </div>
+
 </div>

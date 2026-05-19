@@ -7,82 +7,24 @@
     var hasUrl = !string.IsNullOrWhiteSpace(opts.ClientDownloadUrl) && !opts.ClientDownloadUrl.Contains("REEMPLAZAR");
 }
 
-<style>
-    .dl-container { max-width: 800px; margin: 0 auto; padding: 20px; }
-    
-    .dl-main-card {
-        background: #111;
-        border: 1px solid #333;
-        border-radius: 12px;
-        padding: 40px;
-        text-align: center;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        position: relative;
-        overflow: hidden;
-    }
-    .dl-main-card::before {
-        content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
-        background: linear-gradient(90deg, #d4af37, #f1d592, #d4af37);
-    }
-
-    .dl-version-badge {
-        display: inline-block;
-        background: rgba(212, 175, 55, 0.1);
-        color: #d4af37;
-        padding: 5px 15px;
-        border-radius: 20px;
-        font-weight: bold;
-        font-size: 0.9rem;
-        margin-bottom: 20px;
-    }
-
-    .btn-download {
-        display: inline-block;
-        padding: 18px 45px;
-        background: linear-gradient(180deg, #d4af37 0%, #a68a2d 100%);
-        color: #000;
-        text-decoration: none;
-        font-weight: bold;
-        text-transform: uppercase;
-        border-radius: 4px;
-        font-size: 1.2rem;
-        transition: transform 0.2s, filter 0.2s;
-        box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
-    }
-    .btn-download:hover { transform: translateY(-3px); filter: brightness(1.1); }
-
-    .dl-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; }
-    .info-box { background: #161616; border: 1px solid #222; padding: 25px; border-radius: 8px; }
-    .info-box h2 { color: #d4af37; font-size: 1.1rem; margin-top: 0; text-transform: uppercase; letter-spacing: 1px; }
-    
-    .step-list { padding-left: 20px; color: #ccc; line-height: 1.6; }
-    .step-list li { margin-bottom: 10px; }
-    .step-list code { background: #000; color: #ff8080; padding: 2px 5px; border-radius: 3px; }
-
-    .sha-code { 
-        font-family: monospace; font-size: 0.8rem; color: #666; 
-        background: #0a0a0a; padding: 10px; border-radius: 4px; 
-        display: block; margin-top: 20px; border: 1px solid #1a1a1a;
-    }
-</style>
-
 <div class="hero hero-small">
     <h1>Descargas</h1>
     <p class="hero-subtitle">Obtené la versión oficial de @opts.ServerName y comenzá tu aventura.</p>
 </div>
 
-<div class="dl-container">
-    <div class="dl-main-card">
+<div class="page-medium">
+
+    <div class="card" style="text-align:center;padding:40px 36px;">
         <span class="dl-version-badge">Versión: @opts.ClientVersion</span>
-        <h1 style="color: #fff; margin-bottom: 15px;">Cliente Full Season 6</h1>
-        <p style="color: #888; margin-bottom: 30px;">
-            Acordate de <strong>ejecutar como Administrador</strong> al menos la primera vez para asegurar la actualización de los parches.
+        <h2 style="font-size:1.6rem;border:none;padding:0;margin:0 0 12px;">Cliente Full Season 6</h2>
+        <p class="muted" style="font-size:13px;margin-bottom:28px;">
+            Acordate de <strong style="color:var(--barna-text-head)">ejecutar como Administrador</strong> al menos la primera vez para actualizar los parches correctamente.
         </p>
 
         @if (hasUrl)
         {
-            <a class="btn-download" href="@opts.ClientDownloadUrl" target="_blank" rel="noopener">
-                Descargar Cliente
+            <a class="btn btn-gold" href="@opts.ClientDownloadUrl" target="_blank" rel="noopener" style="font-size:1rem;padding:14px 40px;">
+                <i class="fa fa-download"></i> Descargar Cliente
             </a>
 
             @if (!string.IsNullOrWhiteSpace(opts.ClientChecksum) && !opts.ClientChecksum.Contains("REEMPLAZAR"))
@@ -92,28 +34,29 @@
         }
         else
         {
-            <div style="background: rgba(212, 175, 55, 0.05); border: 1px dashed #d4af37; padding: 20px; border-radius: 8px; color: #d4af37;">
+            <div style="background:var(--barna-gold-dim);border:1px dashed var(--barna-border2);padding:22px;border-radius:var(--radius);color:var(--barna-gold-light);">
                 El link de descarga todavía no está configurado en el servidor.
             </div>
         }
     </div>
 
-    <div class="dl-info-grid">
-        <div class="info-box">
+    <div class="grid-2">
+        <div class="card">
             <h2>Cómo conectarse</h2>
             <ol class="step-list">
-                <li>Descargá y descomprimí el cliente (WinRAR/7Zip).</li>
+                <li>Descargá y descomprimí el cliente (WinRAR / 7Zip).</li>
                 <li>Abrí <code>Launcher.exe</code> (o <code>main.exe</code>).</li>
-                <li>¿Sin cuenta? <a asp-page="/Register" style="color: #d4af37; text-decoration: underline;">Registrate aquí</a>.</li>
+                <li>¿Sin cuenta? <a asp-page="/Register">Registrate aquí</a>.</li>
             </ol>
         </div>
 
-        <div class="info-box">
+        <div class="card">
             <h2>Problemas comunes</h2>
             <ul class="step-list">
-                <li>Faltan DLLs: Instalá <a href="https://aka.ms/vs/17/release/vc_redist.x86.exe" style="color: #d4af37;">Visual C++ x86</a>.</li>
-                <li>Soporte: Reportá en Discord o en <a asp-page="/ReportBug" style="color: #d4af37;">/reportbug</a>.</li>
+                <li>Faltan DLLs: instalá <a href="https://aka.ms/vs/17/release/vc_redist.x86.exe" target="_blank">Visual C++ x86</a>.</li>
+                <li>Soporte: reportá en Discord o en <a asp-page="/ReportBug">Reportar Bug</a>.</li>
             </ul>
         </div>
     </div>
+
 </div>

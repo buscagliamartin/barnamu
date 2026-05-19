@@ -1,0 +1,118 @@
+@page "{name}"
+@model CharModel
+@{
+    ViewData["Title"] = Model.CharName + " — Perfil";
+}
+
+@if (Model.Error is not null)
+{
+    <div class="hero hero-small">
+        <h1>Error</h1>
+        <p class="hero-subtitle">No se pudo cargar el perfil.</p>
+    </div>
+    <div class="alert alert-danger">@Model.Error</div>
+}
+else if (Model.Character is null)
+{
+    <div class="hero hero-small">
+        <h1>Personaje no encontrado</h1>
+        <p class="hero-subtitle">"@Model.CharName" no existe en el servidor.</p>
+    </div>
+    <div class="page-narrow">
+        <div class="card" style="text-align:center;padding:36px 26px;">
+            <p class="muted" style="margin-bottom:20px;">
+                Verificá el nombre e intentá de nuevo, o buscalo en los Rankings.
+            </p>
+            <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+                <a asp-page="/Rankings" class="btn btn-secondary"><i class="fa fa-trophy"></i> Ver Rankings</a>
+                <a asp-page="/Index"    class="btn btn-secondary"><i class="fa fa-home"></i> Inicio</a>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    var c = Model.Character!; // non-null: el else solo corre cuando Character != null
+
+    <div class="hero hero-small">
+        <h1>@c.Name</h1>
+        <p class="hero-subtitle">
+            <span style="color:var(--barna-gold-light);font-weight:600;">@c.ClassName</span>
+            @if (!string.IsNullOrEmpty(c.GuildName))
+            {
+                <span style="color:var(--barna-text-muted);margin:0 8px;">·</span>
+                <span>Guild: <strong style="color:var(--barna-gold-light);">@c.GuildName</strong></span>
+            }
+        </p>
+    </div>
+
+    <!-- Stats destacados -->
+    <div class="stat-grid" style="margin-bottom:20px;">
+        <div class="stat-item">
+            <span class="stat-value">@c.Resets</span>
+            <span class="stat-label">Resets</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-value">@c.Level</span>
+            <span class="stat-label">Level</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-value">@c.MasterLevel</span>
+            <span class="stat-label">Master Level</span>
+        </div>
+    </div>
+
+    <div class="grid-2">
+        <div class="card">
+            <h2>Información</h2>
+            <ul class="barna-info-list" style="padding:0;">
+                <li>
+                    <span class="barna-info-list__key">Clase</span>
+                    <span class="barna-info-list__val">@c.ClassName</span>
+                </li>
+                @if (!string.IsNullOrEmpty(c.GuildName))
+                {
+                    <li>
+                        <span class="barna-info-list__key">Guild</span>
+                        <span class="barna-info-list__val barna-info-list__val--gold">@c.GuildName</span>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <span class="barna-info-list__key">Guild</span>
+                        <span class="barna-info-list__val muted">Sin guild</span>
+                    </li>
+                }
+                <li>
+                    <span class="barna-info-list__key">Miembro desde</span>
+                    <span class="barna-info-list__val">@c.CreateDate.ToString("dd/MM/yyyy")</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Stats detallados</h2>
+            <ul class="barna-info-list" style="padding:0;">
+                <li>
+                    <span class="barna-info-list__key">Resets</span>
+                    <span class="barna-info-list__val barna-info-list__val--gold">@c.Resets</span>
+                </li>
+                <li>
+                    <span class="barna-info-list__key">Level</span>
+                    <span class="barna-info-list__val">@c.Level <span class="muted">/ 400</span></span>
+                </li>
+                <li>
+                    <span class="barna-info-list__key">Master Level</span>
+                    <span class="barna-info-list__val">@c.MasterLevel</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="text-align:center;margin-top:4px;">
+        <a asp-page="/Rankings" class="btn btn-secondary">
+            <i class="fa fa-trophy"></i> Ver Rankings completos
+        </a>
+    </div>
+}

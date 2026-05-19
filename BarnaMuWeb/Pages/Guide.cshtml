@@ -5,7 +5,7 @@
 }
 
 <div class="hero hero-small">
-    <h1>Guía del servidor</h1>
+    <h1>Guía del Servidor</h1>
     <p class="hero-subtitle">Todo lo que necesitás saber para arrancar y entender el contenido de BarnaMu.</p>
 </div>
 
@@ -16,21 +16,25 @@
 
 @if (Model.Sections.Count > 0)
 {
-    <aside class="card guide-toc">
-        <h3 style="margin-top: 0;">Contenidos</h3>
-        <ul>
+    <div class="card" style="margin-bottom:20px;">
+        <h2>Contenidos</h2>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:4px;">
             @foreach (var sec in Model.Sections)
             {
-                <li><a href="#@sec.Id">@sec.Title</a></li>
+                <li>
+                    <a href="#@sec.Id" style="display:flex;align-items:center;gap:8px;padding:6px 2px;font-size:13px;">
+                        <span style="color:var(--barna-gold);font-size:10px;">⚔</span> @sec.Title
+                    </a>
+                </li>
             }
         </ul>
-    </aside>
+    </div>
 
     @foreach (var sec in Model.Sections)
     {
         <section class="card" id="@sec.Id">
             <h2>@sec.Title</h2>
-            <div class="guide-body">
+            <div class="guide-body" style="font-size:13px;line-height:1.8;color:var(--barna-text);">
                 @Html.Raw(sec.BodyHtml)
             </div>
         </section>
@@ -41,6 +45,9 @@ else if (string.IsNullOrEmpty(Model.Error))
     <p class="muted">Todavía no hay contenido cargado en la guía. Editá <code>Content/guide.json</code>.</p>
 }
 
-<div class="card" style="background: var(--bg-card-2); border-color: var(--gold-soft);">
-    <p class="muted" style="margin: 0;">¿Falta algo importante en la guía? Pedinos que lo agreguemos por <a asp-page="/ReportBug">/reportbug</a> o por Discord. El contenido vive en <code>Content/guide.json</code> y se actualiza sin recompilar.</p>
+<div class="card" style="border-color:var(--barna-border2);">
+    <p class="muted" style="margin:0;font-size:13px;">
+        ¿Falta algo importante? Pedinos que lo agreguemos por
+        <a asp-page="/ReportBug">Reportar Bug</a> o por Discord.
+    </p>
 </div>

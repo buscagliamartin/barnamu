@@ -6,6 +6,7 @@
 
 using BarnaMu.Web.Data;
 using BarnaMu.Web.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
 
@@ -14,6 +15,20 @@ var builder = WebApplication.CreateBuilder(args);
 // Bind the BarnaMu options section to a strongly-typed object so pages and services can
 // inject IOptions<BarnaMuOptions>.
 builder.Services.Configure<BarnaMuOptions>(builder.Configuration.GetSection("BarnaMu"));
+
+// Cookie authentication — persists login across requests with a signed cookie.
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath        = "/login";
+        options.LogoutPath       = "/logout";
+        options.AccessDeniedPath = "/login";
+        options.Cookie.Name      = ".BarnaMu.Auth";
+        options.Cookie.HttpOnly  = true;
+        options.Cookie.SameSite  = SameSiteMode.Lax;
+        options.ExpireTimeSpan   = TimeSpan.FromDays(7);
+        options.SlidingExpiration = true;
+    });
 
 // Razor Pages — built-in anti-forgery is automatic for all form posts.
 builder.Services.AddRazorPages();
@@ -75,6 +90,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.UseRateLimiter();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();

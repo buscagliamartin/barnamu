@@ -1,23 +1,10 @@
 @echo off
-echo ============================================
-echo     BarnaMu - Recompilando servidor...
-echo ============================================
-echo.
+title Recompilar BarnaMu
+echo [%date% %time%] Cerrando procesos para liberar DLLs...
+taskkill /f /im MUnique.OpenMU.Startup.exe /im dotnet.exe /im msbuild.exe 2>nul
+timeout /t 2 /nobreak >nul
 
-cd C:\MuDev\OpenMU\src
-
-dotnet build MUnique.OpenMU.sln --configuration Release
-
-if %ERRORLEVEL% NEQ 0 (
-    echo.
-    echo [ERROR] La compilacion fallo. Revisa los errores arriba.
-    pause
-    exit /b 1
-)
-
-echo.
-echo ============================================
-echo     Compilacion exitosa!
-echo ============================================
-echo.
+cd /d C:\MuDev\OpenMU\src\Startup
+rd /s /q bin obj 2>nul
+dotnet build --configuration Release
 pause
