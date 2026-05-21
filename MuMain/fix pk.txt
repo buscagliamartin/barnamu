@@ -1,0 +1,57 @@
+Why It Happened
+In Mu Online's client, before any area skill is fired, the code sets g_MovementSkill.m_iTarget to tell the skill system "attack this character." That target index then flows into getTargetCharacterKey(), which resolves it to a network key sent to the server in the attack packet.
+Every class — Dark Knight, Dark Wizard, Magic Gladiator, Rage Fighter — correctly gates this assignment behind if (CheckAttack()), which validates PK state, guild relations, duel state, CTRL key, and safe zone before allowing the target to be set. If CheckAttack() returns false (neutral player, no CTRL held), m_iTarget is forced to -1, the packet goes out with TargetKey = 0xFFFF (no target), and the server applies no PvP damage.
+Elf and Summoner were missing this gate in three places in AttackElf() and AttackWizard(). They unconditionally wrote m_iTarget = SelectedCharacter regardless of PvP rules, so area skills like Multi Shot, Triple Shot, and Lightning Shock always sent a real target key to the server — even on neutral players without CTRL — and the server applied damage.
+What the Fix Does
+Three unconditional assignments were replaced with the same if (CheckAttack()) gate every other class already uses. If the target is not valid under current PvP rules, m_iTarget is set to -1 instead, the packet resolves to no target, and the server treats it as a ground-only cast that deals no PvP damage. Elf and Summoner now behave identically to every other class.
+
+Here are the exact three replacements to make in ZzzInterface.cpp:
+Fix 1 — line 1990:
+cpp// BEFORE
+    g_MovementSkill.m_bMagic = FALSE;
+    g_MovementSkill.m_iSkill = iSkill;
+    g_MovementSkill.m_iTarget = SelectedCharacter;
+    float Distance = gSkillManager.GetSkillDistance(iSkill, c) * 1.2f;
+
+// AFTER
+    g_MovementSkill.m_bMagic = FALSE;
+    g_MovementSkill.m_iSkill = iSkill;
+    if (CheckAttack())
+        g_MovementSkill.m_iTarget = SelectedCharacter;
+    else
+        g_MovementSkill.m_iTarget = -1;
+    float Distance = gSkillManager.GetSkillDistance(iSkill, c) * 1.2f;
+Fix 2 — line 4894:
+cpp// BEFORE
+        ZeroMemory(&g_MovementSkill, sizeof(g_MovementSkill));
+        g_MovementSkill.m_bMagic = TRUE;
+        g_MovementSkill.m_iSkill = Hero->CurrentSkill;
+        g_MovementSkill.m_iTarget = SelectedCharacter;
+    }
+    if (!CheckTile(c, o, Distance))
+
+// AFTER
+        ZeroMemory(&g_MovementSkill, sizeof(g_MovementSkill));
+        g_MovementSkill.m_bMagic = TRUE;
+        g_MovementSkill.m_iSkill = Hero->CurrentSkill;
+        if (CheckAttack())
+            g_MovementSkill.m_iTarget = SelectedCharacter;
+        else
+            g_MovementSkill.m_iTarget = -1;
+    }
+    if (!CheckTile(c, o, Distance))
+Fix 3 — line 6271:
+cpp// BEFORE
+        g_MovementSkill.m_bMagic = TRUE;
+        g_MovementSkill.m_iSkill = Hero->CurrentSkill;
+        g_MovementSkill.m_iTarget = SelectedCharacter;
+        switch (Skill)
+
+// AFTER
+        g_MovementSkill.m_bMagic = TRUE;
+        g_MovementSkill.m_iSkill = Hero->CurrentSkill;
+        if (CheckAttack())
+            g_MovementSkill.m_iTarget = SelectedCharacter;
+        else
+            g_MovementSkill.m_iTarget = -1;
+        switch (Skill)
