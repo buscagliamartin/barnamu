@@ -1,0 +1,31 @@
+The fix is in BuffTarget — pass bTargetRequired = false for self-buff skills so SimulateSkill sets TargetX = Hero->PositionX and TargetY = Hero->PositionY:
+In MuHelper.cpp, replace:
+cpp        if ((iBuffSkill == AT_SKILL_ATTACK
+            || iBuffSkill == AT_SKILL_ATTACK_STR)
+            && (!g_isCharacterBuff((&pTargetChar->Object), eBuff_Attack) || m_bTimerActivatedBuffOngoing))
+        {
+            return SimulateSkill(iBuffSkill, true, pTargetChar->Key);
+        }
+
+        if ((iBuffSkill == AT_SKILL_DEFENSE
+            || iBuffSkill == AT_SKILL_DEFENSE_STR
+            || iBuffSkill == AT_SKILL_DEFENSE_MASTERY)
+            && (!g_isCharacterBuff((&pTargetChar->Object), eBuff_Defense) || m_bTimerActivatedBuffOngoing))
+        {
+            return SimulateSkill(iBuffSkill, true, pTargetChar->Key);
+        }
+With:
+cpp        if ((iBuffSkill == AT_SKILL_ATTACK
+            || iBuffSkill == AT_SKILL_ATTACK_STR)
+            && (!g_isCharacterBuff((&pTargetChar->Object), eBuff_Attack) || m_bTimerActivatedBuffOngoing))
+        {
+            return SimulateSkill(iBuffSkill, false, pTargetChar->Key);
+        }
+
+        if ((iBuffSkill == AT_SKILL_DEFENSE
+            || iBuffSkill == AT_SKILL_DEFENSE_STR
+            || iBuffSkill == AT_SKILL_DEFENSE_MASTERY)
+            && (!g_isCharacterBuff((&pTargetChar->Object), eBuff_Defense) || m_bTimerActivatedBuffOngoing))
+        {
+            return SimulateSkill(iBuffSkill, false, pTargetChar->Key);
+        }

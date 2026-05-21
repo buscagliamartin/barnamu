@@ -1,0 +1,86 @@
+## Project Infinity Arrows Modifications Summary
+
+### 1. Project Objectives & Overview
+
+- Implement a **permanent passive Infinity Arrow** mechanic for Muse Elf / High Elf characters who complete the Level 220 Marlon quest, removing the requirement to equip arrows or re-cast the skill buff.
+- Changes span both the **MuMain C++ client** (skill gating, UI state) and the **OpenMU C# server** (persistent magic effect application on login).
+- No database schema changes required; existing quest reward structure (`QuestRewardType.Skill` → InfinityArrow skill #77) is preserved.
+
+---
+
+### 2. Infrastructure & Environment Fixes
+
+- Identified that `GetEquipedBowType_Skill()` requires **both** bow and arrows to return non-`BOWTYPE_NONE`, whereas `GetEquipedBowType()` requires only the bow. This distinction caused Multi Shot to remain blocked at the execution layer even after arrow-check bypass was applied.
+- Diagnosed MSVC macro expansion precedence bug: `g_isCharacterBuff(&Hero->Object, ...)` expands to `&Hero->Object->m_BuffMap` (parsed as address-of dereference on non-pointer `OBJECT`). Fixed by wrapping argument: `(&Hero->Object)`.
+
+---
+
+### 3. Database Modifications (SQL)
+
+_No SQL modifications in this session. Existing quest data confirmed:_
+
+| Table | Key | Value |
+|---|---|---|
+| `QuestDefinition` | `Id` | `00000700-0000-0002-0a00-000000000000` |
+| `QuestReward` | `RewardType` | `9` (Skill) → `SkillRewardId` = InfinityArrow (skill #77) |
+| `Skill` | `Number` | `77`, `Name` = "Infinity Arrow", `MagicEffectDefId` = `06ff9d01-...` |
+
+---
+
+### 4. Code Architecture & Logic Changes
+
+#### C++ Client — `MuMain`
+
+- **File:** `src/source/Engine/Object/ZzzInterface.h`
+  - **Context:** Free function declarations
+  - **Problem:** No reusable predicate existed for "Elf has passive Infinity Arrow active."
+  - **Solution:** Added `bool ElfHasInfinityArrow();` declaration.
+
+- **File:** `src/source/Engine/Object/ZzzInterface.cpp`
+  - **Method:** `ElfHasInfinityArrow()` *(new)*
+  - **Problem:** Inline skill-array scan in `CheckArrow()` was duplicated and fragile.
+  - **Solution:** Extracted into standalone helper; checks `CLASS_ELF` then `g_isCharacterBuff((&Hero->Object), eBuff_InfinityArrow)` — driven by server buff state, not local skill array.
+
+- **File:** `src/source/Engine/Object/ZzzInterface.cpp`
+  - **Method:** `CheckArrow()`
+  - **Problem:** Without a bow/arrows equipped, all Elf bow skills were client-blocked regardless of passive state.
+  - **Solution:** Added early-return `if (ElfHasInfinityArrow()) return true;` at function top.
+
+- **File:** `src/source/Engine/Object/ZzzInterface.cpp`
+  - **Method:** `SkillElf()` — `case AT_SKILL_MULTI_SHOT`
+  - **Problem:** `GetEquipedBowType_Skill() == BOWTYPE_NONE` hard-blocked Multi Shot execution even when `CheckArrow()` passed.
+  - **Solution:** Condition changed to `GetEquipedBowType_Skill() == BOWTYPE_NONE && !ElfHasInfinityArrow()`.
+
+- **File:** `src/source/UI/NewUI/HUD/NewUIMainFrameWindow.cpp`
+  - **Method:** Skill icon render loop — `case AT_SKILL_MULTI_SHOT`
+  - **Problem:** Multi Shot icon was grayed out (`bCantSkill = true`) when no arrows equipped, regardless of passive.
+  - **Solution:** Condition changed to `GetEquipedBowType_Skill() == BOWTYPE_NONE && !ElfHasInfinityArrow()`.
+
+#### C# Server — `OpenMU`
+
+- **File:** `src/GameLogic/Player.cs`
+  - **Method:** Class field — `InfinityArrowPassiveEffect` *(new static)*
+  - **Problem:** No server-side mechanism existed to permanently apply the Infinity Arrow magic effect without a castable buff with expiry.
+  - **Solution:** Added `private static readonly MagicEffectDefinition InfinityArrowPassiveEffect` (inline, pattern mirrors existing `GMEffect`): `Number = 6` (MagicEffectNumber.InfiniteArrow), `StopByDeath = false`, `InformObservers = true`. No DB entry or UpdatePlugIn required.
+
+- **File:** `src/GameLogic/Player.cs`
+  - **Method:** `ApplyInfinityArrowPassiveAsync()` *(new private)*
+  - **Problem:** No hook existed to apply a permanent `AmmunitionConsumptionRate *= 0` effect on login for qualifying characters.
+  - **Solution:** Checks `SkillList.ContainsSkill(77)`; if true, applies `MagicEffect` with `ConstantElement(0f, AggregateType.Multiplicate)` targeting `Stats.AmmunitionConsumptionRate`, duration `int.MaxValue` ms.
+
+- **File:** `src/GameLogic/Player.cs`
+  - **Method:** `SelectCharacterAsync()` — post-GM-mark block
+  - **Problem:** `ApplyInfinityArrowPassiveAsync()` had no call site.
+  - **Solution:** Added `await this.ApplyInfinityArrowPassiveAsync()` after the GM mark block; fires once per login, refreshes on re-login via `MagicEffectsList.UpdateEffect()`.
+
+---
+
+### 5. Summary of Gameplay Impact
+
+- Muse Elf / High Elf characters who complete the Marlon Level 220 quest permanently receive Infinity Arrow as a passive: **no arrows need to be equipped at any time**.
+- **Basic attack, Triple Shot, Ice Arrow, Penetration:** bypass `CheckArrow()` entirely via `ElfHasInfinityArrow()` → no arrow-equipped requirement.
+- **Multi Shot:** UI icon no longer grays out; execution-path bow-type guard bypassed; skill fires normally without arrows.
+- **Server enforcement:** `AmmunitionConsumptionRate` is set to `0` on login via `MagicEffect`; server-side skill handlers (`TargetedSkillDefaultPlugin`, `AreaSkillAttackAction`) check `ConsumptionRate > AmmunitionAmount` → `0 > 0` is always false → skills are never server-blocked.
+- **Death persistence:** Effect has `StopByDeath = false`; survives death without requiring re-cast or re-login.
+- **Re-login refresh:** `MagicEffectsList.AddEffectAsync` calls `UpdateEffect` if effect already active, resetting the `~24.8 day` timer harmlessly.
+- **Non-Elf characters:** Entirely unaffected; `ElfHasInfinityArrow()` returns false immediately on class check.

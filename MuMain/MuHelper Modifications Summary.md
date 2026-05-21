@@ -1,0 +1,134 @@
+## Project MuHelper Modifications Summary
+
+### 1. Project Objectives & Overview
+
+- Extended the MuHelper (bot/automation) system of an open-source MU Online Season 5/6 C++ client (`sven-n/MuMain` fork) with new features: basic attack fallback, elf buff rotation, static loot pickup, party request automation, F8 hotkey toggle, and original-position enforcement.
+- All changes target the Win32/OpenGL client codebase compiled via CMake with MinGW i686 or MSVC x86 (preset `windows-x86-release`).
+
+---
+
+### 2. Infrastructure & Environment Fixes
+
+- **Build preset**: Established `cmake --build --preset windows-x86-release` as the canonical build command; debug preset was incorrectly used early on and corrected.
+- **SerDe round-trip**: Config fields `bStaticPickup` and `iPartyRequestMode` were not persisted across sessions because they had no mapping in `PRECEIVE_MUHELPER_DATA`. Fixed by repurposing `_UnusedPadding[0]` and `_UnusedPadding[1]`.
+
+---
+
+### 3. Database Modifications (SQL)
+
+_Not applicable — project is a game client; no database layer modified._
+
+---
+
+### 4. Code Architecture & Logic Changes (C++)
+
+---
+
+#### `MuHelperData.h`
+
+- **Addition:** `EPartyRequestMode` enum (`PARTY_REQUEST_NORMAL=0`, `PARTY_REQUEST_AUTO=1`, `PARTY_REQUEST_OFF=2`)
+- **Addition:** `MUHELPER_BASIC_ATTACK_ID = 0xFFFFu` sentinel constant
+- **Addition:** `bool bStaticPickup`, `int iPartyRequestMode` fields to `ConfigData`
+
+---
+
+#### `MuHelperData.cpp`
+
+- **Method:** `ConfigDataSerDe::Serialize`
+  - **Problem:** New config fields had no wire representation.
+  - **Solution:** Pack `bStaticPickup` → `_UnusedPadding[0]`, `iPartyRequestMode` → `_UnusedPadding[1]`.
+
+- **Method:** `ConfigDataSerDe::Deserialize`
+  - **Problem:** Same fields silently lost on load.
+  - **Solution:** Unpack from `_UnusedPadding[0/1]` symmetrically.
+
+---
+
+#### `MuHelper.h`
+
+- **Addition:** `int SimulateBasicAttack()` private method declaration.
+
+---
+
+#### `MuHelper.cpp`
+
+- **Globals:** Added `extern int ActionTarget` and namespace alias `int& ActionTarget = ::ActionTarget` to expose the engine's attack target for direct manipulation.
+
+- **Method:** `SelectAttackSkill()`
+  - **Problem:** Empty skill slot 0 had no fallback; helper did nothing.
+  - **Solution:** When `aiSkill[0] == 0`, return `MUHELPER_BASIC_ATTACK_ID` to trigger physical attack path.
+
+- **Method:** `SimulateBasicAttack()` — multiple iterations:
+  - **Problem (v1):** `CheckTile(Hero, &Hero->Object, 1.5f)` pre-gate was too tight (sword needs 1.8f, bow 6.0f); never set `ActionTarget`, so `Action()` never fired.
+  - **Problem (v2):** Even after removing the range pre-check, `Attacking=1` only routes through the engine's input loop when `g_pOption->IsAutoAttack()` is enabled — unreliable.
+  - **Solution (final):** Remove manual PathFinding block; set `ActionTarget`, `Attacking=1`, `Hero->MovementType=MOVEMENT_ATTACK`, then **call `Action(Hero, &Hero->Object, true)` directly**, bypassing the `IsAutoAttack()` gate entirely. For `bReturnToOriginalPosition`, skip targets outside `m_iHuntingDistance` via `CheckTile`.
+
+- **Method:** `Buff()` — solo path
+  - **Problem:** `if (!BuffTarget(...)) return 0` blocked `Attack()` every tick while hero was animating.
+  - **Solution:** `if (BuffTarget(...) == 0) return 1` — cast failure no longer blocks the work loop; buff index advances only on success.
+
+- **Method:** `Buff()` — party path
+  - **Problem:** `m_iCurrentBuffPartyIndex` reset to 0 every tick, firing post-index-advance every single call.
+  - **Solution:** Index advance moved inside the `if (m_iCurrentBuffPartyIndex == 0)` post-wrap guard; party member iteration now progresses correctly.
+
+- **Method:** `SimulateSkill()` — `bReturnToOriginalPosition` guard
+  - **Problem:** Hero kept moving to attack targets outside range even with "return to position" enabled.
+  - **Solution:** When `!bTargetNear || !bNoWall` and `bReturnToOriginalPosition` is set, return 1 immediately without PathFinding.
+
+- **Method:** `ObtainItem()` — static pickup mode
+  - **Problem:** In static mode, hero moved to items rather than picking them in place; range check used `CheckTile(1.5f)` which blocked items within configured range.
+  - **Solution:** When `bStaticPickup`, pick items within `m_iObtainingDistance` via `SendPickupItemRequest` without any movement; skip items outside range via `DeleteItem`.
+
+- **Method:** `SelectItemToObtain()`
+  - **Problem:** Pre-filter used `iMinDistance = m_config.iObtainingRange + 1` (raw tile value), excluding items at diagonal positions that `ObtainItem` would have picked (threshold `m_iObtainingDistance = ceil(iRange * √2)`).
+  - **Solution:** Changed initial threshold to `m_iObtainingDistance + 1` for consistent distance semantics.
+
+---
+
+#### `NewUIMuHelper.cpp`
+
+- **Method:** `PrepareSkillsToRender()`
+  - **Problem:** "Basic Attack" was a selectable entry in the skill list popup, causing confusion and broken icon rendering.
+  - **Solution:** Removed `BASIC_ATTACK_SKILL_ENTRY` push; basic attack is now an implicit fallback, not a user-selectable skill.
+
+- **Method:** `RenderIconList()`
+  - **Problem:** Assigned slot holding `BASIC_ATTACK_SKILL_ENTRY` (65535) failed `< MAX_SKILLS` check → blank box rendered.
+  - **Solution:** Added explicit branch: if `iAssigned == BASIC_ATTACK_SKILL_ENTRY`, render `IMAGE_NON_SKILL1` icon.
+
+- **Method:** `CNewUIMuHelperSkillList::Update()` / `RenderSkillInfo()`
+  - **Problem:** Tooltip system called `UI::Skills::Tooltip::Render(Type)` with skill-type values instead of slot indices → wrong tooltips shown for all skills.
+  - **Solution:** Added `slotIndex` field to `cSkillIcon` struct and parallel `m_aiSkillSlots` vector; pass slot index to `Tooltip::Render`. For basic attack slot (index -1), render a custom "Basic Attack" label via `g_pRenderText`.
+
+- **Checkboxes:** Added `CHECKBOX_ID_STATIC_PICKUP`, `CHECKBOX_ID_PARTY_REQUEST_NORMAL/AUTO/OFF`; wired into `ApplyConfigFromCheckbox()`, `ApplyConfig()`, `Reset()`, `LoadSavedConfig()`.
+
+- **Party request radio group:** Mutual exclusion enforced in `UpdateMouseEvent` — selecting one mode unchecks the other two.
+
+- **Bug fix:** `CHECKBOX_ID_AUTO_ACCEPT_FRIEND` and `CHECKBOX_ID_AUTO_ACCEPT_GUILD` were missing from `ApplyConfigFromCheckbox()` switch; added.
+
+---
+
+#### `WSclient.cpp`
+
+- **Method:** `ReceiveParty()`
+  - **Problem:** No automatic party accept/reject logic existed.
+  - **Solution:** Check `iPartyRequestMode`; auto-accept (`PARTY_REQUEST_AUTO`) or silently ignore (`PARTY_REQUEST_OFF`).
+
+---
+
+#### `NewUIHeroPositionInfo.cpp`
+
+- **Method:** `UpdateKeyEvent()`
+  - **Problem:** No keyboard shortcut to toggle MuHelper.
+  - **Solution:** `VK_F8` press calls `MUHelper::g_MuHelper.Toggle()`.
+
+---
+
+### 5. Summary of Gameplay Impact
+
+- **Basic attack fallback:** Helper attacks physically when no skill is assigned to slot 0, independent of the client's Auto Attack option setting.
+- **Elf buff rotation:** Buff cycling no longer blocks the attack loop on cast failure; index advances correctly without skipping.
+- **Static loot pickup:** Character never moves to collect items; picks up everything within the configured obtaining range in place. Range filter is now consistent (diagonal Euclidean) between item selection and pickup execution.
+- **Original position enforcement:** With "Return to Position" enabled, hero ignores targets outside hunting range for both skill attacks and basic attacks; no PathFinding is issued.
+- **Party request automation:** Three modes — Normal (prompt user), Auto (accept silently), Off (reject silently) — persisted across sessions via network packet.
+- **F8 toggle:** MuHelper can be started/stopped from keyboard without opening the UI.
+- **Skill tooltips:** All skill icons in the helper popup now display correct tooltips keyed by slot index, not skill type value.
