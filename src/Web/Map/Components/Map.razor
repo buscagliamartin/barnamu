@@ -1,0 +1,77 @@
+﻿@using Nito.AsyncEx
+@using MUnique.OpenMU.Web.Map.Properties
+
+@implements IAsyncDisposable
+@implements IDisposable
+
+<div class="livemap">
+    <LiveMap
+        Id="@this.MapFactory.GetMapContainerIdentifier(this.Server.Id, this.MapId)"
+        MapController="@this._lazyController"/>
+    @if (this._controller is { })
+    {
+        <div class="livemap-players">
+            <div><MapPlayerList MapController="@this._controller"/></div>
+            <div id="selected_info" style="display: none;" class="card mt-2 shadow-sm">
+                <div class="card-body py-2 px-3">
+                    <h6 class="card-title mb-1 text-truncate" id="objectData_name"></h6>
+                    <div class="d-flex align-items-center">
+                        <small class="text-muted mr-3"><i class="oi oi-person mr-1"></i>ID: <span id="objectData_id"></span></small>
+                        <small class="text-muted"><i class="oi oi-map-marker mr-1"></i>Position: (<span id="objectData_x"></span>, <span id="objectData_y"></span>)</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+
+    /// <summary>
+    /// Gets or sets the map factory.
+    /// </summary>
+    [Inject]
+    IMapFactory MapFactory { get; set; } = null!;
+
+    /// <summary>
+    /// Gets or sets the server on which the map is hosted.
+    /// </summary>
+    [Parameter]
+    public IObservableGameServer Server { get; set; } = null!;
+
+    /// <summary>
+    /// Gets or sets the map id.
+    /// </summary>
+    [Parameter]
+    public Guid MapId { get; set; }
+
+    private IMapController? _controller;
+
+    private AsyncLazy<IMapController>? _lazyController;
+
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        _lazyController = new AsyncLazy<IMapController>(async () =>
+        {
+            this._controller = await this.MapFactory.CreateMapAsync(this.Server, this.MapId);
+            await this.InvokeAsync(this.StateHasChanged);
+            return this._controller;
+        });
+        base.OnInitialized();
+    }
+
+    /// <inheritdoc />
+    public void Dispose() => Task.Run(this.DisposeAsync).Wait();
+
+    /// <inheritdoc />
+    public async ValueTask DisposeAsync()
+    {
+        if (this._controller is IAsyncDisposable disposable)
+        {
+            await disposable.DisposeAsync();
+        }
+
+        this._controller = null;
+    }
+}
