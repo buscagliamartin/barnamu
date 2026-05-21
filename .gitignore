@@ -6,6 +6,7 @@
 BarnaMu-Client/
 Client/
 *.exe.bak
+/MuMain/out
 
 # === .NET build output ===
 bin/

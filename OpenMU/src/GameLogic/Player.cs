@@ -50,6 +50,15 @@ public class Player : AsyncDisposable, IBucketMapObserver, IAttackable, IAttacke
         StopByDeath = false,
     };
 
+    // MagicEffectNumber.InfiniteArrow = 6; kept as literal to avoid a Persistence.Initialization dependency.
+    private static readonly MagicEffectDefinition InfinityArrowPassiveEffect = new GMMagicEffectDefinition
+    {
+        InformObservers = true,
+        Name = "Infinity Arrow (Passive)",
+        Number = 6,
+        StopByDeath = false,
+    };
+
     private readonly AsyncLock _moveLock = new();
     private readonly AsyncLock _experienceLock = new();
 
@@ -2539,6 +2548,8 @@ public class Player : AsyncDisposable, IBucketMapObserver, IAttackable, IAttacke
             GMEffect)).ConfigureAwait(false);
         }
 
+        await this.ApplyInfinityArrowPassiveAsync().ConfigureAwait(false);
+
         // Restore previously opened Store
         if (selectedCharacter.IsStoreOpened
             && !string.IsNullOrWhiteSpace(selectedCharacter.StoreName)
@@ -2820,6 +2831,29 @@ public class Player : AsyncDisposable, IBucketMapObserver, IAttackable, IAttacke
             var cancelAction = new TradeCancelAction();
             await cancelAction.CancelTradeAsync(this).ConfigureAwait(false);
         }
+    }
+
+    /// <summary>
+    /// Applies a permanent Infinity Arrow passive effect if the character has learned the skill.
+    /// Called once on character selection; the effect persists through death (<see cref="InfinityArrowPassiveEffect"/>
+    /// has <c>StopByDeath = false</c>) and is refreshed on every login.
+    /// </summary>
+    private async ValueTask ApplyInfinityArrowPassiveAsync()
+    {
+        const ushort infinityArrowSkillId = 77;
+        if (this.SkillList?.ContainsSkill(infinityArrowSkillId) != true)
+        {
+            return;
+        }
+
+        var zeroConsumption = new MagicEffect.ElementWithTarget(
+            new ConstantElement(0f, AggregateType.Multiplicate),
+            Stats.AmmunitionConsumptionRate);
+
+        await this.MagicEffectList.AddEffectAsync(new MagicEffect(
+            TimeSpan.FromMilliseconds((double)int.MaxValue),
+            InfinityArrowPassiveEffect,
+            zeroConsumption)).ConfigureAwait(false);
     }
 
     /// <summary>
