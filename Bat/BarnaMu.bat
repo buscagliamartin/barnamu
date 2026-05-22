@@ -271,8 +271,9 @@ if not "%DIFF%"=="1" (
     exit /b %DIFF%
 )
 
-echo [git] Staged changes:
-git status --short
+set "CHANGE_SUMMARY="
+for /F "delims=" %%s in ('git diff --cached --shortstat') do set "CHANGE_SUMMARY=%%s"
+if defined CHANGE_SUMMARY echo [git] !CHANGE_SUMMARY!
 
 echo [git] Committing...
 git commit -m "%MSG%" --quiet
@@ -283,8 +284,22 @@ if errorlevel 1 (
 )
 
 echo [git] Pushing...
-git push --quiet
-set "RC=%ERRORLEVEL%"
+set "BRANCH="
+for /F "delims=" %%b in ('git branch --show-current 2^>nul') do set "BRANCH=%%b"
+if "!BRANCH!"=="" (
+    popd >nul
+    echo [error] Cannot push from a detached HEAD state.
+    exit /b 1
+)
+
+git rev-parse --abbrev-ref --symbolic-full-name "@{u}" >nul 2>nul
+if errorlevel 1 (
+    echo [git] Setting upstream: origin/!BRANCH!
+    git push --quiet --set-upstream origin "!BRANCH!" >nul
+) else (
+    git push --quiet >nul
+)
+set "RC=!ERRORLEVEL!"
 popd >nul
 if not "%RC%"=="0" (
     echo [error] git push failed with code %RC%.
@@ -330,3 +345,4 @@ exit /b %ERRORLEVEL%
 :show_port_owner
 powershell -NoProfile -ExecutionPolicy Bypass -Command "$port=[int]'%~1'; $conns=Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue; if (-not $conns) { Write-Host ('[ok] Port ' + $port + ' is free.'); exit 0 }; $conns | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { $proc=Get-Process -Id $_ -ErrorAction SilentlyContinue; if ($proc) { Write-Host ('[info] Port ' + $port + ' is used by PID ' + $proc.Id + ' (' + $proc.ProcessName + ').'); } else { Write-Host ('[info] Port ' + $port + ' is used by PID ' + $_ + '.'); } }"
 exit /b 0
+

@@ -142,6 +142,25 @@ BarnaMu.bat push "your commit message"
 
 This runs a database backup first, stages changed files, commits only if there are changes, then pushes to GitHub.
 
+If the current Git branch has no upstream branch yet, the push command should automatically run the equivalent of:
+
+```bat
+git push --set-upstream origin <current-branch>
+```
+
+Normal output should stay compact:
+
+```bat
+[backup] ...
+[git] Preparing commit...
+[git] 12 files changed, 100 insertions(+), 20 deletions(-)
+[git] Committing...
+[git] Pushing...
+[ok] Push completed.
+```
+
+It should no longer print every staged file path during normal pushes.
+
 ---
 
 ### Check running processes
