@@ -18,8 +18,6 @@ using namespace MUHelper;
 enum ECheckBoxId: uint16_t
 {
     CHECKBOX_ID_POTION = 0,
-    CHECKBOX_ID_LONG_DISTANCE,
-    CHECKBOX_ID_ORIG_POSITION,
     CHECKBOX_ID_SKILL2_DELAY,
     CHECKBOX_ID_SKILL2_CONDITION,
     CHECKBOX_ID_SKILL3_DELAY,
@@ -45,28 +43,22 @@ enum ECheckBoxId: uint16_t
     CHECKBOX_ID_DR_ATTACK_AUTO,
     CHECKBOX_ID_DR_ATTACK_TOGETHER,
 
-    // Loot tab
-    CHECKBOX_ID_STATIC_PICKUP,
-
     // Other Settings tab — party request mode (radio group)
     CHECKBOX_ID_PARTY_REQUEST_NORMAL,
     CHECKBOX_ID_PARTY_REQUEST_AUTO,
     CHECKBOX_ID_PARTY_REQUEST_OFF,
+    CHECKBOX_ID_OFFLEVEL,
 };
 
 enum EButtonId : uint16_t
 {
-    BUTTON_ID_HUNT_RANGE_ADD = 0,
-    BUTTON_ID_HUNT_RANGE_MINUS,
-    BUTTON_ID_SKILL2_CONFIG,
+    BUTTON_ID_SKILL2_CONFIG = 2,
     BUTTON_ID_SKILL3_CONFIG,
     BUTTON_ID_POTION_CONFIG_ELF,
     BUTTON_ID_POTION_CONFIG_SUMMY,
     BUTTON_ID_POTION_CONFIG,
     BUTTON_ID_PARTY_CONFIG,
     BUTTON_ID_PARTY_CONFIG_ELF,
-    BUTTON_ID_PICK_RANGE_ADD,
-    BUTTON_ID_PICK_RANGE_MINUS,
     BUTTON_ID_ADD_OTHER_ITEM,
     BUTTON_ID_DELETE_OTHER_ITEM,
     BUTTON_ID_SAVE_CONFIG,
@@ -86,17 +78,12 @@ enum ESkillSlotImg : uint16_t
 
 enum ETextBoxImg : uint16_t
 {
-    TEXTBOX_IMG_DISTANCE_TIME = 6,
     TEXTBOX_IMG_SKILL1_TIME = 7,
     TEXTBOX_IMG_SKILL2_TIME = 8,
     TEXTBOX_IMG_ADD_EXTRA_ITEM = 9
 };
 
-constexpr int BITMAP_DISTANCE_BEGIN = BITMAP_INTERFACE_CRYWOLF_BEGIN + 33;
-
 constexpr int MAX_NUMBER_DIGITS = 3;
-constexpr int MAX_HUNTING_RANGE = 6;
-constexpr int MAX_OBTAINING_RANGE = 8;
 
 // Cast the sentinel so it can be used as a map key / skill-list entry
 constexpr int BASIC_ATTACK_SKILL_ENTRY = static_cast<int>(MUHelper::MUHELPER_BASIC_ATTACK_ID);
@@ -115,6 +102,36 @@ enum ESkillSlot
 using namespace SEASON3B;
 
 ConfigData _TempConfig;
+
+static bool IsOfflevelVipVisible()
+{
+    if (Hero == NULL)
+    {
+        return false;
+    }
+
+    return g_isCharacterBuff((&Hero->Object), eBuff_PcRoomSeal1)
+        || g_isCharacterBuff((&Hero->Object), eBuff_PcRoomSeal2)
+        || g_isCharacterBuff((&Hero->Object), eBuff_PcRoomSeal3)
+        || g_isCharacterBuff((&Hero->Object), eBuff_Seal1)
+        || g_isCharacterBuff((&Hero->Object), eBuff_Seal2)
+        || g_isCharacterBuff((&Hero->Object), eBuff_Seal3)
+        || g_isCharacterBuff((&Hero->Object), eBuff_Seal4)
+        || g_isCharacterBuff((&Hero->Object), eBuff_AscensionSealMaster)
+        || g_isCharacterBuff((&Hero->Object), eBuff_WealthSealMaster)
+        || g_isCharacterBuff((&Hero->Object), eBuff_NewWealthSeal);
+}
+
+static bool IsVipOnlyCheckBox(int iCheckboxId)
+{
+    return iCheckboxId == CHECKBOX_ID_OFFLEVEL;
+}
+
+static void SendOfflevelCommand()
+{
+    wchar_t wsCommand[] = L"/offlevel";
+    SocketClient->ToGameServer()->SendPublicChatMessage(Hero->ID, wsCommand);
+}
 
 CNewUIMuHelper::CNewUIMuHelper()
 {
@@ -189,8 +206,6 @@ void CNewUIMuHelper::InitButtons()
     m_TabBtn.ChangeRadioButtonInfo(true, m_Pos.x + 10.f, m_Pos.y + 48.f, 56, 22);
     m_TabBtn.ChangeFrame(m_iCurrentOpenTab);
 
-    InsertButton(IMAGE_CHAINFO_BTN_STAT, m_Pos.x + 56, m_Pos.y + 78, 16, 15, 0, 0, 0, 0, L"", L"", BUTTON_ID_HUNT_RANGE_ADD, 0);
-    InsertButton(IMAGE_MACROUI_HELPER_RAGEMINUS, m_Pos.x + 56, m_Pos.y + 97, 16, 15, 0, 0, 0, 0, L"", L"", BUTTON_ID_HUNT_RANGE_MINUS, 0);
     InsertButton(IMAGE_CLEARNESS_BTN, m_Pos.x + 132, m_Pos.y + 191, 38, 24, 1, 0, 1, 1, GlobalText[3502], L"", BUTTON_ID_SKILL2_CONFIG, 0); //-- skill 2
     InsertButton(IMAGE_CLEARNESS_BTN, m_Pos.x + 132, m_Pos.y + 243, 38, 24, 1, 0, 1, 1, GlobalText[3502], L"", BUTTON_ID_SKILL3_CONFIG, 0); //-- skill 3
     InsertButton(IMAGE_CLEARNESS_BTN, m_Pos.x + 132, m_Pos.y + 84, 38, 24, 1, 0, 1, 1, GlobalText[3502], L"", BUTTON_ID_POTION_CONFIG_ELF, 0); //-- Buff
@@ -199,8 +214,6 @@ void CNewUIMuHelper::InitButtons()
     InsertButton(IMAGE_CLEARNESS_BTN, m_Pos.x + 17, m_Pos.y + 234, 38, 24, 1, 0, 1, 1, GlobalText[3502], L"", BUTTON_ID_PARTY_CONFIG, 0); //-- potion
     InsertButton(IMAGE_CLEARNESS_BTN, m_Pos.x + 17, m_Pos.y + 234, 38, 24, 1, 0, 1, 1, GlobalText[3502], L"", BUTTON_ID_PARTY_CONFIG_ELF, 0); //-- potion
 
-    InsertButton(IMAGE_CHAINFO_BTN_STAT, m_Pos.x + 56, m_Pos.y + 78, 16, 15, 0, 0, 0, 0, L"", L"", BUTTON_ID_PICK_RANGE_ADD, 1);
-    InsertButton(IMAGE_MACROUI_HELPER_RAGEMINUS, m_Pos.x + 56, m_Pos.y + 97, 16, 15, 0, 0, 0, 0, L"", L"", BUTTON_ID_PICK_RANGE_MINUS, 1);
     InsertButton(IMAGE_CLEARNESS_BTN, m_Pos.x + 132, m_Pos.y + 208, 38, 24, 1, 0, 1, 1, GlobalText[3505], L"", BUTTON_ID_ADD_OTHER_ITEM, 1); //-- Buff
     InsertButton(IMAGE_CLEARNESS_BTN, m_Pos.x + 132, m_Pos.y + 309, 38, 24, 1, 0, 1, 1, GlobalText[3506], L"", BUTTON_ID_DELETE_OTHER_ITEM, 1); //-- Buff
     //--
@@ -208,11 +221,7 @@ void CNewUIMuHelper::InitButtons()
     InsertButton(IMAGE_IGS_BUTTON, m_Pos.x + 65, m_Pos.y + 388, 52, 26, 1, 0, 1, 1, GlobalText[3504], L"", BUTTON_ID_INIT_CONFIG, -1);
     InsertButton(IMAGE_BASE_WINDOW_BTN_EXIT, m_Pos.x + 20, m_Pos.y + 388, 36, 29, 0, 0, 0, 0, L"", GlobalText[388], BUTTON_ID_EXIT_CONFIG, -1);
 
-    RegisterBtnCharacter(0xFF, BUTTON_ID_HUNT_RANGE_ADD);
-    RegisterBtnCharacter(0xFF, BUTTON_ID_HUNT_RANGE_MINUS);
     RegisterBtnCharacter(0xFF, BUTTON_ID_SKILL2_CONFIG);
-    RegisterBtnCharacter(0xFF, BUTTON_ID_PICK_RANGE_ADD);
-    RegisterBtnCharacter(0xFF, BUTTON_ID_PICK_RANGE_MINUS);
     RegisterBtnCharacter(0xFF, BUTTON_ID_ADD_OTHER_ITEM);
     RegisterBtnCharacter(0xFF, BUTTON_ID_DELETE_OTHER_ITEM);
     RegisterBtnCharacter(0xFF, BUTTON_ID_SAVE_CONFIG);
@@ -244,8 +253,6 @@ void CNewUIMuHelper::InitButtons()
 void CNewUIMuHelper::InitCheckBox()
 {
     InsertCheckBox(IMAGE_CHECKBOX_BTN, m_Pos.x + 79, m_Pos.y + 80, 15, 15, 0, GlobalText[3507], CHECKBOX_ID_POTION, 0);
-    InsertCheckBox(IMAGE_CHECKBOX_BTN, m_Pos.x + 18, m_Pos.y + 122, 15, 15, 0, GlobalText[3508], CHECKBOX_ID_LONG_DISTANCE, 0);
-    InsertCheckBox(IMAGE_CHECKBOX_BTN, m_Pos.x + 18, m_Pos.y + 137, 15, 15, 0, GlobalText[3509], CHECKBOX_ID_ORIG_POSITION, 0);
     InsertCheckBox(IMAGE_CHECKBOX_BTN, m_Pos.x + 94, m_Pos.y + 174, 15, 15, 0, GlobalText[3510], CHECKBOX_ID_SKILL2_DELAY, 0);
     InsertCheckBox(IMAGE_CHECKBOX_BTN, m_Pos.x + 94, m_Pos.y + 191, 15, 15, 0, GlobalText[3511], CHECKBOX_ID_SKILL2_CONDITION, 0);
     InsertCheckBox(IMAGE_CHECKBOX_BTN, m_Pos.x + 94, m_Pos.y + 226, 15, 15, 0, GlobalText[3510], CHECKBOX_ID_SKILL3_DELAY, 0);
@@ -278,17 +285,13 @@ void CNewUIMuHelper::InitCheckBox()
     InsertCheckBox(IMAGE_CHECKBOX_BTN, m_Pos.x + 18, m_Pos.y + 125, 15, 15, 0, GlobalText[3593], CHECKBOX_ID_AUTO_DEFEND, 2);
     InsertCheckBox(IMAGE_CHECKBOX_BTN, m_Pos.x + 18, m_Pos.y + 97, 15, 15, 0, GlobalText[3592], CHECKBOX_ID_AUTO_ACCEPT_GUILD, 2);
 
-    // Static pickup (loot tab)
-    InsertCheckBox(IMAGE_CHECKBOX_BTN, m_Pos.x + 17, m_Pos.y + 315, 15, 15, 0, L"Static Position", CHECKBOX_ID_STATIC_PICKUP, 1);
-
     // Party Request mode (other settings tab) — radio-style option buttons
     InsertCheckBox(IMAGE_MACROUI_HELPER_OPTIONBUTTON, m_Pos.x + 18, m_Pos.y + 155, 15, 15, 0, L"Party Req: On",   CHECKBOX_ID_PARTY_REQUEST_NORMAL, 2);
     InsertCheckBox(IMAGE_MACROUI_HELPER_OPTIONBUTTON, m_Pos.x + 18, m_Pos.y + 170, 15, 15, 0, L"Party Req: Auto", CHECKBOX_ID_PARTY_REQUEST_AUTO,   2);
     InsertCheckBox(IMAGE_MACROUI_HELPER_OPTIONBUTTON, m_Pos.x + 18, m_Pos.y + 185, 15, 15, 0, L"Party Req: Off",  CHECKBOX_ID_PARTY_REQUEST_OFF,    2);
+    InsertCheckBox(IMAGE_CHECKBOX_BTN, m_Pos.x + 18, m_Pos.y + 215, 15, 15, 0, L"Offlevel", CHECKBOX_ID_OFFLEVEL, 2);
 
     RegisterBoxCharacter(0xFF, CHECKBOX_ID_POTION);
-    RegisterBoxCharacter(0xFF, CHECKBOX_ID_LONG_DISTANCE);
-    RegisterBoxCharacter(0xFF, CHECKBOX_ID_ORIG_POSITION);
     RegisterBoxCharacter(0xFF, CHECKBOX_ID_SKILL2_DELAY);
     RegisterBoxCharacter(0xFF, CHECKBOX_ID_SKILL2_CONDITION);
     RegisterBoxCharacter(0xFF, CHECKBOX_ID_BUFF_DURATION);
@@ -304,11 +307,10 @@ void CNewUIMuHelper::InitCheckBox()
     RegisterBoxCharacter(0xFF, CHECKBOX_ID_AUTO_DEFEND);
     RegisterBoxCharacter(0xFF, CHECKBOX_ID_AUTO_ACCEPT_GUILD);
 
-    RegisterBoxCharacter(0xFF, CHECKBOX_ID_STATIC_PICKUP);
-
     RegisterBoxCharacter(0xFF, CHECKBOX_ID_PARTY_REQUEST_NORMAL);
     RegisterBoxCharacter(0xFF, CHECKBOX_ID_PARTY_REQUEST_AUTO);
     RegisterBoxCharacter(0xFF, CHECKBOX_ID_PARTY_REQUEST_OFF);
+    RegisterBoxCharacter(0xFF, CHECKBOX_ID_OFFLEVEL);
 
     RegisterBoxCharacter(Dark_Knight, CHECKBOX_ID_SKILL3_DELAY);
     RegisterBoxCharacter(Dark_Knight, CHECKBOX_ID_SKILL3_CONDITION);
@@ -348,7 +350,6 @@ void CNewUIMuHelper::InitImage()
     InsertIcon(BITMAP_INTERFACE_NEW_SKILLICON_BEGIN + 4, m_Pos.x + 55, m_Pos.y + 293, 32, 38, SKILL_SLOT_BUFF2, 0);
     InsertIcon(BITMAP_INTERFACE_NEW_SKILLICON_BEGIN + 4, m_Pos.x + 89, m_Pos.y + 293, 32, 38, SKILL_SLOT_BUFF3, 0);
 
-    InsertIcon(IMAGE_MACROUI_HELPER_INPUTNUMBER, m_Pos.x + 140, m_Pos.y + 137, 20, 15, TEXTBOX_IMG_DISTANCE_TIME, 0);
     InsertIcon(IMAGE_MACROUI_HELPER_INPUTNUMBER, m_Pos.x + 140, m_Pos.y + 174, 20, 15, TEXTBOX_IMG_SKILL1_TIME, 0);
     InsertIcon(IMAGE_MACROUI_HELPER_INPUTNUMBER, m_Pos.x + 140, m_Pos.y + 226, 20, 15, TEXTBOX_IMG_SKILL2_TIME, 0);
     InsertIcon(IMAGE_MACROUI_HELPER_INPUTSTRING, m_Pos.x + 34, m_Pos.y + 216, 94, 15, TEXTBOX_IMG_ADD_EXTRA_ITEM, 1);
@@ -358,7 +359,6 @@ void CNewUIMuHelper::InitImage()
     RegisterIconCharacter(0xFF, SKILL_SLOT_BUFF1);
     RegisterIconCharacter(0xFF, SKILL_SLOT_BUFF2);
     RegisterIconCharacter(0xFF, SKILL_SLOT_BUFF3);
-    RegisterIconCharacter(0xFF, TEXTBOX_IMG_DISTANCE_TIME);
     RegisterIconCharacter(0xFF, TEXTBOX_IMG_SKILL1_TIME);
     RegisterIconCharacter(0xFF, TEXTBOX_IMG_ADD_EXTRA_ITEM);
 
@@ -378,12 +378,6 @@ void CNewUIMuHelper::InitImage()
 
 void CNewUIMuHelper::InitText()
 {
-    InsertText(m_Pos.x + 18, m_Pos.y + 78, GlobalText[3526], 1, 0); // Range
-    InsertText(m_Pos.x + 18, m_Pos.y + 83, L"________", 2, 0);
-    InsertText(m_Pos.x + 110, m_Pos.y + 141, GlobalText[3527], 3, 0); // Distance
-    //InsertText(m_Pos.x + 162, m_Pos.y + 141, GlobalText[3528], 4, 0);
-    InsertText(m_Pos.x + 162, m_Pos.y + 141, L"s", 4, 0);
-
     InsertText(m_Pos.x + 18, m_Pos.y + 160, GlobalText[3529], 5, 0); // Basic Skill
     InsertText(m_Pos.x + 59, m_Pos.y + 160, GlobalText[3530], 7, 0); // Activation Skill 1
     //InsertText(m_Pos.x + 162, m_Pos.y + 178, GlobalText[3528], 8, 0);
@@ -392,18 +386,9 @@ void CNewUIMuHelper::InitText()
 
     //InsertText(m_Pos.x + 162, m_Pos.y + 230, GlobalText[3528], 10, 0);
     InsertText(m_Pos.x + 162, m_Pos.y + 230, L"s", 10, 0);
-    InsertText(m_Pos.x + 18, m_Pos.y + 78, GlobalText[3532], 11, 1); // Range
-    InsertText(m_Pos.x + 18, m_Pos.y + 83, L"________", 12, 1);
-
-    RegisterTextCharacter(0xFF, 1);
-    RegisterTextCharacter(0xFF, 2);
-    RegisterTextCharacter(0xFF, 3);
-    RegisterTextCharacter(0xFF, 4);
     RegisterTextCharacter(0xFF, 5);
     RegisterTextCharacter(0xFF, 7);
     RegisterTextCharacter(0xFF, 8);
-    RegisterTextCharacter(0xFF, 11);
-    RegisterTextCharacter(0xFF, 12);
 
     RegisterTextCharacter(Dark_Knight, 9);
     RegisterTextCharacter(Dark_Knight, 10);
@@ -422,16 +407,6 @@ void CNewUIMuHelper::InitText()
 void CNewUIMuHelper::InitTextboxInput()
 {
     wchar_t wsInitText[MAX_NUMBER_DIGITS + 1];
-
-    m_DistanceTimeInput.Init(g_hWnd, 17, 15, MAX_NUMBER_DIGITS, false);
-    m_DistanceTimeInput.SetPosition(m_Pos.x + 142, m_Pos.y + 140);
-    m_DistanceTimeInput.SetTextColor(255, 0, 0, 0);
-    m_DistanceTimeInput.SetBackColor(255, 255, 255, 255);
-    m_DistanceTimeInput.SetFont(g_hFont);
-    m_DistanceTimeInput.SetState(UISTATE_NORMAL);
-    m_DistanceTimeInput.SetOption(UIOPTION_NUMBERONLY);
-    std::swprintf(wsInitText, MAX_NUMBER_DIGITS + 1, L"%d", _TempConfig.iMaxSecondsAway);
-    m_DistanceTimeInput.SetText(wsInitText);
 
     m_Skill2DelayInput.Init(g_hWnd, 17, 15, MAX_NUMBER_DIGITS, false);
     m_Skill2DelayInput.SetPosition(m_Pos.x + 142, m_Pos.y + 177);
@@ -477,14 +452,12 @@ bool CNewUIMuHelper::Update()
 
         if (m_iCurrentOpenTab == 0)
         {
-            m_DistanceTimeInput.SetState(UISTATE_NORMAL);
             m_Skill2DelayInput.SetState(UISTATE_NORMAL);
             m_Skill3DelayInput.SetState(UISTATE_NORMAL);
             m_ItemInput.SetState(UISTATE_HIDE);
         }
         else if (m_iCurrentOpenTab == 1)
         {
-            m_DistanceTimeInput.SetState(UISTATE_HIDE);
             m_Skill2DelayInput.SetState(UISTATE_HIDE);
             m_Skill3DelayInput.SetState(UISTATE_HIDE);
             m_ItemInput.SetState(UISTATE_NORMAL);
@@ -506,23 +479,7 @@ bool CNewUIMuHelper::UpdateMouseEvent()
     {
         g_ConsoleDebug->Write(MCD_NORMAL, L"[MU Helper] Clicked button [%d]", iButtonId);
 
-        if (iButtonId == BUTTON_ID_HUNT_RANGE_ADD)
-        {
-            ApplyHuntRangeUpdate(1);
-        }
-        else if (iButtonId == BUTTON_ID_HUNT_RANGE_MINUS)
-        {
-            ApplyHuntRangeUpdate(-1);
-        }
-        else if (iButtonId == BUTTON_ID_PICK_RANGE_ADD)
-        {
-            ApplyLootRangeUpdate(1);
-        }
-        else if (iButtonId == BUTTON_ID_PICK_RANGE_MINUS)
-        {
-            ApplyLootRangeUpdate(-1);
-        }
-        else if (iButtonId == BUTTON_ID_ADD_OTHER_ITEM)
+        if (iButtonId == BUTTON_ID_ADD_OTHER_ITEM)
         {
             SaveExtraItem();
         }
@@ -708,10 +665,6 @@ bool CNewUIMuHelper::UpdateMouseEvent()
 
             return false;
         }
-        else if (iIconIndex == TEXTBOX_IMG_DISTANCE_TIME)
-        {
-            m_DistanceTimeInput.GiveFocus();
-        }
         else if (iIconIndex == TEXTBOX_IMG_SKILL1_TIME)
         {
             m_Skill2DelayInput.GiveFocus();
@@ -784,14 +737,6 @@ void CNewUIMuHelper::ApplyConfigFromCheckbox(int iCheckboxId, bool bState)
     switch (iCheckboxId) {
     case CHECKBOX_ID_POTION:
         _TempConfig.bUseHealPotion = bState;
-        break;
-
-    case CHECKBOX_ID_LONG_DISTANCE:
-        _TempConfig.bLongRangeCounterAttack = bState;
-        break;
-
-    case CHECKBOX_ID_ORIG_POSITION:
-        _TempConfig.bReturnToOriginalPosition = bState;
         break;
 
     case CHECKBOX_ID_SKILL2_DELAY:
@@ -929,10 +874,6 @@ void CNewUIMuHelper::ApplyConfigFromCheckbox(int iCheckboxId, bool bState)
         _TempConfig.bAutoAcceptGuild = bState;
         break;
 
-    case CHECKBOX_ID_STATIC_PICKUP:
-        _TempConfig.bStaticPickup = bState;
-        break;
-
     case CHECKBOX_ID_PARTY_REQUEST_NORMAL:
         _TempConfig.iPartyRequestMode = MUHelper::PARTY_REQUEST_NORMAL;
         break;
@@ -943,6 +884,21 @@ void CNewUIMuHelper::ApplyConfigFromCheckbox(int iCheckboxId, bool bState)
 
     case CHECKBOX_ID_PARTY_REQUEST_OFF:
         _TempConfig.iPartyRequestMode = MUHelper::PARTY_REQUEST_OFF;
+        break;
+
+    case CHECKBOX_ID_OFFLEVEL:
+        if (!IsOfflevelVipVisible())
+        {
+            _TempConfig.bOfflevel = false;
+            m_CheckBoxList[CHECKBOX_ID_OFFLEVEL].box->RegisterBoxState(false);
+            break;
+        }
+
+        _TempConfig.bOfflevel = bState;
+        if (bState)
+        {
+            SendOfflevelCommand();
+        }
         break;
 
     default:
@@ -959,32 +915,6 @@ void CNewUIMuHelper::ApplyConfigFromSkillSlot(int iSlot, int iSkill)
     else
     {
         _TempConfig.aiBuff[iSlot - SKILL_SLOT_BUFF1] = iSkill;
-    }
-}
-
-void CNewUIMuHelper::ApplyHuntRangeUpdate(int iDelta)
-{
-    _TempConfig.iHuntingRange += iDelta;
-    if (_TempConfig.iHuntingRange < 0)
-    {
-        _TempConfig.iHuntingRange = 0;
-    }
-    if (_TempConfig.iHuntingRange > MAX_HUNTING_RANGE)
-    {
-        _TempConfig.iHuntingRange = MAX_HUNTING_RANGE;
-    }
-}
-
-void CNewUIMuHelper::ApplyLootRangeUpdate(int iDelta)
-{
-    _TempConfig.iObtainingRange += iDelta;
-    if (_TempConfig.iObtainingRange < 1)
-    {
-        _TempConfig.iObtainingRange = 1;
-    }
-    if (_TempConfig.iObtainingRange > MAX_OBTAINING_RANGE)
-    {
-        _TempConfig.iObtainingRange = MAX_OBTAINING_RANGE;
     }
 }
 
@@ -1038,12 +968,6 @@ int CNewUIMuHelper::GetIntFromTextInput(wchar_t* pwsInput)
 
 void CNewUIMuHelper::Reset()
 {
-    _TempConfig.iHuntingRange = 6;
-
-    _TempConfig.iMaxSecondsAway = 10;
-    _TempConfig.bLongRangeCounterAttack = false;
-    _TempConfig.bReturnToOriginalPosition = true;
-
     _TempConfig.aiSkill.fill(0);
     _TempConfig.bUseCombo = false;
 
@@ -1070,7 +994,6 @@ void CNewUIMuHelper::Reset()
     _TempConfig.iDarkRavenMode = PET_ATTACK_CEASE;
     _TempConfig.bRepairItem = false;
 
-    _TempConfig.iObtainingRange = 8;
     _TempConfig.bPickAllItems = false;
     _TempConfig.bPickSelectItems = false;
     _TempConfig.bPickZen = false;
@@ -1080,7 +1003,7 @@ void CNewUIMuHelper::Reset()
     _TempConfig.bPickExtraItems = false;
     _TempConfig.aExtraItems.clear();
 
-    _TempConfig.bStaticPickup = false;
+    _TempConfig.bOfflevel = false;
     _TempConfig.iPartyRequestMode = MUHelper::PARTY_REQUEST_NORMAL;
 
     ApplyConfig();
@@ -1106,8 +1029,6 @@ void CNewUIMuHelper::ApplyConfig()
     m_CheckBoxList[CHECKBOX_ID_POTION].box->RegisterBoxState(_TempConfig.bUseHealPotion);
     m_CheckBoxList[CHECKBOX_ID_AUTO_HEAL].box->RegisterBoxState(_TempConfig.bAutoHeal);
     m_CheckBoxList[CHECKBOX_ID_DRAIN_LIFE].box->RegisterBoxState(_TempConfig.bUseDrainLife);
-    m_CheckBoxList[CHECKBOX_ID_LONG_DISTANCE].box->RegisterBoxState(_TempConfig.bLongRangeCounterAttack);
-    m_CheckBoxList[CHECKBOX_ID_ORIG_POSITION].box->RegisterBoxState(_TempConfig.bReturnToOriginalPosition);
 
     m_CheckBoxList[CHECKBOX_ID_SKILL2_DELAY].box->RegisterBoxState(_TempConfig.aiSkillCondition[1] & ON_TIMER);
     m_CheckBoxList[CHECKBOX_ID_SKILL2_CONDITION].box->RegisterBoxState(_TempConfig.aiSkillCondition[1] & ON_CONDITION);
@@ -1116,10 +1037,6 @@ void CNewUIMuHelper::ApplyConfig()
     m_CheckBoxList[CHECKBOX_ID_COMBO].box->RegisterBoxState(_TempConfig.bUseCombo);
 
     wchar_t wsTempNum[MAX_NUMBER_DIGITS + 1];
-    memset(wsTempNum, 0, sizeof(wsTempNum));
-    std::swprintf(wsTempNum, MAX_NUMBER_DIGITS + 1, L"%d", _TempConfig.iMaxSecondsAway);
-    m_DistanceTimeInput.SetText(wsTempNum);
-
     memset(wsTempNum, 0, sizeof(wsTempNum));
     std::swprintf(wsTempNum, MAX_NUMBER_DIGITS + 1, L"%d", _TempConfig.aiSkillInterval[1]);
     m_Skill2DelayInput.SetText(wsTempNum);
@@ -1149,7 +1066,7 @@ void CNewUIMuHelper::ApplyConfig()
     m_CheckBoxList[CHECKBOX_ID_AUTO_ACCEPT_GUILD].box->RegisterBoxState(_TempConfig.bAutoAcceptGuild);
     m_CheckBoxList[CHECKBOX_ID_AUTO_DEFEND].box->RegisterBoxState(_TempConfig.bUseSelfDefense);
 
-    m_CheckBoxList[CHECKBOX_ID_STATIC_PICKUP].box->RegisterBoxState(_TempConfig.bStaticPickup);
+    m_CheckBoxList[CHECKBOX_ID_OFFLEVEL].box->RegisterBoxState(IsOfflevelVipVisible() && _TempConfig.bOfflevel);
 
     m_CheckBoxList[CHECKBOX_ID_PARTY_REQUEST_NORMAL].box->RegisterBoxState(
         _TempConfig.iPartyRequestMode == MUHelper::PARTY_REQUEST_NORMAL);
@@ -1175,9 +1092,6 @@ void CNewUIMuHelper::InitConfig()
 void CNewUIMuHelper::SaveConfig()
 {
     wchar_t wsNumberInput[MAX_NUMBER_DIGITS + 1]{};
-
-    m_DistanceTimeInput.GetText(wsNumberInput, sizeof(wsNumberInput));
-    _TempConfig.iMaxSecondsAway = GetIntFromTextInput(wsNumberInput);
 
     m_Skill2DelayInput.GetText(wsNumberInput, sizeof(wsNumberInput));
     _TempConfig.aiSkillInterval[1] = GetIntFromTextInput(wsNumberInput);
@@ -1256,13 +1170,10 @@ bool CNewUIMuHelper::Render()
 
     if (m_iCurrentOpenTab == 1)
     {
-        RenderBack(m_Pos.x + 12, m_Pos.y + 73, 68, 50);
         RenderBack(m_Pos.x + 75, m_Pos.y + 73, 102, 50);
         RenderBack(m_Pos.x + 12, m_Pos.y + 120, 165, 30);
         RenderBack(m_Pos.x + 12, m_Pos.y + 147, 165, 195);
         RenderBack(m_Pos.x + 16, m_Pos.y + 235, 158, 75);
-
-        RenderImage(BITMAP_DISTANCE_BEGIN + _TempConfig.iObtainingRange, m_Pos.x + 29, m_Pos.y + 92, 15, 19, 0.f, 0.f, 15.f / 16.f, 19.f / 32.f);
 
         m_ItemFilter.Render();
     }
@@ -1273,13 +1184,10 @@ bool CNewUIMuHelper::Render()
     }
     else
     {
-        RenderBack(m_Pos.x + 12, m_Pos.y + 73, 68, 50);
         RenderBack(m_Pos.x + 75, m_Pos.y + 73, 102, 50);
         RenderBack(m_Pos.x + 12, m_Pos.y + 120, 165, 39);
         RenderBack(m_Pos.x + 12, m_Pos.y + 156, 165, 120);
         RenderBack(m_Pos.x + 12, m_Pos.y + 273, 165, 69);
-
-        RenderImage(BITMAP_DISTANCE_BEGIN + _TempConfig.iHuntingRange, m_Pos.x + 29, m_Pos.y + 92, 15, 19, 0.f, 0.f, 15.f / 16.f, 19.f / 32.f);
     }
 
     RenderBoxList();
@@ -1289,7 +1197,6 @@ bool CNewUIMuHelper::Render()
 
     if (m_iCurrentOpenTab == 0)
     {
-        m_DistanceTimeInput.Render();
         m_Skill2DelayInput.Render();
 
         if (gCharacterManager.GetBaseClass(Hero->Class) != CLASS_DARK_LORD)
@@ -1326,7 +1233,6 @@ void CNewUIMuHelper::RenderBack(int x, int y, int width, int height)
 
 void CNewUIMuHelper::LoadImages()
 {
-    LoadBitmap(L"Interface\\MacroUI\\MacroUI_RangeMinus.tga", IMAGE_MACROUI_HELPER_RAGEMINUS, GL_LINEAR, GL_CLAMP, 1, 0);
     LoadBitmap(L"Interface\\MacroUI\\MacroUI_OptionButton.tga", IMAGE_MACROUI_HELPER_OPTIONBUTTON, GL_LINEAR, GL_CLAMP, 1, 0);
     LoadBitmap(L"Interface\\MacroUI\\MacroUI_InputNumber.tga", IMAGE_MACROUI_HELPER_INPUTNUMBER, GL_LINEAR, GL_CLAMP, 1, 0);
     LoadBitmap(L"Interface\\MacroUI\\MacroUI_InputString.tga", IMAGE_MACROUI_HELPER_INPUTSTRING, GL_LINEAR, GL_CLAMP, 1, 0);
@@ -1336,7 +1242,6 @@ void CNewUIMuHelper::LoadImages()
 
 void CNewUIMuHelper::UnloadImages()
 {
-    DeleteBitmap(IMAGE_MACROUI_HELPER_RAGEMINUS);
     DeleteBitmap(IMAGE_MACROUI_HELPER_OPTIONBUTTON);
     DeleteBitmap(IMAGE_MACROUI_HELPER_INPUTNUMBER);
     DeleteBitmap(IMAGE_MACROUI_HELPER_INPUTSTRING);
@@ -1483,6 +1388,11 @@ void CNewUIMuHelper::RenderBoxList()
 
         if ((cBOX->class_character[gCharacterManager.GetBaseClass(Hero->Class)]) && (cBOX->iNumTab == m_iCurrentOpenTab || cBOX->iNumTab == -1))
         {
+            if (IsVipOnlyCheckBox(li->first) && !IsOfflevelVipVisible())
+            {
+                continue;
+            }
+
             cBOX->box->Render();
         }
     }
@@ -1498,6 +1408,11 @@ int CNewUIMuHelper::UpdateMouseBoxList()
 
         if ((cBOX->class_character[gCharacterManager.GetBaseClass(Hero->Class)]) && (cBOX->iNumTab == m_iCurrentOpenTab || cBOX->iNumTab == -1))
         {
+            if (IsVipOnlyCheckBox(li->first) && !IsOfflevelVipVisible())
+            {
+                continue;
+            }
+
             if (cBOX->box->UpdateMouseEvent())
             {
                 return li->first;
@@ -2688,7 +2603,6 @@ void CNewUIMuHelperExt::RenderBackPane(int x, int y, int width, int height, cons
 
 void CNewUIMuHelperExt::LoadImages()
 {
-    LoadBitmap(L"Interface\\MacroUI\\MacroUI_RangeMinus.tga", IMAGE_MACROUI_HELPER_RAGEMINUS, GL_LINEAR, GL_CLAMP, 1, 0);
     LoadBitmap(L"Interface\\MacroUI\\MacroUI_OptionButton.tga", IMAGE_MACROUI_HELPER_OPTIONBUTTON, GL_LINEAR, GL_CLAMP, 1, 0);
     LoadBitmap(L"Interface\\MacroUI\\MacroUI_InputNumber.tga", IMAGE_MACROUI_HELPER_INPUTNUMBER, GL_LINEAR, GL_CLAMP, 1, 0);
     LoadBitmap(L"Interface\\MacroUI\\MacroUI_InputString.tga", IMAGE_MACROUI_HELPER_INPUTSTRING, GL_LINEAR, GL_CLAMP, 1, 0);
@@ -2698,7 +2612,6 @@ void CNewUIMuHelperExt::LoadImages()
 
 void CNewUIMuHelperExt::UnloadImages()
 {
-    DeleteBitmap(IMAGE_MACROUI_HELPER_RAGEMINUS);
     DeleteBitmap(IMAGE_MACROUI_HELPER_OPTIONBUTTON);
     DeleteBitmap(IMAGE_MACROUI_HELPER_INPUTNUMBER);
     DeleteBitmap(IMAGE_MACROUI_HELPER_INPUTSTRING);

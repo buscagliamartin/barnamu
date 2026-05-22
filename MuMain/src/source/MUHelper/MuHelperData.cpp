@@ -8,11 +8,6 @@ namespace MUHelper
 	{
 		memset(&netData, 0, sizeof(netData));
 
-		netData.HuntingRange = static_cast<BYTE>(gameData.iHuntingRange & 0x0F);
-		netData.DistanceMin = static_cast<BYTE>(gameData.iMaxSecondsAway & 0x0F);
-		netData.LongDistanceAttack = gameData.bLongRangeCounterAttack ? 1 : 0;
-		netData.OriginalPosition = gameData.bReturnToOriginalPosition ? 1 : 0;
-
 		netData.BasicSkill1 = static_cast<WORD>(gameData.aiSkill[0] & 0xFFFF);
 		netData.ActivationSkill1 = static_cast<WORD>(gameData.aiSkill[1] & 0xFFFF);
 		netData.ActivationSkill2 = static_cast<WORD>(gameData.aiSkill[2] & 0xFFFF);
@@ -113,7 +108,6 @@ namespace MUHelper
 		netData.PetAttack = static_cast<BYTE>(gameData.iDarkRavenMode);
 
 		netData.RepairItem = gameData.bRepairItem ? 1 : 0;
-		netData.ObtainRange = static_cast<BYTE>(gameData.iObtainingRange & 0x0F);
 		netData.PickAllNearItems = gameData.bPickAllItems ? 1 : 0;
 		netData.PickSelectedItems = gameData.bPickSelectItems ? 1 : 0;
 		netData.Zen = gameData.bPickZen ? 1 : 0;
@@ -123,7 +117,6 @@ namespace MUHelper
 		netData.AddExtraItem = gameData.bPickExtraItems ? 1 : 0;
 
 		// Extra fields stored in the unused padding bytes
-		netData._UnusedPadding[0] = gameData.bStaticPickup ? 1 : 0;
 		netData._UnusedPadding[1] = static_cast<BYTE>(gameData.iPartyRequestMode & 0xFF);
 		netData._UnusedPadding[2] = gameData.bAutoAcceptFriend ? 1 : 0;
 		netData._UnusedPadding[3] = gameData.bAutoAcceptGuild ? 1 : 0;
@@ -149,12 +142,6 @@ namespace MUHelper
 
 	void ConfigDataSerDe::Deserialize(const PRECEIVE_MUHELPER_DATA& netData, ConfigData& gameData)
 	{
-		gameData.iHuntingRange = static_cast<int>(netData.HuntingRange);
-
-		gameData.iMaxSecondsAway = static_cast<int>(netData.DistanceMin);
-		gameData.bLongRangeCounterAttack = (bool)netData.LongDistanceAttack;
-		gameData.bReturnToOriginalPosition = (bool)netData.OriginalPosition;
-
 		gameData.aiSkill.fill(0);
 		gameData.aiSkill[0] = static_cast<int>(netData.BasicSkill1);
 		gameData.aiSkill[1] = static_cast<int>(netData.ActivationSkill1);
@@ -206,7 +193,6 @@ namespace MUHelper
 		gameData.iDarkRavenMode = static_cast<int>(netData.PetAttack);
 		gameData.bRepairItem = (bool)netData.RepairItem;
 
-		gameData.iObtainingRange = static_cast<int>(netData.ObtainRange);
 		gameData.bPickAllItems = (bool)netData.PickAllNearItems;
 		gameData.bPickSelectItems = (bool)netData.PickSelectedItems;
 		gameData.bPickZen = (bool)netData.Zen;
@@ -216,7 +202,6 @@ namespace MUHelper
 		gameData.bPickExtraItems = (bool)netData.AddExtraItem;
 
 		// Extra fields from the unused padding bytes
-		gameData.bStaticPickup = (bool)netData._UnusedPadding[0];
 		gameData.iPartyRequestMode = static_cast<int>(netData._UnusedPadding[1]);
 		gameData.bAutoAcceptFriend = (bool)netData._UnusedPadding[2];
 		gameData.bAutoAcceptGuild = (bool)netData._UnusedPadding[3];

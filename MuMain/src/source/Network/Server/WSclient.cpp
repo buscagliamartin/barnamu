@@ -3968,6 +3968,71 @@ BOOL ReceiveMonsterSkill(const BYTE* ReceiveBuffer, int Size, BOOL bEncrypted)
     return (TRUE);
 }
 
+static bool IsMuHelperBeneficialTargetSkill(WORD SkillNumber)
+{
+    switch (SkillNumber)
+    {
+    case AT_SKILL_HEALING:
+    case AT_SKILL_HEALING_STR:
+    case AT_SKILL_ATTACK:
+    case AT_SKILL_ATTACK_STR:
+    case AT_SKILL_ATTACK_MASTERY:
+    case AT_SKILL_DEFENSE:
+    case AT_SKILL_DEFENSE_STR:
+    case AT_SKILL_DEFENSE_MASTERY:
+    case AT_SKILL_SOUL_BARRIER:
+    case AT_SKILL_SOUL_BARRIER_STR:
+    case AT_SKILL_SOUL_BARRIER_PROFICIENCY:
+    case AT_SKILL_SWELL_LIFE:
+    case AT_SKILL_SWELL_LIFE_STR:
+    case AT_SKILL_SWELL_LIFE_PROFICIENCY:
+    case AT_SKILL_INFINITY_ARROW:
+    case AT_SKILL_INFINITY_ARROW_STR:
+    case AT_SKILL_EXPANSION_OF_WIZARDRY:
+    case AT_SKILL_EXPANSION_OF_WIZARDRY_STR:
+    case AT_SKILL_EXPANSION_OF_WIZARDRY_MASTERY:
+    case AT_SKILL_RECOVER:
+    case AT_SKILL_ALICE_BERSERKER:
+    case AT_SKILL_ALICE_BERSERKER_STR:
+    case AT_SKILL_IMPROVE_AG:
+    case AT_SKILL_ADD_CRITICAL:
+    case AT_SKILL_ADD_CRITICAL_STR1:
+    case AT_SKILL_ADD_CRITICAL_STR2:
+    case AT_SKILL_ADD_CRITICAL_STR3:
+    case AT_SKILL_PARTY_TELEPORT:
+    case AT_SKILL_REMOVAL_STUN:
+    case AT_SKILL_REMOVAL_INVISIBLE:
+    case AT_SKILL_REMOVAL_BUFF:
+        return true;
+    }
+
+    return false;
+}
+
+static void AddMuHelperPvpSkillAttacker(int iSourceKey, int iTargetKey, WORD SkillNumber)
+{
+    if (iTargetKey != HeroKey
+        || !MUHelper::g_MuHelper.GetConfig().bUseSelfDefense
+        || IsMuHelperBeneficialTargetSkill(SkillNumber))
+    {
+        return;
+    }
+
+    int iSourceIndex = FindCharacterIndex(iSourceKey);
+    if (iSourceIndex == MAX_CHARACTERS_CLIENT)
+    {
+        return;
+    }
+
+    CHARACTER* pSource = &CharactersClient[iSourceIndex];
+    if (pSource == Hero || IsMonster(pSource) || pSource->Dead > 0 || !pSource->Object.Live)
+    {
+        return;
+    }
+
+    MUHelper::g_MuHelper.AddPvpAttacker(iSourceKey);
+}
+
 BOOL ReceiveMagic(const BYTE* ReceiveBuffer, int Size, BOOL bEncrypted)
 {
     auto Data = (LPPRECEIVE_MAGIC)ReceiveBuffer;
@@ -4003,6 +4068,8 @@ BOOL ReceiveMagic(const BYTE* ReceiveBuffer, int Size, BOOL bEncrypted)
     CHARACTER* tc = &CharactersClient[TargetIndex];
     OBJECT* so = &sc->Object;
     OBJECT* to = &tc->Object;
+
+    AddMuHelperPvpSkillAttacker(SourceKey, TargetKey, MagicNumber);
 
     if (MagicNumber != AT_SKILL_COMBO)
     {
@@ -13038,6 +13105,8 @@ BOOL ReceiveStraightAttack(const BYTE* ReceiveBuffer, int Size, BOOL bEncrypted)
     CHARACTER* tc = &CharactersClient[TargetIndex];
     OBJECT* so = &sc->Object;
     OBJECT* to = &tc->Object;
+
+    AddMuHelperPvpSkillAttacker(SourceKey, TargetKey, AttackNumber);
 
     if (sc != Hero && to->Visible)
         so->Angle[2] = CreateAngle2D(so->Position, to->Position);

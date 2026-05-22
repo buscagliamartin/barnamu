@@ -1396,6 +1396,44 @@ bool CheckWall(int sx1, int sy1, int sx2, int sy2)
     return true;
 }
 
+static ActionSkillType GetMovementSkill()
+{
+    if (g_MovementSkill.m_bMagic)
+    {
+        if (g_MovementSkill.m_iSkill < 0 || g_MovementSkill.m_iSkill >= MAX_MAGIC)
+        {
+            return AT_SKILL_UNDEFINED;
+        }
+
+        return CharacterAttribute->Skill[g_MovementSkill.m_iSkill];
+    }
+
+    return static_cast<ActionSkillType>(g_MovementSkill.m_iSkill);
+}
+
+static bool IsBeneficialSkillTarget(CHARACTER* c, int selected)
+{
+    if (c == nullptr || selected < 0 || selected >= MAX_CHARACTERS_CLIENT)
+    {
+        return false;
+    }
+
+    const ActionSkillType skill = GetMovementSkill();
+    if (!IsCorrectSkillType_FrendlySkill(skill) && !IsCorrectSkillType_Buff(skill))
+    {
+        return false;
+    }
+
+    if (c == Hero || g_pPartyManager->IsPartyMember(selected))
+    {
+        return true;
+    }
+
+    return Hero->GuildMarkIndex >= 0
+        && c->GuildMarkIndex >= 0
+        && wcscmp(GuildMark[Hero->GuildMarkIndex].GuildName, GuildMark[c->GuildMarkIndex].GuildName) == 0;
+}
+
 bool CheckAttack_Fenrir(CHARACTER* c)
 {
     if (SEASON3B::CNewUIInventoryCtrl::GetPickedItem())
@@ -1404,6 +1442,10 @@ bool CheckAttack_Fenrir(CHARACTER* c)
     }
 
     if (gMapManager.InChaosCastle() == true && c != Hero)
+    {
+        return true;
+    }
+    else if (IsBeneficialSkillTarget(c, SelectedCharacter))
     {
         return true;
     }
@@ -1579,6 +1621,11 @@ bool CheckAttack()
     if (c->Dead > 0)
     {
         return false;
+    }
+
+    if (IsBeneficialSkillTarget(c, SelectedCharacter))
+    {
+        return true;
     }
 
     if (gMapManager.InChaosCastle() == true && c != Hero)
@@ -1821,6 +1868,11 @@ int	getTargetCharacterKey(CHARACTER* c, int selected)
     }
 
     CHARACTER* sc = &CharactersClient[selected];
+
+    if (IsBeneficialSkillTarget(sc, selected))
+    {
+        return sc->Key;
+    }
 
     if (gMapManager.InChaosCastle() == true)
     {
@@ -3902,6 +3954,11 @@ void CloseNPCGMWindow()
 
 void SendMove(CHARACTER* c, OBJECT* o)
 {
+    if (MUHelper::g_MuHelper.IsActive() && c == Hero)
+    {
+        return;
+    }
+
     if (g_pNewUISystem->IsImpossibleSendMoveInterface() == true)
     {
         return;

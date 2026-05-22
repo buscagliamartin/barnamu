@@ -2,10 +2,12 @@
 
 #include <functional>
 #include <array>
+#include <map>
 #include <set>
 #include <string>
 #include <thread>
 #include <atomic>
+#include <utility>
 
 #include "MuHelperData.h"
 
@@ -46,6 +48,7 @@ namespace MUHelper
 		int ActivatePet();
 		int Buff();
 		int BuffTarget(CHARACTER* pTargetChar, ActionSkillType iBuffSkill);
+		bool ShouldActivateBuffTimer(bool bUseBuffDuration);
 		int RecoverHealth();
 		int Heal();
 		int HealSelf(ActionSkillType iHealingSkill);
@@ -53,18 +56,18 @@ namespace MUHelper
 		int ConsumePotion();
 		int Attack();
 		int RepairEquipments();
-		int Regroup();
 		ActionSkillType SelectAttackSkill();
 		int SimulateAttack(ActionSkillType iSkill);
 		int SimulateSkill(ActionSkillType iSkill, bool bTargetRequired, int iTarget);
+		int SimulateBuffSkill(ActionSkillType iSkill, int iTarget);
 		int SimulateComboAttack();
-		int GetNearestTarget();
-		int GetFarthestAttackingTarget();
+		int GetNearestTarget(ActionSkillType iSkill);
+		bool IsTargetInSkillRange(int iTargetId, ActionSkillType iSkill);
+		int CountTargetsInSkillRange(ActionSkillType iSkill, bool bOnlyAttacking);
+		float GetAttackRange(ActionSkillType iSkill);
 		void CleanupTargets();
-		int ComputeDistanceByRange(int iRange);
 		int ComputeDistanceFromTarget(CHARACTER* pTarget);
 		int ComputeDistanceBetween(POINT posA, POINT posB);
-		int SimulateMove(POINT posMove);
 		int ObtainItem();
 		int SelectItemToObtain();
 		bool ShouldObtainItem(int iItemId);
@@ -76,7 +79,6 @@ namespace MUHelper
 
 	private:
 		ConfigData m_config;
-		POINT m_posOriginal;
 		std::thread m_timerThread;
 		std::atomic<bool> m_bActive;
 		std::set<int> m_setTargets;
@@ -89,11 +91,10 @@ namespace MUHelper
 		int m_iCurrentHealPartyIndex;
 		int m_iComboState;
 		ActionSkillType m_iCurrentSkill;
-		int m_iHuntingDistance;
-		int m_iObtainingDistance;
 		int m_iLoopCounter;
 		int m_iSecondsElapsed;
-		int m_iSecondsAway;
+		int m_iLastBuffTimerSecond;
+		std::map<std::pair<int, int>, int> m_mapLastBuffCastSecond;
 		bool m_bTimerActivatedBuffOngoing;
 		bool m_bPetActivated;
 		int m_iTotalCost;
