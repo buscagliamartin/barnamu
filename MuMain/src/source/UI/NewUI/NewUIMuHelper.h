@@ -56,7 +56,6 @@ namespace SEASON3B
             //--
             IMAGE_WINDOW_TAB_BTN = BITMAP_GUILDINFO_BEGIN,
             //--
-            IMAGE_MACROUI_HELPER_RAGEMINUS = BITMAP_INTERFACE_MACROUI_BEGIN,		// newui_position02.tga			(70, 25)
             IMAGE_MACROUI_HELPER_OPTIONBUTTON = BITMAP_INTERFACE_MACROUI_BEGIN + 1,		// newui_position02.tga			(70, 25)
             IMAGE_MACROUI_HELPER_INPUTNUMBER = BITMAP_INTERFACE_MACROUI_BEGIN + 2,
             IMAGE_MACROUI_HELPER_INPUTSTRING = BITMAP_INTERFACE_MACROUI_BEGIN + 3,
@@ -174,14 +173,11 @@ namespace SEASON3B
 
         void ApplyConfigFromCheckbox(int iCheckboxId, bool bState);
         void ApplyConfigFromSkillSlot(int iSlot, int iSkill);
-        void ApplyHuntRangeUpdate(int iDelta);
-        void ApplyLootRangeUpdate(int iDelta);
         void SaveExtraItem();
         void RemoveExtraItem();
 
     private:
         CNewUIManager* m_pNewUIMng;
-        CUITextInputBox m_DistanceTimeInput;
         CUITextInputBox m_Skill2DelayInput;
         CUITextInputBox m_Skill3DelayInput;
         CUITextInputBox m_ItemInput;
@@ -334,7 +330,6 @@ namespace SEASON3B
             //--
             IMAGE_WINDOW_TAB_BTN = BITMAP_GUILDINFO_BEGIN,
             //--
-            IMAGE_MACROUI_HELPER_RAGEMINUS = BITMAP_INTERFACE_MACROUI_BEGIN,		// newui_position02.tga			(70, 25)
             IMAGE_MACROUI_HELPER_OPTIONBUTTON = BITMAP_INTERFACE_MACROUI_BEGIN + 1,		// newui_position02.tga			(70, 25)
             IMAGE_MACROUI_HELPER_INPUTNUMBER = BITMAP_INTERFACE_MACROUI_BEGIN + 2,
             IMAGE_MACROUI_HELPER_INPUTSTRING = BITMAP_INTERFACE_MACROUI_BEGIN + 3,

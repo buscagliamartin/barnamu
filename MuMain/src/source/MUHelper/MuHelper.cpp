@@ -19,6 +19,7 @@
 
 constexpr int MAX_ACTIONABLE_DISTANCE = 10;
 constexpr int DEFAULT_DURABILITY_THRESHOLD = 50;
+constexpr float BASIC_ATTACK_DISTANCE = 1.5f;
 
 SpinLock _targetsLock;
 SpinLock _itemsLock;
@@ -104,13 +105,10 @@ namespace MUHelper
         m_iCurrentTarget = -1;
         m_iCurrentSkill = (ActionSkillType)m_config.aiSkill[0];
         m_iCurrentItem = MAX_ITEMS;
-        m_posOriginal = { Hero->PositionX, Hero->PositionY };
-
-        m_iHuntingDistance = ComputeDistanceByRange(m_config.iHuntingRange);
-        m_iObtainingDistance = ComputeDistanceByRange(m_config.iObtainingRange);
 
         m_iSecondsElapsed = 0;
-        m_iSecondsAway = 0;
+        m_iLastBuffTimerSecond = -1;
+        m_mapLastBuffCastSecond.clear();
 
         m_bTimerActivatedBuffOngoing = false;
         m_bPetActivated = false;
@@ -147,15 +145,6 @@ namespace MUHelper
         {
             m_iSecondsElapsed++;
 
-            if (ComputeDistanceBetween({ Hero->PositionX, Hero->PositionY }, m_posOriginal) > 1)
-            {
-                m_iSecondsAway++;
-            }
-            else
-            {
-                m_iSecondsAway = 0;
-            }
-
             m_iLoopCounter = 0;
         }
     }
@@ -184,11 +173,6 @@ namespace MUHelper
                 return;
             }
 
-            if (!Regroup())
-            {
-                return;
-            }
-
             Attack();
 
             RepairEquipments();
@@ -212,22 +196,16 @@ namespace MUHelper
             return;
         }
 
-        int iDistance = ComputeDistanceFromTarget(pTarget);
+        _targetsLock.lock();
 
-        if ((iDistance <= m_iHuntingDistance)
-            || (bIsAttacking && m_config.bLongRangeCounterAttack))
+        m_setTargets.insert(iTargetId);
+
+        if (bIsAttacking)
         {
-            _targetsLock.lock();
-
-            m_setTargets.insert(iTargetId);
-
-            if (bIsAttacking)
-            {
-                m_setTargetsAttacking.insert(iTargetId);
-            }
-
-            _targetsLock.unlock();
+            m_setTargetsAttacking.insert(iTargetId);
         }
+
+        _targetsLock.unlock();
 
         if (m_config.bUseSelfDefense)
         {
@@ -260,11 +238,6 @@ namespace MUHelper
         _targetsLock.unlock();
     }
 
-    int CMuHelper::ComputeDistanceByRange(int iRange)
-    {
-        return ComputeDistanceBetween({ 0, 0 }, { iRange, iRange });
-    }
-
     int CMuHelper::ComputeDistanceFromTarget(CHARACTER* pTarget)
     {
         const POINT posHero = { Hero->PositionX, Hero->PositionY };
@@ -286,10 +259,76 @@ namespace MUHelper
         return static_cast<int>(std::ceil(std::sqrt(iDx * iDx + iDy * iDy)));
     }
 
-    int CMuHelper::GetNearestTarget()
+    float CMuHelper::GetAttackRange(ActionSkillType iSkill)
+    {
+        if (iSkill == (ActionSkillType)MUHELPER_BASIC_ATTACK_ID)
+        {
+            return BASIC_ATTACK_DISTANCE;
+        }
+
+        return gSkillManager.GetSkillDistance(iSkill, Hero);
+    }
+
+    bool CMuHelper::IsTargetInSkillRange(int iTargetId, ActionSkillType iSkill)
+    {
+        const int iIndex = FindCharacterIndex(iTargetId);
+        if (iIndex == MAX_CHARACTERS_CLIENT)
+        {
+            return false;
+        }
+
+        CHARACTER* pTarget = &CharactersClient[iIndex];
+        if (!pTarget || pTarget->Dead > 0 || !pTarget->Object.Live)
+        {
+            return false;
+        }
+
+        const float fRange = GetAttackRange(iSkill);
+        if (fRange <= 0.f)
+        {
+            return false;
+        }
+
+        TargetX = static_cast<int>(pTarget->Object.Position[0] / TERRAIN_SCALE);
+        TargetY = static_cast<int>(pTarget->Object.Position[1] / TERRAIN_SCALE);
+
+        return CheckTile(Hero, &Hero->Object, fRange)
+            && CheckWall(Hero->PositionX, Hero->PositionY, TargetX, TargetY);
+    }
+
+    int CMuHelper::CountTargetsInSkillRange(ActionSkillType iSkill, bool bOnlyAttacking)
+    {
+        int iCount = 0;
+
+        std::set<int> setTargets;
+        {
+            _targetsLock.lock();
+            setTargets = bOnlyAttacking ? m_setTargetsAttacking : m_setTargets;
+            _targetsLock.unlock();
+        }
+
+        for (const int& iTargetId : setTargets)
+        {
+            const int iIndex = FindCharacterIndex(iTargetId);
+            if (iIndex == MAX_CHARACTERS_CLIENT)
+            {
+                continue;
+            }
+
+            CHARACTER* pTarget = &CharactersClient[iIndex];
+            if (IsMonster(pTarget) && IsTargetInSkillRange(iTargetId, iSkill))
+            {
+                ++iCount;
+            }
+        }
+
+        return iCount;
+    }
+
+    int CMuHelper::GetNearestTarget(ActionSkillType iSkill)
     {
         int iClosestMonsterId = -1;
-        int iMinDistance = m_config.iHuntingRange + 1;
+        int iMinDistance = 0x7FFFFFFF;
 
         std::set<int> setTargets;
         {
@@ -301,9 +340,19 @@ namespace MUHelper
         for (const int& iMonsterId : setTargets)
         {
             int iIndex = FindCharacterIndex(iMonsterId);
+            if (iIndex == MAX_CHARACTERS_CLIENT)
+            {
+                continue;
+            }
+
             CHARACTER* pTarget = &CharactersClient[iIndex];
 
             if (!IsMonster(pTarget))
+            {
+                continue;
+            }
+
+            if (!IsTargetInSkillRange(iMonsterId, iSkill))
             {
                 continue;
             }
@@ -317,39 +366,6 @@ namespace MUHelper
         }
 
         return iClosestMonsterId;
-    }
-
-    int CMuHelper::GetFarthestAttackingTarget()
-    {
-        int iFarthestMonsterId = -1;
-        int iMaxDistance = -1;
-
-        std::set<int> setTargets;
-        {
-            _targetsLock.lock();
-            setTargets = m_setTargetsAttacking;
-            _targetsLock.unlock();
-        }
-
-        for (const int& iMonsterId : setTargets)
-        {
-            int iIndex = FindCharacterIndex(iMonsterId);
-            CHARACTER* pTarget = &CharactersClient[iIndex];
-
-            if (!IsMonster(pTarget))
-            {
-                continue;
-            }
-
-            int iDistance = ComputeDistanceFromTarget(pTarget);
-            if (iDistance > iMaxDistance)
-            {
-                iMaxDistance = iDistance;
-                iFarthestMonsterId = iMonsterId;
-            }
-        }
-
-        return iFarthestMonsterId;
     }
 
     void CMuHelper::CleanupTargets()
@@ -367,12 +383,14 @@ namespace MUHelper
             if (iIndex == MAX_CHARACTERS_CLIENT)
             {
                 DeleteTarget(iMonsterId);
+                continue;
             }
 
             CHARACTER* pTarget = &CharactersClient[iIndex];
             if (!pTarget || (pTarget && (pTarget->Dead > 0 || !pTarget->Object.Live)))
             {
                 DeleteTarget(iMonsterId);
+                continue;
             }
         }
     }
@@ -432,6 +450,17 @@ namespace MUHelper
 
         if (m_config.bSupportParty && g_pPartyManager->IsPartyActive())
         {
+            const int iPartyCount = std::min<int>(PartyNumber, sizeof(Party) / sizeof(Party[0]));
+            if (iPartyCount <= 0)
+            {
+                return 1;
+            }
+
+            if (m_iCurrentBuffPartyIndex >= iPartyCount)
+            {
+                m_iCurrentBuffPartyIndex = 0;
+            }
+
             PARTY_t* pMember = &Party[m_iCurrentBuffPartyIndex];
             CHARACTER* pChar = g_pPartyManager->GetPartyMemberChar(pMember);
 
@@ -439,9 +468,7 @@ namespace MUHelper
                 && pMember->Map == gMapManager.WorldActive
                 && ComputeDistanceFromTarget(pChar) <= MAX_ACTIONABLE_DISTANCE)
             {
-                if (!m_config.bBuffDurationParty
-                    && m_config.iBuffCastInterval != 0
-                    && m_iSecondsElapsed % m_config.iBuffCastInterval == 0)
+                if (ShouldActivateBuffTimer(m_config.bBuffDurationParty))
                 {
                     m_bTimerActivatedBuffOngoing = true;
                 }
@@ -453,13 +480,11 @@ namespace MUHelper
                 }
             }
 
-            m_iCurrentBuffPartyIndex = (m_iCurrentBuffPartyIndex + 1) % (sizeof(Party) / sizeof(Party[0]));
+            m_iCurrentBuffPartyIndex = (m_iCurrentBuffPartyIndex + 1) % iPartyCount;
         }
         else
         {
-            if (!m_config.bBuffDuration
-                && m_config.iBuffCastInterval != 0
-                && m_iSecondsElapsed % m_config.iBuffCastInterval == 0)
+            if (ShouldActivateBuffTimer(m_config.bBuffDuration))
             {
                 m_bTimerActivatedBuffOngoing = true;
             }
@@ -493,6 +518,30 @@ namespace MUHelper
         return 1;
     }
 
+    bool CMuHelper::ShouldActivateBuffTimer(bool bUseBuffDuration)
+    {
+        if (bUseBuffDuration
+            || m_config.iBuffCastInterval <= 0
+            || m_bTimerActivatedBuffOngoing
+            || m_iSecondsElapsed <= 0)
+        {
+            return false;
+        }
+
+        if (m_iSecondsElapsed % m_config.iBuffCastInterval != 0)
+        {
+            return false;
+        }
+
+        if (m_iLastBuffTimerSecond == m_iSecondsElapsed)
+        {
+            return false;
+        }
+
+        m_iLastBuffTimerSecond = m_iSecondsElapsed;
+        return true;
+    }
+
     int CMuHelper::BuffTarget(CHARACTER* pTargetChar, ActionSkillType iBuffSkill)
     {
         // TODO: List other buffs here
@@ -500,7 +549,7 @@ namespace MUHelper
             || iBuffSkill == AT_SKILL_ATTACK_STR)
             && (!g_isCharacterBuff((&pTargetChar->Object), eBuff_Attack) || m_bTimerActivatedBuffOngoing))
         {
-            return SimulateSkill(iBuffSkill, false, pTargetChar->Key);
+            return SimulateBuffSkill(iBuffSkill, pTargetChar->Key);
         }
 
         if ((iBuffSkill == AT_SKILL_DEFENSE
@@ -508,13 +557,17 @@ namespace MUHelper
             || iBuffSkill == AT_SKILL_DEFENSE_MASTERY)
             && (!g_isCharacterBuff((&pTargetChar->Object), eBuff_Defense) || m_bTimerActivatedBuffOngoing))
         {
-            return SimulateSkill(iBuffSkill, false, pTargetChar->Key);
+            return SimulateBuffSkill(iBuffSkill, pTargetChar->Key);
         }
 
         if ((iBuffSkill == AT_SKILL_INFINITY_ARROW || iBuffSkill == AT_SKILL_INFINITY_ARROW_STR) &&
             (!g_isCharacterBuff((&pTargetChar->Object), eBuff_InfinityArrow)))
         {
-            return SimulateSkill(iBuffSkill, false, pTargetChar->Key);
+            if (pTargetChar != Hero)
+            {
+                return 1;
+            }
+            return SimulateBuffSkill(iBuffSkill, pTargetChar->Key);
         }
 
         if ((iBuffSkill == AT_SKILL_SOUL_BARRIER
@@ -522,7 +575,7 @@ namespace MUHelper
             || iBuffSkill == AT_SKILL_SOUL_BARRIER_PROFICIENCY)
             && (!g_isCharacterBuff((&pTargetChar->Object), eBuff_WizDefense) || m_bTimerActivatedBuffOngoing))
         {
-            return SimulateSkill(iBuffSkill, true, pTargetChar->Key);
+            return SimulateBuffSkill(iBuffSkill, pTargetChar->Key);
         }
 
         if ((iBuffSkill == AT_SKILL_SWELL_LIFE
@@ -535,30 +588,38 @@ namespace MUHelper
                 return 1;
             }
 
-            return SimulateSkill(iBuffSkill, false, pTargetChar->Key);
+            return SimulateBuffSkill(iBuffSkill, pTargetChar->Key);
         }
 
         if ((iBuffSkill == AT_SKILL_EXPANSION_OF_WIZARDRY || iBuffSkill == AT_SKILL_EXPANSION_OF_WIZARDRY_STR || iBuffSkill == AT_SKILL_EXPANSION_OF_WIZARDRY_MASTERY)
             && (!g_isCharacterBuff((&pTargetChar->Object), eBuff_SwellOfMagicPower)))
         {
-            return SimulateSkill(iBuffSkill, false, pTargetChar->Key);
+            if (pTargetChar != Hero)
+            {
+                return 1;
+            }
+            return SimulateBuffSkill(iBuffSkill, pTargetChar->Key);
         }
 
         if ((iBuffSkill == AT_SKILL_ADD_CRITICAL || iBuffSkill == AT_SKILL_ADD_CRITICAL_STR1 || iBuffSkill == AT_SKILL_ADD_CRITICAL_STR2 || iBuffSkill == AT_SKILL_ADD_CRITICAL_STR3)
             && (!g_isCharacterBuff((&pTargetChar->Object), eBuff_AddCriticalDamage)))
         {
-            return SimulateSkill(iBuffSkill, false, pTargetChar->Key);
+            return SimulateBuffSkill(iBuffSkill, pTargetChar->Key);
         }
 
         if ((iBuffSkill == AT_SKILL_ALICE_BERSERKER || iBuffSkill == AT_SKILL_ALICE_BERSERKER_STR)
             && (!g_isCharacterBuff((&pTargetChar->Object), eBuff_Berserker)))
         {
-            return SimulateSkill(iBuffSkill, false, pTargetChar->Key);
+            if (pTargetChar != Hero)
+            {
+                return 1;
+            }
+            return SimulateBuffSkill(iBuffSkill, pTargetChar->Key);
         }
         if ((iBuffSkill == AT_SKILL_ALICE_THORNS)
             && (!g_isCharacterBuff((&pTargetChar->Object), eBuff_Thorns)))
         {
-            return SimulateSkill(iBuffSkill, false, pTargetChar->Key);
+            return SimulateBuffSkill(iBuffSkill, pTargetChar->Key);
         }
 
         return 1;
@@ -683,7 +744,7 @@ namespace MUHelper
 
         if (iRemaining <= m_config.iHealThreshold)
         {
-            m_iCurrentTarget = GetNearestTarget();
+            m_iCurrentTarget = GetNearestTarget(iDrainLife);
             if (m_iCurrentTarget != -1)
             {
                 return SimulateSkill(iDrainLife, true, m_iCurrentTarget);
@@ -733,23 +794,43 @@ namespace MUHelper
 
     int CMuHelper::Attack()
     {
+        CleanupTargets();
+
+        if (m_config.bUseCombo)
+        {
+            for (int i = 0; i < m_config.aiSkill.size(); i++)
+            {
+                if (m_config.aiSkill[i] == 0)
+                {
+                    return 0;
+                }
+            }
+
+            m_iCurrentSkill = (ActionSkillType)m_config.aiSkill[m_iComboState];
+        }
+        else
+        {
+            m_iCurrentSkill = SelectAttackSkill();
+        }
+
+        if (m_iCurrentSkill <= AT_SKILL_UNDEFINED)
+        {
+            return 1;
+        }
+
+        if (m_iCurrentTarget != -1 && !IsTargetInSkillRange(m_iCurrentTarget, m_iCurrentSkill))
+        {
+            m_iCurrentTarget = -1;
+        }
+
         if (m_iCurrentTarget == -1)
         {
             if (!m_setTargets.empty())
             {
-                CleanupTargets();
-
-                if (m_config.bLongRangeCounterAttack)
-                {
-                    m_iCurrentTarget = GetFarthestAttackingTarget();
-                }
-                
-                if (m_iCurrentTarget == -1)
-                {
-                    m_iCurrentTarget = GetNearestTarget();
-                }
+                m_iCurrentTarget = GetNearestTarget(m_iCurrentSkill);
             }
-            else
+
+            if (m_iCurrentTarget == -1)
             {
                 m_iComboState = 0;
                 return 0;
@@ -761,7 +842,6 @@ namespace MUHelper
             return SimulateComboAttack();
         }
 
-        m_iCurrentSkill = SelectAttackSkill();
         if (m_iCurrentSkill == (ActionSkillType)MUHELPER_BASIC_ATTACK_ID)
         {
             return SimulateBasicAttack();
@@ -780,37 +860,39 @@ namespace MUHelper
         // try skill 2 activation conditions
         if (m_config.aiSkill[1] > 0 && m_config.aiSkill[1] < MAX_SKILLS)
         {
+            const ActionSkillType iSkill = (ActionSkillType)m_config.aiSkill[1];
+
             if ((m_config.aiSkillCondition[1] & ON_TIMER)
                 && m_config.aiSkillInterval[1] != 0
                 && m_iSecondsElapsed % m_config.aiSkillInterval[1] == 0)
             {
-                return (ActionSkillType)m_config.aiSkill[1];
+                return iSkill;
             }
 
             if (m_config.aiSkillCondition[1] & ON_CONDITION)
             {
                 if (m_config.aiSkillCondition[1] & ON_MOBS_NEARBY)
                 {
-                    int iCount = m_setTargets.size();
+                    int iCount = CountTargetsInSkillRange(iSkill, false);
 
                     if (((m_config.aiSkillCondition[1] & ON_MORE_THAN_TWO_MOBS) && iCount >= 2)
                         || ((m_config.aiSkillCondition[1] & ON_MORE_THAN_THREE_MOBS) && iCount >= 3)
                         || ((m_config.aiSkillCondition[1] & ON_MORE_THAN_FOUR_MOBS) && iCount >= 4)
                         || ((m_config.aiSkillCondition[1] & ON_MORE_THAN_FIVE_MOBS) && iCount >= 5))
                     {
-                        return (ActionSkillType)m_config.aiSkill[1];
+                        return iSkill;
                     }
                 }
                 else if (m_config.aiSkillCondition[1] & ON_MOBS_ATTACKING)
                 {
-                    int iCount = m_setTargetsAttacking.size();
+                    int iCount = CountTargetsInSkillRange(iSkill, true);
 
                     if (((m_config.aiSkillCondition[1] & ON_MORE_THAN_TWO_MOBS) && iCount >= 2)
                         || ((m_config.aiSkillCondition[1] & ON_MORE_THAN_THREE_MOBS) && iCount >= 3)
                         || ((m_config.aiSkillCondition[1] & ON_MORE_THAN_FOUR_MOBS) && iCount >= 4)
                         || ((m_config.aiSkillCondition[1] & ON_MORE_THAN_FIVE_MOBS) && iCount >= 5))
                     {
-                        return (ActionSkillType)m_config.aiSkill[1];
+                        return iSkill;
                     }
                 }
             }
@@ -819,37 +901,39 @@ namespace MUHelper
         // try skill 3 activation conditions
         if (m_config.aiSkill[2] > 0 && m_config.aiSkill[2] < MAX_SKILLS)
         {
+            const ActionSkillType iSkill = (ActionSkillType)m_config.aiSkill[2];
+
             if ((m_config.aiSkillCondition[2] & ON_TIMER)
                 && m_config.aiSkillInterval[2] != 0
                 && m_iSecondsElapsed % m_config.aiSkillInterval[2] == 0)
             {
-                return (ActionSkillType)m_config.aiSkill[2];
+                return iSkill;
             }
 
             if (m_config.aiSkillCondition[2] & ON_CONDITION)
             {
                 if (m_config.aiSkillCondition[2] & ON_MOBS_NEARBY)
                 {
-                    int iCount = m_setTargets.size();
+                    int iCount = CountTargetsInSkillRange(iSkill, false);
 
                     if (((m_config.aiSkillCondition[2] & ON_MORE_THAN_TWO_MOBS) && iCount >= 2)
                         || ((m_config.aiSkillCondition[2] & ON_MORE_THAN_THREE_MOBS) && iCount >= 3)
                         || ((m_config.aiSkillCondition[2] & ON_MORE_THAN_FOUR_MOBS) && iCount >= 4)
                         || ((m_config.aiSkillCondition[2] & ON_MORE_THAN_FIVE_MOBS) && iCount >= 5))
                     {
-                        return (ActionSkillType)m_config.aiSkill[2];
+                        return iSkill;
                     }
                 }
                 else if (m_config.aiSkillCondition[2] & ON_MOBS_ATTACKING)
                 {
-                    int iCount = m_setTargetsAttacking.size();
+                    int iCount = CountTargetsInSkillRange(iSkill, true);
 
                     if (((m_config.aiSkillCondition[2] & ON_MORE_THAN_TWO_MOBS) && iCount >= 2)
                         || ((m_config.aiSkillCondition[2] & ON_MORE_THAN_THREE_MOBS) && iCount >= 3)
                         || ((m_config.aiSkillCondition[2] & ON_MORE_THAN_FOUR_MOBS) && iCount >= 4)
                         || ((m_config.aiSkillCondition[2] & ON_MORE_THAN_FIVE_MOBS) && iCount >= 5))
                     {
-                        return (ActionSkillType)m_config.aiSkill[2];
+                        return iSkill;
                     }
                 }
             }
@@ -907,14 +991,14 @@ namespace MUHelper
         TargetX = static_cast<int>(pTarget->Object.Position[0] / TERRAIN_SCALE);
         TargetY = static_cast<int>(pTarget->Object.Position[1] / TERRAIN_SCALE);
 
-        // When holding original position, skip targets outside hunting range
-        if (m_config.bReturnToOriginalPosition)
+        if (!IsTargetInSkillRange(m_iCurrentTarget, (ActionSkillType)MUHELPER_BASIC_ATTACK_ID))
         {
-            if (!CheckTile(Hero, &Hero->Object, static_cast<float>(m_iHuntingDistance)))
-            {
-                return 1;
-            }
+            m_iCurrentTarget = -1;
+            return 0;
         }
+
+        TargetX = static_cast<int>(pTarget->Object.Position[0] / TERRAIN_SCALE);
+        TargetY = static_cast<int>(pTarget->Object.Position[1] / TERRAIN_SCALE);
 
         g_MovementSkill.m_iSkill = AT_SKILL_UNDEFINED;
         g_MovementSkill.m_bMagic = false;
@@ -935,9 +1019,62 @@ namespace MUHelper
         return SimulateSkill(iSkill, true, m_iCurrentTarget);
     }
 
+    int CMuHelper::SimulateBuffSkill(ActionSkillType iSkill, int iTarget)
+    {
+        const int iPreviousCurrentSkill = Hero->CurrentSkill;
+        int iRestoreCurrentSkill = iPreviousCurrentSkill;
+        ActionSkillType iRestoreSkill = m_iCurrentSkill;
+        if (iRestoreSkill == (ActionSkillType)MUHELPER_BASIC_ATTACK_ID || iRestoreSkill <= AT_SKILL_UNDEFINED)
+        {
+            iRestoreSkill = (ActionSkillType)m_config.aiSkill[0];
+        }
+
+        const int iRestoreSkillIndex = g_pSkillList->GetSkillIndex(iRestoreSkill);
+        if (iRestoreSkillIndex != -1)
+        {
+            iRestoreCurrentSkill = iRestoreSkillIndex;
+        }
+
+        constexpr int BUFF_CAST_RETRY_DELAY_SECONDS = 2;
+        const std::pair<int, int> buffCastKey(static_cast<int>(iSkill), iTarget);
+        auto itLastBuffCast = m_mapLastBuffCastSecond.find(buffCastKey);
+        if (itLastBuffCast != m_mapLastBuffCastSecond.end()
+            && m_iSecondsElapsed - itLastBuffCast->second < BUFF_CAST_RETRY_DELAY_SECONDS)
+        {
+            Hero->CurrentSkill = iRestoreCurrentSkill;
+            return 1;
+        }
+
+        const MovementSkill previousMovementSkill = g_MovementSkill;
+        const int iPreviousSelectedCharacter = SelectedCharacter;
+        const int iPreviousTargetX = TargetX;
+        const int iPreviousTargetY = TargetY;
+
+        const int iResult = SimulateSkill(iSkill, true, iTarget);
+
+        if (iResult == 1)
+        {
+            m_mapLastBuffCastSecond[buffCastKey] = m_iSecondsElapsed;
+        }
+
+        Hero->CurrentSkill = iRestoreCurrentSkill;
+        g_MovementSkill = previousMovementSkill;
+        SelectedCharacter = iPreviousSelectedCharacter;
+        TargetX = iPreviousTargetX;
+        TargetY = iPreviousTargetY;
+
+        return iResult;
+    }
+
     int CMuHelper::SimulateSkill(ActionSkillType iSkill, bool bTargetRequired, int iTarget)
     {
-        g_MovementSkill.m_iSkill = iSkill;
+        const int iSkillIndex = g_pSkillList->GetSkillIndex(iSkill);
+        if (iSkillIndex == -1)
+        {
+            return 0;
+        }
+
+        g_MovementSkill.m_iSkill = iSkillIndex;
         g_MovementSkill.m_bMagic = true;
 
         const float fSkillDistance = gSkillManager.GetSkillDistance(iSkill, Hero);
@@ -952,7 +1089,6 @@ namespace MUHelper
 
                 g_MovementSkill.m_iTarget = -1;
 
-                // Check if current target is still valid (exists and alive)
                 if (iTarget != -1)
                 {
                     const int iCharIndex = FindCharacterIndex(iTarget);
@@ -964,6 +1100,15 @@ namespace MUHelper
                             DeleteTarget(iTarget);
                             return 0;
                         }
+
+                        if (!IsTargetInSkillRange(iTarget, iSkill))
+                        {
+                            m_iCurrentTarget = -1;
+                            return 0;
+                        }
+
+                        TargetX = Hero->PositionX;
+                        TargetY = Hero->PositionY;
                     }
                     else
                     {
@@ -1000,45 +1145,19 @@ namespace MUHelper
                 TargetX = (int)(pTarget->Object.Position[0] / TERRAIN_SCALE);
                 TargetY = (int)(pTarget->Object.Position[1] / TERRAIN_SCALE);
 
-                PATH_t tempPath;
-                bool bHasPath = PathFinding2(Hero->PositionX, Hero->PositionY, TargetX, TargetY, &tempPath, m_iHuntingDistance + fSkillDistance);
-                
-                // Target not reachable, ignore it
-                if (!bHasPath)
-                {
-                    DeleteTarget(iTarget);
-                    return 0;
-                }
-
+                const bool bCurrentCombatTarget = (iTarget == m_iCurrentTarget);
                 bool bTargetNear = CheckTile(Hero, &Hero->Object, fSkillDistance);
                 bool bNoWall = CheckWall(Hero->PositionX, Hero->PositionY, TargetX, TargetY);
 
-                // Target is not near or the path is obstructed by a wall, move closer
                 if (!bTargetNear || !bNoWall)
                 {
-                    // "Return to original position" means never leave starting spot — skip out-of-range targets
-                    if (m_config.bReturnToOriginalPosition)
+                    if (bCurrentCombatTarget)
                     {
-                        return 1;
+                        m_iCurrentTarget = -1;
+                        return 0;
                     }
 
-                    Hero->Path.Lock.lock();
-
-                    // Limit movement to 2 steps at a time
-                    int pathNum = std::min<int>(tempPath.PathNum, 2);
-                    for (int i = 0; i < pathNum; i++)
-                    {
-                        Hero->Path.PathX[i] = tempPath.PathX[i];
-                        Hero->Path.PathY[i] = tempPath.PathY[i];
-                    }
-                    Hero->Path.PathNum = pathNum;
-                    Hero->Path.CurrentPath = 0;
-                    Hero->Path.CurrentPathFloat = 0;
-
-                    Hero->Path.Lock.unlock();
-
-                    SendMove(Hero, &Hero->Object);
-                    return 0;
+                    return 1;
                 }
             }
         }
@@ -1055,41 +1174,6 @@ namespace MUHelper
         }
 
         return (int)(iSkillResult == 1);
-    }
-
-    int CMuHelper::Regroup()
-    {
-        if (m_config.bReturnToOriginalPosition && m_iSecondsAway > m_config.iMaxSecondsAway)
-        {
-            if (!SimulateMove(m_posOriginal))
-            {
-                return 0;
-            }
-
-            m_iSecondsAway = 0;
-            m_iComboState = 0;
-            m_iCurrentTarget = -1;
-        }
-
-        return 1;
-    }
-
-    int CMuHelper::SimulateMove(POINT posMove)
-    {
-        Hero->MovementType = MOVEMENT_MOVE;
-        TargetX = (int)posMove.x;
-        TargetY = (int)posMove.y;
-
-        if (!CheckTile(Hero, &Hero->Object, 1.5f))
-        {
-            if (PathFinding2((Hero->PositionX), (Hero->PositionY), TargetX, TargetY, &Hero->Path))
-            {
-                SendMove(Hero, &Hero->Object);
-            }
-            return 0;
-        }
-
-        return 1;
     }
 
     bool CMuHelper::HasAssignedBuffSkill()
@@ -1182,47 +1266,11 @@ namespace MUHelper
         TargetX = (int)(Items[m_iCurrentItem].Object.Position[0] / TERRAIN_SCALE);
         TargetY = (int)(Items[m_iCurrentItem].Object.Position[1] / TERRAIN_SCALE);
 
-        int iDistance = ComputeDistanceBetween({ Hero->PositionX, Hero->PositionY }, { TargetX, TargetY });
-
-        if (m_config.bStaticPickup)
+        if (SendGetItem == -1)
         {
-            // Static mode: pick items within range without moving; skip everything else
-            if (iDistance <= m_iObtainingDistance)
-            {
-                if (SendGetItem == -1)
-                {
-                    SendGetItem = m_iCurrentItem;
-                    SocketClient->ToGameServer()->SendPickupItemRequest(m_iCurrentItem);
-                    DeleteItem(m_iCurrentItem);
-                }
-            }
-            else
-            {
-                DeleteItem(m_iCurrentItem);
-            }
-            return 1;
-        }
-
-        if (iDistance <= m_iObtainingDistance)
-        {
-            if (!CheckTile(Hero, &Hero->Object, 1.5f))
-            {
-                if (PathFinding2((Hero->PositionX), (Hero->PositionY), TargetX, TargetY, &Hero->Path))
-                {
-                    SendMove(Hero, &Hero->Object);
-                }
-
-                return 0;
-            }
-            else
-            {
-                if (SendGetItem == -1)
-                {
-                    SendGetItem = m_iCurrentItem;
-                    SocketClient->ToGameServer()->SendPickupItemRequest(m_iCurrentItem);
-                    DeleteItem(m_iCurrentItem);
-                }
-            }
+            SendGetItem = m_iCurrentItem;
+            SocketClient->ToGameServer()->SendPickupItemRequest(m_iCurrentItem);
+            DeleteItem(m_iCurrentItem);
         }
 
         return 1;
@@ -1280,7 +1328,7 @@ namespace MUHelper
     int CMuHelper::SelectItemToObtain()
     {
         int iClosestItemId = MAX_ITEMS;
-        int iMinDistance = m_iObtainingDistance + 1;
+        int iMinDistance = 0x7FFFFFFF;
 
         std::set<int> setItems;
         {
