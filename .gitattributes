@@ -8,3 +8,6 @@
 *.cs text
 *.csproj text
 *.sln text
+*.bat text eol=crlf
+*.md text eol=crlf
+*.sql text eol=lf
