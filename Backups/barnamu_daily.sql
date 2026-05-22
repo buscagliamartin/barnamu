@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict zoFywWlwQggXdyaYexz7mvcO2qHEksSqhA96Cj0MVs5Kf6I29Lvm5vRt8HFjwiD
+\restrict BGhIehF2WTUHJJaULciWPbxv06NHZgMXy7Yvja3LZRfbl4dleihHdwOFGDLwLcV
 
 -- Dumped from database version 16.13
 -- Dumped by pg_dump version 16.13
@@ -56326,5 +56326,5 @@ ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA guild GRANT ALL ON TABLES T
 -- PostgreSQL database dump complete
 --
 
-\unrestrict zoFywWlwQggXdyaYexz7mvcO2qHEksSqhA96Cj0MVs5Kf6I29Lvm5vRt8HFjwiD
+\unrestrict BGhIehF2WTUHJJaULciWPbxv06NHZgMXy7Yvja3LZRfbl4dleihHdwOFGDLwLcV
 
