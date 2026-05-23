@@ -177,7 +177,13 @@ From CMD:
 BarnaMu.bat status
 ```
 
-Shows matching BarnaMu/OpenMU processes.
+Shows matching BarnaMu/OpenMU/nginx processes.
+
+Also shows:
+
+- Internal web port `8081`
+- Public web port `80`
+- Public HTTPS port `443`
 
 ---
 
@@ -187,9 +193,11 @@ Shows matching BarnaMu/OpenMU processes.
 BarnaMu.bat build
 BarnaMu.bat start server
 BarnaMu.bat start web
+BarnaMu.bat start nginx
 BarnaMu.bat start all
 BarnaMu.bat stop server
 BarnaMu.bat stop web
+BarnaMu.bat stop nginx
 BarnaMu.bat stop all
 BarnaMu.bat backup
 BarnaMu.bat push "commit message"
@@ -231,8 +239,12 @@ AutoRestart.bat
 - `StartServer.bat` is currently redundant because `BarnaMu.bat start server` does the same job.
 - `AutoRestart.bat` is useful if Task Scheduler needs one simple double-clickable entry point.
 - A future cleanup can remove `StartServer.bat` if no Task Scheduler entry or shortcut depends on it.
-- `BarnaMu.bat start web` and `BarnaMu.bat start all` now check the configured web port before launching BarnaMuWeb.
+- `BarnaMu.bat start web` starts both BarnaMuWeb and nginx.
+- `BarnaMu.bat start all` starts BarnaMuWeb, nginx, and the OpenMU server.
+- nginx is expected at `C:\MuDev\nginx\nginx.exe`.
+- `BarnaMu.bat start web` and `BarnaMu.bat start all` check the configured web port before launching BarnaMuWeb.
 - Default web port is `8081`. Override it with `BARNAMU_WEB_PORT` if needed.
+- Public `https://barnamu.ddns.net/` requires nginx to be running on port `443`.
 - If the web fails with `address already in use`, run:
 
 ```bat
@@ -256,3 +268,4 @@ exit /b %ERRORLEVEL%
 ```
 
 That would allow starting server + web by double-clicking.
+

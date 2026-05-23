@@ -122,7 +122,7 @@ internal class Jewelery : InitializerBase
         optionDefinition.SetGuid(optionNumber, targetAttribute.Id.ExtractFirstTwoBytes());
         optionDefinition.AddsRandomly = true;
         optionDefinition.Name = name;
-        optionDefinition.AddChance = 0.25f;
+        optionDefinition.AddChance = 0.12f;
         optionDefinition.MaximumOptionsPerItem = 1;
 
         var option = this.CreateItemOption(0, targetAttribute, 0, aggregateType, boostPerLevel, optionNumber);

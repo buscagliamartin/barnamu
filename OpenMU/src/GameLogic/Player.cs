@@ -22,6 +22,7 @@ using MUnique.OpenMU.GameLogic.PlayerActions.Trade;
 using MUnique.OpenMU.GameLogic.PlugIns;
 using MUnique.OpenMU.GameLogic.Properties;
 using MUnique.OpenMU.GameLogic.Views;
+using MUnique.OpenMU.GameLogic.Views.CashShop;
 using MUnique.OpenMU.GameLogic.Views.Character;
 using MUnique.OpenMU.GameLogic.Views.Guild;
 using MUnique.OpenMU.GameLogic.Views.Inventory;
@@ -2520,6 +2521,7 @@ public class Player : AsyncDisposable, IBucketMapObserver, IAttackable, IAttacke
         await this.InvokeViewPlugInAsync<IUpdateInventoryListPlugIn>(p => p.UpdateInventoryListAsync()).ConfigureAwait(false);
         await this.InvokeViewPlugInAsync<ISkillListViewPlugIn>(p => p.UpdateSkillListAsync()).ConfigureAwait(false);
         await this.InvokeViewPlugInAsync<IApplyKeyConfigurationPlugIn>(p => p.ApplyKeyConfigurationAsync()).ConfigureAwait(false);
+        await this.InvokeViewPlugInAsync<ICashShopInitializationPlugIn>(p => p.InitializeCashShopAsync()).ConfigureAwait(false);
         await this.InvokeViewPlugInAsync<IQuestStateResponsePlugIn>(p => p.ShowQuestStateAsync(null)).ConfigureAwait(false); // Legacy quest system
         await this.InvokeViewPlugInAsync<ICurrentlyActiveQuestsPlugIn>(p => p.ShowActiveQuestsAsync()).ConfigureAwait(false); // New quest system
 

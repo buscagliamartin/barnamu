@@ -163,7 +163,7 @@ public abstract class FixItemOptionsAndAttackSpeedPlugInBase : UpdatePlugInBase
         var definition = context.CreateNew<ItemOptionDefinition>();
         definition.SetGuid(number);
         definition.Name = attributeDefinition.Designation + " Option";
-        definition.AddChance = 0.25f;
+        definition.AddChance = 0.12f;
         definition.AddsRandomly = true;
         definition.MaximumOptionsPerItem = 1;
 

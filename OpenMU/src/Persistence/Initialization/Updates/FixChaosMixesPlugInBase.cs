@@ -147,7 +147,7 @@ public abstract class FixChaosMixesPlugInBase : UpdatePlugInBase
         if (gameConfiguration.ItemOptions.Single(iod => iod.Name == "Dinorant Options") is { } dinoOpts
             && gameConfiguration.ItemOptionTypes.Single(iot => iot == ItemOptionTypes.Option) is { } itemOption)
         {
-            dinoOpts.AddChance = 0.3f;
+            dinoOpts.AddChance = 0.12f;
 
             foreach (var opt in dinoOpts.PossibleOptions)
             {

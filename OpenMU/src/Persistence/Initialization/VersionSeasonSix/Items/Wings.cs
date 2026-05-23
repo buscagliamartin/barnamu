@@ -177,7 +177,7 @@ public class Wings : WingsInitializerBase
         this.GameConfiguration.ItemOptions.Add(optionDefinition);
 
         optionDefinition.Name = $"{name} Options";
-        optionDefinition.AddChance = 0.25f;
+        optionDefinition.AddChance = 0.12f;
         optionDefinition.AddsRandomly = true;
         optionDefinition.MaximumOptionsPerItem = 1;
         wing.PossibleItemOptions.Add(optionDefinition);

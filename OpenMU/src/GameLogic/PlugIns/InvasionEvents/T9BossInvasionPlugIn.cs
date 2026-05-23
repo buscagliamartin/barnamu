@@ -50,6 +50,6 @@ public class T9BossInvasionPlugIn : BaseInvasionPlugIn<PeriodicInvasionConfigura
         TaskDuration = TimeSpan.FromMinutes(30),
         PreStartMessageDelay = TimeSpan.FromSeconds(3),
         Message = "T9 Boss Invasion! Selupan, Erohim & Dark Elf have appeared!",
-        Timetable = PeriodicTaskConfiguration.GenerateTimeSequence(TimeSpan.FromHours(8)).ToList(), // cada 8 horas
+        Timetable = PeriodicTaskConfiguration.GenerateTimeSequence(TimeSpan.FromHours(12), new TimeOnly(3, 15)).ToList(),
     };
 }

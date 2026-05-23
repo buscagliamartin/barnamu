@@ -19,6 +19,6 @@ public class DevilSquareStartConfiguration : MiniGameStartConfiguration
             EntranceOpenedMessage = "Devil Square entrance is open and closes in {0} minute(s).",
             EntranceClosedMessage = "Devil Square entrance closed.",
             TaskDuration = TimeSpan.FromMinutes(25),
-            Timetable = PeriodicTaskConfiguration.GenerateTimeSequence(TimeSpan.FromMinutes(240)).ToList(),
+            Timetable = PeriodicTaskConfiguration.GenerateTimeSequence(TimeSpan.FromHours(4), new TimeOnly(1, 5)).ToList(),
         };
 }

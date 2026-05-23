@@ -20,8 +20,6 @@ public class ClearInventoryChatCommandPlugIn : ChatCommandPlugInBase<ClearInvent
 {
     private const string Command = "/clearinv";
     private const CharacterStatus MinimumStatus = CharacterStatus.Normal;
-    private const int ConfirmationTimeoutSeconds = 10;
-    private readonly Dictionary<Guid, DateTime> pendingConfirmations = new();
 
     /// <summary>
     /// Gets or sets the configuration.
@@ -67,23 +65,6 @@ public class ClearInventoryChatCommandPlugIn : ChatCommandPlugInBase<ClearInvent
         if (targetPlayer.Inventory is null)
         {
             return;
-        }
-
-        if (!isGameMaster && configuration.RequireConfirmation)
-        {
-            var playerId = selectedCharacter!.Id;
-            if (!this.pendingConfirmations.TryGetValue(playerId, out var confirmationTime) || (DateTime.UtcNow - confirmationTime).TotalSeconds > ConfirmationTimeoutSeconds)
-            {
-                this.pendingConfirmations[playerId] = DateTime.UtcNow;
-                if (configuration.ConfirmationMessage.GetTranslation(player.Culture) is { Length: > 0 } message)
-                {
-                    await player.ShowBlueMessageAsync(message).ConfigureAwait(false);
-                }
-
-                return;
-            }
-
-            this.pendingConfirmations.Remove(playerId);
         }
 
         var itemsToRemove = targetPlayer.Inventory.Items
@@ -143,7 +124,7 @@ public class ClearInventoryChatCommandPlugIn : ChatCommandPlugInBase<ClearInvent
         /// Gets or sets a value indicating whether the player needs to run the command again within 10 seconds to confirm the inventory clearing (excluding GM).
         /// </summary>
         [Display(ResourceType = typeof(PlugInResources), Name = nameof(PlugInResources.ClearInventoryConfiguration_RequireConfirmation_Name), Description = nameof(PlugInResources.ClearInventoryConfiguration_RequireConfirmation_Description))]
-        public bool RequireConfirmation { get; set; } = true;
+        public bool RequireConfirmation { get; set; }
 
         /// <summary>
         /// Gets or sets the message to show the confirmation message.

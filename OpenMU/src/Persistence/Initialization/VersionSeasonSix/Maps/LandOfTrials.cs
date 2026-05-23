@@ -431,17 +431,18 @@ internal class LandOfTrials : BaseMapInitializer
             monster.AttackSkill = this.GameConfiguration.Skills.FirstOrDefault(s => s.Number == (short)SkillNumber.MonsterSkill);
             var attributes = new Dictionary<AttributeDefinition, float>
             {
-                { Stats.Level, 128 },
-                { Stats.MaximumHealth, 3000000 },
-                { Stats.MinimumPhysBaseDmg, 1500 },
-                { Stats.MaximumPhysBaseDmg, 2000 },
-                { Stats.DefenseBase, 1000 },
-                { Stats.AttackRatePvm, 1500 },
-                { Stats.DefenseRatePvm, 800 },
-                { Stats.PoisonResistance, 254f / 255 },
-                { Stats.IceResistance, 100f / 255 },
-                { Stats.LightningResistance, 100f / 255 },
-                { Stats.FireResistance, 100f / 255 },
+                { Stats.Level, 155 },
+                { Stats.MaximumHealth, 1200000000 },
+                { Stats.MinimumPhysBaseDmg, 2200 },
+                { Stats.MaximumPhysBaseDmg, 2700 },
+                { Stats.DefenseBase, 65000 },
+                { Stats.AttackRatePvm, 8500 },
+                { Stats.DefenseRatePvm, 22000 },
+                { Stats.PoisonResistance, 0.75f },
+                { Stats.IceResistance, 0.75f },
+                { Stats.LightningResistance, 0.75f },
+                { Stats.WaterResistance, 0.75f },
+                { Stats.FireResistance, 0.75f },
             };
 
             monster.AddAttributes(attributes, this.Context, this.GameConfiguration);

@@ -38,9 +38,17 @@ public abstract class MiniGameStartBasePlugIn<TConfiguration, TGameState> : Peri
             return TimeSpan.Zero;
         }
 
-        var timeNow = new TimeOnly(DateTime.UtcNow.TimeOfDay.Ticks);
-        var nextRun = this.Configuration?.Timetable.Where(time => time > timeNow).Order().FirstOrDefault();
-        return nextRun - timeNow;
+        var timeNow = TimeOnly.FromDateTime(DateTime.Now);
+        var timetable = this.Configuration?.Timetable.Order().ToList();
+        if (timetable is not { Count: > 0 })
+        {
+            return null;
+        }
+
+        var nextRun = timetable.FirstOrDefault(time => time > timeNow);
+        return nextRun == default
+            ? timetable[0].ToTimeSpan().Add(TimeSpan.FromDays(1)) - timeNow.ToTimeSpan()
+            : nextRun - timeNow;
     }
 
     /// <inheritdoc />

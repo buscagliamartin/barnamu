@@ -27,7 +27,7 @@ public class PeriodicInvasionConfiguration : PeriodicTaskConfiguration
         TaskDuration = TimeSpan.FromMinutes(5),
         PreStartMessageDelay = TimeSpan.FromSeconds(3),
         Message = "[{mapName}] Golden Invasion!",
-        Timetable = GenerateTimeSequence(TimeSpan.FromHours(4)).ToList(), // Every 4 hours
+        Timetable = GenerateTimeSequence(TimeSpan.FromHours(4), new TimeOnly(0, 35)).ToList(),
     };
 
     /// <summary>
@@ -38,6 +38,6 @@ public class PeriodicInvasionConfiguration : PeriodicTaskConfiguration
         TaskDuration = TimeSpan.FromMinutes(10),
         PreStartMessageDelay = TimeSpan.FromSeconds(3),
         Message = "[{mapName}] Red Dragon Invasion!",
-        Timetable = GenerateTimeSequence(TimeSpan.FromHours(6), new TimeOnly(2, 0)).ToList(), // Every 6 hours, starting from 02:00
+        Timetable = GenerateTimeSequence(TimeSpan.FromHours(6), new TimeOnly(2, 45)).ToList(),
     };
 }

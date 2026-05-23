@@ -98,17 +98,18 @@ internal class RaklionBoss : BaseMapInitializer
             monster.NumberOfMaximumItemDrops = 1;
             var attributes = new Dictionary<AttributeDefinition, float>
             {
-                { Stats.Level, 145 },
-                { Stats.MaximumHealth, 4800000 },
-                { Stats.MinimumPhysBaseDmg, 2500 },
-                { Stats.MaximumPhysBaseDmg, 3000 },
-                { Stats.DefenseBase, 1250 },
-                { Stats.AttackRatePvm, 2200 },
-                { Stats.DefenseRatePvm, 1800 },
-                { Stats.PoisonResistance, 254f / 255 },
-                { Stats.IceResistance, 254f / 255 },
-                { Stats.WaterResistance, 150f / 255 },
-                { Stats.FireResistance, 150f / 255 },
+                { Stats.Level, 160 },
+                { Stats.MaximumHealth, 1600000000 },
+                { Stats.MinimumPhysBaseDmg, 2600 },
+                { Stats.MaximumPhysBaseDmg, 3200 },
+                { Stats.DefenseBase, 75000 },
+                { Stats.AttackRatePvm, 9500 },
+                { Stats.DefenseRatePvm, 26000 },
+                { Stats.PoisonResistance, 0.80f },
+                { Stats.IceResistance, 0.80f },
+                { Stats.WaterResistance, 0.80f },
+                { Stats.FireResistance, 0.80f },
+                { Stats.LightningResistance, 0.80f },
                 { Stats.SkillMultiplier, 2 },
             };
             monster.AddAttributes(attributes, this.Context, this.GameConfiguration);

@@ -19,9 +19,10 @@ public class DefaultDropGenerator : IDropGenerator
     /// </summary>
     private const int BaseMoneyDrop = 7;
     private const int DropLevelMaxGap = 12;
-    private const int SkillDropChancePercent = 50;
+    private const int SkillDropChancePercent = 25;
+    private const int ItemLevelIncreaseChancePercent = 25;
 
-    private const byte DefaultMaxItemOptionLevelDrop = 3;
+    private const byte DefaultMaxItemOptionLevelDrop = 1;
     private const byte MinItemOptionLevelDrop = 1;
     private const byte MaxItemOptionLevelDrop = 4;
 
@@ -147,7 +148,7 @@ public class DefaultDropGenerator : IDropGenerator
             return null;
         }
 
-        item.Level = GetItemLevelByMonsterLevel(item.Definition!, monsterLevel);
+        item.Level = this.GetItemLevelByMonsterLevel(item.Definition!, monsterLevel);
         item.Durability = item.GetMaximumDurabilityOfOnePiece();
         return item;
     }
@@ -222,9 +223,16 @@ public class DefaultDropGenerator : IDropGenerator
         return item;
     }
 
-    private static byte GetItemLevelByMonsterLevel(ItemDefinition itemDefinition, int monsterLevel)
+    private byte GetItemLevelByMonsterLevel(ItemDefinition itemDefinition, int monsterLevel)
     {
-        return Math.Min((byte)((monsterLevel - itemDefinition.DropLevel) / 3), itemDefinition.MaximumItemLevel);
+        var maximumLevel = Math.Min(Math.Max(0, (monsterLevel - itemDefinition.DropLevel) / 3), itemDefinition.MaximumItemLevel);
+        byte itemLevel = 0;
+        while (itemLevel < maximumLevel && this._randomizer.NextRandomBool(ItemLevelIncreaseChancePercent))
+        {
+            itemLevel++;
+        }
+
+        return itemLevel;
     }
 
     private static async ValueTask<IEnumerable<DropItemGroup>> GetQuestItemGroupsAsync(Player player)

@@ -57,7 +57,7 @@ public abstract class GameConfigurationInitializerBase : InitializerBase
         this.GameConfiguration.MaximumPartySize = 5;
         this.GameConfiguration.ShouldDropMoney = true;
         this.GameConfiguration.ItemDropDuration = TimeSpan.FromSeconds(60);
-        this.GameConfiguration.MaximumItemOptionLevelDrop = 3;
+        this.GameConfiguration.MaximumItemOptionLevelDrop = 1;
         this.GameConfiguration.DamagePerOneItemDurability = 2000;
         this.GameConfiguration.DamagePerOnePetDurability = 100000;
         this.GameConfiguration.HitsPerOneItemDurability = 10000;
@@ -84,7 +84,7 @@ public abstract class GameConfigurationInitializerBase : InitializerBase
         var definition = this.Context.CreateNew<ItemOptionDefinition>();
         definition.SetGuid(number);
         definition.Name = attributeDefinition.Designation + " Option";
-        definition.AddChance = 0.25f;
+        definition.AddChance = 0.12f;
         definition.AddsRandomly = true;
         definition.MaximumOptionsPerItem = 1;
 
@@ -180,7 +180,7 @@ public abstract class GameConfigurationInitializerBase : InitializerBase
         var definition = this.Context.CreateNew<ItemOptionDefinition>();
         definition.SetGuid(ItemOptionDefinitionNumbers.Luck);
         definition.Name = "Luck";
-        definition.AddChance = 0.25f;
+        definition.AddChance = 0.10f;
         definition.AddsRandomly = true;
         definition.MaximumOptionsPerItem = 1;
 

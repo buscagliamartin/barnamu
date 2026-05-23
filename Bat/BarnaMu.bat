@@ -12,6 +12,8 @@ set "ROOT=%BARNAMU_HOME%"
 set "OPENMU_SRC=%BARNAMU_HOME%\OpenMU\src"
 set "STARTUP_DIR=%OPENMU_SRC%\Startup"
 set "WEB_PUBLISH=%BARNAMU_HOME%\BarnaMuWeb\publish"
+set "NGINX_DIR=%BARNAMU_HOME%\nginx"
+set "NGINX_EXE=%NGINX_DIR%\nginx.exe"
 set "BACKUP_DIR=%BARNAMU_HOME%\Backups"
 
 if not defined BARNAMU_PG_DUMP set "BARNAMU_PG_DUMP=C:\Program Files\PostgreSQL\16\bin\pg_dump.exe"
@@ -42,6 +44,7 @@ if /I "%CMD%"=="rebuild" goto :build
 if /I "%CMD%"=="start" goto :start_dispatch
 if /I "%CMD%"=="server" goto :start_server
 if /I "%CMD%"=="web" goto :start_web
+if /I "%CMD%"=="nginx" goto :start_nginx
 if /I "%CMD%"=="all" goto :start_all
 if /I "%CMD%"=="run-server" goto :run_server
 if /I "%CMD%"=="run-web" goto :run_web
@@ -61,9 +64,11 @@ echo Usage:
 echo   BarnaMu.bat build
 echo   BarnaMu.bat start server
 echo   BarnaMu.bat start web
+echo   BarnaMu.bat start nginx
 echo   BarnaMu.bat start all
 echo   BarnaMu.bat stop server
 echo   BarnaMu.bat stop web
+echo   BarnaMu.bat stop nginx
 echo   BarnaMu.bat stop all
 echo   BarnaMu.bat backup
 echo   BarnaMu.bat push "commit message"
@@ -100,8 +105,9 @@ exit /b 0
 :start_dispatch
 if /I "%~2"=="server" goto :start_server
 if /I "%~2"=="web" goto :start_web
+if /I "%~2"=="nginx" goto :start_nginx
 if /I "%~2"=="all" goto :start_all
-echo [error] Use: BarnaMu.bat start server^|web^|all
+echo [error] Use: BarnaMu.bat start server^|web^|nginx^|all
 exit /b 1
 
 :start_all
@@ -132,6 +138,22 @@ call :require_free_port "%WEB_PORT%" "web"
 if errorlevel 1 exit /b 1
 start "BarnaMu Web" cmd /k ""%~f0" run-web"
 echo [ok] Web window started.
+call :start_nginx
+exit /b %ERRORLEVEL%
+
+:start_nginx
+call :require_file "%NGINX_EXE%" "nginx executable" || exit /b 1
+echo [nginx] Starting reverse proxy...
+call :stop_nginx_quiet
+pushd "%NGINX_DIR%" >nul
+start "BarnaMu Nginx" /min nginx.exe
+set "RC=%ERRORLEVEL%"
+popd >nul
+if not "%RC%"=="0" (
+    echo [error] Nginx start failed with code %RC%.
+    exit /b %RC%
+)
+echo [ok] Nginx start requested.
 exit /b 0
 
 :run_server
@@ -173,15 +195,16 @@ goto :web_loop
 :stop_dispatch
 if /I "%~2"=="server" goto :stop_server
 if /I "%~2"=="web" goto :stop_web
+if /I "%~2"=="nginx" goto :stop_nginx
 if /I "%~2"=="all" goto :stop_all
-echo [error] Use: BarnaMu.bat stop server^|web^|all
+echo [error] Use: BarnaMu.bat stop server^|web^|nginx^|all
 exit /b 1
 
 :stop_all
-echo [stop] Stopping server and web...
+echo [stop] Stopping server, web, and nginx...
 call :stop_server_quiet
 call :stop_web_quiet
-echo [ok] Server and web stopped.
+echo [ok] Server, web, and nginx stopped.
 exit /b 0
 
 :stop_server
@@ -196,6 +219,12 @@ call :stop_web_quiet
 echo [ok] Web stopped.
 exit /b 0
 
+:stop_nginx
+echo [stop] Stopping nginx...
+call :stop_nginx_quiet
+echo [ok] Nginx stopped.
+exit /b 0
+
 :stop_server_quiet
 taskkill /F /FI "WINDOWTITLE eq BarnaMu Server*" /T >nul 2>nul
 call :kill_by_command "OpenMU"
@@ -205,6 +234,18 @@ exit /b 0
 taskkill /F /FI "WINDOWTITLE eq BarnaMu Web*" /T >nul 2>nul
 call :kill_by_command "BarnaMuWeb"
 call :kill_by_port "%WEB_PORT%"
+call :stop_nginx_quiet
+exit /b 0
+
+:stop_nginx_quiet
+taskkill /F /FI "WINDOWTITLE eq BarnaMu Nginx*" /T >nul 2>nul
+if exist "%NGINX_EXE%" (
+    pushd "%NGINX_DIR%" >nul
+    nginx.exe -s quit >nul 2>nul
+    popd >nul
+)
+timeout /T 1 /NOBREAK >nul
+call :kill_by_command "nginx.exe"
 exit /b 0
 
 :backup
@@ -311,9 +352,11 @@ exit /b 0
 
 :status
 echo [status] Matching BarnaMu processes:
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$self=$PID; Get-CimInstance Win32_Process | Where-Object { $_.ProcessId -ne $self -and $_.CommandLine -and ($_.CommandLine -like '*OpenMU*' -or $_.CommandLine -like '*BarnaMuWeb*') } | Select-Object ProcessId,Name,CommandLine | Format-Table -AutoSize"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$self=$PID; Get-CimInstance Win32_Process | Where-Object { $_.ProcessId -ne $self -and $_.CommandLine -and ($_.CommandLine -like '*OpenMU*' -or $_.CommandLine -like '*BarnaMuWeb*' -or $_.CommandLine -like '*nginx.exe*') } | Select-Object ProcessId,Name,CommandLine | Format-Table -AutoSize"
 echo [status] Web port %WEB_PORT%:
 call :show_port_owner "%WEB_PORT%"
+echo [status] Public web ports:
+call :show_public_web_ports
 exit /b 0
 
 :require_dir
@@ -344,5 +387,9 @@ exit /b %ERRORLEVEL%
 
 :show_port_owner
 powershell -NoProfile -ExecutionPolicy Bypass -Command "$port=[int]'%~1'; $conns=Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue; if (-not $conns) { Write-Host ('[ok] Port ' + $port + ' is free.'); exit 0 }; $conns | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { $proc=Get-Process -Id $_ -ErrorAction SilentlyContinue; if ($proc) { Write-Host ('[info] Port ' + $port + ' is used by PID ' + $proc.Id + ' (' + $proc.ProcessName + ').'); } else { Write-Host ('[info] Port ' + $port + ' is used by PID ' + $_ + '.'); } }"
+exit /b 0
+
+:show_public_web_ports
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$ports=@(80,443); foreach ($port in $ports) { $conns=Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue; if (-not $conns) { Write-Host ('[ok] Port ' + $port + ' is free.'); continue }; $conns | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { $proc=Get-Process -Id $_ -ErrorAction SilentlyContinue; if ($proc) { Write-Host ('[info] Port ' + $port + ' is used by PID ' + $proc.Id + ' (' + $proc.ProcessName + ').'); } else { Write-Host ('[info] Port ' + $port + ' is used by PID ' + $_ + '.'); } } }"
 exit /b 0
 

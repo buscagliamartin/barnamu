@@ -64,7 +64,7 @@ public class PeriodicTaskConfiguration
             return false;
         }
 
-        var nowTime = TimeOnly.FromDateTime(DateTime.UtcNow);
+        var nowTime = TimeOnly.FromDateTime(DateTime.Now);
         var earlier = nowTime.Add(TimeSpan.FromSeconds(-5));
 
         // For example, p = 00:00. Check that time between 00:00:00 and 00:00:05

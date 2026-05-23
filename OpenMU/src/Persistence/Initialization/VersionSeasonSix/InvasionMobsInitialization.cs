@@ -78,16 +78,17 @@ internal class InvasionMobsInitialization : Version095d.InvasionMobsInitializati
             var attributes = new Dictionary<AttributeDefinition, float>
             {
                 { Stats.Level, 80 },
-                { Stats.MaximumHealth, 22000 },
-                { Stats.MinimumPhysBaseDmg, 300 },
-                { Stats.MaximumPhysBaseDmg, 350 },
-                { Stats.DefenseBase, 230 },
-                { Stats.AttackRatePvm, 400 },
-                { Stats.DefenseRatePvm, 90 },
-                { Stats.PoisonResistance, 9f / 255 },
-                { Stats.IceResistance, 7f / 255 },
-                { Stats.WaterResistance, 9f / 255 },
-                { Stats.FireResistance, 9f / 255 },
+                { Stats.MaximumHealth, 80000000 },
+                { Stats.MinimumPhysBaseDmg, 650 },
+                { Stats.MaximumPhysBaseDmg, 850 },
+                { Stats.DefenseBase, 12000 },
+                { Stats.AttackRatePvm, 3500 },
+                { Stats.DefenseRatePvm, 4000 },
+                { Stats.PoisonResistance, 0.45f },
+                { Stats.IceResistance, 0.45f },
+                { Stats.WaterResistance, 0.45f },
+                { Stats.FireResistance, 0.45f },
+                { Stats.LightningResistance, 0.45f },
             };
             monster.AddAttributes(attributes, this.Context, this.GameConfiguration);
 
@@ -140,16 +141,17 @@ internal class InvasionMobsInitialization : Version095d.InvasionMobsInitializati
             var attributes = new Dictionary<AttributeDefinition, float>
             {
                 { Stats.Level, 83 },
-                { Stats.MaximumHealth, 25000 },
-                { Stats.MinimumPhysBaseDmg, 310 },
-                { Stats.MaximumPhysBaseDmg, 360 },
-                { Stats.DefenseBase, 240 },
-                { Stats.AttackRatePvm, 415 },
-                { Stats.DefenseRatePvm, 150 },
-                { Stats.PoisonResistance, 9f / 255 },
-                { Stats.IceResistance, 7f / 255 },
-                { Stats.WaterResistance, 9f / 255 },
-                { Stats.FireResistance, 9f / 255 },
+                { Stats.MaximumHealth, 110000000 },
+                { Stats.MinimumPhysBaseDmg, 750 },
+                { Stats.MaximumPhysBaseDmg, 950 },
+                { Stats.DefenseBase, 15000 },
+                { Stats.AttackRatePvm, 4000 },
+                { Stats.DefenseRatePvm, 5000 },
+                { Stats.PoisonResistance, 0.50f },
+                { Stats.IceResistance, 0.50f },
+                { Stats.WaterResistance, 0.50f },
+                { Stats.FireResistance, 0.50f },
+                { Stats.LightningResistance, 0.50f },
             };
             monster.AddAttributes(attributes, this.Context, this.GameConfiguration);
 
@@ -172,16 +174,17 @@ internal class InvasionMobsInitialization : Version095d.InvasionMobsInitializati
             var attributes = new Dictionary<AttributeDefinition, float>
             {
                 { Stats.Level, 77 },
-                { Stats.MaximumHealth, 15000 },
-                { Stats.MinimumPhysBaseDmg, 320 },
-                { Stats.MaximumPhysBaseDmg, 360 },
-                { Stats.DefenseBase, 230 },
-                { Stats.AttackRatePvm, 385 },
-                { Stats.DefenseRatePvm, 160 },
-                { Stats.PoisonResistance, 9f / 255 },
-                { Stats.IceResistance, 7f / 255 },
-                { Stats.WaterResistance, 9f / 255 },
-                { Stats.FireResistance, 9f / 255 },
+                { Stats.MaximumHealth, 70000000 },
+                { Stats.MinimumPhysBaseDmg, 600 },
+                { Stats.MaximumPhysBaseDmg, 800 },
+                { Stats.DefenseBase, 10000 },
+                { Stats.AttackRatePvm, 3200 },
+                { Stats.DefenseRatePvm, 3500 },
+                { Stats.PoisonResistance, 0.40f },
+                { Stats.IceResistance, 0.40f },
+                { Stats.WaterResistance, 0.40f },
+                { Stats.FireResistance, 0.40f },
+                { Stats.LightningResistance, 0.40f },
             };
             monster.AddAttributes(attributes, this.Context, this.GameConfiguration);
             monster.SetGuid(monster.Number);
@@ -204,16 +207,17 @@ internal class InvasionMobsInitialization : Version095d.InvasionMobsInitializati
             var attributes = new Dictionary<AttributeDefinition, float>
             {
                 { Stats.Level, 90 },
-                { Stats.MaximumHealth, 32000 },
-                { Stats.MinimumPhysBaseDmg, 450 },
-                { Stats.MaximumPhysBaseDmg, 560 },
-                { Stats.DefenseBase, 300 },
-                { Stats.AttackRatePvm, 450 },
-                { Stats.DefenseRatePvm, 185 },
-                { Stats.PoisonResistance, 9f / 255 },
-                { Stats.IceResistance, 7f / 255 },
-                { Stats.WaterResistance, 9f / 255 },
-                { Stats.FireResistance, 9f / 255 },
+                { Stats.MaximumHealth, 160000000 },
+                { Stats.MinimumPhysBaseDmg, 900 },
+                { Stats.MaximumPhysBaseDmg, 1200 },
+                { Stats.DefenseBase, 18000 },
+                { Stats.AttackRatePvm, 4500 },
+                { Stats.DefenseRatePvm, 6000 },
+                { Stats.PoisonResistance, 0.55f },
+                { Stats.IceResistance, 0.55f },
+                { Stats.WaterResistance, 0.55f },
+                { Stats.FireResistance, 0.55f },
+                { Stats.LightningResistance, 0.55f },
             };
             monster.AddAttributes(attributes, this.Context, this.GameConfiguration);
 

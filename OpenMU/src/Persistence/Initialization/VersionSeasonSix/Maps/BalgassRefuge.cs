@@ -73,17 +73,18 @@ internal class BalgassRefuge : BaseMapInitializer
             monster.NumberOfMaximumItemDrops = 1;
             var attributes = new Dictionary<AttributeDefinition, float>
             {
-                { Stats.Level, 128 },
-                { Stats.MaximumHealth, 1500000 },
-                { Stats.MinimumPhysBaseDmg, 800 },
-                { Stats.MaximumPhysBaseDmg, 900 },
-                { Stats.DefenseBase, 900 },
-                { Stats.AttackRatePvm, 1500 },
-                { Stats.DefenseRatePvm, 400 },
-                { Stats.PoisonResistance, 254f / 255 },
-                { Stats.IceResistance, 23f / 255 },
-                { Stats.LightningResistance, 23f / 255 },
-                { Stats.FireResistance, 23f / 255 },
+                { Stats.Level, 145 },
+                { Stats.MaximumHealth, 900000000 },
+                { Stats.MinimumPhysBaseDmg, 1800 },
+                { Stats.MaximumPhysBaseDmg, 2200 },
+                { Stats.DefenseBase, 55000 },
+                { Stats.AttackRatePvm, 7500 },
+                { Stats.DefenseRatePvm, 18000 },
+                { Stats.PoisonResistance, 0.70f },
+                { Stats.IceResistance, 0.70f },
+                { Stats.LightningResistance, 0.70f },
+                { Stats.WaterResistance, 0.70f },
+                { Stats.FireResistance, 0.70f },
             };
 
             monster.AddAttributes(attributes, this.Context, this.GameConfiguration);

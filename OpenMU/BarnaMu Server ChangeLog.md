@@ -37,7 +37,8 @@ The OpenMU server now includes BarnaMu-specific VIP systems, progression rates, 
 - VIP zen: `13x`.
 - Normal drop: `5x`.
 - VIP drop: `7x`.
-- Excellent drop: about `3x` normal and `4x` VIP.
+- Common excellent drop: `0.0001` normal, `0.00014` VIP/GM effective.
+- Common jewel drop: `0.0005` normal, `0.0007` VIP/GM effective.
 
 ### Party System
 
@@ -57,6 +58,23 @@ The OpenMU server now includes BarnaMu-specific VIP systems, progression rates, 
 - Fixed Bloody Golem dead-drop issue caused by an empty guaranteed drop group.
 - Added Tier A-F drop system using Box of Luck variants.
 - Added monster-level-gated tier box drops.
+- Reduced Tier A-F box drop chances:
+  - Tier A: `0.0002`
+  - Tier B: `0.00018`
+  - Tier C: `0.00015`
+  - Tier D: `0.00012`
+  - Tier E: `0.0001`
+  - Tier F: `0.00008`
+- Reduced common jewel drop chance to `0.0005`.
+- Reduced Jewel of Guardian drop chance to `0.00025`.
+- Reduced common excellent item drop chance to `0.0001`.
+- Reduced second excellent option chance to `15%`.
+- Reduced random Luck option chance to `10%`.
+- Reduced normal random option chance to `12%`.
+- Reduced random skill chance on normal items to `25%`.
+- Capped normal dropped item option level with `MaximumItemOptionLevelDrop = 1`.
+- Reworked normal dropped item level generation from guaranteed monster-level scaling to weighted `25%` per item level.
+- Kept excellent item skill behavior: excellent items that can have skill still always get skill.
 - Fixed `SpecialItemType` usage for specific-item drops.
 - Added Flame of Condor monster drop support.
 - Added Box of Kundun / Heaven reward work.
@@ -127,6 +145,22 @@ The OpenMU server now includes BarnaMu-specific VIP systems, progression rates, 
 - Preserved extended vault login behavior for VIP and GM.
 - Added account registration support through the web project using the same BCrypt hashing as OpenMU.
 
+### Cash Shop
+
+- Added in-game cash shop client initialization on player world entry.
+- Added Season 6 cash shop script version packet support for product list `512.2012.084`.
+- Added Season 6 cash shop banner version packet support for banner list `583.2011.001`.
+- Added `0xD2` cash shop packet group handling.
+- Added handlers for cash shop open state, W Coin balance, storage list, buy, gift, delete, consume, and event-item list requests.
+- Enabled the client X-key cash shop window to open instead of showing the reconnect error.
+- Kept W Coin balances, purchases, gifts, and storage actions non-authoritative placeholders pending account currency and cash shop storage implementation.
+- Planned future cash shop direction:
+  - Keep the X store for W Coin sinks, services, convenience items, VIP time, expansions, reset utilities, event tickets, cosmetics, and marketplace-related tokens.
+  - Avoid selling direct power items through the X store to preserve the slow-medium server economy.
+  - Evaluate W Coin-based personal stores and/or a website marketplace for player-farmed item trading.
+  - Prefer player-to-player item sales where W Coin transfers from buyer to seller, with an optional marketplace tax burned by the server.
+  - Require W Coin balances, transaction logs, item escrow, and full audit logging before enabling real-money W Coin purchases or player-market sales.
+
 ### Network And Access
 
 - Set Connect Server max connections per IP to `2`.
@@ -173,6 +207,9 @@ The web project can register accounts, show server status, display rankings, pub
 - Uses `data."Character"."PlayerKillCount"` for `/pkclear` cost.
 - Uses `data."StatAttribute"` for level, master level, and resets rankings.
 - Uses `config."DropItemGroup"` and `config."ItemDropItemGroup"` for monster and box drops.
+- Updated `config."DropItemGroup"` rates for Tier A-F boxes, common jewels, Jewel of Guardian, and common excellent drops.
+- Updated `config."ItemOptionDefinition"` rates for Luck, normal random options, and second excellent options.
+- Updated `config."GameConfiguration"."MaximumItemOptionLevelDrop"` to `1`.
 - Uses `config."WarpInfo"` and `config."EnterGate"` for normal map entry requirements.
 - Added `web."BugReport"` for website bug reports.
 
@@ -185,6 +222,12 @@ The web project can register accounts, show server status, display rankings, pub
 - `GameLogic/DefaultDropGenerator.cs`
 - `GameLogic/AttackableNpcBase.cs`
 - `GameLogic/PartyAutoMode.cs`
+- `Persistence/Initialization/GameConfigurationInitializerBase.cs`
+- `Persistence/Initialization/Updates/FixChaosMixesPlugInBase.cs`
+- `Persistence/Initialization/Updates/FixItemOptionsAndAttackSpeedPlugInBase.cs`
+- `Persistence/Initialization/Version075/Items/Jewelery.cs`
+- `Persistence/Initialization/VersionSeasonSix/Items/Pets.cs`
+- `Persistence/Initialization/VersionSeasonSix/Items/Wings.cs`
 - `GameLogic/PlayerActions/LoginAction.cs`
 - `GameLogic/PlayerActions/WarpAction.cs`
 - `GameLogic/PlayerActions/WarpGateAction.cs`
@@ -230,6 +273,7 @@ The web project can register accounts, show server status, display rankings, pub
 
 ## Session Timeline
 
+- `2026-05-22`: Slow-medium drop-quality pass: reduced Tier A-F box rates, common jewel and excellent rates, Jewel of Guardian rate, second excellent option chance, random Luck/option/skill chances, capped normal option level, and weighted normal item level generation.
 - `2026-05-17`: Map level overhaul, VIP map access sync, invasion GM commands, NuGet warning suppression, backup/push script fix, web template reorganization.
 - `2026-05-16`: `/pkclear` rewrite, VIP chat tag fix, Tier A-F drop side, Flame of Condor drop support, backup rotation, push helper, crafting exception logging.
 - `2026-05-15`: VIP timer system, account migration, `/setvip`, `/vipinfo`, periodic expiration check, login expiration check, first public web scaffold.
@@ -244,3 +288,30 @@ The web project can register accounts, show server status, display rankings, pub
 - Polish `/resetinfo`.
 - Add resets ranking improvements.
 - Investigate Vulcanus M-menu red display if still client-side.
+
+## Future Plugin Backlog
+
+- Castle Siege.
+- Jewels Bank.
+- Player WCoin Market / Web Market.
+- Offline Personal Store.
+- Web Market Browser.
+- Guild Bank.
+- Boss Token System.
+- Drop Audit Logger.
+- Event Reward Balancer.
+- Item Lock / Protection.
+- Jewel Pack / Unpack Commands.
+- Party Finder.
+- Guild War Rewards.
+- PvP Arena / Duel Ladder.
+- Reset / Master Reset Rewards.
+- Daily / Weekly Quests.
+- Anti-Bot / Farm Monitor.
+- WCoin Admin Ledger.
+- VIP Convenience Only.
+- Web Event Calendar.
+- Endgame Boss Lockout.
+- Auction House.
+- Custom Achievements.
+- Crafting Safety Preview.
