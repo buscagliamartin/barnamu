@@ -11,7 +11,8 @@ if "%BARNAMU_HOME:~-1%"=="\" set "BARNAMU_HOME=%BARNAMU_HOME:~0,-1%"
 set "ROOT=%BARNAMU_HOME%"
 set "OPENMU_SRC=%BARNAMU_HOME%\OpenMU\src"
 set "STARTUP_DIR=%OPENMU_SRC%\Startup"
-set "WEB_PUBLISH=%BARNAMU_HOME%\BarnaMuWeb\publish"
+set "WEB_DIR=%BARNAMU_HOME%\BarnaMuWeb"
+set "WEB_PUBLISH=%WEB_DIR%\publish"
 set "NGINX_DIR=%BARNAMU_HOME%\nginx"
 set "NGINX_EXE=%NGINX_DIR%\nginx.exe"
 set "BACKUP_DIR=%BARNAMU_HOME%\Backups"
@@ -41,6 +42,8 @@ set "CMD=%~1"
 if /I "%CMD%"=="help" goto :help
 if /I "%CMD%"=="build" goto :build
 if /I "%CMD%"=="rebuild" goto :build
+if /I "%CMD%"=="build-web" goto :build_web
+if /I "%CMD%"=="rebuild-web" goto :build_web
 if /I "%CMD%"=="start" goto :start_dispatch
 if /I "%CMD%"=="server" goto :start_server
 if /I "%CMD%"=="web" goto :start_web
@@ -62,6 +65,7 @@ echo BarnaMu control script
 echo.
 echo Usage:
 echo   BarnaMu.bat build
+echo   BarnaMu.bat build-web
 echo   BarnaMu.bat start server
 echo   BarnaMu.bat start web
 echo   BarnaMu.bat start nginx
@@ -100,6 +104,38 @@ if not "%RC%"=="0" (
 )
 
 echo [ok] Build completed.
+exit /b 0
+
+:build_web
+echo [build-web] Stopping BarnaMuWeb and nginx...
+call :stop_web_quiet
+
+call :require_dir "%WEB_DIR%" "BarnaMuWeb source directory" || exit /b 1
+call :require_file "%WEB_DIR%\BarnaMuWeb.csproj" "BarnaMuWeb project" || exit /b 1
+
+echo [build-web] Cleaning web bin/obj/publish...
+rd /S /Q "%WEB_DIR%\bin" >nul 2>nul
+rd /S /Q "%WEB_DIR%\obj" >nul 2>nul
+rd /S /Q "%WEB_PUBLISH%" >nul 2>nul
+mkdir "%WEB_PUBLISH%" >nul 2>nul
+
+echo [build-web] Publishing BarnaMuWeb Release...
+pushd "%WEB_DIR%" >nul
+dotnet publish "BarnaMuWeb.csproj" --configuration Release --output "%WEB_PUBLISH%" --nologo -v:q -p:RunAnalyzers=false -p:WarningLevel=0 -clp:ErrorsOnly;Summary
+set "RC=%ERRORLEVEL%"
+popd >nul
+
+if not "%RC%"=="0" (
+    echo [error] Web publish failed with code %RC%.
+    exit /b %RC%
+)
+
+if not exist "%WEB_PUBLISH%\BarnaMuWeb.exe" (
+    echo [error] Web publish completed but BarnaMuWeb.exe is missing.
+    exit /b 1
+)
+
+echo [ok] Web publish completed.
 exit /b 0
 
 :start_dispatch

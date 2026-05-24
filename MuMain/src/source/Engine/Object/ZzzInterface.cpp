@@ -110,6 +110,101 @@ int   SelectedCharacter = -1;
 int   SelectedOperate = -1;
 int   Attacking = -1;
 
+namespace
+{
+bool IsValidCharacterIndex(int index)
+{
+    return index >= 0 && index < MAX_CHARACTERS_CLIENT;
+}
+
+bool IsTwistingSlashSkill(ActionSkillType skill)
+{
+    return skill == AT_SKILL_TWISTING_SLASH
+        || skill == AT_SKILL_TWISTING_SLASH_STR
+        || skill == AT_SKILL_TWISTING_SLASH_STR_MG
+        || skill == AT_SKILL_TWISTING_SLASH_MASTERY;
+}
+
+bool IsUnthrottledTargetedSkill(int skill)
+{
+    switch (skill)
+    {
+    case AT_SKILL_NOVA:
+    case AT_SKILL_BEAST_UPPERCUT:
+    case AT_SKILL_BEAST_UPPERCUT_STR:
+    case AT_SKILL_BEAST_UPPERCUT_MASTERY:
+    case AT_SKILL_DARKSIDE:
+    case AT_SKILL_DARKSIDE_STR:
+        return true;
+    default:
+        return false;
+    }
+}
+
+bool IsCombatTargetedSkill(int skill)
+{
+    switch (skill)
+    {
+    case AT_SKILL_POISON:
+    case AT_SKILL_POISON_STR:
+    case AT_SKILL_METEO:
+    case AT_SKILL_LIGHTNING:
+    case AT_SKILL_LIGHTNING_STR:
+    case AT_SKILL_LIGHTNING_STR_MG:
+    case AT_SKILL_ENERGYBALL:
+    case AT_SKILL_POWERWAVE:
+    case AT_SKILL_ICE:
+    case AT_SKILL_ICE_STR:
+    case AT_SKILL_ICE_STR_MG:
+    case AT_SKILL_FIREBALL:
+    case AT_SKILL_JAVELIN:
+    case AT_SKILL_DEATH_CANNON:
+    case AT_SKILL_FALLING_SLASH:
+    case AT_SKILL_FALLING_SLASH_STR:
+    case AT_SKILL_LUNGE:
+    case AT_SKILL_LUNGE_STR:
+    case AT_SKILL_UPPERCUT:
+    case AT_SKILL_CYCLONE:
+    case AT_SKILL_CYCLONE_STR:
+    case AT_SKILL_CYCLONE_STR_MG:
+    case AT_SKILL_SLASH:
+    case AT_SKILL_SLASH_STR:
+    case AT_SKILL_IMPALE:
+    case AT_SKILL_RIDER:
+    case AT_SKILL_DEATHSTAB:
+    case AT_SKILL_DEATHSTAB_STR:
+    case AT_SKILL_FORCE:
+    case AT_SKILL_FORCE_WAVE:
+    case AT_SKILL_FORCE_WAVE_STR:
+    case AT_SKILL_FIREBURST:
+    case AT_SKILL_FIREBURST_STR:
+    case AT_SKILL_FIREBURST_MASTERY:
+    case AT_SKILL_RUSH:
+    case AT_SKILL_SPACE_SPLIT:
+    case AT_SKILL_SPIRAL_SLASH:
+    case AT_SKILL_ICE_ARROW:
+    case AT_SKILL_ICE_ARROW_STR:
+    case AT_SKILL_DEEPIMPACT:
+    case AT_SKILL_KILLING_BLOW:
+    case AT_SKILL_KILLING_BLOW_STR:
+    case AT_SKILL_KILLING_BLOW_MASTERY:
+        return true;
+    default:
+        return false;
+    }
+}
+
+DWORD GetTargetedSkillSendInterval(int skill)
+{
+    if (IsUnthrottledTargetedSkill(skill))
+    {
+        return 0;
+    }
+
+    return IsCombatTargetedSkill(skill) ? 150 : 300;
+}
+}
+
 int   g_iFollowCharacter = -1;
 
 bool g_bAutoGetItem = false;
@@ -2029,20 +2124,38 @@ bool CastWarriorSkill(CHARACTER* c, OBJECT* o, ITEM* p, ActionSkillType iSkill)
     //if (p == NULL)	return false;
     bool Success = false;
 
-    if (SelectedCharacter < 0 || SelectedCharacter >= MAX_CHARACTERS_CLIENT)
-    {
-        return false;
-    }
+    const bool isTwistingSlash = IsTwistingSlashSkill(iSkill);
+    const bool hasSelectedCharacter = SelectedCharacter >= 0 && SelectedCharacter < MAX_CHARACTERS_CLIENT;
 
-    TargetX = (int)(CharactersClient[SelectedCharacter].Object.Position[0] / TERRAIN_SCALE);
-    TargetY = (int)(CharactersClient[SelectedCharacter].Object.Position[1] / TERRAIN_SCALE);
+    if (!hasSelectedCharacter)
+    {
+        if (!isTwistingSlash)
+        {
+            return false;
+        }
+
+        TargetX = c->PositionX;
+        TargetY = c->PositionY;
+    }
+    else
+    {
+        TargetX = (int)(CharactersClient[SelectedCharacter].Object.Position[0] / TERRAIN_SCALE);
+        TargetY = (int)(CharactersClient[SelectedCharacter].Object.Position[1] / TERRAIN_SCALE);
+    }
 
     g_MovementSkill.m_bMagic = FALSE;
     g_MovementSkill.m_iSkill = iSkill;
-    if (CheckAttack())
+    if (hasSelectedCharacter && CheckAttack())
         g_MovementSkill.m_iTarget = SelectedCharacter;
     else
         g_MovementSkill.m_iTarget = -1;
+
+    if (isTwistingSlash)
+    {
+        UseSkillWarrior(c, o);
+        return true;
+    }
+
     float Distance = gSkillManager.GetSkillDistance(iSkill, c) * 1.2f;
 
     if ((gMapManager.InBloodCastle() == true)
@@ -2077,9 +2190,11 @@ void SendRequestMagic(int Type, int Key)
     if (!IsCanBCSkill(Type))
         return;
 
-    if (Type == 40 || Type == 263 || Type == 261 || abs((int)(GetTickCount() - g_dwLatestMagicTick)) > 300)
+    const DWORD interval = GetTargetedSkillSendInterval(Type);
+    const DWORD now = GetTickCount();
+    if (interval == 0 || abs((int)(now - g_dwLatestMagicTick)) >= (int)interval)
     {
-        g_dwLatestMagicTick = GetTickCount();
+        g_dwLatestMagicTick = now;
         SocketClient->ToGameServer()->SendTargetedSkill(Type, Key);
         g_ConsoleDebug->Write(MCD_SEND, L"0x19 [SendRequestMagic(%d %d)]", Type, Key);
     }
@@ -2185,6 +2300,10 @@ bool SkillWarrior(CHARACTER* c, ITEM* p)
         if (!gSkillManager.CheckSkillDelay(g_MovementSkill.m_iSkill))
         {
             return false;
+        }
+        if (IsTwistingSlashSkill(Skill))
+        {
+            return (CastWarriorSkill(c, o, p, Skill));
         }
         if (CheckAttack())
         {
@@ -2397,6 +2516,13 @@ void UseSkillWarrior(CHARACTER* c, OBJECT* o)
         {
             SendRequestMagicContinue(Skill, (c->PositionX), (c->PositionY), 
                 (BYTE)(o->Angle[2] / 360.f * 256.f), 0, 0, TKey, 0);
+
+            if (IsTwistingSlashSkill(Skill))
+            {
+                c->Movement = 0;
+                c->SkillSuccess = true;
+                return;
+            }
         }
         else
         {
@@ -2850,7 +2976,7 @@ void UseSkillRagefighter(CHARACTER* pCha, OBJECT* pObj)
     case AT_SKILL_BEAST_UPPERCUT_MASTERY:
     {
         WORD wTargetKey = 0;
-        if (g_MovementSkill.m_iTarget >= 0 && g_MovementSkill.m_iTarget < MAX_CHARACTERS_CLIENT)
+        if (IsValidCharacterIndex(g_MovementSkill.m_iTarget))
         {
             wTargetKey = CharactersClient[g_MovementSkill.m_iTarget].Key;
         }
@@ -2918,6 +3044,31 @@ void UseSkillRagefighter(CHARACTER* pCha, OBJECT* pObj)
         }
         BYTE byValue = GetDestValue((pCha->PositionX), (pCha->PositionY), TargetX, TargetY);
         SendRequestMagicContinue(iSkill, pCha->PositionX, pCha->PositionY, ((pObj->Angle[2] / 360.f) * 255), byValue, angle, TKey, 0);
+
+        pObj->m_sTargetIndex = g_MovementSkill.m_iTarget;
+        g_CMonkSystem.RageCreateEffect(pObj, iSkill);
+    }
+    break;
+    case AT_SKILL_PHOENIX_SHOT:
+    {
+        if (!IsValidCharacterIndex(g_MovementSkill.m_iTarget) || CharactersClient[g_MovementSkill.m_iTarget].Dead != 0)
+        {
+            return;
+        }
+
+        WORD wTargetKey = CharactersClient[g_MovementSkill.m_iTarget].Key;
+        VectorCopy(CharactersClient[g_MovementSkill.m_iTarget].Object.Position, pCha->TargetPosition);
+        pObj->Angle[2] = CreateAngle2D(pObj->Position, pCha->TargetPosition);
+
+        SendRequestMagicContinue(
+            iSkill,
+            static_cast<int>(pCha->TargetPosition[0] / TERRAIN_SCALE),
+            static_cast<int>(pCha->TargetPosition[1] / TERRAIN_SCALE),
+            static_cast<BYTE>(pObj->Angle[2] / 360.f * 256.f),
+            0,
+            0,
+            wTargetKey,
+            &pObj->m_bySkillSerialNum);
 
         pObj->m_sTargetIndex = g_MovementSkill.m_iTarget;
         g_CMonkSystem.RageCreateEffect(pObj, iSkill);
@@ -3002,12 +3153,14 @@ void AttackRagefighter(CHARACTER* pCha, int nSkill, float fDistance)
     g_MovementSkill.m_bMagic = TRUE;
     g_MovementSkill.m_iSkill = Hero->CurrentSkill;
 
-    if (bCheckAttack)
+    const bool hasSelectedCharacter = IsValidCharacterIndex(SelectedCharacter);
+    if (bCheckAttack && hasSelectedCharacter)
         g_MovementSkill.m_iTarget = SelectedCharacter;
     else
         g_MovementSkill.m_iTarget = -1;
 
-    g_ConsoleDebug->Write(MCD_SEND, L"AttackRagefighter ID : %d, Success : %d, SelectedCharacter: %d %d | 5d", nSkill, bSuccess, SelectedCharacter, CharactersClient[SelectedCharacter].Dead, bCheckAttack);
+    const int selectedDead = hasSelectedCharacter ? CharactersClient[SelectedCharacter].Dead : -1;
+    g_ConsoleDebug->Write(MCD_SEND, L"AttackRagefighter ID : %d, Success : %d, SelectedCharacter: %d %d | 5d", nSkill, bSuccess, SelectedCharacter, selectedDead, bCheckAttack);
 
     if (bSuccess)
     {
@@ -3585,9 +3738,11 @@ void Action(CHARACTER* c, OBJECT* o, bool Now)
         case AT_SKILL_OCCUPY:
         case AT_SKILL_PHOENIX_SHOT:
         {
-            g_ConsoleDebug->Write(MCD_RECEIVE, L"Action ID : %d, %d | %d %d | %d %d", iSkill, Distance, CharactersClient[g_MovementSkill.m_iTarget].Dead, g_MovementSkill.m_iTarget,
+            const bool hasMoveTarget = IsValidCharacterIndex(g_MovementSkill.m_iTarget);
+            const int moveTargetDead = hasMoveTarget ? CharactersClient[g_MovementSkill.m_iTarget].Dead : -1;
+            g_ConsoleDebug->Write(MCD_RECEIVE, L"Action ID : %d, %d | %d %d | %d %d", iSkill, Distance, moveTargetDead, g_MovementSkill.m_iTarget,
                 CheckTile(c, o, Distance * 1.2f), !c->SafeZone);
-            if (g_MovementSkill.m_iTarget >= 0 && g_MovementSkill.m_iTarget < MAX_CHARACTERS_CLIENT && CharactersClient[g_MovementSkill.m_iTarget].Dead == 0)
+            if (hasMoveTarget && CharactersClient[g_MovementSkill.m_iTarget].Dead == 0)
             {
                 TargetX = (int)(CharactersClient[g_MovementSkill.m_iTarget].Object.Position[0] / TERRAIN_SCALE);
                 TargetY = (int)(CharactersClient[g_MovementSkill.m_iTarget].Object.Position[1] / TERRAIN_SCALE);

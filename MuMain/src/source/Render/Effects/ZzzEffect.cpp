@@ -5978,6 +5978,12 @@ void CreateEffect(int Type, vec3_t Position, vec3_t Angle, vec3_t Light, int Sub
             case MODEL_DOWN_ATTACK_DUMMY_L:
             case MODEL_DOWN_ATTACK_DUMMY_R:
             {
+                if (o->Owner == nullptr)
+                {
+                    o->Live = false;
+                    break;
+                }
+
                 VectorCopy(Position, o->Position);
                 o->Velocity = Models[o->Owner->Type].Actions[PLAYER_SKILL_STAMP].PlaySpeed * 2.0f;
                 o->LifeTime = 100;
@@ -16975,7 +16981,7 @@ void MoveEffect(OBJECT* o, int iIndex)
     break;
     case MODEL_DOWN_ATTACK_DUMMY_L:
     {
-        if (o->Owner->Live)
+        if (o->Owner != nullptr && o->Owner->Live)
         {
             BMD* pModel = &Models[o->Type];
             pModel->Animation(BoneTransform, o->AnimationFrame, o->PriorAnimationFrame, o->PriorAction, o->Angle, o->HeadAngle, false, false);
@@ -16985,7 +16991,7 @@ void MoveEffect(OBJECT* o, int iIndex)
 
             if (o->AnimationFrame >= 5.0f && o->LifeTime > 50)
             {
-                if (o->Owner->m_sTargetIndex < 0)
+                if (o->Owner->m_sTargetIndex < 0 || o->Owner->m_sTargetIndex >= MAX_CHARACTERS_CLIENT)
                     break;
                 CreateBomb3(CharactersClient[o->Owner->m_sTargetIndex].Object.Position, 3, 0.9f);
                 StopBuffer(SOUND_RAGESKILL_STAMP_ATTACK, true);
@@ -17013,7 +17019,7 @@ void MoveEffect(OBJECT* o, int iIndex)
     break;
     case MODEL_DOWN_ATTACK_DUMMY_R:
     {
-        if (o->Owner->Live)
+        if (o->Owner != nullptr && o->Owner->Live)
         {
             BMD* pModel = &Models[o->Type];
             pModel->Animation(BoneTransform, o->AnimationFrame, o->PriorAnimationFrame, o->PriorAction, o->Angle, o->HeadAngle, false, false);
@@ -17026,7 +17032,7 @@ void MoveEffect(OBJECT* o, int iIndex)
 
             if (o->AnimationFrame >= 3.0f && o->LifeTime > 50)
             {
-                if (o->Owner->m_sTargetIndex < 0)
+                if (o->Owner->m_sTargetIndex < 0 || o->Owner->m_sTargetIndex >= MAX_CHARACTERS_CLIENT)
                     break;
                 CreateBomb3(CharactersClient[o->Owner->m_sTargetIndex].Object.Position, 3, 0.9f);
                 StopBuffer(SOUND_RAGESKILL_STAMP_ATTACK, true);

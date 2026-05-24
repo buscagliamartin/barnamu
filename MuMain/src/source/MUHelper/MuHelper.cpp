@@ -20,6 +20,8 @@
 constexpr int MAX_ACTIONABLE_DISTANCE = 10;
 constexpr int DEFAULT_DURABILITY_THRESHOLD = 50;
 constexpr float BASIC_ATTACK_DISTANCE = 1.5f;
+constexpr int MUHELPER_FULL_WORK_INTERVAL_MS = 250;
+constexpr int MUHELPER_FULL_WORK_TICKS = MUHELPER_FULL_WORK_INTERVAL_MS / MUHelper::MUHELPER_TIMER_INTERVAL_MS;
 
 SpinLock _targetsLock;
 SpinLock _itemsLock;
@@ -107,13 +109,14 @@ namespace MUHelper
         m_iCurrentItem = MAX_ITEMS;
 
         m_iSecondsElapsed = 0;
+        m_iElapsedMilliseconds = 0;
         m_iLastBuffTimerSecond = -1;
         m_mapLastBuffCastSecond.clear();
 
         m_bTimerActivatedBuffOngoing = false;
         m_bPetActivated = false;
 
-        m_iLoopCounter = 0;
+        m_iLoopCounter = MUHELPER_FULL_WORK_TICKS - 1;
 
         m_bActive = true;
         g_ConsoleDebug->Write(MCD_NORMAL, L"[MU Helper] Started");
@@ -139,13 +142,28 @@ namespace MUHelper
             return;
         }
 
-        Work();
-
-        if (m_iLoopCounter++ == 4)
+        m_iElapsedMilliseconds += MUHELPER_TIMER_INTERVAL_MS;
+        while (m_iElapsedMilliseconds >= 1000)
         {
             m_iSecondsElapsed++;
+            m_iElapsedMilliseconds -= 1000;
+        }
 
+        if (++m_iLoopCounter >= MUHELPER_FULL_WORK_TICKS)
+        {
             m_iLoopCounter = 0;
+            Work();
+        }
+        else
+        {
+            try
+            {
+                Attack();
+            }
+            catch (...)
+            {
+                g_ConsoleDebug->Write(MCD_NORMAL, L"[MU Helper] Attack tick exception occurred. Ignoring...");
+            }
         }
     }
 

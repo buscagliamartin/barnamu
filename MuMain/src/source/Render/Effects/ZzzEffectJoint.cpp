@@ -6805,7 +6805,7 @@ void MoveJoint(JOINT* o, int iIndex)
     break;
     case BITMAP_FORCEPILLAR:
     {
-        if (!o->Target->Live || (o->Target->Type != MODEL_DOWN_ATTACK_DUMMY_L && o->Target->Type != MODEL_DOWN_ATTACK_DUMMY_R))
+        if (o->Target == nullptr || !o->Target->Live || (o->Target->Type != MODEL_DOWN_ATTACK_DUMMY_L && o->Target->Type != MODEL_DOWN_ATTACK_DUMMY_R))
         {
             o->Live = false;
             return;

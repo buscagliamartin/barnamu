@@ -93,6 +93,31 @@ The OpenMU server now includes BarnaMu-specific VIP systems, progression rates, 
   - `/t9start`
 - Hardened invasion bosses with higher HP and resistances.
 - Reduced invasion spawn counts for balance.
+- Rebalanced Golden Dragon, Golden Lizard King, Golden Wheel, and Golden Tantallos around slow-medium party combat.
+- Rebalanced Golden Budge Dragon, Golden Goblin, Golden Soldier, Golden Titan, and Golden Vepar into logical low/mid Golden tiers with lower defense-rate walling and higher real attack threat.
+- Rebalanced Red Dragon as an Ancient-box bridge boss between Golden Tantallos and T9 bosses:
+  - Level `140`
+  - HP `250,000,000`
+  - Damage `8,000-11,000`
+  - Defense `6,000`
+  - Attack rate `17,000`
+  - Defense rate `3,200`
+  - Poison resistance `0.70`
+  - Other elemental resistances `0.65`
+- Fixed Season 6 Red Dragon initialization so the Season 6 Red Dragon definition is actually used instead of the inherited 0.95d default.
+- Synchronized Red Dragon source reward target to `Blue Chocolate Box - Ancient Sets`.
+- Rebalanced T9 bosses Dark Elf, Erohim, and Selupan around high HP, lethal damage, lower defense-rate walling, and party kill expectations.
+- Corrected Golden Tantallos level to `90`.
+- Capped monster poison tick damage at `20,000` to prevent Decay poison from deleting bosses.
+
+### Client Combat
+
+- Fixed Twisting Slash hold behavior so it casts in place without requiring a selected target or forcing repeated micro-movement.
+- Added Twisting Slash area-skill settings with `effectRange = 2`.
+- Reduced targeted combat skill packet throttle from `300ms` to `150ms`.
+- Kept utility/buff targeted skill throttle at `300ms`.
+- Kept Nova, Beast Uppercut, and Darkside targeted skills unthrottled.
+- Improved MU Helper attack cadence by running attack ticks every `50ms` while keeping full helper work at `250ms`, closer to held right-click behavior for skills like Penetration.
 
 ### Map Access
 
@@ -208,6 +233,8 @@ The web project can register accounts, show server status, display rankings, pub
 - Uses `data."StatAttribute"` for level, master level, and resets rankings.
 - Uses `config."DropItemGroup"` and `config."ItemDropItemGroup"` for monster and box drops.
 - Updated `config."DropItemGroup"` rates for Tier A-F boxes, common jewels, Jewel of Guardian, and common excellent drops.
+- Updated live `config."MonsterAttribute"` values for Golden Budge Dragon, Golden Goblin, Golden Soldier, Golden Titan, Golden Vepar, and Red Dragon.
+- Updated live Red Dragon `NumberOfMaximumItemDrops` to `2`.
 - Updated `config."ItemOptionDefinition"` rates for Luck, normal random options, and second excellent options.
 - Updated `config."GameConfiguration"."MaximumItemOptionLevelDrop"` to `1`.
 - Uses `config."WarpInfo"` and `config."EnterGate"` for normal map entry requirements.
@@ -221,6 +248,7 @@ The web project can register accounts, show server status, display rankings, pub
 - `GameLogic/Party.cs`
 - `GameLogic/DefaultDropGenerator.cs`
 - `GameLogic/AttackableNpcBase.cs`
+- `GameLogic/PoisonMagicEffect.cs`
 - `GameLogic/PartyAutoMode.cs`
 - `Persistence/Initialization/GameConfigurationInitializerBase.cs`
 - `Persistence/Initialization/Updates/FixChaosMixesPlugInBase.cs`
@@ -245,11 +273,23 @@ The web project can register accounts, show server status, display rankings, pub
 - `GameLogic/PlugIns/ChatCommands/StartRedDragonInvasionChatCommandPlugIn.cs`
 - `GameLogic/PlugIns/ChatCommands/StartT9BossInvasionChatCommandPlugIn.cs`
 - `GameLogic/PlugIns/InvasionEvents/T9BossInvasionPlugIn.cs`
+- `Persistence/Initialization/VersionSeasonSix/InvasionMobsInitialization.cs`
+- `Persistence/Initialization/VersionSeasonSix/Maps/BalgassRefuge.cs`
+- `Persistence/Initialization/VersionSeasonSix/Maps/LandOfTrials.cs`
+- `Persistence/Initialization/VersionSeasonSix/Maps/RaklionBoss.cs`
+- `Persistence/Initialization/VersionSeasonSix/SkillsInitializer.cs`
 - `GameServer/RemoteView/Character/ShowCharacterListPlugIn.cs`
 - `GameServer/Networking/ClientListener.cs`
 - `Persistence/EntityFramework/Migrations/20260515120000_AddAccountVipExpirationDate.cs`
 - `Persistence/EntityFramework/Migrations/EntityDataContextModelSnapshot.cs`
 - `Directory.Build.props`
+
+## Main Client Files
+
+- `MuMain/src/source/Engine/Object/ZzzInterface.cpp`
+- `MuMain/src/source/MUHelper/MuHelper.cpp`
+- `MuMain/src/source/MUHelper/MuHelper.h`
+- `MuMain/src/source/Platform/Windows/Winmain.cpp`
 
 ## Main Web Files
 
@@ -273,6 +313,7 @@ The web project can register accounts, show server status, display rankings, pub
 
 ## Session Timeline
 
+- `2026-05-23`: Client combat and invasion balance pass: fixed Twisting Slash hold/movement behavior, added Twisting Slash area range, reduced targeted combat skill throttle, improved MU Helper attack ticks, rebalanced low/mid Golden mobs, Golden Tantallos-tier mobs, Red Dragon, and T9 boss combat stats, and capped monster poison ticks.
 - `2026-05-22`: Slow-medium drop-quality pass: reduced Tier A-F box rates, common jewel and excellent rates, Jewel of Guardian rate, second excellent option chance, random Luck/option/skill chances, capped normal option level, and weighted normal item level generation.
 - `2026-05-17`: Map level overhaul, VIP map access sync, invasion GM commands, NuGet warning suppression, backup/push script fix, web template reorganization.
 - `2026-05-16`: `/pkclear` rewrite, VIP chat tag fix, Tier A-F drop side, Flame of Condor drop support, backup rotation, push helper, crafting exception logging.

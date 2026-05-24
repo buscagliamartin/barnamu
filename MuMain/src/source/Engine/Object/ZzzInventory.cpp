@@ -1655,7 +1655,7 @@ void GetItemName(int iType, int iLevel, wchar_t* Text)
             switch (iLevel)
             {
             case 0: mu_swprintf(Text, L"%ls", p->Name); break;
-            case 1: mu_swprintf(Text, L"%ls", GlobalText[906]); break;
+            case 1: mu_swprintf(Text, L"Ring of Honor"); break;
             }
         }
         else if (iType == ITEM_BROKEN_SWORD_DARK_STONE)
@@ -2103,6 +2103,25 @@ void GetSpecialOptionText(int Type, wchar_t* Text, WORD Option, BYTE Value, int 
         gSkillManager.GetSkillInformation(Option, 1, NULL, &iMana, NULL);
         mu_swprintf(Text, GlobalText[3154], iMana);
         break;
+    case AT_SKILL_CHAIN_DRIVE:
+    case AT_SKILL_CHAIN_DRIVE_STR:
+        gSkillManager.GetSkillInformation(Option, 1, NULL, &iMana, NULL);
+        mu_swprintf(Text, L"Can use Chain Drive Skill (Mana:%d)", iMana);
+        break;
+    case AT_SKILL_DARKSIDE:
+    case AT_SKILL_DARKSIDE_STR:
+        gSkillManager.GetSkillInformation(Option, 1, NULL, &iMana, NULL);
+        mu_swprintf(Text, L"Can use Dark Side Skill (Mana:%d)", iMana);
+        break;
+    case AT_SKILL_DRAGON_ROAR:
+    case AT_SKILL_DRAGON_ROAR_STR:
+        gSkillManager.GetSkillInformation(Option, 1, NULL, &iMana, NULL);
+        mu_swprintf(Text, L"Can use Dragon Roar Skill (Mana:%d)", iMana);
+        break;
+    case AT_SKILL_PHOENIX_SHOT:
+        gSkillManager.GetSkillInformation(Option, 1, NULL, &iMana, NULL);
+        mu_swprintf(Text, L"Can use Phoenix Shot Skill (Mana:%d)", iMana);
+        break;
     }
 }
 
@@ -2475,6 +2494,15 @@ void RenderItemInfo(int sx, int sy, ITEM* ip, bool Sell, int Inventype, bool bIt
         {
         case 0:mu_swprintf(TextList[TextNum], L"%ls", p->Name); break;
         case 1:mu_swprintf(TextList[TextNum], GlobalText[108]); break;
+        }
+    }
+    else if (ip->Type == ITEM_SCROLL_OF_EMPEROR_RING_OF_HONOR)
+    {
+        switch (Level)
+        {
+        case 0: mu_swprintf(TextList[TextNum], L"%ls", p->Name); break;
+        case 1: mu_swprintf(TextList[TextNum], L"Ring of Honor"); break;
+        default: mu_swprintf(TextList[TextNum], L"%ls", p->Name); break;
         }
     }
     else if (ip->Type == ITEM_ORB_OF_SUMMONING)
@@ -5158,6 +5186,10 @@ void RenderItemInfo(int sx, int sy, ITEM* ip, bool Sell, int Inventype, bool bIt
 
         gSkillManager.GetSkillInformation(ip->Special[i], 1, NULL, &iMana, NULL);
         GetSpecialOptionText(ip->Type, TextList[TextNum], ip->Special[i], ip->SpecialValue[i], iMana);
+        if (TextList[TextNum][0] == L'\0')
+        {
+            continue;
+        }
 
         TextListColor[TextNum] = TEXT_COLOR_BLUE;
         TextBold[TextNum] = false; TextNum++;

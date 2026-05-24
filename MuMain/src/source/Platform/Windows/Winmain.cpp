@@ -1376,7 +1376,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLin
     }
 
     SetTimer(g_hWnd, HACK_TIMER, 20 * 1000, nullptr);
-    SetTimer(g_hWnd, MUHELPER_TIMER, 250 /* ms */, MUHelper::CMuHelper::TimerProc);
+    SetTimer(g_hWnd, MUHELPER_TIMER, MUHelper::MUHELPER_TIMER_INTERVAL_MS, MUHelper::CMuHelper::TimerProc);
 
     srand((unsigned)time(nullptr));
 

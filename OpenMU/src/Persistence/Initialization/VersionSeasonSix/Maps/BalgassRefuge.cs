@@ -74,12 +74,12 @@ internal class BalgassRefuge : BaseMapInitializer
             var attributes = new Dictionary<AttributeDefinition, float>
             {
                 { Stats.Level, 145 },
-                { Stats.MaximumHealth, 900000000 },
-                { Stats.MinimumPhysBaseDmg, 1800 },
-                { Stats.MaximumPhysBaseDmg, 2200 },
-                { Stats.DefenseBase, 55000 },
-                { Stats.AttackRatePvm, 7500 },
-                { Stats.DefenseRatePvm, 18000 },
+                { Stats.MaximumHealth, 450000000 },
+                { Stats.MinimumPhysBaseDmg, 9000 },
+                { Stats.MaximumPhysBaseDmg, 12000 },
+                { Stats.DefenseBase, 7000 },
+                { Stats.AttackRatePvm, 18000 },
+                { Stats.DefenseRatePvm, 3500 },
                 { Stats.PoisonResistance, 0.70f },
                 { Stats.IceResistance, 0.70f },
                 { Stats.LightningResistance, 0.70f },

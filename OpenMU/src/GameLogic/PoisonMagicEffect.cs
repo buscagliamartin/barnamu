@@ -7,12 +7,15 @@ namespace MUnique.OpenMU.GameLogic;
 using System.Timers;
 using MUnique.OpenMU.AttributeSystem;
 using MUnique.OpenMU.GameLogic.Attributes;
+using MUnique.OpenMU.GameLogic.NPC;
 
 /// <summary>
 /// The magic effect for poison, which will damage the character in an interval until the effect ends.
 /// </summary>
 public sealed class PoisonMagicEffect : MagicEffect
 {
+    private const float MaximumMonsterPoisonDamage = 20000f;
+
     private readonly Timer _damageTimer;
 
     /// <summary>
@@ -62,6 +65,11 @@ public sealed class PoisonMagicEffect : MagicEffect
             }
 
             var damage = this.Owner.Attributes[Stats.CurrentHealth] * this.Attacker.Attributes[Stats.PoisonDamageMultiplier];
+            if (this.Owner is Monster)
+            {
+                damage = Math.Min(damage, MaximumMonsterPoisonDamage);
+            }
+
             if (damage <= 0)
             {
                 return;

@@ -21,6 +21,14 @@
 //////////////////////////////////////////////////////////////////////
 CMonkSystem g_CMonkSystem;
 
+namespace
+{
+bool IsValidCharacterIndex(int index)
+{
+    return index >= 0 && index < MAX_CHARACTERS_CLIENT;
+}
+}
+
 CItemEqualType::CItemEqualType()
 {
     m_nModelType = 0;
@@ -459,7 +467,7 @@ bool CMonkSystem::SendAttackPacket(CHARACTER* _pCha, int _nMoveTarget, int _nSki
     BYTE CharPosX = (BYTE)(vDis[0] / TERRAIN_SCALE);
     BYTE CharPosY = (BYTE)(vDis[1] / TERRAIN_SCALE);
 
-    if (_nMoveTarget <= -1)
+    if (!IsValidCharacterIndex(_nMoveTarget))
     {
         return false;
     }
@@ -1095,6 +1103,9 @@ bool CMonkSystem::RageCreateEffect(OBJECT* _pObj, int _nSkill)
             return false;
 
         m_bUseEffectOnce = true;
+        if (!IsValidCharacterIndex(_pObj->m_sTargetIndex))
+            return false;
+
         vec3_t vPosition;
         VectorCopy(CharactersClient[_pObj->m_sTargetIndex].Object.Position, vPosition);
         _pObj->Angle[2] = CreateAngle2D(_pObj->Position, vPosition);
@@ -1112,7 +1123,8 @@ bool CMonkSystem::RageCreateEffect(OBJECT* _pObj, int _nSkill)
             return false;
 
         m_bUseEffectOnce = true;
-        CreateEffect(MODEL_DOWN_ATTACK_DUMMY_R, _pObj->Position, _pObj->Angle, _pObj->Light, 0, _pObj);
+        if (!IsValidCharacterIndex(_pObj->m_sTargetIndex))
+            return false;
 
         PlayBuffer(SOUND_RAGESKILL_STAMP);
     }
@@ -1225,8 +1237,8 @@ bool CMonkSystem::RageCreateEffect(OBJECT* _pObj, int _nSkill)
 
         vec3_t Light, Position, P, dp, vAngle;
 
-        if (_pObj->m_sTargetIndex < 0)
-            return true;
+        if (!IsValidCharacterIndex(_pObj->m_sTargetIndex))
+            return false;
 
         VectorCopy(CharactersClient[_pObj->m_sTargetIndex].Object.Position, Position);
         VectorCopy(_pObj->Angle, vAngle);

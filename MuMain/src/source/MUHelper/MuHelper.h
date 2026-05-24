@@ -13,6 +13,8 @@
 
 namespace MUHelper
 {
+	constexpr int MUHELPER_TIMER_INTERVAL_MS = 50;
+
 	class CMuHelper
 	{
 	public:
@@ -93,6 +95,7 @@ namespace MUHelper
 		ActionSkillType m_iCurrentSkill;
 		int m_iLoopCounter;
 		int m_iSecondsElapsed;
+		int m_iElapsedMilliseconds;
 		int m_iLastBuffTimerSecond;
 		std::map<std::pair<int, int>, int> m_mapLastBuffCastSecond;
 		bool m_bTimerActivatedBuffOngoing;

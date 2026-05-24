@@ -432,12 +432,12 @@ internal class LandOfTrials : BaseMapInitializer
             var attributes = new Dictionary<AttributeDefinition, float>
             {
                 { Stats.Level, 155 },
-                { Stats.MaximumHealth, 1200000000 },
-                { Stats.MinimumPhysBaseDmg, 2200 },
-                { Stats.MaximumPhysBaseDmg, 2700 },
-                { Stats.DefenseBase, 65000 },
-                { Stats.AttackRatePvm, 8500 },
-                { Stats.DefenseRatePvm, 22000 },
+                { Stats.MaximumHealth, 650000000 },
+                { Stats.MinimumPhysBaseDmg, 11000 },
+                { Stats.MaximumPhysBaseDmg, 15000 },
+                { Stats.DefenseBase, 9000 },
+                { Stats.AttackRatePvm, 22000 },
+                { Stats.DefenseRatePvm, 4500 },
                 { Stats.PoisonResistance, 0.75f },
                 { Stats.IceResistance, 0.75f },
                 { Stats.LightningResistance, 0.75f },

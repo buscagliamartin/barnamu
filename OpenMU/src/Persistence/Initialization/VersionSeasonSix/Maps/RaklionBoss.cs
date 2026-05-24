@@ -99,12 +99,12 @@ internal class RaklionBoss : BaseMapInitializer
             var attributes = new Dictionary<AttributeDefinition, float>
             {
                 { Stats.Level, 160 },
-                { Stats.MaximumHealth, 1600000000 },
-                { Stats.MinimumPhysBaseDmg, 2600 },
-                { Stats.MaximumPhysBaseDmg, 3200 },
-                { Stats.DefenseBase, 75000 },
-                { Stats.AttackRatePvm, 9500 },
-                { Stats.DefenseRatePvm, 26000 },
+                { Stats.MaximumHealth, 900000000 },
+                { Stats.MinimumPhysBaseDmg, 13000 },
+                { Stats.MaximumPhysBaseDmg, 18000 },
+                { Stats.DefenseBase, 11000 },
+                { Stats.AttackRatePvm, 26000 },
+                { Stats.DefenseRatePvm, 5500 },
                 { Stats.PoisonResistance, 0.80f },
                 { Stats.IceResistance, 0.80f },
                 { Stats.WaterResistance, 0.80f },

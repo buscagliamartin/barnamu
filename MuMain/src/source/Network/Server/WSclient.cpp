@@ -4060,7 +4060,10 @@ BOOL ReceiveMagic(const BYTE* ReceiveBuffer, int Size, BOOL bEncrypted)
 
     int Index = FindCharacterIndex(SourceKey);
     int TargetIndex = FindCharacterIndex(TargetKey);
-    if (TargetIndex == MAX_CHARACTERS_CLIENT)
+    if (Index < 0 || Index >= MAX_CHARACTERS_CLIENT)
+        return (TRUE);
+
+    if (TargetIndex < 0 || TargetIndex >= MAX_CHARACTERS_CLIENT)
         return (TRUE);
 
     AttackPlayer = Index;
@@ -5077,7 +5080,11 @@ BOOL ReceiveMagicContinue(const BYTE* ReceiveBuffer, int Size, BOOL bEncrypted)
     int Key = ((int)(Data->KeyH) << 8) + Data->KeyL;
     WORD MagicNumber = ((WORD)(Data->MagicH) << 8) + Data->MagicL;
 
-    CHARACTER* sc = &CharactersClient[FindCharacterIndex(Key)];
+    int Index = FindCharacterIndex(Key);
+    if (Index < 0 || Index >= MAX_CHARACTERS_CLIENT)
+        return (TRUE);
+
+    CHARACTER* sc = &CharactersClient[Index];
     OBJECT* so = &sc->Object;
 
     sc->Skill = MagicNumber;
@@ -13097,7 +13104,10 @@ BOOL ReceiveStraightAttack(const BYTE* ReceiveBuffer, int Size, BOOL bEncrypted)
     TargetKey &= 0x7FFF;
     int Index = FindCharacterIndex(SourceKey);
     int TargetIndex = FindCharacterIndex(TargetKey);
-    if (TargetIndex == MAX_CHARACTERS_CLIENT && AttackNumber != AT_SKILL_DARKSIDE && AttackNumber != AT_SKILL_DARKSIDE_STR)
+    if (Index < 0 || Index >= MAX_CHARACTERS_CLIENT)
+        return (TRUE);
+
+    if ((TargetIndex < 0 || TargetIndex >= MAX_CHARACTERS_CLIENT) && AttackNumber != AT_SKILL_DARKSIDE && AttackNumber != AT_SKILL_DARKSIDE_STR)
         return (TRUE);
 
     AttackPlayer = Index;

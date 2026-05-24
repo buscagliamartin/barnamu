@@ -17,6 +17,7 @@ The main idea is:
 |---|---|---|
 | `BarnaMu.bat` | Main control script with all commands. | Use from CMD or PowerShell when you want full control. |
 | `Recompilar.bat` | Wrapper for `BarnaMu.bat build`. | Double-click after modifying server source code. |
+| `Recompilar Web.bat` | Wrapper for `BarnaMu.bat build-web`. | Double-click after modifying BarnaMuWeb source code. |
 | `Backup.bat` | Wrapper for `BarnaMu.bat backup`. | Double-click when you only want a database backup. |
 | `Push.bat` | Wrapper for `BarnaMu.bat push`. | Use from CMD/PowerShell with a commit message. |
 | `AutoRestart.bat` | Starts web, then runs the server auto-restart loop. | Good candidate for Windows Task Scheduler at boot. |
@@ -48,6 +49,24 @@ BarnaMu.bat build
 ```
 
 This stops OpenMU processes, cleans `Startup\bin` and `Startup\obj`, then builds OpenMU in Release mode with quiet output.
+
+---
+
+### After modifying website files
+
+Double-click:
+
+```bat
+Recompilar Web.bat
+```
+
+Equivalent command:
+
+```bat
+BarnaMu.bat build-web
+```
+
+This stops BarnaMuWeb and nginx, cleans `BarnaMuWeb\bin`, `BarnaMuWeb\obj`, and `BarnaMuWeb\publish`, then publishes BarnaMuWeb in Release mode.
 
 ---
 
@@ -191,6 +210,7 @@ Also shows:
 
 ```bat
 BarnaMu.bat build
+BarnaMu.bat build-web
 BarnaMu.bat start server
 BarnaMu.bat start web
 BarnaMu.bat start nginx
@@ -216,6 +236,13 @@ If `BarnaMu.bat` is double-clicked without arguments, it only shows the help men
 Recompilar.bat
 BarnaMu.bat stop all
 BarnaMu.bat start all
+```
+
+### Editing website code
+
+```bat
+Recompilar Web.bat
+BarnaMu.bat start web
 ```
 
 ### Saving work to GitHub
