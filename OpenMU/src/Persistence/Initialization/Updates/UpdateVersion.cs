@@ -402,4 +402,19 @@ public enum UpdateVersion
     /// The version of the <see cref="FinishDarkLordMasterTreePlugIn"/>.
     /// </summary>
     FinishDarkLordMasterTree = 79,
+
+    /// <summary>
+    /// The version of the <see cref="FixMasterSkillsAndClassEvolutionPlugIn"/>.
+    /// </summary>
+    FixMasterSkillsAndClassEvolution = 80,
+
+    /// <summary>
+    /// The version of the <see cref="FixBuffSkillSafezoneAndMasterEffectsPlugIn"/>.
+    /// </summary>
+    FixBuffSkillSafezoneAndMasterEffects = 81,
+
+    /// <summary>
+    /// The version of the <see cref="FixWizardryEnhanceDamageEffectPlugIn"/>.
+    /// </summary>
+    FixWizardryEnhanceDamageEffect = 82,
 }

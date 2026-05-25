@@ -106,7 +106,7 @@ public class WizEnhanceAndRagefighterSkillsUpdatePlugIn : UpdatePlugInBase
         skill2.Target = SkillTarget.ImplicitPlayer;
         skill2.MagicEffectDef = gameConfiguration.MagicEffects.First(m => m.Number == (int)MagicEffectNumber.WizEnhance);
         skill2.MasterDefinition!.ValueFormula = SkillsInitializer.Formula120Value;
-        skill2.MasterDefinition.TargetAttribute = Stats.MaximumWizBaseDmg;
+        skill2.MasterDefinition.TargetAttribute = Stats.WizardryAttackDamageIncrease;
         skill2.MasterDefinition.Aggregation = AggregateType.Multiplicate;
 
         var skill3 = gameConfiguration.Skills.First(s => s.Number == (int)SkillNumber.ExpansionofWizMas);
@@ -114,7 +114,7 @@ public class WizEnhanceAndRagefighterSkillsUpdatePlugIn : UpdatePlugInBase
         skill3.Target = SkillTarget.ImplicitPlayer;
         skill3.MagicEffectDef = gameConfiguration.MagicEffects.First(m => m.Number == (int)MagicEffectNumber.WizEnhance);
         skill3.MasterDefinition!.ValueFormula = SkillsInitializer.Formula120Value;
-        skill3.MasterDefinition.TargetAttribute = Stats.CriticalDamageChance;
+        skill3.MasterDefinition.TargetAttribute = Stats.WizardryAttackDamageIncrease;
         skill3.MasterDefinition.Aggregation = AggregateType.Multiplicate;
     }
 }

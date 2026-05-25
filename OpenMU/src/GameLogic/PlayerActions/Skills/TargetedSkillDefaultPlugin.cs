@@ -75,7 +75,7 @@ public class TargetedSkillDefaultPlugin : TargetedSkillPluginBase
         var miniGame = player.CurrentMiniGame;
         var inMiniGame = miniGame is { };
         var isBuff = skill.SkillType is SkillType.Buff or SkillType.Regeneration;
-        if (player.IsAtSafezone() && !(inMiniGame && isBuff))
+        if (player.IsAtSafezone() && !isBuff)
         {
             return;
         }
@@ -275,14 +275,6 @@ public class TargetedSkillDefaultPlugin : TargetedSkillPluginBase
             }
             else if (skill.MagicEffectDef != null)
             {
-                // Buffs are allowed in the Safezone of Blood Castle.
-                var canDoBuff = !player.IsAtSafezone() || player.CurrentMiniGame is { };
-                if (!canDoBuff)
-                {
-                    player.Logger.LogWarning("Can't apply magic effect when being in the safe-zone. skill: {SkillName} ({SkillNumber}), skillType: {SkillType}.", skill.Name, skill.Number, skill.SkillType);
-                    break;
-                }
-
                 if (skill.SkillType == SkillType.Buff)
                 {
                     await target.ApplyMagicEffectAsync(player, skillEntry).ConfigureAwait(false);

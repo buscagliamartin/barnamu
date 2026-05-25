@@ -1,0 +1,70 @@
+@page
+@model StatusModel
+@{
+    ViewData["Title"] = "Estado del Servidor";
+    bool isServerOnline = Model.Status.Ports.All(p => p.IsOnline);
+    string statusClass = isServerOnline ? "online" : "offline";
+}
+
+<div class="hero hero-small">
+    <h1>Estado del Servidor</h1>
+    <p class="hero-subtitle">
+        Última sync: <strong>@Model.Status.CheckedAtUtc.AddHours(2).ToString("HH:mm") CEST</strong>
+        <span style="margin:0 8px;color:var(--barna-border2)">|</span>
+        Tu hora: <span id="syncLocal" style="font-weight:700;">--:--</span>
+        <span style="margin:0 8px;color:var(--barna-border2)">|</span>
+        <span class="muted">Caché ~15s</span>
+    </p>
+</div>
+
+<script>
+    (function () {
+        const d = new Date("@Model.Status.CheckedAtUtc.ToString("yyyy-MM-ddTHH:mm:ssZ")");
+        const el = document.getElementById('syncLocal');
+        if (el) el.textContent = (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
+    })();
+</script>
+
+<div class="page-medium">
+
+    <div class="status-indicator @statusClass">
+        <span class="status-glow @statusClass"></span>
+        <span class="status-text">@(isServerOnline ? "Servidor Online" : "Mantenimiento")</span>
+        <p style="color:var(--barna-text-muted);margin-top:12px;font-size:14px;">
+            @(isServerOnline ? "Todos los sistemas funcionan correctamente. ¡A levelear!" : "Estamos trabajando para volver lo antes posible.")
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>Estadísticas de la Comunidad</h2>
+
+        @if (Model.DbError is not null)
+        {
+            <div class="alert alert-danger">
+                <strong>Error de base de datos:</strong> No se pudieron cargar los datos en este momento.
+            </div>
+        }
+        else
+        {
+            <div class="stat-grid">
+                <div class="stat-item">
+                    <span class="stat-value">@Model.TotalAccounts</span>
+                    <span class="stat-label">Cuentas Registradas</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">@Model.TotalCharacters</span>
+                    <span class="stat-label">Personajes Creados</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">@Model.NewAccounts7d</span>
+                    <span class="stat-label">Nuevos (7 días)</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">@Model.NewAccounts30d</span>
+                    <span class="stat-label">Nuevos (30 días)</span>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>

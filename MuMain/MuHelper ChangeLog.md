@@ -1,6 +1,30 @@
 # MuHelper Refactor ChangeLog
 # Files Root Directory: "C:\MuDev\MuMain\"
 
+## Jewel Bank UI
+
+### Objective
+
+Replace the functional Jewel Bank prototype with a polished MU-style gothic interface while keeping all server-backed actions and live data intact.
+
+### Result
+
+The Jewel Bank window now uses a dedicated client skin asset matching the requested ornate dark-metal design, with the dynamic live item icons, balances, and deposit/withdraw buttons rendered on top.
+
+### Changes
+
+- Added `barna_jewelbank_back.OZJ` as the Jewel Bank background skin under `Data\Interface`.
+- Added `IMAGE_JEWEL_BANK_BACK` and loaded it through the existing client texture pipeline.
+- Replaced the old flat/code-painted black background with the dedicated skin render.
+- Removed table background repainting that was covering the textured frame and grid.
+- Preserved all functional Jewel Bank behavior: MU Helper entry, live balances, 17 supported slots, 3D item icons, and deposit/withdraw single or 10-pack actions.
+
+### Main Files
+
+- `src\source\UI\NewUI\NewUIMuHelper.cpp`
+- `src\source\UI\NewUI\NewUIMuHelper.h`
+- `src\bin\Data\Interface\barna_jewelbank_back.OZJ`
+
 ## Infinity Arrow Passive
 
 ### Objective

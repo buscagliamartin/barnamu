@@ -21,8 +21,13 @@ public class BarnaMuOptions
     public string GameServerHost { get; set; } = string.Empty;
     public int[] GameServerPorts { get; set; } = Array.Empty<int>();
 
+    /// <summary>Public base URL of the site (e.g. https://barnamu.com.ar), used to build
+    /// absolute links in emails. Falls back to the current request host if empty.</summary>
+    public string PublicBaseUrl { get; set; } = string.Empty;
+
     public RatesOptions Rates { get; set; } = new();
     public VipOptions Vip { get; set; } = new();
+    public SmtpOptions Smtp { get; set; } = new();
     public MapEntry[] Maps { get; set; } = Array.Empty<MapEntry>();
 
     public class RatesOptions
@@ -47,6 +52,22 @@ public class BarnaMuOptions
         public string WhatsAppUrl { get; set; } = string.Empty;
         public string WhatsAppDisplay { get; set; } = string.Empty;
         public string Instructions { get; set; } = string.Empty;
+    }
+
+    public class SmtpOptions
+    {
+        /// <summary>When false, email features are disabled and the app logs reset links
+        /// instead of sending them. Lets the site run before SMTP creds are configured.</summary>
+        public bool Enabled { get; set; }
+        public string Host { get; set; } = "smtp-relay.brevo.com";
+        public int Port { get; set; } = 587;
+        /// <summary>Brevo SMTP login (your Brevo account email, shown in SMTP &amp; API → SMTP).</summary>
+        public string Username { get; set; } = string.Empty;
+        /// <summary>Brevo SMTP key — the `xsmtpsib-...` value. Keep only in appsettings.Local.json.</summary>
+        public string Password { get; set; } = string.Empty;
+        /// <summary>Verified sender address in Brevo.</summary>
+        public string FromEmail { get; set; } = string.Empty;
+        public string FromName { get; set; } = "BarnaMu";
     }
 
     public class MapEntry

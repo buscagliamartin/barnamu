@@ -317,6 +317,140 @@ public class BarnaMuDb
             new { Hash = hash, Id = accountId });
     }
 
+    /// <summary>
+    /// Resets the password if the supplied login name + security code match an account.
+    /// The security code is the numeric one chosen at registration (stored as-is by OpenMU).
+    /// Returns a generic NotFound for both "no such account" and "wrong code" so the page
+    /// cannot be used to enumerate which account names exist.
+    /// </summary>
+    public async Task<PasswordResetResult> ResetPasswordWithSecurityCodeAsync(
+        string loginName, string securityCode, string newPassword)
+    {
+        using var conn = this.Open();
+        var row = await conn.QueryFirstOrDefaultAsync<(Guid Id, string SecurityCode)?>(
+            """
+            SELECT "Id", "SecurityCode"
+            FROM data."Account"
+            WHERE LOWER("LoginName") = LOWER(@LoginName) AND "IsTemplate" = false
+            LIMIT 1
+            """,
+            new { LoginName = loginName });
+
+        if (row is null || !FixedTimeEquals(row.Value.SecurityCode, securityCode))
+        {
+            return PasswordResetResult.NotFound;
+        }
+
+        var hash = BCrypt.Net.BCrypt.HashPassword(newPassword);
+        await conn.ExecuteAsync(
+            """UPDATE data."Account" SET "PasswordHash" = @Hash WHERE "Id" = @Id""",
+            new { Hash = hash, Id = row.Value.Id });
+
+        return PasswordResetResult.Reset;
+    }
+
+    // Constant-time string compare so the security-code check does not leak via timing.
+    private static bool FixedTimeEquals(string? a, string? b)
+    {
+        var ba = System.Text.Encoding.UTF8.GetBytes(a ?? string.Empty);
+        var bb = System.Text.Encoding.UTF8.GetBytes(b ?? string.Empty);
+        return System.Security.Cryptography.CryptographicOperations.FixedTimeEquals(
+            ba.Length == bb.Length ? ba : new byte[bb.Length], bb);
+    }
+
+    // -------- Email-based password reset (token link) --------
+
+    private static string HashToken(string token)
+    {
+        var bytes = System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(token));
+        return Convert.ToHexString(bytes);
+    }
+
+    /// <summary>
+    /// If an account with this login name exists AND has an email on file, creates a
+    /// single-use reset token (valid 1 hour) and returns the raw token + masked email.
+    /// Returns null otherwise. Caller emails the token; we only ever store its hash.
+    /// </summary>
+    public async Task<PasswordResetRequest?> CreatePasswordResetAsync(string loginName)
+    {
+        using var conn = this.Open();
+        var account = await conn.QueryFirstOrDefaultAsync<(Guid Id, string? EMail)?>(
+            """
+            SELECT "Id", "EMail"
+            FROM data."Account"
+            WHERE LOWER("LoginName") = LOWER(@LoginName) AND "IsTemplate" = false
+            LIMIT 1
+            """,
+            new { LoginName = loginName });
+
+        if (account is null || string.IsNullOrWhiteSpace(account.Value.EMail))
+        {
+            return null;
+        }
+
+        var token = Convert.ToBase64String(System.Security.Cryptography.RandomNumberGenerator.GetBytes(32))
+            .Replace('+', '-').Replace('/', '_').TrimEnd('=');
+
+        await conn.ExecuteAsync(
+            """
+            INSERT INTO web."PasswordReset" ("AccountId", "TokenHash", "ExpiresAt")
+            VALUES (@AccountId, @TokenHash, @ExpiresAt)
+            """,
+            new
+            {
+                AccountId = account.Value.Id,
+                TokenHash = HashToken(token),
+                ExpiresAt = DateTime.UtcNow.AddHours(1),
+            });
+
+        return new PasswordResetRequest { Token = token, Email = account.Value.EMail! };
+    }
+
+    /// <summary>True if the token is valid (exists, unused, not expired).</summary>
+    public async Task<bool> IsResetTokenValidAsync(string token)
+    {
+        using var conn = this.Open();
+        var found = await conn.ExecuteScalarAsync<int?>(
+            """
+            SELECT 1 FROM web."PasswordReset"
+            WHERE "TokenHash" = @TokenHash AND "UsedAt" IS NULL AND "ExpiresAt" > now()
+            LIMIT 1
+            """,
+            new { TokenHash = HashToken(token) });
+        return found.HasValue;
+    }
+
+    /// <summary>
+    /// Consumes a reset token and sets the new password atomically. Returns Reset on
+    /// success, NotFound if the token is invalid/expired/used.
+    /// </summary>
+    public async Task<PasswordResetResult> ConsumePasswordResetAsync(string token, string newPassword)
+    {
+        using var conn = this.Open();
+        var accountId = await conn.ExecuteScalarAsync<Guid?>(
+            """
+            SELECT "AccountId" FROM web."PasswordReset"
+            WHERE "TokenHash" = @TokenHash AND "UsedAt" IS NULL AND "ExpiresAt" > now()
+            LIMIT 1
+            """,
+            new { TokenHash = HashToken(token) });
+
+        if (accountId is null)
+        {
+            return PasswordResetResult.NotFound;
+        }
+
+        var hash = BCrypt.Net.BCrypt.HashPassword(newPassword);
+        await conn.ExecuteAsync(
+            """UPDATE data."Account" SET "PasswordHash" = @Hash WHERE "Id" = @Id""",
+            new { Hash = hash, Id = accountId.Value });
+        await conn.ExecuteAsync(
+            """UPDATE web."PasswordReset" SET "UsedAt" = now() WHERE "TokenHash" = @TokenHash""",
+            new { TokenHash = HashToken(token) });
+
+        return PasswordResetResult.Reset;
+    }
+
     /// <summary>Full profile for a single character, including class, guild and stats.</summary>
     public async Task<CharacterProfile?> GetCharacterProfileAsync(string name)
     {
@@ -371,6 +505,18 @@ public class BarnaMuDb
 
                 CREATE INDEX IF NOT EXISTS "IX_BugReport_CreatedAt"
                     ON web."BugReport" ("CreatedAt" DESC);
+
+                CREATE TABLE IF NOT EXISTS web."PasswordReset" (
+                    "Id"         bigserial   PRIMARY KEY,
+                    "AccountId"  uuid        NOT NULL,
+                    "TokenHash"  text        NOT NULL,
+                    "ExpiresAt"  timestamptz NOT NULL,
+                    "UsedAt"     timestamptz NULL,
+                    "CreatedAt"  timestamptz NOT NULL DEFAULT now()
+                );
+
+                CREATE INDEX IF NOT EXISTS "IX_PasswordReset_TokenHash"
+                    ON web."PasswordReset" ("TokenHash");
                 """);
             this._logger.LogInformation("Web schema and BugReport table ensured.");
         }
@@ -398,6 +544,19 @@ public enum AccountCreateResult
     Created,
     AlreadyExists,
     Error,
+}
+
+public enum PasswordResetResult
+{
+    Reset,
+    NotFound,
+    Error,
+}
+
+public class PasswordResetRequest
+{
+    public string Token { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
 }
 
 public class RankingRow

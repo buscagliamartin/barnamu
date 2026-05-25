@@ -852,6 +852,13 @@ bool SEASON3B::CNewUIMainFrameWindow::BtnProcess()
 
 bool SEASON3B::CNewUIMainFrameWindow::UpdateKeyEvent()
 {
+    if (IsPress('J'))
+    {
+        g_pNewUIJewelBank->Toggle();
+        PlayBuffer(SOUND_CLICK01);
+        return false;
+    }
+
     if (m_ItemHotKey.UpdateKeyEvent() == false)
     {
         return false;

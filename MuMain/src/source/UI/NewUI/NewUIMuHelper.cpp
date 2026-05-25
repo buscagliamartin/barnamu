@@ -10,6 +10,7 @@
 #include "UI/NewUI/NewUIMuHelper.h"
 #include "Character/CharacterManager.h"
 #include "MUHelper/MuHelper.h"
+#include "Engine/Object/ZzzInventory.h"
 
 using namespace MUHelper;
 
@@ -63,7 +64,8 @@ enum EButtonId : uint16_t
     BUTTON_ID_DELETE_OTHER_ITEM,
     BUTTON_ID_SAVE_CONFIG,
     BUTTON_ID_INIT_CONFIG,
-    BUTTON_ID_EXIT_CONFIG
+    BUTTON_ID_EXIT_CONFIG,
+    BUTTON_ID_JEWELBANK
 };
 
 enum ESkillSlotImg : uint16_t
@@ -220,6 +222,8 @@ void CNewUIMuHelper::InitButtons()
     InsertButton(IMAGE_IGS_BUTTON, m_Pos.x + 120, m_Pos.y + 388, 52, 26, 1, 0, 1, 1, GlobalText[3503], L"", BUTTON_ID_SAVE_CONFIG, -1);
     InsertButton(IMAGE_IGS_BUTTON, m_Pos.x + 65, m_Pos.y + 388, 52, 26, 1, 0, 1, 1, GlobalText[3504], L"", BUTTON_ID_INIT_CONFIG, -1);
     InsertButton(IMAGE_BASE_WINDOW_BTN_EXIT, m_Pos.x + 20, m_Pos.y + 388, 36, 29, 0, 0, 0, 0, L"", GlobalText[388], BUTTON_ID_EXIT_CONFIG, -1);
+    //-- BarnaMu: Jewel Bank entry button (Other Settings tab)
+    InsertButton(IMAGE_IGS_BUTTON, m_Pos.x + 50, m_Pos.y + 320, 90, 26, 1, 0, 1, 1, L"Jewel Bank", L"", BUTTON_ID_JEWELBANK, 2);
 
     RegisterBtnCharacter(0xFF, BUTTON_ID_SKILL2_CONFIG);
     RegisterBtnCharacter(0xFF, BUTTON_ID_ADD_OTHER_ITEM);
@@ -227,6 +231,7 @@ void CNewUIMuHelper::InitButtons()
     RegisterBtnCharacter(0xFF, BUTTON_ID_SAVE_CONFIG);
     RegisterBtnCharacter(0xFF, BUTTON_ID_INIT_CONFIG);
     RegisterBtnCharacter(0xFF, BUTTON_ID_EXIT_CONFIG);
+    RegisterBtnCharacter(0xFF, BUTTON_ID_JEWELBANK);
 
     RegisterBtnCharacter(Dark_Knight, BUTTON_ID_SKILL3_CONFIG);
     RegisterBtnCharacter(Dark_Knight, BUTTON_ID_POTION_CONFIG);
@@ -535,6 +540,10 @@ bool CNewUIMuHelper::UpdateMouseEvent()
             SaveConfig();
             g_pNewUISystem->Hide(INTERFACE_MUHELPER);
             SetFocus(g_hWnd);
+        }
+        else if (iButtonId == BUTTON_ID_JEWELBANK)
+        {
+            g_pNewUIJewelBank->Toggle();
         }
 
         return false;
@@ -1643,7 +1652,9 @@ void CNewUIMuHelper::RenderSkillIcon(int skill, float x, float y, float width, f
         fV = 3 * height / 256.f;
         iKindofSkill = KOS_SKILL2;
     }
-    else if (skill == AT_SKILL_ALICE_BERSERKER || skill == AT_SKILL_ALICE_BERSERKER_STR)
+    else if (skill == AT_SKILL_ALICE_BERSERKER
+        || skill == AT_SKILL_ALICE_BERSERKER_STR
+        || skill == AT_SKILL_BerserkerProficiency)
     {
         fU = 10 * width / 256.f;
         fV = 3 * height / 256.f;
@@ -2061,7 +2072,9 @@ void CNewUIMuHelperSkillList::RenderSkillIcon(int iSkillType, float x, float y, 
         fV = 3 * height / 256.f;
         iKindofSkill = KOS_SKILL2;
     }
-    else if (iSkillType == AT_SKILL_ALICE_BERSERKER)
+    else if (iSkillType == AT_SKILL_ALICE_BERSERKER
+        || iSkillType == AT_SKILL_ALICE_BERSERKER_STR
+        || iSkillType == AT_SKILL_BerserkerProficiency)
     {
         fU = 10 * width / 256.f;
         fV = 3 * height / 256.f;
@@ -2249,6 +2262,7 @@ bool CNewUIMuHelperSkillList::IsBuffSkill(int iSkillType)
     // Summoner buffs
     case AT_SKILL_ALICE_BERSERKER:
     case AT_SKILL_ALICE_BERSERKER_STR:
+    case AT_SKILL_BerserkerProficiency:
     case AT_SKILL_ALICE_THORNS:
         return true;
         // RF Buffs
@@ -2272,9 +2286,6 @@ bool CNewUIMuHelperSkillList::IsHealingSkill(int iSkillType)
     {
     case AT_SKILL_HEALING:
     case AT_SKILL_HEALING_STR:
-        return true;
-    case AT_SKILL_ALICE_DRAINLIFE:
-    case AT_SKILL_ALICE_DRAINLIFE_STR:
         return true;
     }
 
@@ -3009,4 +3020,446 @@ void CNewUIMuHelperExt::Reset()
         m_iCurrentPotionThreshold = _TempConfig.iPotionThreshold / 10;
         m_iCurrentHealThreshold = _TempConfig.iHealThreshold / 10;
     }
+}
+
+//////////////////////////////////////////////////////////////////////////
+// BarnaMu: CNewUIJewelBank - per-account jewel bank window (MU Helper menu).
+//////////////////////////////////////////////////////////////////////////
+
+namespace
+{
+    struct JewelBankItemInfo
+    {
+        const wchar_t* Name;
+        int Type;
+        int Level;
+    };
+
+    constexpr int JEWEL_BANK_TABLE_X = 13;
+    constexpr int JEWEL_BANK_TABLE_Y = 44;
+    constexpr int JEWEL_BANK_HEADER_HEIGHT = 20;
+    constexpr int JEWEL_BANK_TABLE_WIDTH = 594;
+    constexpr int JEWEL_BANK_BUTTON_WIDTH = 18;
+    constexpr int JEWEL_BANK_BUTTON_HEIGHT = 18;
+    constexpr int JEWEL_BANK_ICON_SIZE = 18;
+
+    constexpr int JEWEL_BANK_COLUMN_COUNT = 8;
+    constexpr int s_JewelBankColumns[JEWEL_BANK_COLUMN_COUNT] =
+    {
+        0, 172, 242, 332, 399, 466, 532, 594,
+    };
+
+    const wchar_t* const s_JewelBankHeaders[JEWEL_BANK_COLUMN_COUNT - 1] =
+    {
+        L"Item",
+        L"Amount",
+        L"10 Pack Amount",
+        L"Deposit x1",
+        L"Deposit Pack",
+        L"Withdraw x1",
+        L"Withdraw Pack",
+    };
+
+    const JewelBankItemInfo s_JewelBankItems[CNewUIJewelBank::ITEM_COUNT] =
+    {
+        { L"Jewel of Bless", ITEM_PACKED_JEWEL_OF_BLESS, 0 },
+        { L"Jewel of Soul", ITEM_PACKED_JEWEL_OF_SOUL, 0 },
+        { L"Jewel of Life", ITEM_PACKED_JEWEL_OF_LIFE, 0 },
+        { L"Jewel of Creation", ITEM_PACKED_JEWEL_OF_CREATION, 0 },
+        { L"Jewel of Guardian", ITEM_PACKED_JEWEL_OF_GUARDIAN, 0 },
+        { L"Gemstone", ITEM_PACKED_GEMSTONE, 0 },
+        { L"Jewel of Harmony", ITEM_PACKED_JEWEL_OF_HARMONY, 0 },
+        { L"Jewel of Chaos", ITEM_PACKED_JEWEL_OF_CHAOS, 0 },
+        { L"Lower refine stone", ITEM_PACKED_LOWER_REFINE_STONE, 0 },
+        { L"Higher refine stone", ITEM_PACKED_HIGHER_REFINE_STONE, 0 },
+        { L"Box of Kundun +1", ITEM_BOX_OF_LUCK, 8 },
+        { L"Box of Kundun +2", ITEM_BOX_OF_LUCK, 9 },
+        { L"Box of Kundun +3", ITEM_BOX_OF_LUCK, 10 },
+        { L"Box of Kundun +4", ITEM_BOX_OF_LUCK, 11 },
+        { L"Box of Kundun +5", ITEM_BOX_OF_LUCK, 12 },
+        { L"Blue Chocolate Box", ITEM_BLUE_CHOCOLATE_BOX, 0 },
+        { L"Pink Chocolate Box", ITEM_PINK_CHOCOLATE_BOX, 0 },
+    };
+
+    void RenderJewelBankRect(int x, int y, int width, int height, float red, float green, float blue, float alpha)
+    {
+        DisableTexture();
+
+        float sx = float(x) * float(WindowWidth) / float(REFERENCE_WIDTH);
+        float sy = float(y) * float(WindowHeight) / float(REFERENCE_HEIGHT);
+        float sw = float(width) * float(WindowWidth) / float(REFERENCE_WIDTH);
+        float sh = float(height) * float(WindowHeight) / float(REFERENCE_HEIGHT);
+        sy = float(WindowHeight) - sy;
+
+        glColor4f(red, green, blue, alpha);
+        glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(sx, sy);
+        glVertex2f(sx, sy - sh);
+        glVertex2f(sx + sw, sy - sh);
+        glVertex2f(sx + sw, sy);
+        glEnd();
+
+        EndRenderColor();
+    }
+
+    void RenderJewelBankFrame(int x, int y, int width, int height)
+    {
+        RenderImage(CNewUIJewelBank::IMAGE_TABLE_TOP_LEFT, x, y, 14.f, 14.f);
+        RenderImage(CNewUIJewelBank::IMAGE_TABLE_TOP_RIGHT, x + width - 14.f, y, 14.f, 14.f);
+        RenderImage(CNewUIJewelBank::IMAGE_TABLE_BOTTOM_LEFT, x, y + height - 14.f, 14.f, 14.f);
+        RenderImage(CNewUIJewelBank::IMAGE_TABLE_BOTTOM_RIGHT, x + width - 14.f, y + height - 14.f, 14.f, 14.f);
+        RenderImage(CNewUIJewelBank::IMAGE_TABLE_TOP_PIXEL, x + 6.f, y, width - 12.f, 14.f);
+        RenderImage(CNewUIJewelBank::IMAGE_TABLE_BOTTOM_PIXEL, x + 6.f, y + height - 14.f, width - 12.f, 14.f);
+        RenderImage(CNewUIJewelBank::IMAGE_TABLE_LEFT_PIXEL, x, y + 6.f, 14.f, height - 12.f);
+        RenderImage(CNewUIJewelBank::IMAGE_TABLE_RIGHT_PIXEL, x + width - 14.f, y + 6.f, 14.f, height - 12.f);
+    }
+
+    void RenderJewelBankLine(int x, int y, int width, int height, float red, float green, float blue, float alpha)
+    {
+        RenderJewelBankRect(x, y, width, height, red, green, blue, alpha);
+    }
+
+    void RenderJewelBankTexture(int x, int y, int width, int height)
+    {
+        for (int offsetY = 4; offsetY < height - 4; offsetY += 7)
+        {
+            const float alpha = ((offsetY / 7) % 2 == 0) ? 0.12f : 0.06f;
+            RenderJewelBankRect(x + 3, y + offsetY, width - 6, 1, 0.22f, 0.23f, 0.24f, alpha);
+        }
+
+        for (int offsetX = 17; offsetX < width - 6; offsetX += 31)
+        {
+            RenderJewelBankRect(x + offsetX, y + 3, 1, height - 6, 0.00f, 0.00f, 0.00f, 0.10f);
+        }
+    }
+}
+
+CNewUIJewelBank::CNewUIJewelBank()
+{
+    m_pNewUIMng = NULL;
+    m_pNewUI3DRenderMng = NULL;
+    m_Pos.x = 0;
+    m_Pos.y = 0;
+    for (int i = 0; i < ITEM_COUNT; i++)
+        m_Balances[i] = 0;
+}
+
+CNewUIJewelBank::~CNewUIJewelBank()
+{
+    Release();
+}
+
+bool CNewUIJewelBank::Create(CNewUIManager* pNewUIMng, CNewUI3DRenderMng* pNewUI3DRenderMng, int x, int y)
+{
+    if (NULL == pNewUIMng || NULL == pNewUI3DRenderMng)
+        return false;
+
+    m_pNewUIMng = pNewUIMng;
+    m_pNewUIMng->AddUIObj(INTERFACE_JEWELBANK, this);
+
+    m_pNewUI3DRenderMng = pNewUI3DRenderMng;
+    m_pNewUI3DRenderMng->Add3DRenderObj(this, INFORMATION_CAMERA_Z_ORDER);
+
+    SetPos((640 - WINDOW_WIDTH) / 2, 20);
+    LoadImages();
+    InitButtons();
+    Show(false);
+
+    return true;
+}
+
+void CNewUIJewelBank::Release()
+{
+    UnloadImages();
+
+    if (m_pNewUI3DRenderMng)
+    {
+        m_pNewUI3DRenderMng->Remove3DRenderObj(this);
+        m_pNewUI3DRenderMng = NULL;
+    }
+
+    if (m_pNewUIMng)
+    {
+        m_pNewUIMng->RemoveUIObj(this);
+        m_pNewUIMng = NULL;
+    }
+}
+
+void CNewUIJewelBank::SetPos(int x, int y)
+{
+    m_Pos.x = x;
+    m_Pos.y = y;
+}
+
+void CNewUIJewelBank::LoadImages()
+{
+    LoadBitmap(L"Interface\\barna_jewelbank_back.jpg", IMAGE_JEWEL_BANK_BACK, GL_LINEAR);
+    LoadBitmap(L"Interface\\newui_item_box.tga", IMAGE_ITEM_BOX, GL_LINEAR);
+    LoadBitmap(L"Interface\\newui_item_table01(L).tga", IMAGE_TABLE_TOP_LEFT, GL_LINEAR);
+    LoadBitmap(L"Interface\\newui_item_table01(R).tga", IMAGE_TABLE_TOP_RIGHT, GL_LINEAR);
+    LoadBitmap(L"Interface\\newui_item_table02(L).tga", IMAGE_TABLE_BOTTOM_LEFT, GL_LINEAR);
+    LoadBitmap(L"Interface\\newui_item_table02(R).tga", IMAGE_TABLE_BOTTOM_RIGHT, GL_LINEAR);
+    LoadBitmap(L"Interface\\newui_item_table03(Up).tga", IMAGE_TABLE_TOP_PIXEL, GL_LINEAR);
+    LoadBitmap(L"Interface\\newui_item_table03(Dw).tga", IMAGE_TABLE_BOTTOM_PIXEL, GL_LINEAR);
+    LoadBitmap(L"Interface\\newui_item_table03(L).tga", IMAGE_TABLE_LEFT_PIXEL, GL_LINEAR);
+    LoadBitmap(L"Interface\\newui_item_table03(R).tga", IMAGE_TABLE_RIGHT_PIXEL, GL_LINEAR);
+    LoadBitmap(L"Interface\\newui_Btn_round.tga", IMAGE_ROUND_BUTTON, GL_LINEAR);
+    LoadBitmap(L"Interface\\InGameShop\\Ingame_Bt03.tga", IMAGE_IGS_BUTTON, GL_LINEAR, GL_CLAMP, 1, 0);
+}
+
+void CNewUIJewelBank::UnloadImages()
+{
+    DeleteBitmap(IMAGE_JEWEL_BANK_BACK);
+    DeleteBitmap(IMAGE_ROUND_BUTTON);
+    DeleteBitmap(IMAGE_IGS_BUTTON);
+    DeleteBitmap(IMAGE_TABLE_RIGHT_PIXEL);
+    DeleteBitmap(IMAGE_TABLE_LEFT_PIXEL);
+    DeleteBitmap(IMAGE_TABLE_BOTTOM_PIXEL);
+    DeleteBitmap(IMAGE_TABLE_TOP_PIXEL);
+    DeleteBitmap(IMAGE_TABLE_BOTTOM_RIGHT);
+    DeleteBitmap(IMAGE_TABLE_BOTTOM_LEFT);
+    DeleteBitmap(IMAGE_TABLE_TOP_RIGHT);
+    DeleteBitmap(IMAGE_TABLE_TOP_LEFT);
+    DeleteBitmap(IMAGE_ITEM_BOX);
+}
+
+void CNewUIJewelBank::InitButtons()
+{
+    const int tableX = m_Pos.x + JEWEL_BANK_TABLE_X;
+
+    for (int i = 0; i < ITEM_COUNT; i++)
+    {
+        int rowY = m_Pos.y + ROW_START_Y + i * ROW_HEIGHT;
+        int buttonY = rowY + 1;
+
+        auto setupButton = [&](CNewUIButton& button, int column, const wchar_t* text, const wchar_t* tooltip, int textX)
+        {
+            const int columnX = tableX + s_JewelBankColumns[column];
+            const int columnWidth = s_JewelBankColumns[column + 1] - s_JewelBankColumns[column];
+            const int buttonX = columnX + ((columnWidth - JEWEL_BANK_BUTTON_WIDTH) / 2);
+
+            button.ChangeButtonImgState(1, IMAGE_ROUND_BUTTON, 1, 0, 1);
+            button.ChangeButtonInfo(buttonX, buttonY, JEWEL_BANK_BUTTON_WIDTH, JEWEL_BANK_BUTTON_HEIGHT);
+            button.ChangeText(L"");
+            button.MoveTextPos(0, 0);
+            button.ChangeToolTipText(tooltip, TRUE);
+        };
+
+        setupButton(m_BtnDepSingle[i], 3, L"+", L"Deposit one", 6);
+        setupButton(m_BtnDepPack[i], 4, L"+", L"Deposit pack", 6);
+        setupButton(m_BtnWdrSingle[i], 5, L"-", L"Withdraw one", 7);
+        setupButton(m_BtnWdrPack[i], 6, L"-", L"Withdraw pack", 7);
+    }
+
+    m_BtnClose.ChangeButtonImgState(1, IMAGE_BASE_WINDOW_BTN_EXIT, 0, 0, 0);
+    m_BtnClose.ChangeButtonInfo(m_Pos.x + WINDOW_WIDTH - 44, m_Pos.y + 6, 36, 29);
+    m_BtnClose.ChangeText(L"");
+    m_BtnClose.ChangeToolTipText(GlobalText[388], TRUE);
+}
+
+float CNewUIJewelBank::GetLayerDepth()
+{
+    return 3.5f;
+}
+
+float CNewUIJewelBank::GetKeyEventOrder()
+{
+    return 3.5f;
+}
+
+void CNewUIJewelBank::SetBalances(const unsigned int* pBalances)
+{
+    if (pBalances == NULL)
+        return;
+
+    for (int i = 0; i < ITEM_COUNT; i++)
+        m_Balances[i] = pBalances[i];
+}
+
+void CNewUIJewelBank::SendRequest(BYTE op, BYTE arg1, WORD arg2, WORD arg3)
+{
+    if (SocketClient == NULL)
+        return;
+
+    SocketClient->ToGameServer()->SendJewelBankRequest(op, arg1, arg2, arg3);
+}
+
+void CNewUIJewelBank::Toggle()
+{
+    if (IsVisible())
+    {
+        Show(false);
+        return;
+    }
+
+    Show(true);
+    SendRequest(0, 0, 0, 0); // query current balances
+}
+
+bool CNewUIJewelBank::Update()
+{
+    if (IsVisible())
+    {
+        for (int i = 0; i < ITEM_COUNT; i++)
+        {
+            if (m_BtnDepSingle[i].UpdateMouseEvent())
+                SendRequest(1, (BYTE)i, 0, 0);
+
+            if (m_BtnDepPack[i].UpdateMouseEvent())
+                SendRequest(1, (BYTE)i, 1, 0);
+
+            if (m_BtnWdrSingle[i].UpdateMouseEvent())
+                SendRequest(2, (BYTE)i, 0, 0);
+
+            if (m_BtnWdrPack[i].UpdateMouseEvent())
+                SendRequest(2, (BYTE)i, 1, 0);
+        }
+
+        if (m_BtnClose.UpdateMouseEvent())
+            g_pNewUISystem->Hide(INTERFACE_JEWELBANK);
+    }
+    return true;
+}
+
+bool CNewUIJewelBank::UpdateMouseEvent()
+{
+    if (!CheckMouseIn(m_Pos.x, m_Pos.y, WINDOW_WIDTH, WINDOW_HEIGHT))
+        return true;
+
+    return false;
+}
+
+bool CNewUIJewelBank::UpdateKeyEvent()
+{
+    if (IsVisible())
+    {
+        if (IsPress(VK_ESCAPE) == true)
+        {
+            g_pNewUISystem->Hide(INTERFACE_JEWELBANK);
+            return false;
+        }
+    }
+    return true;
+}
+
+bool CNewUIJewelBank::IsVisible() const
+{
+    return CNewUIObj::IsVisible();
+}
+
+void CNewUIJewelBank::RenderBack()
+{
+    RenderImage(IMAGE_JEWEL_BANK_BACK, m_Pos.x, m_Pos.y, float(WINDOW_WIDTH), float(WINDOW_HEIGHT));
+}
+
+void CNewUIJewelBank::RenderTable()
+{
+    const int tableX = m_Pos.x + JEWEL_BANK_TABLE_X;
+    const int tableY = m_Pos.y + JEWEL_BANK_TABLE_Y;
+
+    g_pRenderText->SetFont(g_hFont);
+    g_pRenderText->SetBgColor(0);
+    g_pRenderText->SetTextColor(226, 226, 218, 255);
+
+    for (int i = 0; i < JEWEL_BANK_COLUMN_COUNT - 1; i++)
+    {
+        const int columnX = tableX + s_JewelBankColumns[i];
+        const int columnWidth = s_JewelBankColumns[i + 1] - s_JewelBankColumns[i];
+        if (i == 0)
+            g_pRenderText->RenderText(columnX + 33, tableY + 5, s_JewelBankHeaders[i], columnWidth - 35, 0, RT3_SORT_LEFT);
+        else
+            g_pRenderText->RenderText(columnX, tableY + 5, s_JewelBankHeaders[i], columnWidth, 0, RT3_SORT_CENTER);
+    }
+
+    g_pRenderText->SetTextColor(232, 190, 84, 255);
+    for (int i = 0; i < ITEM_COUNT; i++)
+    {
+        const int rowY = m_Pos.y + ROW_START_Y + i * ROW_HEIGHT;
+        const JewelBankItemInfo& item = s_JewelBankItems[i];
+
+        RenderImage(IMAGE_ITEM_BOX, tableX + 8, rowY + 1, 20.f, 18.f);
+        g_pRenderText->SetFont(g_hFont);
+        g_pRenderText->SetTextColor(238, 199, 86, 255);
+        g_pRenderText->SetBgColor(0);
+        g_pRenderText->RenderText(tableX + 33, rowY + 5, item.Name, s_JewelBankColumns[1] - 35, 0, RT3_SORT_LEFT);
+
+        unsigned int bal = m_Balances[i];
+        wchar_t amount[32];
+        wchar_t packAmount[32];
+        std::swprintf(amount, 32, L"x %u", bal % 10);
+        std::swprintf(packAmount, 32, L"x %u", bal / 10);
+        g_pRenderText->SetTextColor(238, 196, 105, 255);
+        g_pRenderText->RenderText(tableX + s_JewelBankColumns[1], rowY + 5, amount, s_JewelBankColumns[2] - s_JewelBankColumns[1], 0, RT3_SORT_CENTER);
+        g_pRenderText->RenderText(tableX + s_JewelBankColumns[2], rowY + 5, packAmount, s_JewelBankColumns[3] - s_JewelBankColumns[2], 0, RT3_SORT_CENTER);
+    }
+}
+
+void CNewUIJewelBank::RenderBankButton(CNewUIButton& button, const wchar_t* glyph)
+{
+    const POINT& pos = button.GetPos();
+    const POINT& size = button.GetSize();
+    const int centerX = pos.x + (size.x / 2);
+    const BUTTON_STATE state = button.GetBTState();
+    const float light = state == BUTTON_STATE_DOWN ? 0.74f : (state == BUTTON_STATE_OVER ? 1.08f : 0.94f);
+
+    RenderJewelBankRect(centerX - 5, pos.y + 0, 10, 1, 0.72f * light, 0.60f * light, 0.48f * light, 0.92f);
+    RenderJewelBankRect(centerX - 8, pos.y + 1, 16, 2, 0.19f * light, 0.16f * light, 0.13f * light, 0.98f);
+    RenderJewelBankRect(centerX - 9, pos.y + 3, 18, 12, 0.040f, 0.037f, 0.034f, 0.98f);
+    RenderJewelBankRect(centerX - 7, pos.y + 4, 14, 10, 0.25f * light, 0.21f * light, 0.17f * light, 0.94f);
+    RenderJewelBankRect(centerX - 5, pos.y + 5, 10, 8, 0.42f * light, 0.34f * light, 0.25f * light, 0.50f);
+    RenderJewelBankRect(centerX - 8, pos.y + 15, 16, 2, 0.55f * light, 0.45f * light, 0.34f * light, 0.82f);
+    RenderJewelBankRect(centerX - 4, pos.y + 8, 8, 1, 0.86f, 0.78f, 0.66f, 0.96f);
+
+    if (glyph[0] == L'+')
+    {
+        RenderJewelBankRect(centerX, pos.y + 5, 1, 8, 0.32f, 0.92f, 0.74f, 0.98f);
+    }
+    else
+    {
+        RenderJewelBankRect(centerX - 4, pos.y + 8, 8, 1, 1.00f, 0.42f, 0.18f, 0.98f);
+    }
+
+    g_pRenderText->SetFont(g_hFontBold);
+    g_pRenderText->SetTextColor(glyph[0] == L'+' ? 98 : 255, glyph[0] == L'+' ? 235 : 116, glyph[0] == L'+' ? 194 : 58, 255);
+    g_pRenderText->SetBgColor(0);
+    g_pRenderText->RenderText(pos.x, pos.y + 4, glyph, size.x, 0, RT3_SORT_CENTER);
+}
+
+void CNewUIJewelBank::Render3D()
+{
+    if (!IsVisible())
+        return;
+
+    const int tableX = m_Pos.x + JEWEL_BANK_TABLE_X;
+
+    for (int i = 0; i < ITEM_COUNT; i++)
+    {
+        const int rowY = m_Pos.y + ROW_START_Y + i * ROW_HEIGHT;
+        const JewelBankItemInfo& item = s_JewelBankItems[i];
+
+        glColor4f(1.f, 1.f, 1.f, 1.f);
+        RenderItem3D(float(tableX + 6), float(rowY - 1), 24.f, 22.f, item.Type, item.Level, 0, 0, false);
+    }
+}
+
+bool CNewUIJewelBank::Render()
+{
+    EnableAlphaTest();
+    glColor4f(1.f, 1.f, 1.f, 1.f);
+
+    RenderBack();
+    RenderTable();
+
+    for (int i = 0; i < ITEM_COUNT; i++)
+    {
+        RenderBankButton(m_BtnDepSingle[i], L"+");
+        RenderBankButton(m_BtnDepPack[i], L"+");
+        RenderBankButton(m_BtnWdrSingle[i], L"-");
+        RenderBankButton(m_BtnWdrPack[i], L"-");
+    }
+    m_BtnClose.Render();
+
+    DisableAlphaBlend();
+
+    return true;
 }

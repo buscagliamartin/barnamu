@@ -58,6 +58,14 @@ public class ItemCraftAction
         }
 
         var itemList = player.TemporaryStorage?.Items.ToList() ?? new List<Item>();
+        if (result.Item1 == CraftingResult.Success)
+        {
+            foreach (var craftedItem in itemList)
+            {
+                ItemAuditLogger.Log(ItemAuditLogger.AuditSource.Crafting, player, craftedItem, npcStats?.Designation);
+            }
+        }
+
         await player.InvokeViewPlugInAsync<IShowItemCraftingResultPlugIn>(p => p.ShowResultAsync(result.Item1, itemList.Count > 1 ? null : result.Item2)).ConfigureAwait(false);
         await player.InvokeViewPlugInAsync<IShowMerchantStoreItemListPlugIn>(
             p => p.ShowMerchantStoreItemListAsync(

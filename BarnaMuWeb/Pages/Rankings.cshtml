@@ -9,19 +9,14 @@
     <p class="hero-subtitle">Top 50 — actualizado en tiempo real con la DB del servidor.</p>
 </div>
 
-<!-- Buscador de personaje -->
-<div style="margin-bottom:18px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-    <div style="position:relative;flex:1;min-width:200px;max-width:340px;">
-        <input id="rankSearch" type="text" placeholder="Buscar personaje..."
-               style="width:100%;padding:8px 36px 8px 14px;background:rgba(8,10,20,0.80);
-                      border:1px solid rgba(180,140,50,0.22);border-radius:4px;
-                      color:var(--barna-text);font-family:var(--font-body);font-size:13px;" />
-        <span style="position:absolute;right:11px;top:50%;transform:translateY(-50%);
-                     color:var(--barna-text-muted);pointer-events:none;">
+<div class="bm-rank-toolbar">
+    <div class="bm-search">
+        <input id="rankSearch" type="text" placeholder="Buscar personaje..." />
+        <span>
             <i class="fa fa-search"></i>
         </span>
     </div>
-    <span id="rankResultCount" style="font-size:11px;color:var(--barna-text-muted);"></span>
+    <span id="rankResultCount" class="bm-search-count"></span>
 </div>
 
 <div class="barna-tabs">

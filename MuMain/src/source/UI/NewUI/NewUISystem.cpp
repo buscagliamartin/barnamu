@@ -524,6 +524,10 @@ bool CNewUISystem::LoadMainSceneInterface()
     if (m_pNewUIMuHelperSkillList->Create(m_pNewUIMng, m_pNewUI3DRenderMng) == false)
         return false;
 
+    m_pNewUIJewelBank = new CNewUIJewelBank;
+    if (m_pNewUIJewelBank->Create(m_pNewUIMng, m_pNewUI3DRenderMng, PanelColumnX(2), 0) == false)
+        return false;
+
     return true;
 }
 
@@ -1550,6 +1554,7 @@ void CNewUISystem::Hide(DWORD dwKey)
     {
         m_pNewUIMng->ShowInterface(SEASON3B::INTERFACE_MUHELPER_SKILL_LIST, false);
         m_pNewUIMng->ShowInterface(SEASON3B::INTERFACE_MUHELPER_EXT, false);
+        m_pNewUIMng->ShowInterface(SEASON3B::INTERFACE_JEWELBANK, false);
     }
 
     m_pNewUIMng->ShowInterface(dwKey, false);
@@ -1597,6 +1602,7 @@ void CNewUISystem::HideAllGroupA()
         INTERFACE_MUHELPER,
         INTERFACE_MUHELPER_EXT,
         INTERFACE_MUHELPER_SKILL_LIST,
+        INTERFACE_JEWELBANK,
         INTERFACE_MIXINVENTORY,
         INTERFACE_STORAGE,
         INTERFACE_NPCSHOP,
@@ -1716,6 +1722,7 @@ void CNewUISystem::HideGroupBeforeOpenInterface()
         INTERFACE_MUHELPER,
         INTERFACE_MUHELPER_EXT,
         INTERFACE_MUHELPER_SKILL_LIST,
+        INTERFACE_JEWELBANK,
         0,
     };
 
@@ -2437,4 +2444,9 @@ CNewUIMuHelperExt* CNewUISystem::Get_pNewUIMuHelperExt() const
 CNewUIMuHelperSkillList* CNewUISystem::Get_pNewUIMuHelperSkillList() const
 {
     return m_pNewUIMuHelperSkillList;
+}
+
+CNewUIJewelBank* CNewUISystem::Get_pNewUIJewelBank() const
+{
+    return m_pNewUIJewelBank;
 }

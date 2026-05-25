@@ -1699,10 +1699,25 @@ public class Player : AsyncDisposable, IBucketMapObserver, IAttackable, IAttacke
                 return powerUp;
             }
 
-            if (masterSkillDefinition.TargetAttribute is { } masterSkillTargetAttribute
-                && masterSkillTargetAttribute == powerUpDef.TargetAttribute)
+            if (masterSkillDefinition.TargetAttribute is null
+                || masterSkillDefinition.TargetAttribute == powerUpDef.TargetAttribute)
             {
-                var additionalValue = new SimpleElement(masterSkillEntry.CalculateValue(), masterSkillEntry.Skill.MasterDefinition?.Aggregation ?? powerUp.AggregateType);
+                var aggregateType = masterSkillDefinition.TargetAttribute is null
+                    ? powerUp.AggregateType
+                    : masterSkillDefinition.Aggregation;
+                var additionalValue = new SimpleElement(masterSkillEntry.CalculateValue(), aggregateType);
+                if (additionalValue.AggregateType != powerUp.AggregateType)
+                {
+                    this.Logger.LogWarning(
+                        "Ignoring master skill power-up {MasterSkillName} ({MasterSkillNumber}) for {TargetAttribute} because aggregate type {MasterAggregateType} does not match base aggregate type {BaseAggregateType}.",
+                        masterSkillEntry.Skill.Name,
+                        masterSkillEntry.Skill.Number,
+                        powerUpDef.TargetAttribute?.Designation,
+                        additionalValue.AggregateType,
+                        powerUp.AggregateType);
+                    return powerUp;
+                }
+
                 powerUp = new CombinedElement(powerUp, additionalValue);
             }
 

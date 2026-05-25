@@ -45,6 +45,59 @@ namespace MUHelper
 
     CMuHelper g_MuHelper;
 
+    namespace
+    {
+    bool IsBuffActive(CHARACTER* pTargetChar, eBuffState buff)
+    {
+        return g_isCharacterBuff((&pTargetChar->Object), buff) != FALSE;
+    }
+
+    bool ShouldCastTimedBuff(CHARACTER* pTargetChar, eBuffState buff, bool bTimerActivatedBuffOngoing)
+    {
+        return !IsBuffActive(pTargetChar, buff) || bTimerActivatedBuffOngoing;
+    }
+
+    bool IsRageFighterBuffSkill(ActionSkillType iSkill)
+    {
+        switch (gSkillManager.MasterSkillToBaseSkillIndex(iSkill))
+        {
+        case AT_SKILL_ATT_UP_OURFORCES:
+        case AT_SKILL_HP_UP_OURFORCES:
+        case AT_SKILL_DEF_UP_OURFORCES:
+            return true;
+        default:
+            return false;
+        }
+    }
+
+    int SimulateRageFighterBuffSkill(ActionSkillType iSkill)
+    {
+        const int iSkillIndex = g_pSkillList->GetSkillIndex(iSkill);
+        if (iSkillIndex == -1)
+        {
+            return 0;
+        }
+
+        if (!gSkillManager.AreSkillAttributeRequirementsMet(iSkill)
+            || !CheckSkillUseCondition(&Hero->Object, iSkill)
+            || !CheckMana(Hero, iSkill))
+        {
+            return 0;
+        }
+
+        Hero->CurrentSkill = iSkillIndex;
+        g_MovementSkill.m_iSkill = iSkillIndex;
+        g_MovementSkill.m_bMagic = true;
+        g_MovementSkill.m_iTarget = -1;
+        SelectedCharacter = -1;
+        TargetX = Hero->PositionX;
+        TargetY = Hero->PositionY;
+
+        UseSkillRagefighter(Hero, &Hero->Object);
+        return 1;
+    }
+    }
+
     void CALLBACK CMuHelper::TimerProc(HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime)
     {
         g_MuHelper.WorkLoop(hwnd, uMsg, idEvent, dwTime);
@@ -209,7 +262,7 @@ namespace MUHelper
         }
 
         CHARACTER* pTarget = FindCharacterByKey(iTargetId);
-        if (!pTarget || pTarget == Hero)
+        if (!pTarget || pTarget == Hero || !IsMonster(pTarget))
         {
             return;
         }
@@ -419,7 +472,7 @@ namespace MUHelper
             return;
 
         CHARACTER* pAttacker = FindCharacterByKey(iAttackerId);
-        if (!pAttacker || pAttacker == Hero)
+        if (!pAttacker || pAttacker == Hero || !IsMonster(pAttacker))
             return;
 
         m_iCurrentTarget = iAttackerId;
@@ -562,24 +615,26 @@ namespace MUHelper
 
     int CMuHelper::BuffTarget(CHARACTER* pTargetChar, ActionSkillType iBuffSkill)
     {
-        // TODO: List other buffs here
-        if ((iBuffSkill == AT_SKILL_ATTACK
-            || iBuffSkill == AT_SKILL_ATTACK_STR)
-            && (!g_isCharacterBuff((&pTargetChar->Object), eBuff_Attack) || m_bTimerActivatedBuffOngoing))
+        if (pTargetChar == nullptr)
+        {
+            return 1;
+        }
+
+        const ActionSkillType iBaseBuffSkill = gSkillManager.MasterSkillToBaseSkillIndex(iBuffSkill);
+
+        if (iBaseBuffSkill == AT_SKILL_ATTACK
+            && ShouldCastTimedBuff(pTargetChar, eBuff_Attack, m_bTimerActivatedBuffOngoing))
         {
             return SimulateBuffSkill(iBuffSkill, pTargetChar->Key);
         }
 
-        if ((iBuffSkill == AT_SKILL_DEFENSE
-            || iBuffSkill == AT_SKILL_DEFENSE_STR
-            || iBuffSkill == AT_SKILL_DEFENSE_MASTERY)
-            && (!g_isCharacterBuff((&pTargetChar->Object), eBuff_Defense) || m_bTimerActivatedBuffOngoing))
+        if (iBaseBuffSkill == AT_SKILL_DEFENSE
+            && ShouldCastTimedBuff(pTargetChar, eBuff_Defense, m_bTimerActivatedBuffOngoing))
         {
             return SimulateBuffSkill(iBuffSkill, pTargetChar->Key);
         }
 
-        if ((iBuffSkill == AT_SKILL_INFINITY_ARROW || iBuffSkill == AT_SKILL_INFINITY_ARROW_STR) &&
-            (!g_isCharacterBuff((&pTargetChar->Object), eBuff_InfinityArrow)))
+        if (iBaseBuffSkill == AT_SKILL_INFINITY_ARROW && !IsBuffActive(pTargetChar, eBuff_InfinityArrow))
         {
             if (pTargetChar != Hero)
             {
@@ -588,18 +643,14 @@ namespace MUHelper
             return SimulateBuffSkill(iBuffSkill, pTargetChar->Key);
         }
 
-        if ((iBuffSkill == AT_SKILL_SOUL_BARRIER
-            || iBuffSkill == AT_SKILL_SOUL_BARRIER_STR
-            || iBuffSkill == AT_SKILL_SOUL_BARRIER_PROFICIENCY)
-            && (!g_isCharacterBuff((&pTargetChar->Object), eBuff_WizDefense) || m_bTimerActivatedBuffOngoing))
+        if (iBaseBuffSkill == AT_SKILL_SOUL_BARRIER
+            && ShouldCastTimedBuff(pTargetChar, eBuff_WizDefense, m_bTimerActivatedBuffOngoing))
         {
             return SimulateBuffSkill(iBuffSkill, pTargetChar->Key);
         }
 
-        if ((iBuffSkill == AT_SKILL_SWELL_LIFE
-            || iBuffSkill == AT_SKILL_SWELL_LIFE_STR
-            || iBuffSkill == AT_SKILL_SWELL_LIFE_PROFICIENCY)
-            && (!g_isCharacterBuff((&pTargetChar->Object), eBuff_Life) || m_bTimerActivatedBuffOngoing))
+        if (iBaseBuffSkill == AT_SKILL_SWELL_LIFE
+            && ShouldCastTimedBuff(pTargetChar, eBuff_Life, m_bTimerActivatedBuffOngoing))
         {
             if (m_iComboState == 2)
             {
@@ -609,8 +660,7 @@ namespace MUHelper
             return SimulateBuffSkill(iBuffSkill, pTargetChar->Key);
         }
 
-        if ((iBuffSkill == AT_SKILL_EXPANSION_OF_WIZARDRY || iBuffSkill == AT_SKILL_EXPANSION_OF_WIZARDRY_STR || iBuffSkill == AT_SKILL_EXPANSION_OF_WIZARDRY_MASTERY)
-            && (!g_isCharacterBuff((&pTargetChar->Object), eBuff_SwellOfMagicPower)))
+        if (iBaseBuffSkill == AT_SKILL_EXPANSION_OF_WIZARDRY && !IsBuffActive(pTargetChar, eBuff_SwellOfMagicPower))
         {
             if (pTargetChar != Hero)
             {
@@ -619,14 +669,12 @@ namespace MUHelper
             return SimulateBuffSkill(iBuffSkill, pTargetChar->Key);
         }
 
-        if ((iBuffSkill == AT_SKILL_ADD_CRITICAL || iBuffSkill == AT_SKILL_ADD_CRITICAL_STR1 || iBuffSkill == AT_SKILL_ADD_CRITICAL_STR2 || iBuffSkill == AT_SKILL_ADD_CRITICAL_STR3)
-            && (!g_isCharacterBuff((&pTargetChar->Object), eBuff_AddCriticalDamage)))
+        if (iBaseBuffSkill == AT_SKILL_ADD_CRITICAL && !IsBuffActive(pTargetChar, eBuff_AddCriticalDamage))
         {
             return SimulateBuffSkill(iBuffSkill, pTargetChar->Key);
         }
 
-        if ((iBuffSkill == AT_SKILL_ALICE_BERSERKER || iBuffSkill == AT_SKILL_ALICE_BERSERKER_STR)
-            && (!g_isCharacterBuff((&pTargetChar->Object), eBuff_Berserker)))
+        if (iBaseBuffSkill == AT_SKILL_ALICE_BERSERKER && !IsBuffActive(pTargetChar, eBuff_Berserker))
         {
             if (pTargetChar != Hero)
             {
@@ -634,8 +682,31 @@ namespace MUHelper
             }
             return SimulateBuffSkill(iBuffSkill, pTargetChar->Key);
         }
-        if ((iBuffSkill == AT_SKILL_ALICE_THORNS)
-            && (!g_isCharacterBuff((&pTargetChar->Object), eBuff_Thorns)))
+
+        if (iBaseBuffSkill == AT_SKILL_ALICE_THORNS && !IsBuffActive(pTargetChar, eBuff_Thorns))
+        {
+            return SimulateBuffSkill(iBuffSkill, pTargetChar->Key);
+        }
+
+        if (iBaseBuffSkill == AT_SKILL_ATT_UP_OURFORCES
+            && ShouldCastTimedBuff(pTargetChar, eBuff_Att_up_Ourforces, m_bTimerActivatedBuffOngoing))
+        {
+            if (pTargetChar != Hero)
+            {
+                return 1;
+            }
+
+            return SimulateBuffSkill(iBuffSkill, pTargetChar->Key);
+        }
+
+        if (iBaseBuffSkill == AT_SKILL_HP_UP_OURFORCES
+            && ShouldCastTimedBuff(pTargetChar, eBuff_Hp_up_Ourforces, m_bTimerActivatedBuffOngoing))
+        {
+            return SimulateBuffSkill(iBuffSkill, pTargetChar->Key);
+        }
+
+        if (iBaseBuffSkill == AT_SKILL_DEF_UP_OURFORCES
+            && ShouldCastTimedBuff(pTargetChar, eBuff_Def_up_Ourforces, m_bTimerActivatedBuffOngoing))
         {
             return SimulateBuffSkill(iBuffSkill, pTargetChar->Key);
         }
@@ -999,12 +1070,14 @@ namespace MUHelper
         }
 
         CHARACTER* pTarget = &CharactersClient[iCharIndex];
-        if (pTarget->Dead > 0)
+        if (pTarget->Dead > 0 || !IsMonster(pTarget))
         {
             DeleteTarget(m_iCurrentTarget);
             return 0;
         }
 
+        const int iPreviousSelectedCharacter = SelectedCharacter;
+        const int iPreviousActionTarget = ActionTarget;
         SelectedCharacter = iCharIndex;
         TargetX = static_cast<int>(pTarget->Object.Position[0] / TERRAIN_SCALE);
         TargetY = static_cast<int>(pTarget->Object.Position[1] / TERRAIN_SCALE);
@@ -1028,6 +1101,9 @@ namespace MUHelper
         // Call Action() directly — basic attack doesn't go through ExecuteSkill,
         // and the engine's input loop only forwards Attacking=1 when IsAutoAttack() is on.
         Action(Hero, &Hero->Object, true);
+
+        SelectedCharacter = iPreviousSelectedCharacter;
+        ActionTarget = iPreviousActionTarget;
 
         return 1;
     }
@@ -1068,7 +1144,9 @@ namespace MUHelper
         const int iPreviousTargetX = TargetX;
         const int iPreviousTargetY = TargetY;
 
-        const int iResult = SimulateSkill(iSkill, true, iTarget);
+        const int iResult = IsRageFighterBuffSkill(iSkill)
+            ? SimulateRageFighterBuffSkill(iSkill)
+            : SimulateSkill(iSkill, true, iTarget);
 
         if (iResult == 1)
         {
@@ -1158,12 +1236,18 @@ namespace MUHelper
                     return 0;
                 }
 
+                const bool bCurrentCombatTarget = (iTarget == m_iCurrentTarget);
+                if (bCurrentCombatTarget && !IsMonster(pTarget))
+                {
+                    DeleteTarget(iTarget);
+                    return 0;
+                }
+
                 g_MovementSkill.m_iTarget = iCharIndex;
 
                 TargetX = (int)(pTarget->Object.Position[0] / TERRAIN_SCALE);
                 TargetY = (int)(pTarget->Object.Position[1] / TERRAIN_SCALE);
 
-                const bool bCurrentCombatTarget = (iTarget == m_iCurrentTarget);
                 bool bTargetNear = CheckTile(Hero, &Hero->Object, fSkillDistance);
                 bool bNoWall = CheckWall(Hero->PositionX, Hero->PositionY, TargetX, TargetY);
 
@@ -1245,8 +1329,9 @@ namespace MUHelper
     {
         std::vector<ActionSkillType> aiDrainLifeSkills =
         {
-            AT_SKILL_ALICE_DRAINLIFE,
-            AT_SKILL_ALICE_DRAINLIFE_STR
+            AT_SKILL_ALICE_DRAINLIFE_MASTERY,
+            AT_SKILL_ALICE_DRAINLIFE_STR,
+            AT_SKILL_ALICE_DRAINLIFE
         };
 
         for (int i = 0; i < aiDrainLifeSkills.size(); i++)

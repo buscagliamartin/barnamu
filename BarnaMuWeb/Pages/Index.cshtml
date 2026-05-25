@@ -6,57 +6,225 @@
     var opts = BarnaMuOpts.Value;
     var anyOnline = Model.Status.ConnectServerOnline && Model.Status.GameServersOnline > 0;
     var statusKnown = Model.Status.CheckedAtUtc != DateTime.MinValue;
+    var statusText = anyOnline ? "Online" : (statusKnown ? "Offline" : "Comprobando");
+    var statusClass = anyOnline ? "is-online" : (statusKnown ? "is-offline" : "is-pending");
+    var tagline = string.IsNullOrWhiteSpace(opts.ServerTagline)
+        ? "Servidor privado Season 6 con VIP opcional, invasiones programadas, drops balanceados y progresion limpia."
+        : opts.ServerTagline;
 }
 
-<section class="hero">
-    <h1>@opts.ServerName</h1>
-    <p class="hero-subtitle">@(string.IsNullOrWhiteSpace(opts.ServerTagline) ? "MU Online Season 6 — server privado con VIP, invasiones y drops balanceados." : opts.ServerTagline)</p>
-
-    <div class="hero-actions">
-        <a asp-page="/Register" class="btn btn-gold"><i class="fa fa-user-plus"></i> Crear cuenta</a>
-        <a asp-page="/Download" class="btn btn-secondary"><i class="fa fa-download"></i> Descargar cliente</a>
+<section class="bm-hero bm-reveal">
+    <div class="bm-hero__aura"></div>
+    <div class="bm-embers" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span>
     </div>
 
-    <div class="hero-meta">
-        @if (anyOnline) { <span class="pill pill-online">Online</span> }
-        @if (!anyOnline && statusKnown) { <span class="pill pill-offline">Offline</span> }
-        <span><strong style="color:var(--barna-text-head)">@Model.TotalAccounts</strong> <span class="muted">cuentas</span> · <strong style="color:var(--barna-text-head)">@Model.TotalCharacters</strong> <span class="muted">personajes</span></span>
+    <div class="bm-hero__content">
+        <div class="bm-eyebrow">
+            <span class="bm-status-dot @statusClass"></span>
+            @statusText
+            <span class="bm-eyebrow__sep"></span>
+            Season 6 Episode 3
+        </div>
+
+        <h1>Tu leyenda comienza en @opts.ServerName</h1>
+        <p class="bm-hero__subtitle">@tagline</p>
+
+        <div class="bm-hero__actions">
+            <a asp-page="/Register" class="btn btn-gold"><i class="fa fa-user-plus"></i> Crear cuenta</a>
+            <a asp-page="/Download" class="btn btn-secondary"><i class="fa fa-download"></i> Descargar cliente</a>
+            <a asp-page="/Rankings" class="bm-ghost-link"><i class="fa fa-trophy"></i> Ver rankings</a>
+        </div>
+
+        <div class="bm-live-strip">
+            <div>
+                <strong data-count-to="@Model.TotalAccounts">@Model.TotalAccounts</strong>
+                <span>Cuentas</span>
+            </div>
+            <div>
+                <strong data-count-to="@Model.TotalCharacters">@Model.TotalCharacters</strong>
+                <span>Personajes</span>
+            </div>
+            <div>
+                <strong data-count-to="@Model.NewAccounts7d">@Model.NewAccounts7d</strong>
+                <span>Nuevas 7d</span>
+            </div>
+        </div>
+    </div>
+
+    <aside class="bm-hero__panel">
+        <span class="bm-panel__label">Proximo gran objetivo</span>
+        <h2>Castle Siege</h2>
+        <div class="bm-siege-count" id="homeSiegeCountdown">--:--:--</div>
+        <p>Sabados 20:00 CEST. Sistema listo como placeholder para mostrar guild defensora, estado de registro y premio semanal.</p>
+        <a asp-page="/Rankings" asp-route-mode="guilds" class="bm-mini-button">Ver guilds</a>
+    </aside>
+</section>
+
+<section class="bm-feature-grid bm-reveal">
+    <article class="bm-feature-card">
+        <i class="fa fa-diamond"></i>
+        <h3>VIP equilibrado</h3>
+        <p>Beneficios de comodidad y rates moderados sin venta de items. La progresion sigue siendo de los jugadores.</p>
+    </article>
+    <article class="bm-feature-card">
+        <i class="fa fa-map"></i>
+        <h3>42 mapas activos</h3>
+        <p>Rutas de leveo, farmeo y bosses preparadas para Season 6, con acceso VIP anticipado a zonas altas.</p>
+    </article>
+    <article class="bm-feature-card">
+        <i class="fa fa-fire"></i>
+        <h3>Invasiones rotativas</h3>
+        <p>Goldens, Red Dragon, T9 Bosses, Blood Castle, Devil Square y Chaos Castle con timers en vivo.</p>
+    </article>
+</section>
+
+<section class="bm-war-table bm-reveal">
+    <div class="bm-section-head">
+        <span>Servidor vivo</span>
+        <h2>Rates y progreso</h2>
+        <p>Informacion visible al instante para que un jugador nuevo entienda el ritmo antes de descargar.</p>
+    </div>
+
+    <div class="bm-rate-grid">
+        <div class="bm-rate-card">
+            <span>EXP Normal</span>
+            <strong>x@(opts.Rates.ExpNormal == 0 ? 30 : opts.Rates.ExpNormal)</strong>
+        </div>
+        <div class="bm-rate-card bm-rate-card--vip">
+            <span>EXP VIP</span>
+            <strong>x@(opts.Rates.ExpVip == 0 ? 35 : opts.Rates.ExpVip)</strong>
+        </div>
+        <div class="bm-rate-card">
+            <span>Drop Normal</span>
+            <strong>x@(opts.Rates.DropNormal == 0 ? 5 : opts.Rates.DropNormal)</strong>
+        </div>
+        <div class="bm-rate-card bm-rate-card--vip">
+            <span>Drop VIP</span>
+            <strong>x@(opts.Rates.DropVip == 0 ? 7 : opts.Rates.DropVip)</strong>
+        </div>
     </div>
 </section>
 
-<div class="grid-2">
-    <section class="card">
-        <h2>Novedades</h2>
+<div class="bm-main-grid">
+    <section class="card bm-reveal">
+        <div class="bm-card-title">
+            <span>Novedades</span>
+            <a asp-page="/Guide">Guia</a>
+        </div>
         @if (Model.News.Count == 0)
         {
-            <p class="muted">No hay novedades publicadas.</p>
+            <p class="muted">No hay novedades publicadas todavia.</p>
         }
         else
         {
-            @foreach (var item in Model.News)
-            {
-                <article style="margin-bottom:22px;">
-                    <h3 style="color:var(--barna-gold-light);font-size:14px;margin-bottom:4px;">@item.Title</h3>
-                    <div class="muted" style="font-size:11px;margin-bottom:8px;">@item.Date</div>
-                    <div style="font-size:13px;color:var(--barna-text);">@item.Body</div>
-                </article>
-            }
+            <div class="bm-news-list">
+                @foreach (var item in Model.News.Take(3))
+                {
+                    <article class="bm-news-item">
+                        <time>@item.Date</time>
+                        <h3>@item.Title</h3>
+                        <p>@item.Body</p>
+                    </article>
+                }
+            </div>
         }
     </section>
 
-    <section class="card">
-        <h2>¿Por qué elegirnos?</h2>
+    <section class="card bm-reveal">
+        <div class="bm-card-title">
+            <span>&iquest;Por que elegirnos?</span>
+            <a asp-page="/Status">Estado</a>
+        </div>
         <ul class="perk-list">
-            <li><strong style="color:var(--barna-gold-light)">Cliente Remasterizado HD + 120FPS + 65k max Stats</strong></li>
-			<li><strong style="color:var(--barna-gold-light)">Reset lvl 400 - Mantiene Stats</strong></li>
-            <li>7 clases — Dark Knight, Dark Wizard, Fairy Elf, Magic Gladiator, Dark Lord, Summoner y Rage Fighter.</li>
-            <li><strong style="color:var(--barna-gold-light)">42 Mapas</strong> disponibles desde el primer día.</li>
-            <li>Sistema <strong style="color:var(--barna-gold-light)">VIP</strong> con rates diferenciados.</li>
-            <li>Comando <code>/offlevel</code> exclusivo para usuarios VIP.</li>
-            <li>Sistema de Sockets <code>Seed Sphere</code>.</li>
-            <li>Invasiones cada 4h, 6h y 8h — <code>Goldens, Red Dragon, T9 Bosses</code>.</li>
-            <li><strong style="color:var(--barna-gold-light)">Anti Pay-To-Win</strong> — no se venden items de ningún tipo.</li>
-            <li>Máximo 2 cuentas por IP. MU Helper habilitado.</li>
+            <li><strong style="color:var(--barna-gold-light)">Cliente remasterizado HD, 120 FPS y 65k max stats.</strong></li>
+            <li><strong style="color:var(--barna-gold-light)">Reset lvl 400</strong> manteniendo stats.</li>
+            <li>7 clases: Dark Knight, Dark Wizard, Fairy Elf, Magic Gladiator, Dark Lord, Summoner y Rage Fighter.</li>
+            <li>Sistema de sockets <code>Seed Sphere</code> y MU Helper habilitado.</li>
+            <li>Anti Pay-To-Win: no se venden items.</li>
+            <li>Maximo 2 cuentas por IP para cuidar la economia.</li>
         </ul>
     </section>
 </div>
+
+<section class="bm-roadmap bm-reveal">
+    <div class="bm-section-head">
+        <span>Placeholders futuros</span>
+        <h2>Preparado para crecer</h2>
+        <p>Bloques visuales listos para conectar cuando actives nuevas funciones.</p>
+    </div>
+
+    <div class="bm-roadmap-grid">
+        <article>
+            <span class="bm-roadmap-tag">Proximamente</span>
+            <h3>Panel de eventos</h3>
+            <p>Placeholder para calendario completo, premios, participacion y estado de cada evento.</p>
+        </article>
+        <article>
+            <span class="bm-roadmap-tag">Proximamente</span>
+            <h3>Mercado web</h3>
+            <p>Espacio reservado para trading, historial, busqueda de items y filtros por tipo.</p>
+        </article>
+        <article>
+            <span class="bm-roadmap-tag">Proximamente</span>
+            <h3>Battle pass</h3>
+            <p>Zona preparada para misiones semanales, recompensas cosmeticas y progreso de temporada.</p>
+        </article>
+        <article>
+            <span class="bm-roadmap-tag">Proximamente</span>
+            <h3>Guild hub</h3>
+            <p>Tarjetas para reclutamiento, emblemas, miembros destacados y control de Castle Siege.</p>
+        </article>
+    </div>
+</section>
+
+<script>
+    (function () {
+        const counters = document.querySelectorAll('[data-count-to]');
+        counters.forEach(function (el) {
+            const target = Number(el.getAttribute('data-count-to')) || 0;
+            const duration = 900;
+            const start = performance.now();
+            function step(now) {
+                const progress = Math.min((now - start) / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                el.textContent = Math.round(target * eased).toLocaleString('es-ES');
+                if (progress < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        });
+
+        function nextSiegeText() {
+            const now = new Date();
+            const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 18, 0, 0));
+            while (d.getUTCDay() !== 6 || d.getTime() <= now.getTime()) d.setUTCDate(d.getUTCDate() + 1);
+            const diff = d.getTime() - now.getTime();
+            const days = Math.floor(diff / 86400000);
+            const h = Math.floor((diff % 86400000) / 3600000);
+            const m = Math.floor((diff % 3600000) / 60000);
+            const s = Math.floor((diff % 60000) / 1000);
+            const pad = n => String(n).padStart(2, '0');
+            return days > 0 ? `${days}d ${pad(h)}:${pad(m)}:${pad(s)}` : `${pad(h)}:${pad(m)}:${pad(s)}`;
+        }
+        const siege = document.getElementById('homeSiegeCountdown');
+        if (siege) {
+            setInterval(function () { siege.textContent = nextSiegeText(); }, 1000);
+            siege.textContent = nextSiegeText();
+        }
+
+        const revealItems = document.querySelectorAll('.bm-reveal');
+        if ('IntersectionObserver' in window) {
+            const io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        io.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12 });
+            revealItems.forEach(function (item) { io.observe(item); });
+        } else {
+            revealItems.forEach(function (item) { item.classList.add('is-visible'); });
+        }
+    })();
+</script>

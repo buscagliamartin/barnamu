@@ -47,6 +47,7 @@ public sealed class ItemBoxDroppedPlugIn : IItemDropPlugIn
         {
             var droppedItem = new DroppedItem(item, player.Position, player.CurrentMap!, player);
             await player.CurrentMap!.AddAsync(droppedItem).ConfigureAwait(false);
+            ItemAuditLogger.Log(ItemAuditLogger.AuditSource.BoxReward, player, item, player.CurrentMap, player.Position, $"box={sourceItem.Definition?.Name} +{sourceItem.Level}");
         }
 
         if (dropEffect is not ItemDropEffect.Undefined)

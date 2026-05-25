@@ -23,6 +23,15 @@ void PacketFunctions_ClientToServer_Custom::SendLogin(const wchar_t* username, c
     dotnet_SendLogin(this->GetHandle(), username, password, GetTickCount(), clientVersion, clientSerial);
 }
 
+// BarnaMu: jewel bank request (0xBF, sub-code 0x30).
+typedef void(CORECLR_DELEGATE_CALLTYPE* SendJewelBankRequest)(int32_t, BYTE, BYTE, uint16_t, uint16_t);
+inline SendJewelBankRequest dotnet_SendJewelBankRequest = reinterpret_cast<SendJewelBankRequest>(symLoad(munique_client_library_handle, "ConnectionManager_SendJewelBankRequest"));
+
+void PacketFunctions_ClientToServer_Custom::SendJewelBankRequest(BYTE operation, BYTE arg1, uint16_t arg2, uint16_t arg3)
+{
+    dotnet_SendJewelBankRequest(this->GetHandle(), operation, arg1, arg2, arg3);
+}
+
 typedef void(CORECLR_DELEGATE_CALLTYPE* SendAuthenticateExt)(int32_t, uint16_t, uint32_t);
 inline SendAuthenticateExt dotnet_SendAuthenticateExt = reinterpret_cast<SendAuthenticateExt>(symLoad(munique_client_library_handle, "ConnectionManager_SendAuthenticateExt"));
 

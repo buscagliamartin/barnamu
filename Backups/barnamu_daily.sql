@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict O0XM25ZEogXgMOhUhKoMA3vxqIXvhVKsrbLuYq9OeXIf8WxV2EpkxpCgd5dMNHB
+\restrict gWpCAfxoPuIC0jJvCGSbqM4ZWCnxJQ0OMhkyygK8xcnjbOvr9RipaUFQmdriy6Q
 
 -- Dumped from database version 16.13
 -- Dumped by pg_dump version 16.13
@@ -1482,7 +1482,24 @@ CREATE TABLE data."Account" (
     "ChatBanUntil" timestamp with time zone,
     "IsTemplate" boolean DEFAULT false NOT NULL,
     "LanguageIsoCode" character varying(3) DEFAULT 'en'::character varying NOT NULL,
-    "VipExpirationDate" timestamp with time zone
+    "VipExpirationDate" timestamp with time zone,
+    "JewelBankBless" integer DEFAULT 0 NOT NULL,
+    "JewelBankSoul" integer DEFAULT 0 NOT NULL,
+    "JewelBankLife" integer DEFAULT 0 NOT NULL,
+    "JewelBankCreation" integer DEFAULT 0 NOT NULL,
+    "JewelBankGuardian" integer DEFAULT 0 NOT NULL,
+    "JewelBankGemstone" integer DEFAULT 0 NOT NULL,
+    "JewelBankHarmony" integer DEFAULT 0 NOT NULL,
+    "JewelBankChaos" integer DEFAULT 0 NOT NULL,
+    "JewelBankLowerRefineStone" integer DEFAULT 0 NOT NULL,
+    "JewelBankHigherRefineStone" integer DEFAULT 0 NOT NULL,
+    "JewelBankKundun1" integer DEFAULT 0 NOT NULL,
+    "JewelBankKundun2" integer DEFAULT 0 NOT NULL,
+    "JewelBankKundun3" integer DEFAULT 0 NOT NULL,
+    "JewelBankKundun4" integer DEFAULT 0 NOT NULL,
+    "JewelBankKundun5" integer DEFAULT 0 NOT NULL,
+    "JewelBankChocoBlue" integer DEFAULT 0 NOT NULL,
+    "JewelBankChocoPink" integer DEFAULT 0 NOT NULL
 );
 
 
@@ -1902,7 +1919,6 @@ COPY config."AreaSkillSettings" ("Id", "UseFrustumFilter", "FrustumStartWidth", 
 06ff9d01-0000-79e7-9b00-f5e0d30b4d74	t	1.5	2	2	f	0	f	00:00:00	00:00:00	1	1	0	1	1	0	0
 06ff9d01-0000-7a80-84f7-9b1df4728090	f	0	0	0	f	0	f	00:00:00	00:00:00	1	1	0	1	1	2	0
 06ff9d01-0000-7aca-c791-61a37e0e9d09	t	1.5	1.5	4	f	0	t	00:00:00.3	00:00:01	0	2	0	0.7	1	0	0
-06ff9d01-0000-7b18-39dd-ecfad0fa9f6e	t	1.1	1.2	8	f	0	t	00:00:00.05	00:00:00	1	1	0	1	1	0	0
 06ff9d01-0000-7c37-881f-f3a268d63af8	f	0	0	0	t	10	f	00:00:00	00:00:00	1	1	5	1	1	0	0
 06ff9d01-0000-7d2b-b680-14be996d9a9d	t	5	2	4	f	0	f	00:00:00	00:00:00	1	1	0	1	1	0	0
 06ff9d01-0000-7e88-6b86-d2b473301c45	f	0	0	0	t	3	t	00:00:00	00:00:00	1	1	0	1	1	0	0
@@ -1918,12 +1934,14 @@ COPY config."AreaSkillSettings" ("Id", "UseFrustumFilter", "FrustumStartWidth", 
 06ff9d01-0000-7a76-24ed-e374e048e970	f	0	0	0	f	2	f	00:00:00	00:00:00	1	1	0	1	1	0	0
 06ff9d01-0000-7c93-0b88-88dfdb26afb1	f	0	0	0	f	2	t	00:00:00	00:00:00.5	0	2	0	0.5	1	0	0
 06ff9d01-0000-76a2-4db4-c5fa6fcf3eea	f	1	6	6	f	0	f	00:00:00	00:00:00	1	1	0	1	1	0	0
-06ff9d01-0000-7314-4103-c69928cb93b2	t	1.1	1.2	8	f	0	t	00:00:00.05	00:00:00	1	1	0	1	1	0	0
+06ff9d01-0000-7b18-39dd-ecfad0fa9f6e	t	1.1	1.2	8	f	0	t	00:00:00.05	00:00:00	1	1	0	1	1	0	0
+325e9e01-0000-7c24-4bfe-59d8848dedfe	f	1	4.5	7	f	0	t	00:00:00.05	00:00:00	1	3	3	1	3	0	0
 06ff9d01-0000-75bc-0980-c63947cf0006	t	1	6	7	f	0	t	00:00:00	00:00:00	1	1	0	1	1	0	0
 06ff9d01-0000-7317-410d-db855c2f2589	f	1	4.5	7	f	0	t	00:00:00.05	00:00:00	1	3	3	1	3	0	0
 5e409e01-0000-77f5-e0b0-d679e10df5ec	f	0	0	0	f	0	f	00:00:00	00:00:00	1	1	0	1	1	2	0
 06ff9d01-0000-7260-5565-b9642b33f966	f	1	4.5	7	f	0	t	00:00:00.05	00:00:00	1	3	3	1	3	0	0
 06ff9d01-0000-7f2f-ac4f-12ad91e3afae	f	1	4.5	7	f	0	t	00:00:00.05	00:00:00	1	3	3	1	3	0	0
+06ff9d01-0000-7314-4103-c69928cb93b2	t	1.1	1.2	8	f	0	t	00:00:00.05	00:00:00	1	1	0	1	1	0	0
 \.
 
 
@@ -5491,6 +5509,9 @@ COPY config."ConfigurationUpdate" ("Id", "Version", "Name", "Description", "Crea
 06ff9d01-0000-7e21-e7d7-b02101361acf	1	Chaos Castle Data	This update creates the configuration data for the chaos castle event.	2023-03-05 12:00:00-08	2026-05-06 13:42:15.836719-07
 06ff9d01-0000-7e59-114e-15f172250340	55	Fix Defense Calculations	This update fixes character stats, magic effects, and options related to defense.	2025-05-23 09:00:00-07	2026-05-06 13:42:15.838691-07
 06ff9d01-0000-7f06-c3ec-38b507110ea7	5	Spawn Points Fixes	This updates the spawn points of NPCs. 1) Crywolf-Statues are fixed. 2) Wandering merchants and Marlon. 3) Spawn trigger in chaos castle 1	2023-04-03 13:00:00-07	2026-05-06 13:42:15.836871-07
+325e9e01-0000-74aa-5240-482cd9e2b822	80	Fix Master Skills And Class Evolution	Fixes master skill replacement chains, buff master scaling, wizardry enhance, drain life mastery, and class evolution data.	2026-05-24 08:30:00-07	2026-05-25 01:14:16.681756-07
+325e9e01-0000-7cd5-7629-f6a7cea2102e	81	Fix Buff Skill Safezone And Master Effects	Fixes active buff master skill formulas, target attributes, aggregate types, and copied buff behavior.	2026-05-24 09:45:00-07	2026-05-25 01:14:17.768075-07
+325e9e01-0000-7765-0710-f332d6f22f80	82	Fix Wizardry Enhance Damage Effect	Moves Wizardry Enhance from min/max-only/critical chance placeholders to the real wizardry damage multiplier.	2026-05-24 11:15:00-07	2026-05-25 01:14:17.855202-07
 \.
 
 
@@ -5499,7 +5520,7 @@ COPY config."ConfigurationUpdate" ("Id", "Version", "Name", "Description", "Crea
 --
 
 COPY config."ConfigurationUpdateState" ("Id", "InitializationKey", "CurrentInstalledVersion") FROM stdin;
-06ff9d01-0000-7b80-02c1-0a8fd572e7a8	season6	79
+06ff9d01-0000-7b80-02c1-0a8fd572e7a8	season6	82
 \.
 
 
@@ -25870,14 +25891,12 @@ COPY config."MasterSkillDefinition" ("Id", "RootId", "TargetAttributeId", "Repla
 06ff9d01-0000-72ea-72c7-17f076d78d9e	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-000d-0000-0000-000000000000	3	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
 06ff9d01-0000-73a8-dbe3-77694dde88e1	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-0005-0000-0000-000000000000	2	20	1	(0.85 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 6	(0.85 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 6	0	f
 06ff9d01-0000-743e-ee73-34c510b0fa2e	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-0018-0000-0000-000000000000	2	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
-06ff9d01-0000-7473-8dfd-5b7c463b0797	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-0029-0000-0000-000000000000	4	20	1	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 50) * 100) / 12))	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 50) * 100) / 12))	0	f
 06ff9d01-0000-765c-8f7e-a82b5af20e3a	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-0003-0000-0000-000000000000	2	20	1	(0.85 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 6	(0.85 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 6	0	f
 06ff9d01-0000-7725-9599-2c786a8d2f02	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-0107-0000-0000-000000000000	5	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
 06ff9d01-0000-7867-2909-ad3141a59202	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-000d-0000-0000-000000000000	3	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
 06ff9d01-0000-7899-0d8c-ae820fc09a7a	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-001a-0000-0000-000000000000	2	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
 06ff9d01-0000-7964-a2aa-15f33dae90c4	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-0108-0000-0000-000000000000	5	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
 06ff9d01-0000-7976-3129-960be9087d9c	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-000e-0000-0000-000000000000	3	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
-06ff9d01-0000-7a20-09be-e396bf462db8	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-0018-0000-0000-000000000000	3	10	10	if(level < 10; 0; 1)	if(level < 10; 0; 1)	0	f
 06ff9d01-0000-7ab7-3665-986b20127e7c	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-0034-0000-0000-000000000000	3	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
 06ff9d01-0000-7b89-fba7-3404112a349b	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-003e-0000-0000-000000000000	3	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
 06ff9d01-0000-7ba8-8ac5-07ccb4bec4b5	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-0005-0000-0000-000000000000	3	20	1	(0.85 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 6	(0.85 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 6	0	f
@@ -25886,28 +25905,17 @@ COPY config."MasterSkillDefinition" ("Id", "RootId", "TargetAttributeId", "Repla
 06ff9d01-0000-7ca4-2489-13560a075fc7	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-0029-0000-0000-000000000000	3	20	1	(0.85 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 6	(0.85 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 6	0	f
 06ff9d01-0000-7df9-e52e-e913c776d09d	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-002b-0000-0000-000000000000	5	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
 06ff9d01-0000-7e6e-8e97-b7fa5c94fb63	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-0009-0000-0000-000000000000	4	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
-06ff9d01-0000-7f05-583c-bf4d21b0198c	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-002a-0000-0000-000000000000	4	20	1	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 50) * 100) / 12))	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 50) * 100) / 12))	0	f
 06ff9d01-0000-7f41-3bf6-ae7af78d0273	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-0038-0000-0000-000000000000	2	20	1	(0.85 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 6	(0.85 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 6	0	f
 06ff9d01-0000-7049-6c97-300b9458d2ec	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-0104-0000-0000-000000000000	2	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
 06ff9d01-0000-70a0-fc31-2b499d829a7a	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-0026-0000-0000-000000000000	4	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
 06ff9d01-0000-70cf-e5a9-8d87a6b72b33	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-0106-0000-0000-000000000000	5	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
-06ff9d01-0000-7172-bb38-cc91a5884a8a	06ff9d01-0000-729e-d49c-0d6cb1a2b2d8	\N	00000400-010c-0000-0000-000000000000	2	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
-06ff9d01-0000-71bb-88f2-b2a27054af38	06ff9d01-0000-74a6-4c4b-603d5f04773a	ade8092e-870f-4968-b707-8bfd6cbf8ffc	00000400-00e9-0000-0000-000000000000	3	20	1	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 50) * 100) / 12)) * 0.01	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 50) * 100) / 12))	1	f
 06ff9d01-0000-71fd-05ba-b03f152c207e	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-00db-0000-0000-000000000000	3	20	1	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 50) * 100) / 12))	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 50) * 100) / 12))	0	f
-06ff9d01-0000-724a-8b1d-239c31850d09	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-001c-0000-0000-000000000000	5	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
+06ff9d01-0000-7172-bb38-cc91a5884a8a	06ff9d01-0000-729e-d49c-0d6cb1a2b2d8	\N	00000400-010c-0000-0000-000000000000	2	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	2	f
 06ff9d01-0000-725e-0d2a-eb3d3e691161	06ff9d01-0000-74a6-4c4b-603d5f04773a	33f53519-16f3-44c2-9d36-432c36329c78	00000400-0040-0000-0000-000000000000	3	20	1	(0.85 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 6	(0.85 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 6	0	f
 06ff9d01-0000-726a-4b4b-fdef66e8d106	06ff9d01-0000-729e-d49c-0d6cb1a2b2d8	cbc5404a-6232-4bf3-9b85-9aa0ae0f9ba4	00000400-0010-0000-0000-000000000000	4	20	1	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 1.5 / 100	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 1.5	0	f
-06ff9d01-0000-7274-10e6-4f6fe35fdeac	06ff9d01-0000-729e-d49c-0d6cb1a2b2d8	\N	00000400-010c-0000-0000-000000000000	3	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
 06ff9d01-0000-72c4-e7fb-938ebca61f56	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-00e8-0000-0000-000000000000	5	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
-06ff9d01-0000-742a-12e1-fd35a8720812	06ff9d01-0000-729e-d49c-0d6cb1a2b2d8	\N	00000400-010b-0000-0000-000000000000	4	20	1	(0.95 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 10	(0.95 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 10	0	f
-06ff9d01-0000-74a8-a40b-0774725a2782	06ff9d01-0000-729e-d49c-0d6cb1a2b2d8	\N	00000400-0030-0000-0000-000000000000	5	20	1	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 1.5	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 1.5	0	f
-06ff9d01-0000-767d-9d7a-7cf7a3ddfaa9	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-001b-0000-0000-000000000000	5	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
 06ff9d01-0000-76c0-c22a-eae0f1be571f	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-0037-0000-0000-000000000000	5	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
-06ff9d01-0000-7899-1338-638b6a3a5fc6	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-001b-0000-0000-000000000000	3	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
-06ff9d01-0000-7942-9a7c-2ba047d1547f	06ff9d01-0000-729e-d49c-0d6cb1a2b2d8	\N	00000400-0030-0000-0000-000000000000	4	20	1	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 1.5	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 1.5	0	f
-06ff9d01-0000-797a-8887-3fa85c0ec81c	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-001c-0000-0000-000000000000	4	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
 06ff9d01-0000-79d4-11cd-53666e1f92a6	06ff9d01-0000-729e-d49c-0d6cb1a2b2d8	ad1a3a3f-b461-4cae-b3a3-d03dd0714a96	00000400-00da-0000-0000-000000000000	4	20	1	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 1.5 / 100	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 1.5	0	f
-06ff9d01-0000-7c03-a0d3-7c14c4856a5a	06ff9d01-0000-74a6-4c4b-603d5f04773a	44b8236a-bf5b-4082-ba8b-5deda1458d33	00000400-00e9-0000-0000-000000000000	2	20	1	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 50) * 100) / 12)) * 0.01	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 50) * 100) / 12))	1	f
 06ff9d01-0000-7d84-3d4e-bd7be182dfeb	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-0001-0000-0000-000000000000	3	20	1	(0.85 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 6	(0.85 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 6	0	f
 06ff9d01-0000-7dbe-217e-2d9a706b2cb0	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-0007-0000-0000-000000000000	5	20	1	(0.85 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 6	(0.85 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 6	0	f
 06ff9d01-0000-7e6d-ee6c-6cd38885686b	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-0105-0000-0000-000000000000	2	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
@@ -25922,6 +25930,19 @@ COPY config."MasterSkillDefinition" ("Id", "RootId", "TargetAttributeId", "Repla
 06ff9d01-0000-7557-be56-5192b9349805	06ff9d01-0000-74a6-4c4b-603d5f04773a	d19a0e33-5c9a-4b8e-af12-3c4d5e6f7890	00000400-0228-0000-0000-000000000000	3	20	1	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 50) * 100) / 12)) / -100	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 50) * 100) / 12))	1	f
 06ff9d01-0000-75f1-e5b9-e34d66e6661a	06ff9d01-0000-729e-d49c-0d6cb1a2b2d8	\N	00000400-0193-0000-0000-000000000000	5	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 50) * 100) / 12)) * 8	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 50) * 100) / 12)) * 8	0	t
 06ff9d01-0000-7f51-0f00-2104f0e09838	06ff9d01-0000-74a6-4c4b-603d5f04773a	ade8092e-870f-4968-b707-8bfd6cbf8ffc	00000400-0203-0000-0000-000000000000	5	20	1	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 1.5 / 100	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 1.5	0	f
+06ff9d01-0000-7473-8dfd-5b7c463b0797	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-014a-0000-0000-000000000000	4	20	1	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 50) * 100) / 12))	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 50) * 100) / 12))	0	f
+06ff9d01-0000-7a20-09be-e396bf462db8	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-019e-0000-0000-000000000000	3	10	10	if(level < 10; 0; 1)	if(level < 10; 0; 1)	0	f
+06ff9d01-0000-7f05-583c-bf4d21b0198c	06ff9d01-0000-74a6-4c4b-603d5f04773a	\N	00000400-014b-0000-0000-000000000000	4	20	1	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 50) * 100) / 12))	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 50) * 100) / 12))	0	f
+06ff9d01-0000-71bb-88f2-b2a27054af38	06ff9d01-0000-74a6-4c4b-603d5f04773a	8f1cd5a5-3792-42fc-89b8-e6d50f997f4b	00000400-017c-0000-0000-000000000000	3	20	1	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 50) * 100) / 12)) * 0.01	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 50) * 100) / 12))	1	f
+06ff9d01-0000-724a-8b1d-239c31850d09	06ff9d01-0000-74a6-4c4b-603d5f04773a	5cfe3ed7-af45-4790-bdd9-0dc55b981296	00000400-01a4-0000-0000-000000000000	5	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
+06ff9d01-0000-7274-10e6-4f6fe35fdeac	06ff9d01-0000-729e-d49c-0d6cb1a2b2d8	\N	00000400-0239-0000-0000-000000000000	3	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	2	f
+06ff9d01-0000-742a-12e1-fd35a8720812	06ff9d01-0000-729e-d49c-0d6cb1a2b2d8	6a0076e4-69dc-42e7-a92b-c8711392ef82	00000400-010b-0000-0000-000000000000	4	20	1	(0.95 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 10	(0.95 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 10	2	f
+06ff9d01-0000-74a8-a40b-0774725a2782	06ff9d01-0000-729e-d49c-0d6cb1a2b2d8	a6c39a5c-295f-415e-a314-5e9f9a748d27	00000400-0164-0000-0000-000000000000	5	20	1	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 1.5 / 100	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 1.5	1	f
+06ff9d01-0000-767d-9d7a-7cf7a3ddfaa9	06ff9d01-0000-74a6-4c4b-603d5f04773a	0888ad48-0cc8-47ca-b6a3-99f3771aa5fc	00000400-01a1-0000-0000-000000000000	5	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	2	f
+06ff9d01-0000-7899-1338-638b6a3a5fc6	06ff9d01-0000-74a6-4c4b-603d5f04773a	0888ad48-0cc8-47ca-b6a3-99f3771aa5fc	00000400-001b-0000-0000-000000000000	3	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	2	f
+06ff9d01-0000-7942-9a7c-2ba047d1547f	06ff9d01-0000-729e-d49c-0d6cb1a2b2d8	a6c39a5c-295f-415e-a314-5e9f9a748d27	00000400-0030-0000-0000-000000000000	4	20	1	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 1.5 / 100	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 1.5	1	f
+06ff9d01-0000-797a-8887-3fa85c0ec81c	06ff9d01-0000-74a6-4c4b-603d5f04773a	5cfe3ed7-af45-4790-bdd9-0dc55b981296	00000400-001c-0000-0000-000000000000	4	20	1	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	(0.8 + (((((((level - 30) ^ 3) + 25000) / 499) / 6)))) * 5	0	f
+06ff9d01-0000-7c03-a0d3-7c14c4856a5a	06ff9d01-0000-74a6-4c4b-603d5f04773a	8f1cd5a5-3792-42fc-89b8-e6d50f997f4b	00000400-00e9-0000-0000-000000000000	2	20	1	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 50) * 100) / 12)) * 0.01	(1 + (((((((level - 30) ^ 3) + 25000) / 499) / 50) * 100) / 12))	1	f
 \.
 
 
@@ -37874,6 +37895,13 @@ dc329e01-0000-761f-77e1-d0190f15f47b	00000001-0001-0000-0000-000000000000	4a198b
 548a76cc-242c-441c-bc9d-6c22745a2d72	00000001-0001-0000-0000-000000000000	548a76cc-242c-441c-bc9d-6c22745a2d72	t	\N	\N	{"$id": "", "Message": "[{mapName}] Red Dragon Invasion!", "Timetable": {"$id": "", "$values": ["02:45:00", "08:45:00", "14:45:00", "20:45:00"]}, "TaskDuration": "00:10:00", "PreStartMessageDelay": "00:00:03"}
 61c61a58-211e-4d6a-9ea1-d25e0c4a47c5	00000001-0001-0000-0000-000000000000	61c61a58-211e-4d6a-9ea1-d25e0c4a47c5	t	\N	\N	{"$id": "", "Message": null, "Timetable": {"$id": "", "$values": ["01:05:00", "05:05:00", "09:05:00", "13:05:00", "17:05:00", "21:05:00"]}, "TaskDuration": "00:25:00", "PreStartMessageDelay": "00:00:00", "EntranceClosedMessage": "Devil Square entrance closed.", "EntranceOpenedMessage": "Devil Square entrance is open and closes in {0} minute(s)."}
 95e68c14-ad87-4b3c-af46-45b8f1c3bc2a	00000001-0001-0000-0000-000000000000	95e68c14-ad87-4b3c-af46-45b8f1c3bc2a	t	\N	\N	{"$id": "", "Message": null, "Timetable": {"$id": "", "$values": ["00:05:00", "02:05:00", "04:05:00", "06:05:00", "08:05:00", "10:05:00", "12:05:00", "14:05:00", "16:05:00", "18:05:00", "20:05:00", "22:05:00"]}, "TaskDuration": "00:20:00", "PreStartMessageDelay": "00:00:00", "EntranceClosedMessage": "Blood Castle entrance closed.", "EntranceOpenedMessage": "Blood Castle entrance is open and closes in {0} minute(s)."}
+93599e01-0000-72f9-320b-0850878e08f1	00000001-0001-0000-0000-000000000000	b7a1c2d3-4e5f-4a6b-8c9d-0e1f2a3b4c5d	t	\N	\N	\N
+b0599e01-0000-7905-8fc5-b9d0bd42a75e	00000001-0001-0000-0000-000000000000	c8b2d3e4-5f6a-4b7c-9d0e-1f2a3b4c5d6e	t	\N	\N	\N
+a55a9e01-0000-7375-fbd1-a868c753d624	00000001-0001-0000-0000-000000000000	7998bca9-6e65-4b4b-96de-32d6e5aa9e36	t	\N	\N	\N
+f35a9e01-0000-7069-c2f8-54041bb026d0	00000001-0001-0000-0000-000000000000	a1b2c3d4-2222-4a2b-8c3d-001122334455	t	\N	\N	\N
+f35a9e01-0000-749a-d99b-d0c0a8a8b8c8	00000001-0001-0000-0000-000000000000	a1b2c3d4-1111-4a2b-8c3d-001122334455	t	\N	\N	\N
+6b5b9e01-0000-7cdf-739a-94dc8a1c097a	00000001-0001-0000-0000-000000000000	7c31229e-8ef2-4a68-96f5-011c9b0e4e1f	t	\N	\N	\N
+825b9e01-0000-7e0d-b403-973ecd1c0e2f	00000001-0001-0000-0000-000000000000	1b7c9624-a6d0-4677-afc2-5ad033d03bbe	t	\N	\N	\N
 \.
 
 
@@ -38855,7 +38883,6 @@ COPY config."PowerUpDefinition" ("Id", "TargetAttributeId", "BoostId", "MagicEff
 06ff9d01-0000-7674-4f76-a45b4b47275f	9d9761ef-ef47-4e5c-8106-ebc555786f20	06ff9d01-0000-7a77-26a8-5548c9f49d2c	06ff9d01-0000-7b8f-8a33-f71639f0b9e2	\N	\N
 06ff9d01-0000-767d-cf69-c0f1ee800ded	17cb8826-0677-4c93-a0c9-c0e3d2da7d73	06ff9d01-0000-77d7-3b5e-08d109603e32	00000410-0055-004e-0000-000000000000	\N	\N
 06ff9d01-0000-76b8-ef3b-c482ad84e0ae	c520dd2d-1b06-4392-95ee-3c41f33e68da	06ff9d01-0000-7b95-918d-2b0e63da48a3	06ff9d01-0000-7c10-984d-7a1bc8c1a7fa	\N	\N
-06ff9d01-0000-76dd-69bb-353b381c754c	ade8092e-870f-4968-b707-8bfd6cbf8ffc	06ff9d01-0000-7825-b22e-95d416838cc1	06ff9d01-0000-7424-9a99-2c0b618f50bb	\N	\N
 06ff9d01-0000-76ed-2257-d7c3042cee1c	f8970d12-069b-4a18-8e18-a9296b85b4ed	06ff9d01-0000-761c-a12e-ad31a56cffcc	06ff9d01-0000-7a37-11fc-a27049cc71c6	\N	\N
 06ff9d01-0000-773b-aebe-98d42b826bd1	55124c97-6ef3-4c46-aec9-d01c11be18a4	06ff9d01-0000-7be3-ca04-9d6015339caf	06ff9d01-0000-7c85-0b2c-5b6a757852a9	\N	\N
 06ff9d01-0000-773c-fb88-bda59d1fcae2	d1948382-23f6-43a4-ad84-69227bf2aba3	06ff9d01-0000-7280-5844-9610cb1ad4a1	06ff9d01-0000-7c85-0b2c-5b6a757852a9	\N	\N
@@ -38867,7 +38894,6 @@ COPY config."PowerUpDefinition" ("Id", "TargetAttributeId", "BoostId", "MagicEff
 06ff9d01-0000-790b-81e6-85d0101520e9	bd5c685d-c360-4cc5-a43e-46644ad61f09	06ff9d01-0000-78d2-c0fc-81269878b988	06ff9d01-0000-768d-487a-ecdce984bec1	\N	\N
 06ff9d01-0000-7967-dfb9-a879dc732ec3	a6c39a5c-295f-415e-a314-5e9f9a748d27	06ff9d01-0000-7d46-7b2a-2a734bf00662	00000410-0056-004f-0000-000000000000	\N	\N
 06ff9d01-0000-7985-b88a-983b5e73d209	b995c627-c17b-4d24-9fa5-3830aacc6912	06ff9d01-0000-7171-f643-54b69fa0a3ec	06ff9d01-0000-7c10-984d-7a1bc8c1a7fa	\N	\N
-06ff9d01-0000-79d3-23b3-2fa4854bccd9	65583a02-ab94-4a17-9b79-86ecc82dc835	06ff9d01-0000-7066-f6b6-a98eadc51c4d	06ff9d01-0000-7424-9a99-2c0b618f50bb	\N	\N
 06ff9d01-0000-7a07-4fd0-908f28d70a23	f8970d12-069b-4a18-8e18-a9296b85b4ed	06ff9d01-0000-7238-a853-f06c15b3eef1	06ff9d01-0000-7730-0f08-11c8ea6b2e84	\N	\N
 06ff9d01-0000-7a35-184c-6eadec732215	a6c39a5c-295f-415e-a314-5e9f9a748d27	06ff9d01-0000-7318-28b4-5895b4dc183c	00000410-0031-0026-0000-000000000000	\N	\N
 06ff9d01-0000-7a93-c058-bf1be62aa46a	ad1a3a3f-b461-4cae-b3a3-d03dd0714a96	06ff9d01-0000-704e-69bf-b918c2ca73bf	06ff9d01-0000-7c85-0b2c-5b6a757852a9	\N	\N
@@ -38879,7 +38905,6 @@ COPY config."PowerUpDefinition" ("Id", "TargetAttributeId", "BoostId", "MagicEff
 06ff9d01-0000-7be0-a671-e807a492c661	33f53519-16f3-44c2-9d36-432c36329c78	06ff9d01-0000-79d7-772e-d6cde398c287	06ff9d01-0000-7b63-1500-ad6c5469d9e0	\N	\N
 06ff9d01-0000-7d08-cef2-42f838224a4f	56bdc72e-9d37-4eda-8ac8-9e12473966fc	06ff9d01-0000-7c88-b8f7-d1234212a621	06ff9d01-0000-7e30-c369-56c44017164b	\N	\N
 06ff9d01-0000-7d15-8ea5-ff2aa136060a	bb6f0151-eab2-4a9d-bfe3-51e145f36c52	06ff9d01-0000-7520-601a-f2f6c28fbcb2	00000410-0057-0050-0000-000000000000	\N	\N
-06ff9d01-0000-7d22-8a3e-b9e6f60f2eeb	44b8236a-bf5b-4082-ba8b-5deda1458d33	06ff9d01-0000-7c9c-98e5-b7fb6a081d0e	06ff9d01-0000-7424-9a99-2c0b618f50bb	\N	\N
 06ff9d01-0000-7df7-972f-0a70909a4cce	bb6f0151-eab2-4a9d-bfe3-51e145f36c52	06ff9d01-0000-701f-3cb2-f5c810faf37b	00000410-002f-0024-0000-000000000000	\N	\N
 06ff9d01-0000-7e1b-95e7-4e24d504054a	9b6aa0da-9aba-4c14-b094-f1ac70bcb52d	06ff9d01-0000-71c8-16cb-846713c55218	06ff9d01-0000-7c85-0b2c-5b6a757852a9	\N	\N
 06ff9d01-0000-7ef7-3d64-26b20cf5392a	d19a0e33-5c9a-4b8e-af12-3c4d5e6f7890	06ff9d01-0000-77e9-9570-4496944a70f6	06ff9d01-0000-7120-bd04-cc8ca1baeb7e	\N	\N
@@ -38889,6 +38914,10 @@ COPY config."PowerUpDefinition" ("Id", "TargetAttributeId", "BoostId", "MagicEff
 06ff9d01-0000-7f6c-7674-e9c948a6d1e0	d8b3b1c9-b409-4a07-8f4d-8f315dcb173a	06ff9d01-0000-7bf6-2272-934a30e62f7c	\N	\N	06ff9d01-0000-7458-b797-080035998584
 06ff9d01-0000-7fb7-6e4e-bf72da328fe5	22c86baf-7f27-478d-8075-e4465c2859dd	06ff9d01-0000-7e7c-7488-facddb1231a1	06ff9d01-0000-73f9-137f-2d73984b0be3	\N	\N
 06ff9d01-0000-7ff5-25b3-e50cfd3d4db0	610d3259-1158-424a-8738-9eb7a71de600	06ff9d01-0000-7ee6-2e07-9f7a4c6bfbbe	06ff9d01-0000-73f9-137f-2d73984b0be3	\N	\N
+06ff9d01-0000-76dd-69bb-353b381c754c	ade8092e-870f-4968-b707-8bfd6cbf8ffc	06ff9d01-0000-7825-b22e-95d416838cc1	\N	\N	\N
+06ff9d01-0000-79d3-23b3-2fa4854bccd9	65583a02-ab94-4a17-9b79-86ecc82dc835	06ff9d01-0000-7066-f6b6-a98eadc51c4d	\N	\N	\N
+06ff9d01-0000-7d22-8a3e-b9e6f60f2eeb	44b8236a-bf5b-4082-ba8b-5deda1458d33	06ff9d01-0000-7c9c-98e5-b7fb6a081d0e	\N	\N	\N
+325e9e01-0000-77e0-3042-1ba692b02a49	8f1cd5a5-3792-42fc-89b8-e6d50f997f4b	325e9e01-0000-784a-50f0-12d4c5b7aef8	06ff9d01-0000-7424-9a99-2c0b618f50bb	\N	\N
 \.
 
 
@@ -39051,7 +39080,7 @@ COPY config."PowerUpDefinitionValue" ("Id", "Value", "AggregateType", "MaximumVa
 06ff9d01-0000-7290-efa1-778506da4538	5	0	\N
 06ff9d01-0000-7297-08b6-7eb2a560db00	16	0	\N
 06ff9d01-0000-729d-80fa-c9560625aeb2	37	0	\N
-06ff9d01-0000-7121-3383-52bfa5f52d6a	600	0	\N
+06ff9d01-0000-7121-3383-52bfa5f52d6a	1200	0	\N
 06ff9d01-0000-729d-d6ba-ef1d136b57b2	25	0	\N
 06ff9d01-0000-729e-e4ea-f658133e35a2	0.05	0	\N
 06ff9d01-0000-72a1-abfd-cb4dc5d88d41	15	0	\N
@@ -39397,7 +39426,6 @@ COPY config."PowerUpDefinitionValue" ("Id", "Value", "AggregateType", "MaximumVa
 06ff9d01-0000-7823-35a4-2d8e832fa46b	80	0	\N
 06ff9d01-0000-7823-a202-6530100046ac	1	0	\N
 06ff9d01-0000-7824-2fb7-1d704e010207	40	0	\N
-06ff9d01-0000-7825-b22e-95d416838cc1	1	1	\N
 06ff9d01-0000-7832-de1f-df0b2bc573ba	0.02	0	\N
 06ff9d01-0000-7839-3bd9-6d513bc5abda	0.05	0	\N
 06ff9d01-0000-784a-fa26-e4007fccf171	30	0	\N
@@ -39518,6 +39546,7 @@ COPY config."PowerUpDefinitionValue" ("Id", "Value", "AggregateType", "MaximumVa
 06ff9d01-0000-7a3d-4b10-dbbe742ce038	15	0	\N
 06ff9d01-0000-7a44-852f-dc3c52332786	0.04	0	\N
 06ff9d01-0000-7a45-35b7-121e09973d44	20	0	\N
+06ff9d01-0000-7825-b22e-95d416838cc1	0	0	\N
 06ff9d01-0000-7a49-5834-6170a78a53ca	0.05	0	\N
 06ff9d01-0000-7a4c-a336-4b962d410b5d	0.04	0	\N
 06ff9d01-0000-7a4d-ed2b-66c27d3d3784	0.1	0	\N
@@ -39913,6 +39942,7 @@ COPY config."PowerUpDefinitionValue" ("Id", "Value", "AggregateType", "MaximumVa
 06ff9d01-0000-78f6-6902-82befa6a8458	600	0	\N
 06ff9d01-0000-75b2-23dd-0ccdcc1abd9a	600	0	\N
 06ff9d01-0000-7ad8-9ce8-809e1a4e99a7	600	0	\N
+325e9e01-0000-784a-50f0-12d4c5b7aef8	1.2	1	\N
 \.
 
 
@@ -41849,9 +41879,9 @@ COPY config."Skill" ("Id", "ElementalModifierTargetId", "MagicEffectDefId", "Mas
 00000400-002b-0000-0000-000000000000	03a29c46-7b7e-424d-8325-8390692570c3	\N	\N	00000001-0001-0000-0000-000000000000	43	Death Stab	2	0	0	6	1	0	f	f	70	\N	1	f
 00000400-0038-0000-0000-000000000000	\N	\N	\N	00000001-0001-0000-0000-000000000000	56	Power Slash	5	0	3	1	0	0	f	f	0	06ff9d01-0000-76a2-4db4-c5fa6fcf3eea	1	f
 00000400-003e-0000-0000-000000000000	3e339393-2d17-452e-81d9-3987947a407f	\N	\N	00000001-0001-0000-0000-000000000000	62	Earthshake	10	0	3	1	0	0	f	f	150	06ff9d01-0000-7ca4-6589-c5ad65b52192	1	t
-00000400-0029-0000-0000-000000000000	03a29c46-7b7e-424d-8325-8390692570c3	\N	\N	00000001-0001-0000-0000-000000000000	41	Twisting Slash	2	0	3	5	0	0	f	f	0	5e409e01-0000-77f5-e0b0-d679e10df5ec	1	f
-00000400-0018-0000-0000-000000000000	\N	\N	\N	00000001-0001-0000-0000-000000000000	24	Triple Shot	6	0	3	1	0	0	f	f	0	06ff9d01-0000-7317-410d-db855c2f2589	1	f
 00000400-0034-0000-0000-000000000000	03a29c46-7b7e-424d-8325-8390692570c3	\N	\N	00000001-0001-0000-0000-000000000000	52	Penetration	6	0	3	1	0	0	f	f	70	06ff9d01-0000-7314-4103-c69928cb93b2	1	f
+00000400-0018-0000-0000-000000000000	\N	\N	\N	00000001-0001-0000-0000-000000000000	24	Triple Shot	6	0	3	1	0	0	f	f	0	06ff9d01-0000-7317-410d-db855c2f2589	1	f
+00000400-0029-0000-0000-000000000000	03a29c46-7b7e-424d-8325-8390692570c3	\N	\N	00000001-0001-0000-0000-000000000000	41	Twisting Slash	3	0	3	5	0	0	f	f	0	5e409e01-0000-77f5-e0b0-d679e10df5ec	1	f
 00000400-0041-0000-0000-000000000000	\N	\N	\N	00000001-0001-0000-0000-000000000000	65	Electric Spike	10	0	3	1	0	0	f	f	250	06ff9d01-0000-7791-6dc9-f438b73b18f0	1	f
 00000400-0042-0000-0000-000000000000	\N	\N	\N	00000001-0001-0000-0000-000000000000	66	Force Wave	4	0	0	6	0	0	f	f	50	06ff9d01-0000-72f3-07fd-27ec90220036	1	f
 00000400-0043-0000-0000-000000000000	\N	\N	\N	00000001-0001-0000-0000-000000000000	67	Stun	2	-1	3	1	0	0	f	f	0	06ff9d01-0000-7866-a86a-0f5c629d3a50	1	f
@@ -42022,8 +42052,6 @@ COPY config."Skill" ("Id", "ElementalModifierTargetId", "MagicEffectDefId", "Mas
 00000400-0184-0000-0000-000000000000	9ae4d80d-5706-48b9-ad11-eac4fe088a81	\N	06ff9d01-0000-7c13-5fd1-a779aac044d8	00000001-0001-0000-0000-000000000000	388	Hellfire Strengthener	4	1	3	1	0	0	f	f	120	06ff9d01-0000-704b-cafd-e153d6358166	1	f
 00000400-019d-0000-0000-000000000000	\N	06ff9d01-0000-76ba-24be-e96b9a9dcc7c	06ff9d01-0000-7899-0d8c-ae820fc09a7a	00000001-0001-0000-0000-000000000000	413	Heal Strengthener	6	-1	11	1	0	3	f	f	0	\N	1	f
 00000400-019e-0000-0000-000000000000	\N	\N	06ff9d01-0000-743e-ee73-34c510b0fa2e	00000001-0001-0000-0000-000000000000	414	Triple Shot Strengthener	6	0	3	1	0	0	f	f	0	06ff9d01-0000-7f2f-ac4f-12ad91e3afae	1	f
-00000400-01a0-0000-0000-000000000000	03a29c46-7b7e-424d-8325-8390692570c3	\N	06ff9d01-0000-7ab7-3665-986b20127e7c	00000001-0001-0000-0000-000000000000	416	Penetration Strengthener	6	0	3	1	0	0	f	f	70	06ff9d01-0000-7b18-39dd-ecfad0fa9f6e	1	f
-00000400-01a2-0000-0000-000000000000	\N	\N	06ff9d01-0000-7a20-09be-e396bf462db8	00000001-0001-0000-0000-000000000000	418	Triple Shot Mastery	6	0	3	1	0	0	f	f	0	06ff9d01-0000-7260-5565-b9642b33f966	1	f
 00000400-01c8-0000-0000-000000000000	3e339393-2d17-452e-81d9-3987947a407f	\N	06ff9d01-0000-728c-d80d-212d2e4e08b8	00000001-0001-0000-0000-000000000000	456	Lightning Shock Str	6	1	3	1	0	0	f	f	95	06ff9d01-0000-7866-6426-c2a000775b52	1	t
 00000400-01e0-0000-0000-000000000000	3e339393-2d17-452e-81d9-3987947a407f	\N	06ff9d01-0000-7199-20bb-f8d746f4eb3c	00000001-0001-0000-0000-000000000000	480	Lightning Strengthener	6	1	0	1	0	0	f	f	17	\N	1	f
 00000400-01e1-0000-0000-000000000000	03a29c46-7b7e-424d-8325-8390692570c3	\N	06ff9d01-0000-70ce-19f8-6200b5d7db5e	00000001-0001-0000-0000-000000000000	481	Twisting Slash Stren	2	0	3	1	0	0	f	f	0	\N	1	f
@@ -42064,6 +42092,7 @@ COPY config."Skill" ("Id", "ElementalModifierTargetId", "MagicEffectDefId", "Mas
 00000400-0239-0000-0000-000000000000	\N	06ff9d01-0000-7c10-984d-7a1bc8c1a7fa	06ff9d01-0000-7172-bb38-cc91a5884a8a	00000001-0001-0000-0000-000000000000	569	Def SuccessRate IncPowUp	7	0	10	2	0	0	f	f	0	\N	1	f
 00000400-023c-0000-0000-000000000000	\N	06ff9d01-0000-7c10-984d-7a1bc8c1a7fa	06ff9d01-0000-7274-10e6-4f6fe35fdeac	00000001-0001-0000-0000-000000000000	572	DefSuccessRate IncMastery	7	0	10	2	0	0	f	f	0	\N	1	f
 00000400-023d-0000-0000-000000000000	\N	06ff9d01-0000-7c10-5327-4ab286b437bc	06ff9d01-0000-742a-12e1-fd35a8720812	00000001-0001-0000-0000-000000000000	573	Stamina Increase Strengthener	7	0	10	2	0	0	f	f	0	\N	1	f
+00000400-01a2-0000-0000-000000000000	\N	\N	06ff9d01-0000-7a20-09be-e396bf462db8	00000001-0001-0000-0000-000000000000	418	Triple Shot Mastery	6	0	3	1	0	0	f	f	0	325e9e01-0000-7c24-4bfe-59d8848dedfe	1	f
 00000400-0204-0000-0000-000000000000	3e339393-2d17-452e-81d9-3987947a407f	06ff9d01-0000-73f9-137f-2d73984b0be3	06ff9d01-0000-7c9a-32cc-974c01379c9a	00000001-0001-0000-0000-000000000000	516	Earthshake Mastery	10	0	3	1	0	0	f	f	150	06ff9d01-0000-7aff-f73f-c982d5f06c99	1	t
 00000400-0194-0000-0000-000000000000	\N	06ff9d01-0000-72df-ad73-ff9153f41425	06ff9d01-0000-75f1-e5b9-e34d66e6661a	00000001-0001-0000-0000-000000000000	404	Soul Barrier Proficie	6	-1	10	1	0	2	f	f	0	\N	1	f
 00000400-01d6-0000-0000-000000000000	\N	06ff9d01-0000-7c85-0b2c-5b6a757852a9	06ff9d01-0000-71d4-4eae-26f24a53f289	00000001-0001-0000-0000-000000000000	470	Berserker Proficiency	5	-1	10	1	0	1	f	f	0	\N	1	f
@@ -42073,6 +42102,7 @@ COPY config."Skill" ("Id", "ElementalModifierTargetId", "MagicEffectDefId", "Mas
 00000400-0205-0000-0000-000000000000	\N	06ff9d01-0000-7b63-1500-ad6c5469d9e0	06ff9d01-0000-7f51-0f00-2104f0e09838	00000001-0001-0000-0000-000000000000	517	Crit DMG Inc PowUp (3)	0	-1	10	2	0	0	f	f	0	\N	1	f
 00000400-0005-0000-0000-000000000000	9ae4d80d-5706-48b9-ad11-eac4fe088a81	\N	\N	00000001-0001-0000-0000-000000000000	5	Flame	6	1	3	1	6	0	f	f	25	06ff9d01-0000-79ac-a2fe-6ce44e40a5c3	1	f
 00000400-00e6-0000-0000-000000000000	3e339393-2d17-452e-81d9-3987947a407f	\N	\N	00000001-0001-0000-0000-000000000000	230	Lightning Shock	6	1	3	1	0	0	f	f	95	06ff9d01-0000-778d-fae7-8253728d359f	1	t
+00000400-01a0-0000-0000-000000000000	03a29c46-7b7e-424d-8325-8390692570c3	\N	06ff9d01-0000-7ab7-3665-986b20127e7c	00000001-0001-0000-0000-000000000000	416	Penetration Strengthener	6	0	3	1	0	0	f	f	70	06ff9d01-0000-7b18-39dd-ecfad0fa9f6e	1	f
 \.
 
 
@@ -43194,14 +43224,14 @@ fc1c9e01-0000-771d-5056-c80aa979e900	06ff9d01-0000-74ed-4262-604805c60976	000000
 -- Data for Name: Account; Type: TABLE DATA; Schema: data; Owner: postgres
 --
 
-COPY data."Account" ("Id", "VaultId", "LoginName", "PasswordHash", "SecurityCode", "EMail", "RegistrationDate", "State", "TimeZone", "VaultPassword", "IsVaultExtended", "ChatBanUntil", "IsTemplate", "LanguageIsoCode", "VipExpirationDate") FROM stdin;
-0c8db747-a3b0-488c-bf8d-7dd2732e44a2	\N	martu2	$2a$11$zd8Zvq2Uflw5wAFuLlrgZ.DgFxNuJgvmzz.cxbyz6Bx54PYh0dqKy	2324		2026-05-17 07:14:38.041823-07	0	0		f	\N	f	en	\N
-da227b51-0383-438e-bf1e-5098b9476d9b	0e3f9e01-0000-7f13-fa7b-a5bfc4d53609	chorispawn	$2a$11$U/mkfRt3saf5YVIxV1L1r.f.X7cP17SWPmN5vf9HhCHZQM1Qnp3T2	123456		2026-05-18 12:41:55.766435-07	1	0		t	\N	f	en	2026-06-17 12:52:08.271676-07
-13ff9d01-0000-7386-9e90-c04000ea8a64	96039e01-0000-759a-498c-d0f8b7b74bec	admin	$2a$11$kEcFwx7L8TivnkeTAEXb4udeoAe9kr0tMmIPqxLlTWQdurucE5uBC	admin2324	admin@localhost	2026-05-06 13:55:54.575947-07	1	0		t	\N	f	en	2026-06-15 08:06:33.271705-07
-951782cd-3553-4fc9-b1d8-366e7ce15ab1	\N	prueba2	$2a$11$KuGk2/pJRPURCrsCS7IKW.uPEf72C1hr9L4VfPOmX05DQkRFqqk12	123456		2026-05-19 09:17:43.814993-07	0	0		f	\N	f	en	\N
-ab38bb0a-482e-4af9-8bfa-8431b9388e33	\N	prueba1	$2a$11$aZnoYAmIujTMSGKwPEKtieb7iLRbh0RIe.r3az9KGWRzgXRIkzxMG	23242324		2026-05-19 09:17:30.038874-07	1	0		t	\N	f	en	2026-06-18 14:44:44.359137-07
-0d922fde-98c6-491a-b50c-ddad63710608	\N	martu	$2a$11$pwBBylPBT8MPBnyOpnt6rOQGhkeRawSwkkoud7D.GJW3jKKnuQcvW	2324		2026-05-16 01:53:55.913918-07	0	0		f	\N	f	en	\N
-8c041cf2-5631-4b5f-9cb2-8e08d9ad4744	a44f9e01-0000-7b63-a113-ab3852e0e8e0	renzoski	$2a$11$hmXyHafAuxULROobCkMN8.HhoNAYUycqyaC/3U3qNh/ca1HyR7P8G	123456	renzolabebita@pasivo.com	2026-05-22 05:22:43.372677-07	1	0		t	\N	f	en	2026-06-21 06:54:05.853006-07
+COPY data."Account" ("Id", "VaultId", "LoginName", "PasswordHash", "SecurityCode", "EMail", "RegistrationDate", "State", "TimeZone", "VaultPassword", "IsVaultExtended", "ChatBanUntil", "IsTemplate", "LanguageIsoCode", "VipExpirationDate", "JewelBankBless", "JewelBankSoul", "JewelBankLife", "JewelBankCreation", "JewelBankGuardian", "JewelBankGemstone", "JewelBankHarmony", "JewelBankChaos", "JewelBankLowerRefineStone", "JewelBankHigherRefineStone", "JewelBankKundun1", "JewelBankKundun2", "JewelBankKundun3", "JewelBankKundun4", "JewelBankKundun5", "JewelBankChocoBlue", "JewelBankChocoPink") FROM stdin;
+0c8db747-a3b0-488c-bf8d-7dd2732e44a2	\N	martu2	$2a$11$zd8Zvq2Uflw5wAFuLlrgZ.DgFxNuJgvmzz.cxbyz6Bx54PYh0dqKy	2324		2026-05-17 07:14:38.041823-07	0	0		f	\N	f	en	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+da227b51-0383-438e-bf1e-5098b9476d9b	0e3f9e01-0000-7f13-fa7b-a5bfc4d53609	chorispawn	$2a$11$U/mkfRt3saf5YVIxV1L1r.f.X7cP17SWPmN5vf9HhCHZQM1Qnp3T2	123456		2026-05-18 12:41:55.766435-07	1	0		t	\N	f	en	2026-06-17 12:52:08.271676-07	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+951782cd-3553-4fc9-b1d8-366e7ce15ab1	\N	prueba2	$2a$11$KuGk2/pJRPURCrsCS7IKW.uPEf72C1hr9L4VfPOmX05DQkRFqqk12	123456		2026-05-19 09:17:43.814993-07	0	0		f	\N	f	en	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+ab38bb0a-482e-4af9-8bfa-8431b9388e33	\N	prueba1	$2a$11$aZnoYAmIujTMSGKwPEKtieb7iLRbh0RIe.r3az9KGWRzgXRIkzxMG	23242324		2026-05-19 09:17:30.038874-07	1	0		t	\N	f	en	2026-06-18 14:44:44.359137-07	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+0d922fde-98c6-491a-b50c-ddad63710608	\N	martu	$2a$11$pwBBylPBT8MPBnyOpnt6rOQGhkeRawSwkkoud7D.GJW3jKKnuQcvW	2324		2026-05-16 01:53:55.913918-07	0	0		f	\N	f	en	\N	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+8c041cf2-5631-4b5f-9cb2-8e08d9ad4744	a44f9e01-0000-7b63-a113-ab3852e0e8e0	renzoski	$2a$11$hmXyHafAuxULROobCkMN8.HhoNAYUycqyaC/3U3qNh/ca1HyR7P8G	123456	renzolabebita@pasivo.com	2026-05-22 05:22:43.372677-07	1	0		t	\N	f	en	2026-06-21 06:54:05.853006-07	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+13ff9d01-0000-7386-9e90-c04000ea8a64	96039e01-0000-759a-498c-d0f8b7b74bec	admin	$2a$11$kEcFwx7L8TivnkeTAEXb4udeoAe9kr0tMmIPqxLlTWQdurucE5uBC	admin2324	admin@localhost	2026-05-06 13:55:54.575947-07	1	0		t	\N	f	en	2026-06-15 08:06:33.271705-07	10	10	10	10	10	10	10	10	15	41	15	0	0	0	0	0	0
 \.
 
 
@@ -43245,20 +43275,21 @@ COPY data."Character" ("Id", "CharacterClassId", "CurrentMapId", "InventoryId", 
 a44f9e01-0000-7646-b8cf-c1cf585394c3	00000040-000a-0000-0000-000000000000	00000300-0001-0000-0000-000000000000	a44f9e01-0000-7585-14fb-1a67927e4bd6	8c041cf2-5631-4b5f-9cb2-8e08d9ad4744	Martina	1	2026-05-22 05:24:32.542559-07	0	0	200	0	17	118	1	559	4	0	0	0	0	0	\\xffffffffffffffffffffffffffffffffffff00180a00000006000000db41	\\x00780000001800000000000000000000004d000000000088820305e000000001010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	\N
 243f9e01-0000-75f6-6515-c8790a6ed98a	00000040-0000-0000-0000-000000000000	00000300-0000-0000-0000-000000000000	243f9e01-0000-7028-94cc-703dbef90db7	da227b51-0383-438e-bf1e-5098b9476d9b	ChoriMagik	1	2026-05-19 00:30:06.498132-07	1183492	0	35	0	134	98	0	0	0	32	0	0	0	0	\\xffffffffffffffffffffffffffffffffffff00000a0000000600fdfdfdfd	\\x0000860a00000000000000000000000000000000000000646610044000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	\N
 95409e01-0000-75cb-8c7f-fafd09fc5a7f	00000040-0003-0000-0000-000000000000	00000300-0003-0000-0000-000000000000	95409e01-0000-7178-ab86-dbabee4a7e51	da227b51-0383-438e-bf1e-5098b9476d9b	Test	2	2026-05-19 07:13:03.206229-07	0	0	0	0	152	98	0	0	3	0	0	0	0	0	\\xffff00260011ffffffffffffffffffffffff00000a0000000600fdfdfdfd	\\x0000860a00110000000000000000000000000000000000646610050000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	\N
+2f549e01-0000-743c-112f-1d83719f8d11	00000040-0018-0000-0000-000000000000	00000300-0000-0000-0000-000000000000	2f549e01-0000-70bb-3ef4-b56e35cd6d07	951782cd-3553-4fc9-b1d8-366e7ce15ab1	asdzxc	3	2026-05-23 02:34:43.494502-07	43895	0	91	0	183	128	0	0	0	0	0	0	0	0	\\xffffffffffffffffffffffffffffffffffff00000a0000000600c9a90000	\N	f	\N
 bf469e01-0000-78d3-eaf1-4bb1bda12e2e	00000040-0004-0000-0000-000000000000	00000300-0000-0000-0000-000000000000	bf469e01-0000-7aad-b27c-4a311d3cb024	0c8db747-a3b0-488c-bf8d-7dd2732e44a2	martuu	0	2026-05-20 11:57:23.96766-07	140825	0	55	0	135	128	0	0	0	0	0	0	0	0	\\xffffffffffffffffffffffffffffffffffff00000a0000000600644532f9	\\x0078860a00000000000000000000000000000000000000646600018000010100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	\N
-f6119e01-0000-79c6-bde7-382203b18326	00000040-000d-0000-0000-000000000000	00000300-0006-0000-0000-000000000000	f6119e01-0000-78cc-4a04-a66c201c1dc4	13ff9d01-0000-7386-9e90-c04000ea8a64	MartuMG	3	2026-05-10 05:57:06.717085-07	293549329	7391280	28	0	63	114	0	0	3	32	0	0	0	0	\\xffff0038ffffffffffffffffffffffffffff000209ffffff26ff00000000	\\x00b8860000380000000000000000000000000000000000555511048000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	
 a44f9e01-0000-78b7-1af8-42593d2d41e2	00000040-0018-0000-0000-000000000000	00000300-0000-0000-0000-000000000000	a44f9e01-0000-7bcf-409d-7e41089ca566	8c041cf2-5631-4b5f-9cb2-8e08d9ad4744	RFPasiva	0	2026-05-22 05:23:40.800101-07	0	0	0	0	147	142	0	0	0	0	0	0	0	0	\\xffffffffffffffffffffffffffffffffffff010e0a000000d6003bc40000	\\x00000000000d0100000000000000000000000000000000646201050000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	\N
 3d499e01-0000-7d99-4a1d-3e759db1d426	00000040-0000-0000-0000-000000000000	00000300-0000-0000-0000-000000000000	3d499e01-0000-7ce5-21b5-f0110e35aac9	0d922fde-98c6-491a-b50c-ddad63710608	pruebita	0	2026-05-20 23:33:24.800901-07	36270	0	0	0	149	121	0	0	0	0	0	0	0	0	\\x000000000000000000000000000000000000000000000000000000000000	\\x0000860a00110000000000000000000000000000000000646610050000000001010100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	\N
-2f549e01-0000-743c-112f-1d83719f8d11	00000040-0018-0000-0000-000000000000	00000300-0000-0000-0000-000000000000	2f549e01-0000-70bb-3ef4-b56e35cd6d07	951782cd-3553-4fc9-b1d8-366e7ce15ab1	asdzxc	3	2026-05-23 02:34:43.494502-07	0	0	0	0	147	132	0	0	0	0	0	0	0	0	\\x000000000000000000000000000000000000000000000000000000000000	\N	f	\N
-bc4e9e01-0000-71c5-3499-23d06f188493	00000040-0004-0000-0000-000000000000	00000300-0000-0000-0000-000000000000	bc4e9e01-0000-7f07-2c03-b472bac63c72	da227b51-0383-438e-bf1e-5098b9476d9b	Vergi	3	2026-05-22 01:11:08.486558-07	51452	0	70	0	169	129	0	0	0	0	0	0	0	0	\\xffffffffffffffffffffffffffffffffffff00000a000000060003110000	\\x0000860a002c0000000000000000000000000000000000646610050000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	\N
-f44e9e01-0000-7f6a-d568-ed839904674f	00000040-000c-0000-0000-000000000000	00000300-0004-0000-0000-000000000000	f44e9e01-0000-7b8d-ccc2-162dc3095574	951782cd-3553-4fc9-b1d8-366e7ce15ab1	testito	2	2026-05-22 02:11:52.9751-07	27914043	0	231	0	191	87	0	0	0	0	0	0	0	0	\\xffffffffffffffffffffffffffffffffffff00000a0000000600f2fa0000	\\x00f80000000500000000000000000000000000000000006665010500000001000000000000000000000000000000000000000000000000000000000000000000004576696c0000000000000000000000537461720000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	\N
+f6119e01-0000-79c6-bde7-382203b18326	00000040-000d-0000-0000-000000000000	00000300-001f-0000-0000-000000000000	f6119e01-0000-78cc-4a04-a66c201c1dc4	13ff9d01-0000-7386-9e90-c04000ea8a64	MartuMG	3	2026-05-10 05:57:06.717085-07	293549329	7391280	28	380	63	15	0	0	3	32	0	0	0	0	\\xffff01e3ffffffffffffffffffffffffffff000209ffffff06ff00000000	\\x0078860000e20100000000000000000000000000000000555511048000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	
+bc4e9e01-0000-71c5-3499-23d06f188493	00000040-0004-0000-0000-000000000000	00000300-0000-0000-0000-000000000000	bc4e9e01-0000-7f07-2c03-b472bac63c72	da227b51-0383-438e-bf1e-5098b9476d9b	Vergi	3	2026-05-22 01:11:08.486558-07	51452	0	70	0	169	129	0	0	0	0	0	0	0	0	\\xffffffffffffffffffffffffffffffffffff00000a0000000600fdfd1103	\\x0000860a002c0000000000000000000000000000000000646610050000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	\N
+a5599e01-0000-77b3-fe14-bf5096a763fa	00000040-0008-0000-0000-000000000000	00000300-0003-0000-0000-000000000000	a5599e01-0000-7866-d554-93cd78525cc2	951782cd-3553-4fc9-b1d8-366e7ce15ab1	zxczczx	4	2026-05-24 04:00:59.739881-07	44887	0	65	0	169	117	0	0	0	0	0	0	0	0	\\xffffffffffffffffffffffffffffffffffff00000a000000060000000000	\N	f	\N
 07419e01-0000-7a55-eb71-ce92de75f6a8	00000040-000b-0000-0000-000000000000	00000300-0000-0000-0000-000000000000	07419e01-0000-7228-5054-8e8a104470d7	ab38bb0a-482e-4af9-8bfa-8431b9388e33	prueba1	0	2026-05-19 09:17:43.800978-07	1417180	0	0	0	134	104	0	0	0	0	0	0	0	0	\\xffff0018ffffffffffffffffffffffffffffffff09000000060005558607	\\x0000860a00eb00000001000000010002001c001b0000000008c00d0100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	\N
 bc4f9e01-0000-7e32-cfad-fcc6543fc832	00000040-0016-0000-0000-000000000000	00000300-0051-0000-0000-000000000000	bc4f9e01-0000-7db5-f9f3-d366dee0d7cb	8c041cf2-5631-4b5f-9cb2-8e08d9ad4744	chupapijas	2	2026-05-22 05:50:26.195936-07	317201532	0	1652	0	164	32	1	-298135	4	0	0	0	0	0	\\xffff00d700e600e1ffff00daffffffffffffffff0a262626062600000000	\\x0078000000e100e6000500d700030000000000da0000006466050d8100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	\N
 fd499e01-0000-78ee-2d76-510ae2c5d5c0	00000040-000a-0000-0000-000000000000	00000300-0050-0000-0000-000000000000	fd499e01-0000-717f-ddf0-8a6e64254ee5	951782cd-3553-4fc9-b1d8-366e7ce15ab1	prueba3	1	2026-05-21 03:03:56.113596-07	123239066	0	74	0	126	123	1	-3931	4	0	0	0	0	0	\\xffffffffffffffffffffffffffffffffffff00180a00000006000b2490f3	\\x0000000000180000000000000000000000000000000000646600050000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	\N
-1b3b9e01-0000-704d-c1a1-d6adc287c492	00000040-0017-0000-0000-000000000000	00000300-0006-0000-0000-000000000000	1c3b9e01-0000-71e3-1f57-9761f741008a	13ff9d01-0000-7386-9e90-c04000ea8a64	SauraSU	2	2026-05-18 05:41:46.531102-07	3232398	41661719	0	1	65	114	0	0	3	32	0	0	0	0	\\xffff00d700e600d600daffffffffffffffffffff0affffff06ff00000000	\\x0000000000d70000000000000000000000da00d9000000646600050000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	\N
-05599e01-0000-765e-ddec-673595de09eb	00000040-0018-0000-0000-000000000000	00000300-0006-0000-0000-000000000000	05599e01-0000-7478-8f12-9baeb4b168f2	13ff9d01-0000-7386-9e90-c04000ea8a64	MartuRF	4	2026-05-24 01:06:27.955884-07	0	3339936	110	0	28	114	0	0	0	32	0	0	0	0	\\xffff010a010b010cffffffffffffffffffffffff0a000000060010770892	\\x00000000000701000000000000000000000a010c010b01646600050000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	\N
-92039e01-0000-74ba-abcf-044a7feec5a5	00000040-000b-0000-0000-000000000000	00000300-0000-0000-0000-000000000000	92039e01-0000-70f1-afd4-69c7fadc4501	13ff9d01-0000-7386-9e90-c04000ea8a64	Saura	1	2026-05-07 10:52:48.369123-07	3822148080	760623224	5090	186	145	134	0	0	3	32	0	0	0	0	\\xffff01a801a001a601a7019dffffffffffffffff09000000060041fb255e	\\x00f8000000a00100000000000000000000a601a701b9016665c2058000000100000000000000000000000000000000000000000000000000000000000000000000436f6e646f7220466c616d65000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	asdas
-80019e01-0000-7e09-f312-859757c5eac7	00000040-0003-0000-0000-000000000000	00000300-0006-0000-0000-000000000000	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	13ff9d01-0000-7386-9e90-c04000ea8a64	Martu	0	2026-05-07 01:14:02.756738-07	0	132745142	1200	0	62	114	0	0	3	32	0	0	0	0	\\xffff0026001000060009ffffffffffffffffffff19ffffff06ff00000000	\\x00f88600002600000000000000000000001000e9000000555501040000010100000000000000000000000000000000000000000000000000000000000000000000466c616d650000000000000000000053696c766572204d6564616c000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	\N
+05599e01-0000-765e-ddec-673595de09eb	00000040-0019-0000-0000-000000000000	00000300-0006-0000-0000-000000000000	05599e01-0000-7478-8f12-9baeb4b168f2	13ff9d01-0000-7386-9e90-c04000ea8a64	MartuRF	4	2026-05-24 01:06:27.955884-07	0	4545084	140	0	62	114	0	0	0	32	0	0	0	0	\\xffff010a010b010cffffffffffffffffffffffff0a0000000600bbbad12a	\\x00000000000701000000000000000000000a010c010b01646600050000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	\N
+f44e9e01-0000-7f6a-d568-ed839904674f	00000040-000c-0000-0000-000000000000	00000300-0004-0000-0000-000000000000	f44e9e01-0000-7b8d-ccc2-162dc3095574	951782cd-3553-4fc9-b1d8-366e7ce15ab1	testito	2	2026-05-22 02:11:52.9751-07	124408334	0	0	0	208	79	0	0	0	0	0	0	0	0	\\xffffffffffffffffffffffffffffffffffff000909010401060100000000	\\x00f8000000050000000000000000000000000000000000666501050000000100000000000000000000000000000000000000000000000000000000000000000000537461720000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	\N
+1b3b9e01-0000-704d-c1a1-d6adc287c492	00000040-0017-0000-0000-000000000000	00000300-0006-0000-0000-000000000000	1c3b9e01-0000-71e3-1f57-9761f741008a	13ff9d01-0000-7386-9e90-c04000ea8a64	SauraSU	2	2026-05-18 05:41:46.531102-07	3232398	41843448	0	10	63	113	0	0	3	32	0	0	0	0	\\xffffffff01c701c801d6ffffffffffffffffffff0affffff06ff00000000	\\x0000000000c70100000000000000000000d900d6010000646600050000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	\N
+92039e01-0000-74ba-abcf-044a7feec5a5	00000040-000b-0000-0000-000000000000	00000300-0006-0000-0000-000000000000	92039e01-0000-70f1-afd4-69c7fadc4501	13ff9d01-0000-7386-9e90-c04000ea8a64	Saura	1	2026-05-07 10:52:48.369123-07	3822148080	782370053	5090	186	63	114	1	-22101	4	32	0	0	0	0	\\xffff00eb01a001a601a7019dffffffffffffffff0900000006008416bf9d	\\x00f8000000a00100000000000000000000a601a701b9016665c2058000000100000000000000000000000000000000000000000000000000000000000000000000436f6e646f7220466c616d65000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	asdas
+80019e01-0000-7e09-f312-859757c5eac7	00000040-0003-0000-0000-000000000000	00000300-0006-0000-0000-000000000000	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	13ff9d01-0000-7386-9e90-c04000ea8a64	Martu	0	2026-05-07 01:14:02.756738-07	0	132745142	1200	153	62	114	0	0	3	32	0	0	0	0	\\xffff018301940006017fffffffffffffffffffff19ffffff06ff00000000	\\x00f80000008301000000000000000000007f0194010000000541050000000100000000000000000000000000000000000000000000000000000000000000000000466c616d650000000000000000000053696c766572204d6564616c000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	\N
 15419e01-0000-7606-fd6f-2bc4bb6e2717	00000040-000a-0000-0000-000000000000	00000300-0000-0000-0000-000000000000	15419e01-0000-7467-66ec-5887daef2ce1	951782cd-3553-4fc9-b1d8-366e7ce15ab1	prueba2	0	2026-05-19 09:32:52.577943-07	3503745	0	100	0	132	89	1	1477	4	0	0	0	0	0	\\xffffffffffffffffffffffffffffffffffffffff0a00000006003440932b	\\x0000860000000000000000000000000000000000000000646610014000010000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000	f	\N
 \.
 
@@ -43286,7 +43317,7 @@ cd499e01-0000-7aa8-6ded-5c74af4dc3ea	00000700-0000-0002-0a00-000000000000	\N	154
 014a9e01-0000-7f2a-fde8-5f6521f780e8	00000700-0000-0002-0a00-000000000000	\N	fd499e01-0000-78ee-2d76-510ae2c5d5c0	0	f
 af4f9e01-0000-72be-fcd2-064ffafba7db	00000700-0000-0002-0a00-000000000000	\N	a44f9e01-0000-7646-b8cf-c1cf585394c3	0	f
 c84f9e01-0000-7cad-22b4-9c4f5c944421	00000700-0000-0002-1600-000000000000	00000700-0000-0004-0000-000000000000	bc4f9e01-0000-7e32-cfad-fcc6543fc832	0	f
-11599e01-0000-7064-4aa9-0788271912f0	00000700-0000-0005-0000-000000000000	\N	05599e01-0000-765e-ddec-673595de09eb	0	f
+11599e01-0000-7064-4aa9-0788271912f0	00000700-0000-0006-0000-000000000000	\N	05599e01-0000-765e-ddec-673595de09eb	0	f
 \.
 
 
@@ -43327,7 +43358,6 @@ b7429e01-0000-765b-91e8-011fdd7bab04	\N	00000080-0000-0000-0000-000000000000	19	
 393a9e01-0000-72c3-bf12-e787939db999	\N	00000080-000d-001d-0000-000000000000	32	1	0	f	0	\N	0
 06ff9d01-0000-7260-9aa8-61904712d669	\N	00000080-000e-0013-0000-000000000000	0	0	6	f	0	\N	0
 06ff9d01-0000-7275-3ee9-7ac0e95ea6cb	\N	00000080-000d-0012-0000-000000000000	0	0	6	f	0	\N	0
-1e599e01-0000-7564-cbac-8f991cf1633b	05599e01-0000-7478-8f12-9baeb4b168f2	00000080-0000-0022-0000-000000000000	12	85.99913999999973	15	t	0	\N	0
 06ff9d01-0000-7073-bc42-3f05a5651b68	00001000-00f5-0000-0000-000000000000	00000080-000e-0003-0000-000000000000	10	255	0	f	0	\N	0
 06ff9d01-0000-7126-d29a-165962da107d	00001000-00f5-0000-0000-000000000000	00000080-000e-0005-0000-000000000000	12	255	0	f	0	\N	0
 06ff9d01-0000-7150-b0d0-f18c433f9b6d	00001000-00f5-0000-0000-000000000000	00000080-000e-0005-0000-000000000000	4	50	0	f	0	\N	0
@@ -43351,10 +43381,6 @@ b7429e01-0000-765b-91e8-011fdd7bab04	\N	00000080-0000-0000-0000-000000000000	19	
 06ff9d01-0000-709c-4006-c307fafa7f14	00001000-00fd-0000-0000-000000000000	00000080-000e-0001-0000-000000000000	9	255	0	f	0	\N	0
 06ff9d01-0000-713d-d516-814076056818	00001000-00fd-0000-0000-000000000000	00000080-000d-001d-0000-000000000000	24	1	0	f	0	\N	0
 06ff9d01-0000-71de-acb6-b6780e0a516c	00001000-00fd-0000-0000-000000000000	00000080-000e-0006-0000-000000000000	6	50	0	f	0	\N	0
-1e599e01-0000-760d-c81c-b6aeb48e8fc6	05599e01-0000-7478-8f12-9baeb4b168f2	00000080-0000-0022-0000-000000000000	13	85.99909999999971	15	t	0	\N	0
-1e599e01-0000-73b3-a57a-5b8021d4cd80	05599e01-0000-7478-8f12-9baeb4b168f2	00000080-0000-0020-0000-000000000000	17	64.99981999999994	15	t	0	\N	0
-1e599e01-0000-75c9-8a4f-bef8d207c0a0	05599e01-0000-7478-8f12-9baeb4b168f2	00000080-0000-0020-0000-000000000000	16	64.99985999999996	15	t	0	\N	0
-1e599e01-0000-783a-d1f5-c63bfc9dd2cb	05599e01-0000-7478-8f12-9baeb4b168f2	00000080-0000-0021-0000-000000000000	1	76.98053999999382	15	t	0	\N	0
 a63c9e01-0000-712c-687f-cd06407083ff	\N	00000080-000a-0005-0000-000000000000	32	30	0	f	0	\N	0
 a63c9e01-0000-7b72-2262-372bb75b99ea	\N	00000080-0001-0001-0000-000000000000	37	20	0	f	0	\N	0
 a73c9e01-0000-77f1-9ac1-174aa8e95667	\N	00000080-000a-0002-0000-000000000000	38	28	0	f	0	\N	0
@@ -43367,7 +43393,7 @@ a63c9e01-0000-7481-a531-23651ce0a898	\N	00000080-0001-0000-0000-000000000000	17	
 06ff9d01-0000-729f-2223-8883c2cf00b4	\N	00000080-000d-0012-0000-000000000000	0	0	6	f	0	\N	0
 06ff9d01-0000-72ab-625f-d87cb07c586f	\N	00000080-000e-000e-0000-000000000000	0	0	0	f	0	\N	0
 95409e01-0000-7464-d016-40a077f0a341	95409e01-0000-7178-ab86-dbabee4a7e51	00000080-000d-0014-0000-000000000000	12	30	1	f	0	\N	0
-213b9e01-0000-7025-e7a1-a3125871f23c	1c3b9e01-0000-71e3-1f57-9761f741008a	00000080-000a-0029-0000-000000000000	5	83.34049999999993	15	f	0	\N	0
+213b9e01-0000-7025-e7a1-a3125871f23c	1c3b9e01-0000-71e3-1f57-9761f741008a	00000080-000a-0029-0000-000000000000	5	83.34049891254334	15	f	0	\N	0
 06ff9d01-0000-72c1-f654-9abb6f968762	\N	00000080-000e-000e-0000-000000000000	0	0	0	f	0	\N	0
 e64f9e01-0000-7721-c623-4b395344d507	bc4f9e01-0000-7db5-f9f3-d366dee0d7cb	00000080-000e-0026-0000-000000000000	16	3	0	f	0	\N	0
 06ff9d01-0000-72f6-0e76-b82bebe29df2	\N	00000080-000d-0012-0000-000000000000	0	0	7	f	0	\N	0
@@ -43377,7 +43403,7 @@ e64f9e01-0000-7721-c623-4b395344d507	bc4f9e01-0000-7db5-f9f3-d366dee0d7cb	000000
 06ff9d01-0000-7328-fc27-4f995ce85be0	\N	00000080-000e-000e-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-7343-77f3-13b62e27da81	\N	00000080-000e-0013-0000-000000000000	0	0	5	f	0	\N	0
 06ff9d01-0000-7346-0bd0-b546f645413a	\N	00000080-000e-000d-0000-000000000000	0	0	0	f	0	\N	0
-213b9e01-0000-713b-a810-8a065190cf73	1c3b9e01-0000-71e3-1f57-9761f741008a	00000080-0008-0029-0000-000000000000	3	89.70799999999988	15	f	0	\N	0
+213b9e01-0000-7862-e48b-c77259c9a3db	1c3b9e01-0000-71e3-1f57-9761f741008a	00000080-0007-0029-0000-000000000000	2	91.32549875426861	15	f	0	\N	0
 06ff9d01-0000-7363-b7da-5d355aee9864	\N	00000080-000e-000e-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-7365-66dc-d5fc3fcaa773	\N	00000080-000c-000f-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-7373-458f-fd6a5607c98e	\N	00000080-000c-000f-0000-000000000000	0	0	0	f	0	\N	0
@@ -43389,15 +43415,15 @@ e94f9e01-0000-75f9-6f0c-4998e6a8a9e7	bc4f9e01-0000-7db5-f9f3-d366dee0d7cb	000000
 06ff9d01-0000-73f7-bcc0-5106cefeb5e2	\N	00000080-000e-000d-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-73fc-3a88-30bc4d596a60	\N	00000080-000e-000d-0000-000000000000	0	0	0	f	0	\N	0
 253f9e01-0000-7e64-8e54-150a4844c8f8	\N	00000080-000b-0002-0000-000000000000	14	0	0	f	0	\N	0
-203b9e01-0000-7d6e-fb55-76c8d57b3a01	1c3b9e01-0000-71e3-1f57-9761f741008a	00000080-000b-0029-0000-000000000000	6	85.5259999999999	15	f	0	\N	0
+213b9e01-0000-713b-a810-8a065190cf73	1c3b9e01-0000-71e3-1f57-9761f741008a	00000080-0008-0029-0000-000000000000	3	89.70799950198023	15	f	0	\N	0
 06ff9d01-0000-7430-03ca-3076a5e72dc0	\N	00000080-000e-002a-0000-000000000000	0	0	0	f	0	\N	0
 243f9e01-0000-765b-b2c7-dd805924c6c7	243f9e01-0000-7028-94cc-703dbef90db7	00000080-000d-0014-0000-000000000000	10	31.994	2	f	0	\N	0
 e64f9e01-0000-7601-54f4-4a3ff6086fac	a44f9e01-0000-7b63-a113-ab3852e0e8e0	00000080-000c-0009-0000-000000000000	63	1	0	f	0	\N	0
-213b9e01-0000-7fd4-d003-e0ea2478b870	1c3b9e01-0000-71e3-1f57-9761f741008a	00000080-0009-0029-0000-000000000000	4	87.44499999999992	15	f	0	\N	0
+203b9e01-0000-7d6e-fb55-76c8d57b3a01	1c3b9e01-0000-71e3-1f57-9761f741008a	00000080-000b-0029-0000-000000000000	6	85.5259987085599	15	f	0	\N	0
 e64f9e01-0000-7ff3-d535-186f908eec8b	a44f9e01-0000-7b63-a113-ab3852e0e8e0	00000080-000c-000a-0000-000000000000	71	1	0	f	0	\N	0
 e74f9e01-0000-7046-f449-9bcf93f78e99	bc4f9e01-0000-7db5-f9f3-d366dee0d7cb	00000080-000c-002a-0000-000000000000	7	192.4625	15	f	0	\N	0
 06ff9d01-0000-749e-9726-766619ece4d4	\N	00000080-000e-000e-0000-000000000000	0	0	0	f	0	\N	0
-213b9e01-0000-7862-e48b-c77259c9a3db	1c3b9e01-0000-71e3-1f57-9761f741008a	00000080-0007-0029-0000-000000000000	2	91.32649999999995	15	f	0	\N	0
+213b9e01-0000-7fd4-d003-e0ea2478b870	1c3b9e01-0000-71e3-1f57-9761f741008a	00000080-0009-0029-0000-000000000000	4	87.44499955928664	15	f	0	\N	0
 06ff9d01-0000-74cc-86ae-c2368a6e7abf	\N	00000080-000e-000e-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-74d3-0195-0a92dcf6feb8	\N	00000080-000c-000f-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-74d9-2463-c3d0ae5468a4	\N	00000080-000e-0029-0000-000000000000	0	0	0	f	0	\N	0
@@ -43442,14 +43468,12 @@ e94f9e01-0000-7e34-f4f3-a0bb897842b8	bc4f9e01-0000-7db5-f9f3-d366dee0d7cb	000000
 06ff9d01-0000-75f9-5baf-e03b8e6a3224	\N	00000080-000e-0013-0000-000000000000	0	0	6	f	0	\N	0
 06ff9d01-0000-761b-83c5-c0c0a3e15084	\N	00000080-000c-000f-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-761f-24d6-3bd424c61e59	\N	00000080-000c-000f-0000-000000000000	0	0	0	f	0	\N	0
-a2459e01-0000-715c-6472-45de81a486f6	f6119e01-0000-78cc-4a04-a66c201c1dc4	00000080-0008-002f-0000-000000000000	3	147.97499999999988	15	f	3	\N	0
 06ff9d01-0000-7640-6711-bc5e4a88273a	\N	00000080-000e-000d-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-7669-471b-259f599adea8	\N	00000080-000d-0012-0000-000000000000	0	0	6	f	0	\N	0
-273b9e01-0000-7118-d58b-d179ba5f48da	1c3b9e01-0000-71e3-1f57-9761f741008a	00000080-0005-0024-0000-000000000000	0	181.89925999996802	15	f	0	\N	0
+2c5e9e01-0000-79fd-2954-2a03b6ded2af	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	45	255	0	f	0	\N	0
 52459e01-0000-738c-6ee6-10c7cb2d7d37	\N	00000080-000d-0004-0000-000000000000	23	255	10	f	0	\N	0
-293b9e01-0000-758e-e1ca-560f3f71bde1	1c3b9e01-0000-71e3-1f57-9761f741008a	00000080-000c-002b-0000-000000000000	7	233.81750000000042	15	f	0	\N	0
+293b9e01-0000-758e-e1ca-560f3f71bde1	1c3b9e01-0000-71e3-1f57-9761f741008a	00000080-000c-002b-0000-000000000000	7	233.81749852163247	15	f	0	\N	0
 06ff9d01-0000-76a1-5047-1bac4cdad3b7	\N	00000080-000c-000f-0000-000000000000	0	0	0	f	0	\N	0
-1e599e01-0000-7929-7f1c-79e2920b1640	05599e01-0000-7478-8f12-9baeb4b168f2	00000080-0000-0021-0000-000000000000	0	76.95973999998722	15	t	0	\N	0
 06ff9d01-0000-76d9-6c1c-5924d0e66d61	\N	00000080-000c-000f-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-7702-180a-304eb88ea595	\N	00000080-000c-000f-0000-000000000000	0	0	0	f	0	\N	0
 a73c9e01-0000-7806-4d54-fae8440e1417	\N	00000080-000a-0005-0000-000000000000	48	30	0	f	0	\N	0
@@ -43464,6 +43488,8 @@ a93c9e01-0000-701f-0148-6540fcc30aee	\N	00000080-0004-0008-0000-000000000000	60	
 06ff9d01-0000-7786-7d07-5c5a77f35e5e	\N	00000080-000e-0010-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-778a-e7c5-430e6abcf4de	\N	00000080-000c-000f-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-7798-88a1-7ee78355196d	\N	00000080-000e-000e-0000-000000000000	0	0	0	f	0	\N	0
+a2459e01-0000-715c-6472-45de81a486f6	f6119e01-0000-78cc-4a04-a66c201c1dc4	00000080-0008-002f-0000-000000000000	3	147.95199999999977	15	f	3	\N	0
+2c5e9e01-0000-7a09-340a-1a7c4fd25aec	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	62	255	0	f	0	\N	0
 b9429e01-0000-7a9a-9a29-0826fb8ca26a	\N	00000080-0000-0000-0000-000000000000	34	20	0	f	0	\N	0
 06ff9d01-0000-75c1-176f-fdefb2d6c40f	00001000-00f5-0000-0000-000000000000	00000080-000e-0003-0000-000000000000	2	50	0	f	0	\N	0
 06ff9d01-0000-7606-2bfb-1ff23de104e1	00001000-00f5-0000-0000-000000000000	00000080-000e-0001-0000-000000000000	0	50	0	f	0	\N	0
@@ -43493,8 +43519,10 @@ b9429e01-0000-7a9a-9a29-0826fb8ca26a	\N	00000080-0000-0000-0000-000000000000	34	
 06ff9d01-0000-76a9-7ed4-d3d50c0e201f	00001000-0178-0000-0000-000000000000	00000080-000e-0001-0000-000000000000	1	50	0	f	0	\N	0
 06ff9d01-0000-763f-e96f-3eb3a121dc4d	00001000-00fd-0000-0000-000000000000	00000080-000e-0001-0000-000000000000	1	50	0	f	0	\N	0
 06ff9d01-0000-7786-3a75-d296d8d441fd	00001000-00fd-0000-0000-000000000000	00000080-000e-0003-0000-000000000000	11	255	0	f	0	\N	0
+2c5e9e01-0000-7a8b-24c4-a6e7727350b6	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	57	255	0	f	0	\N	0
 ba429e01-0000-78ee-f1a2-0bf7e56c6c0d	243f9e01-0000-7028-94cc-703dbef90db7	00000080-000e-0011-0000-000000000000	38	1	1	f	0	\N	0
 c23c9e01-0000-7a14-6501-74740a322f41	9d3c9e01-0000-7079-eb1b-a64574f51cc3	00000080-0001-0000-0000-000000000000	0	18.989060000000414	1	f	0	\N	0
+2c5e9e01-0000-7b09-57da-05a75d95bb9b	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	50	255	0	f	0	\N	0
 52459e01-0000-74e7-1643-e5250a051b14	\N	00000080-000d-0004-0000-000000000000	8	254.99839000000003	50	f	0	\N	0
 c23c9e01-0000-71d1-d512-8cd80c190b79	\N	00000080-000b-0002-0000-000000000000	47	28	0	f	0	\N	0
 c23c9e01-0000-722a-3d74-93c14932001b	\N	00000080-000b-0002-0000-000000000000	18	28	0	f	0	\N	0
@@ -43515,18 +43543,18 @@ b7429e01-0000-7814-c86a-ca4aa4f9bfb3	\N	00000080-000a-0005-0000-000000000000	62	
 b7429e01-0000-79ee-b4fb-f20cacf55873	\N	00000080-000f-0003-0000-000000000000	18	1	0	f	0	\N	0
 06ff9d01-0000-78aa-921c-8c98de2a251f	\N	00000080-000e-002a-0000-000000000000	0	0	0	f	0	\N	0
 b8429e01-0000-7cff-068b-ee0ae02966ff	\N	00000080-0007-000a-0000-000000000000	48	22	0	f	0	\N	0
-a7459e01-0000-75da-2a14-ec115219fd99	f6119e01-0000-78cc-4a04-a66c201c1dc4	00000080-000b-002f-0000-000000000000	6	147.97599999999989	15	f	3	\N	0
+a7459e01-0000-75da-2a14-ec115219fd99	f6119e01-0000-78cc-4a04-a66c201c1dc4	00000080-000b-002f-0000-000000000000	6	147.9579999999998	15	f	3	\N	0
 06ff9d01-0000-78f4-69e0-e2c9ecad7ea4	\N	00000080-000c-000f-0000-000000000000	0	0	0	f	0	\N	0
 bd429e01-0000-7fa1-35dc-7ffcb170e1ab	243f9e01-0000-7028-94cc-703dbef90db7	00000080-000e-0011-0000-000000000000	41	1	1	f	0	\N	0
 06ff9d01-0000-7919-6dd8-90f85fff79c0	\N	00000080-000e-000e-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-7926-8fb2-2f514f68dd65	\N	00000080-000e-002a-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-792d-08e0-fa052198033a	\N	00000080-000e-000e-0000-000000000000	0	0	0	f	0	\N	0
-a7459e01-0000-7e0f-e825-6c45a10982fd	f6119e01-0000-78cc-4a04-a66c201c1dc4	00000080-000a-002f-0000-000000000000	5	147.98299999999992	15	f	3	\N	0
+145b9e01-0000-7d41-fa44-cf72daca0ca6	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000d-0001-0000-000000000000	8	236.20700000001497	0	f	0	\N	0
 06ff9d01-0000-794e-faa2-2339affbe07f	\N	00000080-000c-000f-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-794f-b321-4d806757474b	\N	00000080-000e-000e-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-7964-3731-2582b0105a3a	\N	00000080-000c-000f-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-796d-a865-a75d62c97c40	\N	00000080-000e-000d-0000-000000000000	0	0	0	f	0	\N	0
-a7459e01-0000-7b83-ed6d-644a6d1e1a7f	f6119e01-0000-78cc-4a04-a66c201c1dc4	00000080-0009-002f-0000-000000000000	4	147.98999999999995	15	f	3	\N	0
+a7459e01-0000-7e0f-e825-6c45a10982fd	f6119e01-0000-78cc-4a04-a66c201c1dc4	00000080-000a-002f-0000-000000000000	5	147.9609999999998	15	f	3	\N	0
 06ff9d01-0000-7980-f267-f4093b2c1657	\N	00000080-000e-000d-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-7998-a272-4d91eb1ee721	\N	00000080-000c-000f-0000-000000000000	0	0	0	f	0	\N	0
 c33c9e01-0000-7787-1c87-6618457da698	\N	00000080-000a-000a-0000-000000000000	60	22	0	f	0	\N	0
@@ -43564,6 +43592,13 @@ c33c9e01-0000-797a-7bd5-47739f9699e7	\N	00000080-000a-0005-0000-000000000000	64	
 263f9e01-0000-79ac-fb7f-0cbcbb2efa7f	\N	00000080-000f-0013-0000-000000000000	14	1	0	f	0	\N	0
 263f9e01-0000-7a83-be99-deebf918eae6	\N	00000080-000f-0018-0000-000000000000	13	1	0	f	0	\N	0
 263f9e01-0000-7d94-758c-b78f1f008fd9	\N	00000080-000f-0020-0000-000000000000	45	1	0	f	0	\N	0
+a7459e01-0000-7b83-ed6d-644a6d1e1a7f	f6119e01-0000-78cc-4a04-a66c201c1dc4	00000080-0009-002f-0000-000000000000	4	147.97299999999987	15	f	3	\N	0
+2c5e9e01-0000-7b3c-4266-61a02034ceb6	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	61	255	0	f	0	\N	0
+2c5e9e01-0000-7bfe-c080-32b99f38eee0	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	64	255	0	f	0	\N	0
+2c5e9e01-0000-7c79-129e-938576fdab01	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	55	255	0	f	0	\N	0
+2c5e9e01-0000-7ca2-cdb0-d762023d70ed	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	58	255	0	f	0	\N	0
+2c5e9e01-0000-7d35-4e2e-8a4c57a77ffc	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	16	255	0	f	0	\N	0
+2c5e9e01-0000-7dc7-2c73-44c7df987e6b	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	39	255	0	f	0	\N	0
 06ff9d01-0000-7a6d-e5e2-49c869cc0489	\N	00000080-000e-000d-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-7a70-b44f-e523a7ac91bb	\N	00000080-000e-002a-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-7a7a-7b87-8771e1deffb7	\N	00000080-000e-002a-0000-000000000000	0	0	0	f	0	\N	0
@@ -43577,14 +43612,19 @@ e94f9e01-0000-7870-71bf-c3f09c3f1043	bc4f9e01-0000-7db5-f9f3-d366dee0d7cb	000000
 06ff9d01-0000-7b06-e46c-eaa7e943274f	\N	00000080-000e-000d-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-7b1e-0a44-950081b292bf	\N	00000080-000e-0013-0000-000000000000	0	0	4	f	0	\N	0
 06ff9d01-0000-7b21-5a49-34c7b6086ea2	\N	00000080-000e-000e-0000-000000000000	0	0	0	f	0	\N	0
+185b9e01-0000-704d-c2fd-5cf6f3fdb6e2	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-0000-0006-0000-000000000000	25	45	0	t	0	\N	0
 06ff9d01-0000-7b30-aadd-f9ffd4026e5d	\N	00000080-000e-002a-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-7b47-f43e-292ac9e85f31	\N	00000080-000e-000e-0000-000000000000	0	0	0	f	0	\N	0
-a9459e01-0000-77a3-970c-603975fd2ec6	f6119e01-0000-78cc-4a04-a66c201c1dc4	00000080-000c-0027-0000-000000000000	7	254.9789999999999	15	f	0	\N	0
+a9459e01-0000-77a3-970c-603975fd2ec6	f6119e01-0000-78cc-4a04-a66c201c1dc4	00000080-000c-0027-0000-000000000000	7	254.96199999999982	15	f	0	\N	0
 06ff9d01-0000-7b64-9464-4d30b096b760	\N	00000080-000e-0013-0000-000000000000	0	0	5	f	0	\N	0
+2c5e9e01-0000-7dd6-8330-d97298532955	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	12	255	0	f	0	\N	0
+2c5e9e01-0000-7e12-edc0-be62a7c45b23	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	38	255	0	f	0	\N	0
+2c5e9e01-0000-7e2b-6b9e-d6bceb96460f	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	49	255	0	f	0	\N	0
 06ff9d01-0000-7bc5-100e-6b691cb4c46f	\N	00000080-000e-000d-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-7bea-fd97-6734f13d2fb5	\N	00000080-000d-0012-0000-000000000000	0	0	6	f	0	\N	0
 06ff9d01-0000-7c07-c7fb-a896cc47691a	\N	00000080-000c-000f-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-7c0b-3fe2-69e04ecdd22e	\N	00000080-000c-000f-0000-000000000000	0	0	0	f	0	\N	0
+2c5e9e01-0000-7e2e-7336-a6c012f8acf0	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	63	255	0	f	0	\N	0
 06ff9d01-0000-7c2d-75bd-7a723f0682cb	\N	00000080-000e-000e-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-7c3f-fef7-ba054f8c1d9f	\N	00000080-000e-000d-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-7c78-50b1-b282608e1c62	\N	00000080-000e-000e-0000-000000000000	0	0	0	f	0	\N	0
@@ -43595,7 +43635,10 @@ a9459e01-0000-77a3-970c-603975fd2ec6	f6119e01-0000-78cc-4a04-a66c201c1dc4	000000
 06ff9d01-0000-7cab-f6b5-41dde877e85a	\N	00000080-000e-000d-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-7cd3-cfb2-db96cb33ffbf	\N	00000080-000e-000e-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-7cd5-b875-8b6cfe2b5d1e	\N	00000080-000e-000e-0000-000000000000	0	0	0	f	0	\N	0
+2c5e9e01-0000-7e8b-9b2e-99bb7f9a7555	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	46	255	0	f	0	\N	0
 06ff9d01-0000-7d1d-c165-dd2d2e3fc000	\N	00000080-000d-0012-0000-000000000000	0	0	5	f	0	\N	0
+2c5e9e01-0000-7ea7-ed8f-3d97efabcf22	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	47	255	0	f	0	\N	0
+2c5e9e01-0000-7eb3-73fb-bc9c9e66337f	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	29	255	0	f	0	\N	0
 06ff9d01-0000-7d5e-2514-8472f1c802fa	\N	00000080-000e-000d-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-7d77-3f29-acdc7a0a9ca7	\N	00000080-000d-0012-0000-000000000000	0	0	6	f	0	\N	0
 06ff9d01-0000-7a61-00bf-84ee0444f55f	00001000-019f-0000-0000-000000000000	00000080-000e-0001-0000-000000000000	9	255	0	f	0	\N	0
@@ -43656,6 +43699,7 @@ ca429e01-0000-7c60-e7a1-b756f41ecf5f	243f9e01-0000-7028-94cc-703dbef90db7	000000
 ca429e01-0000-7e9f-05cf-b282648820ff	243f9e01-0000-7028-94cc-703dbef90db7	00000080-0007-0002-0000-000000000000	16	28	0	f	0	\N	0
 06ff9d01-0000-7f52-3b25-8d75716034b6	\N	00000080-000e-0029-0000-000000000000	0	0	0	f	0	\N	0
 ca429e01-0000-7bdc-98cd-f427554e4f40	243f9e01-0000-7028-94cc-703dbef90db7	00000080-0006-0004-0000-000000000000	46	24	0	f	0	\N	0
+a5599e01-0000-73eb-0e69-6b5730896378	a5599e01-0000-7866-d554-93cd78525cc2	00000080-000d-0014-0000-000000000000	12	30	1	f	0	\N	0
 06ff9d01-0000-7f76-5183-a3d487c4e1e1	\N	00000080-000e-000d-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-7f79-ead6-bb8e6fcf3610	\N	00000080-000e-000d-0000-000000000000	0	0	0	f	0	\N	0
 06ff9d01-0000-7f8e-3386-a43aa649394f	\N	00000080-000c-000f-0000-000000000000	0	0	0	f	0	\N	0
@@ -43767,6 +43811,9 @@ f0329e01-0000-77d2-9161-197f4951ee2b	\N	00000080-0000-0001-0000-000000000000	15	
 06ff9d01-0000-72f6-50c5-6cdab437e227	00001000-00f3-0000-0000-000000000000	00000080-0009-000d-0000-000000000000	32	38	0	f	0	\N	0
 06ff9d01-0000-7142-156e-dbd08ad2ad0f	00001000-01a0-0000-0000-000000000000	00000080-0005-0010-0000-000000000000	63	65	0	f	0	\N	0
 06ff9d01-0000-714a-44ae-b216499e8ffe	00001000-01a0-0000-0000-000000000000	00000080-0009-0027-0000-000000000000	32	36	0	f	0	\N	0
+a5599e01-0000-758f-c07a-d6db4168fd39	a5599e01-0000-7866-d554-93cd78525cc2	00000080-000d-0014-0000-000000000000	13	30	2	f	0	\N	0
+a5599e01-0000-7341-1d88-7b6ff5e30ee1	a5599e01-0000-7866-d554-93cd78525cc2	00000080-0004-000f-0000-000000000000	0	186	0	f	0	\N	0
+a5599e01-0000-7840-200c-9f44705cacc4	a5599e01-0000-7866-d554-93cd78525cc2	00000080-0004-0000-0000-000000000000	1	19.99866000000005	0	f	0	\N	0
 06ff9d01-0000-730c-56f5-e1c82d49c439	\N	00000080-0007-0001-0000-000000000000	0	68	8	f	0	\N	0
 06ff9d01-0000-730f-1baf-90caedf6c921	00001000-00f8-0000-0000-000000000000	00000080-0008-0005-0000-000000000000	16	30	0	f	0	\N	0
 06ff9d01-0000-7315-a0e9-8131c74b54fb	\N	00000080-0009-0029-0000-000000000000	0	54	7	f	0	\N	0
@@ -47796,6 +47843,8 @@ c23c9e01-0000-796a-1975-36cfa82d7d73	\N	00000080-0000-0001-0000-000000000000	12	
 8d039e01-0000-76f9-46b9-7d5e35c9171e	\N	00000080-000d-0014-0000-000000000000	71	30	1	f	0	\N	0
 8d039e01-0000-7eed-c735-97df99c9dfb1	\N	00000080-000d-0014-0000-000000000000	72	30	2	f	0	\N	0
 35429e01-0000-7c3a-4755-5ddd46df0c4e	07419e01-0000-7228-5054-8e8a104470d7	00000080-0004-0000-0000-000000000000	36	20	0	t	0	\N	0
+935e9e01-0000-717f-833f-3db31d2fa626	\N	00000080-000e-000d-0000-000000000000	13	1	0	f	0	\N	0
+935e9e01-0000-72df-ef67-f9f0e51b05ea	\N	00000080-000e-000d-0000-000000000000	20	1	0	f	0	\N	0
 7d3f9e01-0000-7a9e-1d56-853cabb8949c	\N	00000080-000b-0002-0000-000000000000	46	28	0	f	0	\N	0
 c23c9e01-0000-7ecb-0cce-d3f6f3c5e2d8	\N	00000080-0001-0001-0000-000000000000	14	20	0	f	0	\N	0
 35429e01-0000-7476-8420-27337de3c1a2	07419e01-0000-7228-5054-8e8a104470d7	00000080-0001-0000-0000-000000000000	16	18	0	f	0	\N	0
@@ -47817,6 +47866,7 @@ a83f9e01-0000-706c-b4b0-81876155107f	\N	00000080-0001-0000-0000-000000000000	18	
 a83f9e01-0000-74a1-b9cc-87f28d14f702	\N	00000080-000a-0002-0000-000000000000	44	28	0	f	0	\N	0
 a83f9e01-0000-7891-3ded-19d4ba8e0e39	\N	00000080-0006-0000-0000-000000000000	28	22	0	f	0	\N	0
 a83f9e01-0000-7e90-2164-44db61003e0a	\N	00000080-0001-0000-0000-000000000000	17	19	1	f	0	\N	0
+d0079e01-0000-7b8b-ae3b-b9d3dbf32975	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-000c-0025-0000-000000000000	7	254.81269036651074	15	f	0	\N	0
 09509e01-0000-7256-24b1-3b37bd4d8e76	bc4f9e01-0000-7db5-f9f3-d366dee0d7cb	00000080-000c-000f-0000-000000000000	13	1	0	f	0	\N	0
 2f549e01-0000-7ada-8da6-03c78b54e6a6	2f549e01-0000-70bb-3ef4-b56e35cd6d07	00000080-000d-0014-0000-000000000000	12	30	1	f	0	\N	0
 06ff9d01-0000-7128-3fcd-475818e312c0	00001000-00f2-0000-0000-000000000000	00000080-000a-000c-0000-000000000000	76	32	0	f	0	\N	0
@@ -47838,16 +47888,29 @@ a83f9e01-0000-7e90-2164-44db61003e0a	\N	00000080-0001-0000-0000-000000000000	17	
 06ff9d01-0000-7507-c46c-7c0b3a00b58d	00001000-00f2-0000-0000-000000000000	00000080-0004-0007-0000-000000000000	106	255	2	f	0	\N	0
 00099e01-0000-752f-cf92-b06d8ba35b4e	\N	00000080-000a-0002-0000-000000000000	5	27.184000000000804	0	f	0	\N	0
 ff089e01-0000-7117-9ec1-9bd30e913f14	\N	00000080-0008-0005-0000-000000000000	14	30	0	f	0	\N	0
-d0079e01-0000-7b8b-ae3b-b9d3dbf32975	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-000c-0025-0000-000000000000	7	254.81272639242218	15	f	0	\N	0
+2c5e9e01-0000-7ed1-7375-906459688ab4	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	56	255	0	f	0	\N	0
 00099e01-0000-7bd7-a768-73adbe5928b0	\N	00000080-000b-0002-0000-000000000000	6	27.99600000000001	0	f	0	\N	0
 3a3f9e01-0000-7889-ca7d-3d46cd3bcfcc	\N	00000080-000a-0005-0000-000000000000	66	30	0	f	0	\N	0
 15419e01-0000-7041-a606-0e94416b0ec8	\N	00000080-0004-000f-0000-000000000000	45	255	0	f	0	\N	0
 18419e01-0000-7e0c-3409-32c0fe47f52c	\N	00000080-0008-000c-0000-000000000000	17	32	3	f	0	\N	0
+2c5e9e01-0000-7f32-388f-2f069a5d7456	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	13	255	0	f	0	\N	0
+2c5e9e01-0000-7f6f-1383-f9fde21144ae	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	19	255	0	f	0	\N	0
+2c5e9e01-0000-7f94-1a5f-97bc43642bdc	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	34	255	0	f	0	\N	0
 f73b9e01-0000-7b64-a092-35863060f2af	\N	00000080-000e-0000-0000-000000000000	73	1	1	f	0	\N	0
+935e9e01-0000-73b6-93f0-4352092759dd	\N	00000080-000e-000d-0000-000000000000	16	1	0	f	0	\N	0
+935e9e01-0000-7729-3f6c-f1ca102460ff	\N	00000080-000e-000d-0000-000000000000	17	1	0	f	0	\N	0
+935e9e01-0000-783b-8a0a-555295ee0f71	\N	00000080-000e-000d-0000-000000000000	19	1	0	f	0	\N	0
+935e9e01-0000-79e2-d474-2712c9b96692	\N	00000080-000e-000d-0000-000000000000	14	1	0	f	0	\N	0
 06ff9d01-0000-7c33-1394-87271f19d818	00001000-00f2-0000-0000-000000000000	00000080-000c-000b-0000-000000000000	16	1	0	f	0	\N	0
+935e9e01-0000-7d2c-ae86-624c596b4796	\N	00000080-000e-000d-0000-000000000000	18	1	0	f	0	\N	0
 06ff9d01-0000-7d4d-2b49-8a725417c99b	00001000-00f2-0000-0000-000000000000	00000080-000e-0001-0000-000000000000	0	50	0	f	0	\N	0
 bc079e01-0000-70ae-4690-b1f19c469d51	\N	00000080-0009-0034-0000-000000000000	14	87	1	f	1	\N	0
+935e9e01-0000-7e8d-1261-1761e40d88d5	\N	00000080-000e-000d-0000-000000000000	15	1	0	f	0	\N	0
+935e9e01-0000-7ebb-7746-5b3fddc55fd1	\N	00000080-000e-000d-0000-000000000000	21	1	0	f	0	\N	0
+935e9e01-0000-7ee1-f96c-400e69869024	\N	00000080-000e-000d-0000-000000000000	12	1	0	f	0	\N	0
 bc079e01-0000-730f-f305-7e369c20bf2d	\N	00000080-0009-002d-0000-000000000000	28	86	0	f	2	\N	0
+273b9e01-0000-7118-d58b-d179ba5f48da	1c3b9e01-0000-71e3-1f57-9761f741008a	00000080-0005-0024-0000-000000000000	0	181.735379999916	15	f	0	\N	0
+935e9e01-0000-7a66-a5a8-6a8354665952	\N	00000080-000c-001e-0000-000000000000	12	1	0	f	0	\N	0
 06ff9d01-0000-71c0-c75b-5e7d48699eaf	00001000-00f2-0000-0000-000000000000	00000080-0004-0007-0000-000000000000	104	255	0	f	0	\N	0
 06ff9d01-0000-7d4d-a8f1-0c5225c455d6	00001000-00f2-0000-0000-000000000000	00000080-000c-000b-0000-000000000000	20	1	4	f	0	\N	0
 06ff9d01-0000-72e9-05d9-e9d4e4f86adf	00001000-00f2-0000-0000-000000000000	00000080-000c-000b-0000-000000000000	19	1	3	f	0	\N	0
@@ -47881,29 +47944,28 @@ bd079e01-0000-7699-5db5-1df23d07f31a	\N	00000080-0009-0016-0000-000000000000	32	
 3f3f9e01-0000-729d-1d76-988eaa3f530a	\N	00000080-000a-0005-0000-000000000000	17	30	0	f	0	\N	0
 06ff9d01-0000-7e96-1c2e-d5cb9713b181	00001000-00f2-0000-0000-000000000000	00000080-0004-000f-0000-000000000000	107	255	0	f	0	\N	0
 3f3f9e01-0000-7518-dda6-02d0dfab14f4	\N	00000080-0005-0000-0000-000000000000	36	20	0	f	0	\N	0
-6c549e01-0000-71e4-716d-64985f00ae81	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-000a-001e-0000-000000000000	5	85.88891830932647	15	f	0	\N	0
-37429e01-0000-7146-bdf4-33f7e2d37bdd	92039e01-0000-70f1-afd4-69c7fadc4501	00000080-0008-001f-0000-000000000000	17	147.4504985148168	15	f	0	\N	0
+6c549e01-0000-7037-f56f-a969d0b50249	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-000b-001e-0000-000000000000	6	85.88902638023859	15	f	0	\N	0
 70359e01-0000-752b-8ed1-30856f761450	\N	00000080-000e-0020-0000-000000000000	22	1	0	f	0	\N	0
 01189e01-0000-7303-367e-3e2e7fc753a0	\N	00000080-0000-0001-0000-000000000000	54	21.99678000000008	0	f	0	\N	0
 f90d9e01-0000-7676-0e44-8a448f96e38c	\N	00000080-0009-0003-0000-000000000000	12	42	3	f	0	\N	0
 3f3f9e01-0000-76e4-c17c-eee1ccbeab0d	\N	00000080-0004-0008-0000-000000000000	20	22	0	f	0	\N	0
 36429e01-0000-7cbc-38d8-e6d6dec1c467	07419e01-0000-7228-5054-8e8a104470d7	00000080-0004-000f-0000-000000000000	0	245	2	f	0	\N	0
 36429e01-0000-79e2-be46-7993cd3dcd6f	07419e01-0000-7228-5054-8e8a104470d7	00000080-0004-000f-0000-000000000000	43	255	2	f	0	\N	0
+6c549e01-0000-772e-7f71-56f820e5dc91	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-0005-000c-0000-000000000000	0	99.95893999998697	15	f	0	\N	0
 3f3f9e01-0000-7933-778e-5f60a62a2612	\N	00000080-0000-0000-0000-000000000000	37	20	0	f	0	\N	0
 3f3f9e01-0000-7962-d231-35f8001087d1	\N	00000080-000f-0003-0000-000000000000	19	1	0	f	0	\N	0
 3f3f9e01-0000-7a35-5da0-cbe4fa0a71ea	\N	00000080-0001-0001-0000-000000000000	38	20	0	f	0	\N	0
 06ff9d01-0000-7ebc-afa5-b4203b7f4c48	00001000-00f2-0000-0000-000000000000	00000080-000c-000b-0000-000000000000	17	1	1	f	0	\N	0
-6c549e01-0000-7667-10b6-53391bd94942	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-0007-001e-0000-000000000000	2	85.96003076510382	15	f	0	\N	0
 00129e01-0000-74a9-c183-bc708577f8e5	\N	00000080-000e-0006-0000-000000000000	15	3	0	f	0	\N	0
 00129e01-0000-7649-a659-caa510a526bc	\N	00000080-000e-0006-0000-000000000000	14	3	0	f	0	\N	0
-6c549e01-0000-7037-f56f-a969d0b50249	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-000b-001e-0000-000000000000	6	85.88913445660847	15	f	0	\N	0
+6c549e01-0000-71e4-716d-64985f00ae81	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-000a-001e-0000-000000000000	5	85.8888462572061	15	f	0	\N	0
 01189e01-0000-76c7-f85d-9660567cfe8c	\N	00000080-000a-0005-0000-000000000000	12	30	0	f	0	\N	0
 00129e01-0000-78dd-32de-5c51c2df835c	\N	00000080-000e-0006-0000-000000000000	16	3	0	f	0	\N	0
 00129e01-0000-7e57-86a0-b1b76c6ca24a	\N	00000080-000e-0003-0000-000000000000	14	1	1	f	0	\N	0
 06129e01-0000-7c91-833d-5724f97a8590	\N	00000080-000d-001d-0000-000000000000	17	1	0	f	0	\N	0
 823e9e01-0000-7ac9-25ad-31488e37fda2	\N	00000080-0001-0001-0000-000000000000	16	20	0	f	0	\N	0
 01189e01-0000-7b7c-68bf-e04a9dac7f67	\N	00000080-0004-0000-0000-000000000000	17	20	0	t	0	\N	0
-6c549e01-0000-772e-7f71-56f820e5dc91	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-0005-000c-0000-000000000000	0	99.98427999999501	15	f	0	\N	0
+6c549e01-0000-7667-10b6-53391bd94942	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-0007-001e-0000-000000000000	2	85.95991082516787	15	f	0	\N	0
 3f3f9e01-0000-7e8d-7bfa-93037448ca92	\N	00000080-0006-0004-0000-000000000000	32	24	0	f	0	\N	0
 3f3f9e01-0000-7ec1-700b-da559de67b37	\N	00000080-000b-000a-0000-000000000000	22	22	0	f	0	\N	0
 36429e01-0000-7e13-0dc2-05ddfd5b2c7d	07419e01-0000-7228-5054-8e8a104470d7	00000080-0004-000f-0000-000000000000	48	255	2	f	0	\N	0
@@ -47936,9 +47998,14 @@ ff179e01-0000-7fc9-0d17-56915db2b98c	\N	00000080-000d-0014-0000-000000000000	13	
 843f9e01-0000-7f61-f82d-9df4ffe308fd	\N	00000080-0001-0001-0000-000000000000	16	20	0	f	0	\N	0
 843f9e01-0000-72a8-fec2-3a2dd1869848	\N	00000080-0006-0000-0000-000000000000	44	22	0	f	0	\N	0
 15189e01-0000-7663-12f4-9d4e6837cc41	0a189e01-0000-7f23-1557-dd8c7da22336	00000080-000a-001d-0000-000000000000	5	118.2085	15	f	0	\N	0
-6c549e01-0000-7bab-1b3e-3da2e80dfc47	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-0006-000f-0000-000000000000	1	116.96224627474432	15	f	0	\N	0
-6c549e01-0000-7c75-0931-3aa2d81c0df3	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-0009-001e-0000-000000000000	4	85.90523742911729	15	f	0	\N	0
-6c549e01-0000-7f36-8b17-c140a6871764	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-0008-001e-0000-000000000000	3	85.88185749811451	15	f	0	\N	0
+2c5e9e01-0000-7dcf-d81c-7a62917e0eb0	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	59	231	0	f	0	\N	0
+6c549e01-0000-7bab-1b3e-3da2e80dfc47	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-0006-000f-0000-000000000000	1	116.96221024201067	15	f	0	\N	0
+975e9e01-0000-757d-9fc9-067ef3464d72	\N	00000080-000e-0020-0000-000000000000	12	1	0	f	0	\N	0
+6c549e01-0000-7c75-0931-3aa2d81c0df3	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-0009-001e-0000-000000000000	4	85.90512935138297	15	f	0	\N	0
+545b9e01-0000-7619-3ee7-ad08a7be6786	f6119e01-0000-78cc-4a04-a66c201c1dc4	00000080-000e-001f-0000-000000000000	12	1	0	f	0	\N	0
+6c549e01-0000-7f36-8b17-c140a6871764	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-0008-001e-0000-000000000000	3	85.88174942310907	15	f	0	\N	0
+5b5b9e01-0000-7f80-3866-2aa3b32d6905	f6119e01-0000-78cc-4a04-a66c201c1dc4	00000080-000e-001f-0000-000000000000	13	1	0	f	0	\N	0
+975e9e01-0000-7a31-fc18-45cd512750aa	\N	00000080-000e-0020-0000-000000000000	12	1	0	f	0	\N	0
 0d189e01-0000-738d-18f0-b46c6d94bd9c	\N	00000080-000c-0024-0000-000000000000	16	220	15	f	0	\N	0
 12189e01-0000-7404-8296-14334f646737	\N	00000080-000a-000a-0000-000000000000	14	22	0	f	0	\N	0
 12189e01-0000-7de1-4332-55cfa8020384	\N	00000080-0006-0008-0000-000000000000	16	46	3	t	0	\N	0
@@ -47998,7 +48065,11 @@ a8189e01-0000-7335-f1e4-739f627353a2	\N	00000080-0009-002d-0000-000000000000	30	
 a8189e01-0000-75ec-892e-826e5343ca17	\N	00000080-000a-001e-0000-000000000000	17	88	2	f	0	\N	0
 a8189e01-0000-7617-4ca0-073c02de0b54	\N	00000080-0009-0030-0000-000000000000	32	87	1	f	3	\N	0
 a8189e01-0000-7ba4-3714-a54e4709eceb	\N	00000080-000a-001d-0000-000000000000	28	91	1	f	0	\N	0
+4b5e9e01-0000-738f-debc-b592fe14dc45	\N	00000080-000e-000d-0000-000000000000	12	1	0	f	0	\N	0
+4b5e9e01-0000-700a-cd42-3209e0c6f87c	\N	00000080-000c-008f-0000-000000000000	21	1	0	f	0	\N	0
 cf4f9e01-0000-7b10-fb91-edaf48ad17b0	bc4f9e01-0000-7db5-f9f3-d366dee0d7cb	00000080-000d-0019-0000-000000000000	9	52.93190000000258	3	f	0	\N	0
+4b5e9e01-0000-716b-3601-6e9f3bbb1a8a	\N	00000080-000c-008c-0000-000000000000	18	1	0	f	0	\N	0
+4b5e9e01-0000-71c7-d7d9-e846690f2923	\N	00000080-000c-008a-0000-000000000000	16	1	0	f	0	\N	0
 c14f9e01-0000-7a8b-ae61-4f703068ab0d	a44f9e01-0000-7b63-a113-ab3852e0e8e0	00000080-0008-0028-0000-000000000000	1	103.9975	15	f	0	\N	0
 31409e01-0000-7e04-82f1-302d46b7d5e4	\N	00000080-0004-000f-0000-000000000000	24	255	2	f	0	\N	0
 963f9e01-0000-7dbe-b961-1c52680a7ff1	\N	00000080-000a-0002-0000-000000000000	46	0	3	f	0	\N	0
@@ -48011,11 +48082,19 @@ b2189e01-0000-7439-a4d2-c1ebb077e094	\N	00000080-000c-0002-0000-000000000000	60	
 ba189e01-0000-7a77-baba-fb554c5ae76d	\N	00000080-0007-0002-0000-000000000000	44	28	15	f	0	\N	0
 ba189e01-0000-7e98-0e22-bde5ec7af7bd	\N	00000080-0007-0002-0000-000000000000	30	28	0	f	0	\N	0
 bd189e01-0000-7e10-2672-44d47d0eda8e	\N	00000080-0007-001e-0000-000000000000	46	86	0	f	0	\N	0
+4b5e9e01-0000-72ab-3ae5-ead21f6d6618	\N	00000080-000c-008b-0000-000000000000	17	1	0	f	0	\N	0
 bf189e01-0000-72f4-1a77-265788f87695	\N	00000080-0007-0002-0000-000000000000	12	28	15	f	0	\N	0
+075e9e01-0000-76b7-8a32-7b49ea1bd22d	\N	00000080-000e-002b-0000-000000000000	21	1	0	f	0	\N	0
+085e9e01-0000-7fe1-52e4-105ba0c86291	\N	00000080-000e-002b-0000-000000000000	29	1	0	f	0	\N	0
+4b5e9e01-0000-74d3-7bc4-9216bd684c09	\N	00000080-000c-0089-0000-000000000000	15	1	0	f	0	\N	0
+4b5e9e01-0000-75de-6061-50d1c0dd5dd3	\N	00000080-000c-008e-0000-000000000000	20	1	0	f	0	\N	0
 963e9e01-0000-7b98-8563-1a993d74dddb	\N	00000080-000a-000a-0000-000000000000	12	22	0	f	0	\N	0
 983e9e01-0000-71a6-f4e3-c216a5d97f65	\N	00000080-0004-0008-0000-000000000000	44	22	0	t	0	\N	0
 f6329e01-0000-76c3-700e-e10bc8a051d8	\N	00000080-000a-0005-0000-000000000000	44	30	0	f	0	\N	0
+4b5e9e01-0000-7794-6212-f6246ee939cc	\N	00000080-000c-008d-0000-000000000000	19	1	0	f	0	\N	0
 c34f9e01-0000-7d2b-cf81-dea17b784362	bc4f9e01-0000-7db5-f9f3-d366dee0d7cb	00000080-0008-002c-0000-000000000000	3	140.31450000000007	15	f	0	\N	0
+095e9e01-0000-704d-a8c3-8130898113eb	92039e01-0000-70f1-afd4-69c7fadc4501	00000080-0004-0015-0000-000000000000	1	92.99885999999964	15	t	0	\N	0
+4b5e9e01-0000-74cb-dfd8-0561768c2aba	\N	00000080-000c-001e-0000-000000000000	12	1	0	f	0	\N	0
 dd189e01-0000-72a3-9a14-6d2456ef9b71	d7169e01-0000-719c-096f-ee61a334038f	00000080-0008-0007-0000-000000000000	14	36	15	f	0	\N	0
 dd189e01-0000-72de-9abf-e4ddef4f6cae	d7169e01-0000-719c-096f-ee61a334038f	00000080-0008-0024-0000-000000000000	12	59	15	f	0	\N	0
 de189e01-0000-700f-9d62-98cca54b0af3	d7169e01-0000-719c-096f-ee61a334038f	00000080-0007-0034-0000-000000000000	16	86	15	f	3	\N	0
@@ -48038,8 +48117,15 @@ ca3f9e01-0000-7bd5-50e2-bc6ffa2f62d0	\N	00000080-0001-0000-0000-000000000000	38	
 01409e01-0000-7b1c-3662-1fc9c9ff8954	9d3c9e01-0000-7079-eb1b-a64574f51cc3	00000080-000b-0027-0000-000000000000	6	25.538000000000004	0	f	0	\N	0
 c64f9e01-0000-7cf4-bf54-b89675357c88	bc4f9e01-0000-7db5-f9f3-d366dee0d7cb	00000080-0005-0014-0000-000000000000	0	161.9334999999789	15	f	3	\N	0
 c74f9e01-0000-7301-415b-57867c578ee6	bc4f9e01-0000-7db5-f9f3-d366dee0d7cb	00000080-0005-0017-0000-000000000000	1	111.92883999997741	15	t	0	\N	0
+4b5e9e01-0000-7907-90bf-5d9227cfd02c	\N	00000080-000c-0088-0000-000000000000	14	1	0	f	0	\N	0
 6b4f9e01-0000-7c29-5453-1750c05df7f0	\N	00000080-000f-000a-0000-000000000000	67	1	0	f	0	\N	0
 7d4f9e01-0000-7af9-b9a0-8863d6721dcc	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000c-000f-0000-000000000000	14	1	0	f	0	\N	0
+4b5e9e01-0000-7d0b-3af4-451e6a0a2ef6	\N	00000080-000c-001f-0000-000000000000	13	1	0	f	0	\N	0
+4c5e9e01-0000-7664-4316-8404e6039ac5	\N	00000080-000e-000b-0000-000000000000	24	1	8	f	0	\N	0
+9d1d9e01-0000-7ad3-b49b-3fa0298db015	f6119e01-0000-78cc-4a04-a66c201c1dc4	00000080-000d-000c-0000-000000000000	9	64.88921999996484	0	f	0	\N	0
+095e9e01-0000-7325-40af-e15bfd6e9cda	92039e01-0000-70f1-afd4-69c7fadc4501	00000080-000a-001f-0000-000000000000	5	85.99999999590668	15	f	0	\N	0
+095e9e01-0000-74ad-136e-1dae605b6fc4	92039e01-0000-70f1-afd4-69c7fadc4501	00000080-0008-001f-0000-000000000000	3	85.99999999863556	15	f	0	\N	0
+4c5e9e01-0000-7afa-2bf5-81fc6f8f80fd	\N	00000080-000e-000b-0000-000000000000	23	1	8	f	0	\N	0
 44479e01-0000-7938-867d-c175d2415aed	\N	00000080-000d-0034-0000-000000000000	12	1	0	f	0	\N	0
 45479e01-0000-71df-d082-4d90341369a3	\N	00000080-000d-0034-0000-000000000000	13	1	0	f	0	\N	0
 46479e01-0000-73d1-b7b5-bce7cd21b445	\N	00000080-000d-0034-0000-000000000000	16	1	0	f	0	\N	0
@@ -48048,26 +48134,44 @@ c74f9e01-0000-7301-415b-57867c578ee6	bc4f9e01-0000-7db5-f9f3-d366dee0d7cb	000000
 f44e9e01-0000-708e-378b-3016dfa5723f	\N	00000080-0006-0000-0000-000000000000	17	21.955500000000104	0	f	0	\N	0
 f44e9e01-0000-77d6-485f-e1db09e413d4	\N	00000080-0000-0001-0000-000000000000	16	21.994080000000224	0	f	0	\N	0
 a84f9e01-0000-7039-4da8-abe17d7c6f53	a44f9e01-0000-7bcf-409d-7e41089ca566	00000080-0009-0049-0000-000000000000	4	88	15	f	0	\N	0
-9d1d9e01-0000-7ad3-b49b-3fa0298db015	f6119e01-0000-78cc-4a04-a66c201c1dc4	00000080-000d-000c-0000-000000000000	9	64.95105999998447	0	f	0	\N	0
+095e9e01-0000-7f72-7e20-558228dfe147	92039e01-0000-70f1-afd4-69c7fadc4501	00000080-0007-001f-0000-000000000000	2	85.99999999454224	15	f	0	\N	0
+095e9e01-0000-7f91-337c-6872f818c352	92039e01-0000-70f1-afd4-69c7fadc4501	00000080-000b-001f-0000-000000000000	6	85.9999999965889	15	f	0	\N	0
+095e9e01-0000-7e87-1392-dde70b84745d	92039e01-0000-70f1-afd4-69c7fadc4501	00000080-0009-001f-0000-000000000000	4	85.99999999522446	15	f	0	\N	0
 c44f9e01-0000-7b5f-6e72-b8e86d52869d	bc4f9e01-0000-7db5-f9f3-d366dee0d7cb	00000080-000b-002c-0000-000000000000	6	137.9150000000001	15	f	0	\N	0
 a84f9e01-0000-71f6-a433-3869a79a9a95	a44f9e01-0000-7bcf-409d-7e41089ca566	00000080-0007-0049-0000-000000000000	2	88	15	f	0	\N	0
 a84f9e01-0000-724f-62fa-f8a85e007e1f	a44f9e01-0000-7bcf-409d-7e41089ca566	00000080-0000-0023-0000-000000000000	0	98	15	t	0	\N	0
 c44f9e01-0000-7afe-feb2-34c36bded7da	bc4f9e01-0000-7db5-f9f3-d366dee0d7cb	00000080-0009-002c-0000-000000000000	4	73.05700000000013	15	f	0	\N	0
 c64f9e01-0000-7b57-b4fe-bda9642c0098	bc4f9e01-0000-7db5-f9f3-d366dee0d7cb	00000080-0007-002c-0000-000000000000	2	95.19450000000022	15	f	0	\N	0
 2e509e01-0000-715e-4f0b-3d108a15903b	bc4f9e01-0000-7db5-f9f3-d366dee0d7cb	00000080-000e-000e-0000-000000000000	31	1	0	f	0	\N	0
-37429e01-0000-77c9-c55f-750be8b80702	92039e01-0000-70f1-afd4-69c7fadc4501	00000080-000b-001f-0000-000000000000	6	147.34049848684592	15	f	0	\N	0
-38429e01-0000-74f1-296a-d562d879584e	92039e01-0000-70f1-afd4-69c7fadc4501	00000080-0007-001f-0000-000000000000	2	147.38099834630893	15	f	0	\N	0
 a84f9e01-0000-73d0-89b3-8b4a0d22ab58	a44f9e01-0000-7bcf-409d-7e41089ca566	00000080-000c-0031-0000-000000000000	7	200	15	f	0	\N	0
 a84f9e01-0000-7832-bd47-77cb18ad15e0	a44f9e01-0000-7bcf-409d-7e41089ca566	00000080-000b-0049-0000-000000000000	6	88	15	f	0	\N	0
 a84f9e01-0000-7ade-6a0c-77975c7abfec	a44f9e01-0000-7bcf-409d-7e41089ca566	00000080-0000-0023-0000-000000000000	1	98	15	t	0	\N	0
 a84f9e01-0000-7ae9-c0d4-319f8c2a4c69	a44f9e01-0000-7bcf-409d-7e41089ca566	00000080-0008-0049-0000-000000000000	3	88	15	f	0	\N	0
-37429e01-0000-72bd-6df2-45c5fe530af2	92039e01-0000-70f1-afd4-69c7fadc4501	00000080-000a-001f-0000-000000000000	5	147.69399835244766	15	f	0	\N	0
-37429e01-0000-7be1-9eb3-7a10fc19644b	92039e01-0000-70f1-afd4-69c7fadc4501	00000080-0009-001f-0000-000000000000	4	147.4589873108975	15	f	0	\N	0
 c44f9e01-0000-7df8-381e-49e92e40687d	bc4f9e01-0000-7db5-f9f3-d366dee0d7cb	00000080-000a-002c-0000-000000000000	5	137.53050000000007	15	f	0	\N	0
 b14f9e01-0000-7bfc-dbd0-33810782d178	a44f9e01-0000-7585-14fb-1a67927e4bd6	00000080-000e-001f-0000-000000000000	20	1	0	f	0	\N	0
 b94f9e01-0000-7929-0b56-bf53e556e39d	a44f9e01-0000-7585-14fb-1a67927e4bd6	00000080-000d-0016-0000-000000000000	15	52	2	f	0	\N	0
+095e9e01-0000-76e6-ce48-c4b4b71adc91	\N	00000080-000e-002b-0000-000000000000	20	1	0	f	0	\N	0
+0a5e9e01-0000-7779-16a9-8ffe5f4614d6	\N	00000080-000e-002b-0000-000000000000	36	1	0	f	0	\N	0
+0a5e9e01-0000-7db8-9ae4-5d8786d0309e	\N	00000080-000e-002b-0000-000000000000	45	1	0	f	0	\N	0
+0b5e9e01-0000-7269-8acf-5d803c434716	\N	00000080-000e-002b-0000-000000000000	14	1	0	f	0	\N	0
+0b5e9e01-0000-7580-8d68-3c4514b7717e	\N	00000080-000e-002b-0000-000000000000	12	1	0	f	0	\N	0
+0b5e9e01-0000-7749-7ee1-925d44ca0eea	\N	00000080-000e-002b-0000-000000000000	16	1	0	f	0	\N	0
 434f9e01-0000-79c4-5b2c-3970399a8180	\N	00000080-000e-0011-0000-000000000000	69	1	1	f	0	\N	0
+0b5e9e01-0000-7816-d5cf-b228980ae2b1	\N	00000080-000e-002b-0000-000000000000	15	1	0	f	0	\N	0
+0b5e9e01-0000-7a9d-6b9e-848914dd8554	\N	00000080-000e-002b-0000-000000000000	13	1	0	f	0	\N	0
 454f9e01-0000-71ac-e95a-c5c50e6f04b1	\N	00000080-000d-000d-0000-000000000000	14	52	2	f	0	\N	0
+4c5e9e01-0000-7dc1-2f9b-1b0cdfb7c672	\N	00000080-000e-000b-0000-000000000000	25	1	8	f	0	\N	0
+4c5e9e01-0000-7e7d-de95-17d8abaf4734	\N	00000080-000e-000b-0000-000000000000	12	1	8	f	0	\N	0
+4c5e9e01-0000-7082-d169-ddd1b5b75ce0	\N	00000080-000e-000b-0000-000000000000	32	1	8	f	0	\N	0
+4c5e9e01-0000-7299-80bc-c34d3c22bef9	\N	00000080-000e-000b-0000-000000000000	35	1	8	f	0	\N	0
+4c5e9e01-0000-742f-f187-f86663e862d7	\N	00000080-000e-000b-0000-000000000000	36	1	8	f	0	\N	0
+4c5e9e01-0000-7639-04ac-2b755aeea3fe	\N	00000080-000e-000b-0000-000000000000	34	1	8	f	0	\N	0
+4c5e9e01-0000-7676-7fcc-d3413eda03d4	\N	00000080-000e-000b-0000-000000000000	28	1	8	f	0	\N	0
+4c5e9e01-0000-76f3-4bff-fb806d18fe50	\N	00000080-000e-000b-0000-000000000000	30	1	8	f	0	\N	0
+4c5e9e01-0000-774c-1a6c-b5984268c287	\N	00000080-000e-000b-0000-000000000000	31	1	8	f	0	\N	0
+4c5e9e01-0000-7845-dae3-8ed6d1980260	\N	00000080-000e-000b-0000-000000000000	37	1	8	f	0	\N	0
+4c5e9e01-0000-7c26-3049-b0c51324e817	\N	00000080-000e-000b-0000-000000000000	29	1	8	f	0	\N	0
+4c5e9e01-0000-7cb4-243c-8348a19abf5a	\N	00000080-000e-000b-0000-000000000000	33	1	8	f	0	\N	0
 684f9e01-0000-7eb3-2009-f9dec9250e2b	\N	00000080-0009-0004-0000-000000000000	49	30	0	f	0	\N	0
 694f9e01-0000-7225-0b15-03a0b579863b	\N	00000080-0000-0004-0000-000000000000	43	26	2	t	0	\N	0
 694f9e01-0000-7b31-fef1-34a85bd2601e	\N	00000080-000e-0008-0000-000000000000	41	1	0	f	0	\N	0
@@ -48081,13 +48185,11 @@ d34f9e01-0000-78fe-c497-8b3617196384	\N	00000080-000d-001c-0000-000000000000	13	
 87359e01-0000-781b-691a-cb9888abf011	\N	00000080-000e-0016-0000-000000000000	44	1	0	f	0	\N	0
 34509e01-0000-74f8-5027-92b1eb637bd0	bc4f9e01-0000-7db5-f9f3-d366dee0d7cb	00000080-0004-0017-0000-000000000000	46	95	0	t	1	\N	0
 87359e01-0000-7be1-cdd2-f5fff254fab4	\N	00000080-000c-000f-0000-000000000000	45	1	0	f	0	\N	0
-82279e01-0000-7a3c-9fd7-358adcf93cad	92039e01-0000-70f1-afd4-69c7fadc4501	00000080-000c-0026-0000-000000000000	7	186.69349872221284	15	f	0	\N	0
-aa549e01-0000-7543-e7c3-5227eb3c65e6	1c3b9e01-0000-71e3-1f57-9761f741008a	00000080-000c-0070-0000-000000000000	12	1	0	f	0	\N	0
-aa549e01-0000-78db-9b7c-5f2192887083	1c3b9e01-0000-71e3-1f57-9761f741008a	00000080-0000-001a-0000-000000000000	13	105	0	t	3	\N	0
-aa549e01-0000-79a5-fd13-d7d6169974d2	1c3b9e01-0000-71e3-1f57-9761f741008a	00000080-000c-0070-0000-000000000000	14	1	0	f	0	\N	0
-aa549e01-0000-7ef6-6e4b-85c3a9f96a9d	1c3b9e01-0000-71e3-1f57-9761f741008a	00000080-0004-0015-0000-000000000000	15	108	0	t	0	\N	0
-32509e01-0000-789e-b537-811fb9b27def	92039e01-0000-70f1-afd4-69c7fadc4501	00000080-0004-0017-0000-000000000000	1	141.83107999994638	15	t	3	\N	0
+82279e01-0000-7a3c-9fd7-358adcf93cad	92039e01-0000-70f1-afd4-69c7fadc4501	00000080-000c-0026-0000-000000000000	7	186.69349866149523	15	f	0	\N	0
+825a9e01-0000-7323-8692-f2f187a14cf0	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-000f-0005-0000-000000000000	17	1	0	f	0	\N	0
+825a9e01-0000-7523-c81d-50e7db9e29f1	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-000f-0004-0000-000000000000	16	1	0	f	0	\N	0
 49479e01-0000-7f19-66c3-46ac715cea00	\N	00000080-000d-0034-0000-000000000000	17	1	0	f	0	\N	0
+825a9e01-0000-7b2b-6752-b9e4a2f05f47	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-000f-0008-0000-000000000000	28	1	0	f	0	\N	0
 bd3e9e01-0000-7132-3612-fde1dbf568ac	\N	00000080-0001-0000-0000-000000000000	16	19	1	f	0	\N	0
 be3e9e01-0000-7eb5-5a27-297de218046d	\N	00000080-000a-0005-0000-000000000000	60	30	0	f	0	\N	0
 bf3e9e01-0000-70a8-b01a-29857ced76f8	\N	00000080-0004-0008-0000-000000000000	54	22	0	f	0	\N	0
@@ -48150,6 +48252,7 @@ a8279e01-0000-79bc-f85d-85082c8e8a0a	\N	00000080-000c-0000-0000-000000000000	16	
 a8279e01-0000-7e54-982f-55e80852f9a7	\N	00000080-000c-0026-0000-000000000000	12	220	15	f	0	\N	0
 89359e01-0000-7593-fbc1-f686dc244a79	\N	00000080-000e-0016-0000-000000000000	22	1	0	f	0	\N	0
 89359e01-0000-7849-dfd9-73eaf42e5480	\N	00000080-000c-000f-0000-000000000000	12	1	0	f	0	\N	0
+835a9e01-0000-7353-e3c9-eda6a48e0351	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-000f-001c-0000-000000000000	48	1	0	f	0	\N	0
 da279e01-0000-72e8-9fca-02ecbedc29d8	\N	00000080-000d-0014-0000-000000000000	13	30	2	f	0	\N	0
 a9279e01-0000-7a21-2241-55feda91ba9f	\N	00000080-0004-000f-0000-000000000000	34	255	2	f	0	\N	0
 a9279e01-0000-7ac7-80ff-b89a395c7649	\N	00000080-0004-000f-0000-000000000000	37	255	2	f	0	\N	0
@@ -48163,16 +48266,39 @@ a9279e01-0000-7ef5-0554-69130b18088e	\N	00000080-0004-000f-0000-000000000000	17	
 a9279e01-0000-7f21-66e8-b7b2ab71837d	\N	00000080-0004-000f-0000-000000000000	22	255	2	f	0	\N	0
 cc279e01-0000-73f9-e229-4f4c8539836d	\N	00000080-0007-0004-0000-000000000000	12	30	2	f	0	\N	0
 cc279e01-0000-7e52-d172-cee74dc19e79	\N	00000080-0009-0007-0000-000000000000	14	36	3	f	0	\N	0
+4c5e9e01-0000-7f9a-911e-64fc8b740d81	\N	00000080-000e-000b-0000-000000000000	26	1	8	f	0	\N	0
+4d5e9e01-0000-7324-2c22-a4a655b9280b	\N	00000080-000e-000b-0000-000000000000	31	1	8	f	0	\N	0
+4d5e9e01-0000-7590-18a1-4a307ac2ac93	\N	00000080-000e-000b-0000-000000000000	12	1	8	f	0	\N	0
+4d5e9e01-0000-7743-086d-b976e2915caf	\N	00000080-000e-000b-0000-000000000000	23	1	8	f	0	\N	0
+4d5e9e01-0000-776b-aed1-4a6501d65822	\N	00000080-000e-000b-0000-000000000000	26	1	8	f	0	\N	0
+4d5e9e01-0000-77bd-d5f2-96ca13d127bb	\N	00000080-000e-000b-0000-000000000000	24	1	8	f	0	\N	0
+4d5e9e01-0000-77ef-61d0-8255099a71cf	\N	00000080-000e-000b-0000-000000000000	28	1	8	f	0	\N	0
+4d5e9e01-0000-78e6-efbb-f401ce10e6b7	\N	00000080-000e-000b-0000-000000000000	32	1	8	f	0	\N	0
+4d5e9e01-0000-7908-98e0-8d39a5ff555f	\N	00000080-000e-000b-0000-000000000000	30	1	8	f	0	\N	0
 da279e01-0000-7b4a-b7c3-0406952051a1	\N	00000080-000d-0014-0000-000000000000	12	30	1	f	0	\N	0
+4d5e9e01-0000-79d3-2f88-9868afaae75a	\N	00000080-000e-000b-0000-000000000000	29	1	8	f	0	\N	0
+4d5e9e01-0000-7cd1-7ecf-8d54f59264ef	\N	00000080-000e-000b-0000-000000000000	25	1	8	f	0	\N	0
 dd279e01-0000-719b-eac3-a8f306086dc6	\N	00000080-000c-0025-0000-000000000000	7	244.915	15	f	0	\N	0
+3f509e01-0000-76f6-210d-4f3d24ccc97a	92039e01-0000-70f1-afd4-69c7fadc4501	00000080-000d-0050-0000-000000000000	8	254.98896822327882	0	f	0	\N	0
 dd279e01-0000-71cf-4128-7c954e2ba911	\N	00000080-0005-000a-0000-000000000000	0	243.81459999994115	15	f	0	\N	0
 dd279e01-0000-7438-129a-bb58c5c1371e	\N	00000080-0007-001e-0000-000000000000	50	148	15	f	0	\N	0
 dd279e01-0000-75ca-8838-6edebaace37c	\N	00000080-0006-0014-0000-000000000000	1	112.236	15	f	3	\N	0
-3f509e01-0000-7e8b-61fb-73315bc4a2ea	92039e01-0000-70f1-afd4-69c7fadc4501	00000080-000d-004c-0000-000000000000	10	254.99598888818025	0	f	0	\N	0
-3f509e01-0000-76f6-210d-4f3d24ccc97a	92039e01-0000-70f1-afd4-69c7fadc4501	00000080-000d-0050-0000-000000000000	8	254.98896862237777	0	f	0	\N	0
+0f5e9e01-0000-7a97-aa80-9a45de44509d	\N	00000080-000c-008f-0000-000000000000	12	1	0	f	0	\N	0
+105e9e01-0000-7556-e1e3-35d456d11074	\N	00000080-000e-002c-0000-000000000000	15	1	0	f	0	\N	0
 083f9e01-0000-7461-115d-e3c833cd6556	0e3f9e01-0000-7f13-fa7b-a5bfc4d53609	00000080-0001-0000-0000-000000000000	24	19	1	f	0	\N	0
 dd279e01-0000-761a-2193-7c40d5523740	\N	00000080-0009-001e-0000-000000000000	44	148	15	f	0	\N	0
 dd279e01-0000-7802-7e11-80da207c1227	\N	00000080-0008-001e-0000-000000000000	46	148	15	f	0	\N	0
+105e9e01-0000-75df-9174-529fb3e65a90	\N	00000080-000c-008f-0000-000000000000	13	1	0	f	0	\N	0
+105e9e01-0000-773e-cf21-8df53196e6c7	\N	00000080-000c-008f-0000-000000000000	14	1	0	f	0	\N	0
+825a9e01-0000-71cb-fa66-3ca8b258a7c7	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-000f-000c-0000-000000000000	32	1	0	f	0	\N	0
+825a9e01-0000-71ff-0c3b-ed0183da9a58	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-000f-0009-0000-000000000000	29	1	0	f	0	\N	0
+825a9e01-0000-72d3-865e-5bc03a0b05bd	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-000f-000b-0000-000000000000	31	1	0	f	0	\N	0
+825a9e01-0000-7620-9516-96be2d6351cd	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-000f-000d-0000-000000000000	33	1	0	f	0	\N	0
+825a9e01-0000-7b1d-d732-aa1c3db0381b	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-000f-000f-0000-000000000000	35	1	0	f	0	\N	0
+825a9e01-0000-7bf8-d3cb-fee1b720f6cb	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-000f-0010-0000-000000000000	44	1	0	f	0	\N	0
+825a9e01-0000-7d8d-ad7b-6dd060228f2f	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-000f-0011-0000-000000000000	45	1	0	f	0	\N	0
+825a9e01-0000-7e26-8489-585e9ef045e1	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-000f-0012-0000-000000000000	46	1	0	f	0	\N	0
+835a9e01-0000-7ca5-2130-4be29da5d417	80019e01-0000-7dd3-7532-ee0fd0cd5c4d	00000080-000f-001d-0000-000000000000	49	1	0	f	0	\N	0
 06ff9d01-0000-75c1-0587-837c3a6892bd	00001000-00e6-0000-0000-000000000000	00000080-0003-0004-0000-000000000000	32	58	0	t	0	\N	0
 06ff9d01-0000-7631-24de-06ed0468c64e	00001000-00e6-0000-0000-000000000000	00000080-0003-0005-0000-000000000000	0	38	0	f	0	\N	0
 06ff9d01-0000-73cc-c75f-21611d9cc21d	00001000-00f3-0000-0000-000000000000	00000080-000b-000e-0000-000000000000	66	45	0	f	0	\N	0
@@ -48304,7 +48430,6 @@ f84e9e01-0000-79fe-dc3c-f24275f8cf72	\N	00000080-0006-0000-0000-000000000000	36	
 5d419e01-0000-7054-5343-c86a56205ee2	9d3c9e01-0000-7079-eb1b-a64574f51cc3	00000080-0004-0000-0000-000000000000	38	21	1	f	0	\N	0
 20379e01-0000-7972-694e-56f108e210ae	\N	00000080-0008-0005-0000-000000000000	26	30	7	f	0	\N	0
 5d419e01-0000-74bc-da7d-ffa2ad8b8ad1	9d3c9e01-0000-7079-eb1b-a64574f51cc3	00000080-0007-0002-0000-000000000000	34	28	0	f	0	\N	0
-07409e01-0000-737e-df5f-dae739e7dbf5	f6119e01-0000-78cc-4a04-a66c201c1dc4	00000080-0000-001c-0000-000000000000	1	151.9530599999851	15	t	3	\N	0
 56409e01-0000-70b8-36be-7ab425633bdf	\N	00000080-000d-0014-0000-000000000000	12	30	1	f	0	\N	0
 56409e01-0000-7297-f3ba-ca46768873a9	\N	00000080-000d-0014-0000-000000000000	13	30	2	f	0	\N	0
 5e419e01-0000-7184-07b3-dd5ea3071bf0	\N	00000080-0005-0004-0000-000000000000	12	65	3	f	0	\N	0
@@ -48322,7 +48447,6 @@ a63c9e01-0000-7836-6b34-862534e3eb93	\N	00000080-0001-0001-0000-000000000000	21	
 a63c9e01-0000-7b70-578a-65082f787285	\N	00000080-0006-000a-0000-000000000000	15	35	0	t	0	\N	0
 a63c9e01-0000-7e5b-b74f-9dcd9932c217	\N	00000080-0009-0005-0000-000000000000	20	33	3	f	0	\N	0
 54409e01-0000-77d6-af10-69545ff16967	\N	00000080-000e-0001-0000-000000000000	37	50	0	f	0	\N	0
-0b409e01-0000-7dd0-b3ad-419404005e78	f6119e01-0000-78cc-4a04-a66c201c1dc4	00000080-0000-001c-0000-000000000000	0	151.95221999998483	15	t	3	\N	0
 a63c9e01-0000-7647-78c1-24159bbd89a6	\N	00000080-0001-0000-0000-000000000000	37	18.999300000000027	1	f	0	\N	0
 5e419e01-0000-76c9-73e8-9631f666e6e4	9d3c9e01-0000-7079-eb1b-a64574f51cc3	00000080-000b-0002-0000-000000000000	56	28	0	f	0	\N	0
 5e419e01-0000-7a14-44c6-9c0c4988e7e8	9d3c9e01-0000-7079-eb1b-a64574f51cc3	00000080-000a-0005-0000-000000000000	58	30	0	f	0	\N	0
@@ -48339,7 +48463,9 @@ a63c9e01-0000-7647-78c1-24159bbd89a6	\N	00000080-0001-0000-0000-000000000000	37	
 57409e01-0000-72bd-626c-473d8d2e75c0	\N	00000080-0004-000f-0000-000000000000	18	255	2	f	0	\N	0
 56409e01-0000-7028-ebf9-46a8a460bda9	\N	00000080-000d-0014-0000-000000000000	13	30	2	f	0	\N	0
 57409e01-0000-72cc-023a-fc68046adc6b	\N	00000080-0004-000f-0000-000000000000	40	255	2	f	0	\N	0
+07409e01-0000-737e-df5f-dae739e7dbf5	f6119e01-0000-78cc-4a04-a66c201c1dc4	00000080-0000-001c-0000-000000000000	1	151.89313999996608	15	t	3	\N	0
 913f9e01-0000-7ce6-eed0-bbefe6429975	\N	00000080-000b-000a-0000-000000000000	46	22	0	f	0	\N	0
+0b409e01-0000-7dd0-b3ad-419404005e78	f6119e01-0000-78cc-4a04-a66c201c1dc4	00000080-0000-001c-0000-000000000000	0	151.89151999996557	15	t	3	\N	0
 06ff9d01-0000-7cb5-662c-c0720660ee43	00001000-00f3-0000-0000-000000000000	00000080-0004-0002-0000-000000000000	60	28	0	t	0	\N	0
 06ff9d01-0000-7f10-61f0-38a2331660a5	00001000-00f3-0000-0000-000000000000	00000080-0008-000d-0000-000000000000	16	38	0	f	0	\N	0
 06ff9d01-0000-7fab-2bc8-c26db3a9909c	00001000-00f3-0000-0000-000000000000	00000080-0004-0001-0000-000000000000	46	24	0	t	0	\N	0
@@ -48411,16 +48537,9 @@ ab4f9e01-0000-7e4e-842b-faf9d6c9f4e9	a44f9e01-0000-7585-14fb-1a67927e4bd6	000000
 5b4f9e01-0000-7b2d-cce6-1b5edaedd470	\N	00000080-0004-000a-0000-000000000000	50	31	0	f	0	\N	0
 5b4f9e01-0000-7f7e-57a4-113c2254e0d5	\N	00000080-0004-0002-0000-000000000000	16	29	1	f	0	\N	0
 5b4f9e01-0000-7f94-9c09-0b4625a7848c	\N	00000080-000f-0005-0000-000000000000	34	1	0	f	0	\N	0
-924f9e01-0000-72dc-c4e5-a5265fd266bf	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	16	255	0	f	0	\N	0
-924f9e01-0000-72e1-8efa-4f06e5dfa2a0	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	18	255	0	f	0	\N	0
-924f9e01-0000-7301-bbf1-3f0049571d5f	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	13	255	0	f	0	\N	0
-924f9e01-0000-74d2-c5d7-3a58874c5d66	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	20	50	0	f	0	\N	0
-924f9e01-0000-7719-0097-e08dac447f41	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	17	255	0	f	0	\N	0
-924f9e01-0000-7813-0b9e-61dee7395907	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	12	255	0	f	0	\N	0
 934f9e01-0000-7727-8cb2-beb68ba67518	\N	00000080-0008-0002-0000-000000000000	21	28	7	f	0	\N	0
 ac4f9e01-0000-7ebc-c842-8f0e5bcde489	\N	00000080-0004-0009-0000-000000000000	16	26	9	t	0	\N	0
 ad4f9e01-0000-7930-3986-7b04d7e91c20	a44f9e01-0000-7585-14fb-1a67927e4bd6	00000080-0007-001f-0000-000000000000	2	148	15	f	0	\N	0
-924f9e01-0000-76d7-5f41-11e42e94449d	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	19	116	0	f	0	\N	0
 b34f9e01-0000-7caa-c67b-911ac60497e7	a44f9e01-0000-7585-14fb-1a67927e4bd6	00000080-000c-0003-0000-000000000000	7	247	15	f	0	\N	0
 b44f9e01-0000-7beb-3dad-6b79dfbe1eb8	\N	00000080-000a-0023-0000-000000000000	66	54	7	f	0	\N	0
 b54f9e01-0000-7693-89cc-2d801f89b4be	\N	00000080-0007-0033-0000-000000000000	15	88	2	f	1	\N	0
@@ -48462,7 +48581,6 @@ f3419e01-0000-7dea-ab17-492adec335ef	00001000-01a0-0000-0000-000000000000	000000
 8f459e01-0000-75ca-b9f9-493c7dc40c7b	8f459e01-0000-7b34-602a-7a95198fad7d	00000080-0000-0001-0000-000000000000	0	21.99812000000007	0	f	0	\N	0
 2d4f9e01-0000-7ca6-9a33-bcf3f2516df6	\N	00000080-0001-0001-0000-000000000000	36	21	1	f	0	\N	0
 2d4f9e01-0000-7d71-12c1-a70bc3feb91c	\N	00000080-000a-0002-0000-000000000000	57	30	2	f	0	\N	0
-644e9e01-0000-7cdd-e075-cea5541c3e0e	92039e01-0000-70f1-afd4-69c7fadc4501	00000080-0004-000f-0000-000000000000	0	255	2	f	0	\N	0
 f84e9e01-0000-7a21-ef8c-b615be18fb6a	\N	00000080-0006-0004-0000-000000000000	38	24	0	t	0	\N	0
 f84e9e01-0000-7a67-5c44-c13c4677f7d8	\N	00000080-0000-0001-0000-000000000000	14	23	1	f	0	\N	0
 f84e9e01-0000-7d9f-9795-4662d8dc5737	\N	00000080-0004-0008-0000-000000000000	33	22	0	t	0	\N	0
@@ -48487,22 +48605,8 @@ f84e9e01-0000-7eae-2926-5b5d585788f6	\N	00000080-0007-0005-0000-000000000000	20	
 624f9e01-0000-700a-7748-b382161e2e4b	\N	00000080-000d-000d-0000-000000000000	71	52	2	f	0	\N	0
 634f9e01-0000-7445-ba8c-a5eb7d781fca	\N	00000080-000d-000d-0000-000000000000	73	52	2	f	0	\N	0
 634f9e01-0000-787d-46d0-7db22e2b7f06	\N	00000080-000e-0011-0000-000000000000	72	1	1	f	0	\N	0
-784f9e01-0000-7208-bc35-3d376c2b6a6e	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000a-0003-0000-000000000000	5	41.00699999999978	3	f	0	\N	0
-784f9e01-0000-790a-1f6f-a97c188654e7	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000b-0003-0000-000000000000	6	41.102999999999824	3	f	0	\N	0
-9e4f9e01-0000-716c-8a20-ccebef0d1092	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	21	255	0	f	0	\N	0
-9e4f9e01-0000-7362-281e-86b7a135237c	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	31	255	0	f	0	\N	0
-9e4f9e01-0000-755a-41fa-5800bad0ed4a	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	30	255	0	f	0	\N	0
-9e4f9e01-0000-75f7-a1b1-930dec331c41	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	22	255	0	f	0	\N	0
-9e4f9e01-0000-7641-44b1-38a5f912203e	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	24	255	0	f	0	\N	0
-9e4f9e01-0000-7518-0fb5-62e45f6212db	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	27	208	0	f	0	\N	0
 9b4f9e01-0000-7745-475d-6961498ac26d	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-000d-0000-000000000000	23	1	0	f	0	\N	0
-9e4f9e01-0000-7684-9472-3df2023d494a	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	25	255	0	f	0	\N	0
-9e4f9e01-0000-78a7-417f-fca71e94f11e	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	26	255	0	f	0	\N	0
-9e4f9e01-0000-78af-a528-3af7fbfd743d	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	28	255	0	f	0	\N	0
-9e4f9e01-0000-7b2c-d8fa-927f4c5ee655	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	29	255	0	f	0	\N	0
-9e4f9e01-0000-7b48-e738-28328b3dfe29	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	32	255	0	f	0	\N	0
 ae4f9e01-0000-7472-34a6-7ba17f85aee7	a44f9e01-0000-7585-14fb-1a67927e4bd6	00000080-0007-001f-0000-000000000000	18	86	15	f	0	\N	0
-01599e01-0000-7519-5234-8e51a2e53ce9	92039e01-0000-70f1-afd4-69c7fadc4501	00000080-0008-001f-0000-000000000000	3	86	15	f	0	\N	0
 304f9e01-0000-70d9-276e-56d8561dd486	\N	00000080-000e-0011-0000-000000000000	67	1	1	f	0	\N	0
 fd419e01-0000-7376-5f66-f7e5d3c55567	\N	00000080-0001-0000-0000-000000000000	58	19	1	f	0	\N	0
 fd419e01-0000-73e8-3054-65a5a92bcb6e	\N	00000080-000e-0011-0000-000000000000	59	1	1	f	0	\N	0
@@ -48511,11 +48615,11 @@ fd419e01-0000-79fd-dbbc-ad461b09b675	\N	00000080-0000-0001-0000-000000000000	12	
 fe419e01-0000-7f58-0fc3-b8b3a5073a41	\N	00000080-000e-0011-0000-000000000000	67	1	1	f	0	\N	0
 304f9e01-0000-7966-0f67-d1c54e284657	\N	00000080-000f-0005-0000-000000000000	64	1	0	f	0	\N	0
 fd419e01-0000-7ae0-db7b-fe7dc693091d	243f9e01-0000-7028-94cc-703dbef90db7	00000080-000d-0010-0000-000000000000	35	1	1	f	0	\N	0
-674f9e01-0000-75b5-4c8b-868295a4417d	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-0008-0003-0000-000000000000	3	40.774000000000385	3	f	0	\N	0
+674f9e01-0000-7594-cde4-1ad4e70f3015	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-0005-0005-0000-000000000000	0	65.29809999977721	3	f	0	\N	0
 46459e01-0000-725b-0bdb-f6600e212bf7	\N	00000080-000d-0004-0000-000000000000	13	255	1	f	0	\N	0
 304f9e01-0000-7a3d-6a8b-8b6ecd449463	\N	00000080-0008-0000-0000-000000000000	65	34	0	f	0	\N	0
 90459e01-0000-75b2-0fd3-2a844e72e530	8f459e01-0000-7b34-602a-7a95198fad7d	00000080-000d-0004-0000-000000000000	8	254.99831999999986	11	f	0	\N	2869128
-794f9e01-0000-7a9c-0abb-b0c7c42e8641	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-0006-0006-0000-000000000000	1	35.987999999999836	3	t	0	\N	0
+674f9e01-0000-75af-2b85-71453c6cb92e	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-0009-0003-0000-000000000000	4	34.29899999999999	3	f	0	\N	0
 03599e01-0000-7caf-8aa7-c6c445e91c50	\N	00000080-0000-0023-0000-000000000000	14	98	15	t	0	\N	0
 3f319e01-0000-7494-fafe-546be800ceea	00001000-01a1-0000-0000-000000000000	00000080-000a-0019-0000-000000000000	61	42	0	f	0	\N	0
 3f319e01-0000-7d74-16c0-0d88d08780d4	00001000-01a1-0000-0000-000000000000	00000080-000b-0019-0000-000000000000	77	42	0	f	0	\N	0
@@ -48524,8 +48628,9 @@ fd419e01-0000-7ae0-db7b-fe7dc693091d	243f9e01-0000-7028-94cc-703dbef90db7	000000
 06ff9d01-0000-750e-edae-90641ecf74d2	00001000-00fe-0000-0000-000000000000	00000080-0007-0004-0000-000000000000	18	30	0	f	0	\N	0
 06ff9d01-0000-7adc-df29-d8e2fd5133f9	00001000-00fe-0000-0000-000000000000	00000080-0008-0007-0000-000000000000	36	36	0	f	0	\N	0
 04599e01-0000-7b58-c6fd-6c3a3f124e1f	\N	00000080-000c-0032-0000-000000000000	17	220	15	f	0	\N	0
-674f9e01-0000-75af-2b85-71453c6cb92e	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-0009-0003-0000-000000000000	4	41.083499999999766	3	f	0	\N	0
-00599e01-0000-7dd4-a039-422afec8abdd	92039e01-0000-70f1-afd4-69c7fadc4501	00000080-0000-0023-0000-000000000000	12	98	15	t	0	\N	0
+674f9e01-0000-75b5-4c8b-868295a4417d	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-0008-0003-0000-000000000000	3	34.84600000000061	3	f	0	\N	0
+794f9e01-0000-7a9c-0abb-b0c7c42e8641	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-0006-0006-0000-000000000000	1	29.69950000000012	3	t	0	\N	0
+785e9e01-0000-73ba-be85-07e7fbd55635	\N	00000080-000e-000d-0000-000000000000	12	1	0	f	0	\N	0
 684f9e01-0000-723a-0087-d337e6289442	\N	00000080-0000-0002-0000-000000000000	19	26	3	f	0	\N	0
 2f4f9e01-0000-706b-dadb-839b66624982	\N	00000080-0007-0004-0000-000000000000	32	30	0	f	0	\N	0
 2f4f9e01-0000-713f-1d58-91e8ce8e6c02	\N	00000080-000f-0002-0000-000000000000	34	1	0	f	0	\N	0
@@ -48543,14 +48648,25 @@ fd419e01-0000-7ae0-db7b-fe7dc693091d	243f9e01-0000-7028-94cc-703dbef90db7	000000
 304f9e01-0000-70b7-65f9-8ac88d21e915	\N	00000080-0009-0000-0000-000000000000	50	35	1	f	0	\N	0
 684f9e01-0000-7dde-0757-8be7a97277a1	\N	00000080-000b-000b-0000-000000000000	31	27	1	f	0	\N	0
 684f9e01-0000-7fda-dc0c-ec558532c829	\N	00000080-0008-0000-0000-000000000000	21	34	0	f	0	\N	0
+785e9e01-0000-7cae-bc16-17e2193b4ce2	\N	00000080-000e-000d-0000-000000000000	13	1	0	f	0	\N	0
+785e9e01-0000-7fbf-2c88-cb9159b9c401	\N	00000080-000e-000d-0000-000000000000	14	1	0	f	0	\N	0
 5b4f9e01-0000-790f-cd3f-fa93d117cdd0	\N	00000080-0007-0000-0000-000000000000	36	35	1	f	0	\N	0
 5b4f9e01-0000-79dc-d7c4-51bf6645fc28	\N	00000080-000f-0002-0000-000000000000	35	1	0	f	0	\N	0
 644f9e01-0000-7012-e7e2-357edb7637a0	\N	00000080-000d-0009-0000-000000000000	12	51	1	f	0	\N	0
 664f9e01-0000-758b-ef60-11ab8e01a876	\N	00000080-0006-0000-0000-000000000000	20	22	7	f	0	\N	0
+7a5e9e01-0000-762b-9a3c-2d8cfb65363e	\N	00000080-000c-001e-0000-000000000000	12	1	0	f	0	\N	0
+2c5e9e01-0000-701f-0a95-8fd102eeb722	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	40	255	0	f	0	\N	0
+2c5e9e01-0000-707c-826c-6c3237ff5d28	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	60	255	0	f	0	\N	0
+7a5e9e01-0000-7a42-2a03-d00ea287a6e8	\N	00000080-000c-001e-0000-000000000000	12	1	0	f	0	\N	0
 794f9e01-0000-7ace-77a4-16b0f1a19878	\N	00000080-000f-0001-0000-000000000000	13	1	0	f	0	\N	0
+2c5e9e01-0000-70e0-94f0-bf208053cfa5	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	26	255	0	f	0	\N	0
+2c5e9e01-0000-729a-6956-8b7afdd55556	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	36	255	0	f	0	\N	0
+2c5e9e01-0000-72f3-c549-a0010ad33837	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	42	255	0	f	0	\N	0
+2c5e9e01-0000-7329-a49c-48c4fb00bcb4	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	53	255	0	f	0	\N	0
+2c5e9e01-0000-736c-d99e-ab3a928e69fd	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	43	255	0	f	0	\N	0
+2c5e9e01-0000-73bf-a766-5b136f7a0496	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	17	255	0	f	0	\N	0
 ae4f9e01-0000-71d2-c078-856b9dc9562e	a44f9e01-0000-7585-14fb-1a67927e4bd6	00000080-000b-001f-0000-000000000000	6	148	15	f	0	\N	0
 b14f9e01-0000-7075-6301-05fd695166c8	a44f9e01-0000-7585-14fb-1a67927e4bd6	00000080-000e-001f-0000-000000000000	28	1	0	f	0	\N	0
-674f9e01-0000-7594-cde4-1ad4e70f3015	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-0005-0005-0000-000000000000	0	65.86619999995753	3	f	0	\N	0
 a44f9e01-0000-733d-1522-899b37ef2b87	a44f9e01-0000-7585-14fb-1a67927e4bd6	00000080-000d-0014-0000-000000000000	10	28.3425	2	f	0	\N	0
 ae4f9e01-0000-77e6-63ae-ccfa9863dfdc	a44f9e01-0000-7585-14fb-1a67927e4bd6	00000080-0009-001f-0000-000000000000	4	148	15	f	0	\N	0
 a44f9e01-0000-7428-8cd6-23085c322a5d	a44f9e01-0000-7585-14fb-1a67927e4bd6	00000080-000d-0014-0000-000000000000	11	31	1	f	0	\N	0
@@ -48613,9 +48729,12 @@ bc4e9e01-0000-7945-ab3a-309b86353b00	bc4e9e01-0000-7f07-2c03-b472bac63c72	000000
 3e4f9e01-0000-764b-f43a-5522e778cfc7	\N	00000080-0004-0009-0000-000000000000	31	28	2	f	0	\N	0
 3e4f9e01-0000-769b-d46d-612a10478dc1	\N	00000080-000d-0010-0000-000000000000	35	1	1	f	0	\N	0
 bc4e9e01-0000-7be9-1cfc-4e8cb8049d14	bc4e9e01-0000-7f07-2c03-b472bac63c72	00000080-0001-0000-0000-000000000000	0	17.99840000000006	0	f	0	\N	0
-07599e01-0000-7f9a-3ed8-20be2fd0f7a8	05599e01-0000-7478-8f12-9baeb4b168f2	00000080-0008-0049-0000-000000000000	3	148.1255	15	f	0	\N	0
-06599e01-0000-7076-b78d-f4bc4ccc64be	05599e01-0000-7478-8f12-9baeb4b168f2	00000080-000c-0032-0000-000000000000	7	215.35349999999997	15	f	0	\N	0
-06599e01-0000-7f14-17cd-1112017c61aa	05599e01-0000-7478-8f12-9baeb4b168f2	00000080-0007-0049-0000-000000000000	2	84.07349999999997	15	f	0	\N	0
+07599e01-0000-7f9a-3ed8-20be2fd0f7a8	05599e01-0000-7478-8f12-9baeb4b168f2	00000080-0008-0049-0000-000000000000	3	148.12449999999998	15	f	0	\N	0
+06599e01-0000-7f14-17cd-1112017c61aa	05599e01-0000-7478-8f12-9baeb4b168f2	00000080-0007-0049-0000-000000000000	2	84.07149999999996	15	f	0	\N	0
+06599e01-0000-7076-b78d-f4bc4ccc64be	05599e01-0000-7478-8f12-9baeb4b168f2	00000080-000c-0032-0000-000000000000	7	214.79049999999995	15	f	0	\N	0
+784f9e01-0000-7208-bc35-3d376c2b6a6e	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000a-0003-0000-000000000000	5	34.77550000000002	3	f	0	\N	0
+784f9e01-0000-790a-1f6f-a97c188654e7	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000b-0003-0000-000000000000	6	33.10500000000004	3	f	0	\N	0
+2c5e9e01-0000-7408-26e1-16e361f268b5	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	20	255	0	f	0	\N	0
 3e4f9e01-0000-7823-6294-84e08780b05b	\N	00000080-0009-0004-0000-000000000000	47	30	0	f	0	\N	0
 3e4f9e01-0000-7920-3c72-1c1f869ac66c	\N	00000080-0006-0006-0000-000000000000	18	35	1	f	0	\N	0
 3e4f9e01-0000-7966-94dc-bff2d5ef3111	\N	00000080-0006-0001-0000-000000000000	33	31	3	f	0	\N	0
@@ -48623,14 +48742,18 @@ bc4e9e01-0000-7be9-1cfc-4e8cb8049d14	bc4e9e01-0000-7f07-2c03-b472bac63c72	000000
 3e4f9e01-0000-7ad3-65e8-c55dd8d458bb	\N	00000080-000b-0005-0000-000000000000	16	30	6	f	0	\N	0
 3e4f9e01-0000-7c60-6d72-8143a9fc8de7	\N	00000080-000a-000b-0000-000000000000	21	28	2	f	0	\N	0
 3f4f9e01-0000-7476-f6ec-7e682802c2fd	\N	00000080-0006-000a-0000-000000000000	66	35	0	t	0	\N	0
-3d4f9e01-0000-747d-91a8-707fad7d2cc2	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	15	52	0	f	0	\N	0
+2c5e9e01-0000-749b-6f37-b966d787906f	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	51	252	0	f	0	\N	0
+2c5e9e01-0000-74ba-cfbf-becab4df72a2	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	24	255	0	f	0	\N	0
+2c5e9e01-0000-7555-4b73-edbc04fa7961	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	21	255	0	f	0	\N	0
+2c5e9e01-0000-756d-6788-b10b7d5d2391	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	37	255	0	f	0	\N	0
+2c5e9e01-0000-763b-ad7b-def5e07f8a04	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	15	255	0	f	0	\N	0
+2c5e9e01-0000-7660-84b7-cfeaad7833b6	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	30	255	0	f	0	\N	0
 1e429e01-0000-794e-2911-f751a98d5344	\N	00000080-000e-000d-0000-000000000000	12	1	0	f	0	\N	0
 b2429e01-0000-7213-9882-8efca8b7ab0a	\N	00000080-000e-0000-0000-000000000000	75	1	1	f	0	\N	0
-09599e01-0000-73c6-0c93-47251e3ec8ce	05599e01-0000-7478-8f12-9baeb4b168f2	00000080-000b-0049-0000-000000000000	6	83.73549999999999	15	f	0	\N	0
+09599e01-0000-763c-a697-0dd6ad7d9a28	05599e01-0000-7478-8f12-9baeb4b168f2	00000080-0000-0023-0000-000000000000	0	97.09531999971284	15	t	0	\N	0
 fe499e01-0000-76c3-8507-71fb0efd3fe2	fd499e01-0000-717f-ddf0-8a6e64254ee5	00000080-0004-0004-0000-000000000000	1	42.96618000000128	3	t	0	\N	0
-09599e01-0000-763c-a697-0dd6ad7d9a28	05599e01-0000-7478-8f12-9baeb4b168f2	00000080-0000-0023-0000-000000000000	15	97.98569999999546	15	t	0	\N	0
-09599e01-0000-76a7-25e6-971856c16459	05599e01-0000-7478-8f12-9baeb4b168f2	00000080-0000-0023-0000-000000000000	14	97.9729199999914	15	t	0	\N	0
-09599e01-0000-78ae-a406-5590867b1e54	05599e01-0000-7478-8f12-9baeb4b168f2	00000080-0009-0049-0000-000000000000	4	86.45999999999997	15	f	0	\N	0
+09599e01-0000-76a7-25e6-971856c16459	05599e01-0000-7478-8f12-9baeb4b168f2	00000080-0000-0023-0000-000000000000	1	97.52863999985038	15	t	0	\N	0
+09599e01-0000-78ae-a406-5590867b1e54	05599e01-0000-7478-8f12-9baeb4b168f2	00000080-0009-0049-0000-000000000000	4	85.80949999999997	15	f	0	\N	0
 b5429e01-0000-707c-69c2-04d1c3432950	\N	00000080-000b-0005-0000-000000000000	32	30	0	f	0	\N	0
 b5429e01-0000-70f0-8993-c871fa36b0a1	\N	00000080-0005-0000-0000-000000000000	15	20	0	f	0	\N	0
 b5429e01-0000-7592-44b0-0e63c3267d32	\N	00000080-000b-0002-0000-000000000000	28	28	0	f	0	\N	0
@@ -48644,7 +48767,15 @@ b6429e01-0000-782e-687e-d6018c29d0fd	243f9e01-0000-7028-94cc-703dbef90db7	000000
 b6429e01-0000-7dbc-df35-4fc4a69fcf24	\N	00000080-000b-000a-0000-000000000000	60	22	0	f	0	\N	0
 b6429e01-0000-7e59-adfd-1e859397f772	\N	00000080-0005-0000-0000-000000000000	17	20	0	f	0	\N	0
 b6429e01-0000-7e80-fc47-3f9578e65f53	243f9e01-0000-7028-94cc-703dbef90db7	00000080-000e-0011-0000-000000000000	39	1	1	f	0	\N	0
+2c5e9e01-0000-76e1-f761-da008e8bdcdb	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	22	255	0	f	0	\N	0
 b6429e01-0000-73fc-7eb3-412c041502a9	243f9e01-0000-7028-94cc-703dbef90db7	00000080-0006-0004-0000-000000000000	1	23.968	0	f	0	\N	0
+2c5e9e01-0000-7721-1e69-75650349fbd6	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	18	255	0	f	0	\N	0
+2c5e9e01-0000-77d9-9878-49e8aa6b6eac	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	52	255	0	f	0	\N	0
+2c5e9e01-0000-78a1-9e16-b484b8b657b8	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	44	255	0	f	0	\N	0
+09599e01-0000-73c6-0c93-47251e3ec8ce	05599e01-0000-7478-8f12-9baeb4b168f2	00000080-000b-0049-0000-000000000000	6	83.73449999999998	15	f	0	\N	0
+2c5e9e01-0000-78b9-56e7-1f35859c8b15	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	27	255	0	f	0	\N	0
+2c5e9e01-0000-78cc-2937-b929ec4b0939	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	31	255	0	f	0	\N	0
+2c5e9e01-0000-7908-211d-998301d3ec2e	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	28	255	0	f	0	\N	0
 50459e01-0000-781d-5a1e-5b931bc16d01	\N	00000080-000d-0004-0000-000000000000	17	255	1	t	0	\N	0
 51459e01-0000-7f5f-2f69-a6a1cc8476bf	\N	00000080-000d-0004-0000-000000000000	18	255	10	f	0	\N	0
 52459e01-0000-753d-9cbb-39625357d632	\N	00000080-000d-0004-0000-000000000000	20	255	10	f	0	\N	0
@@ -48658,6 +48789,10 @@ bd079e01-0000-77f0-ffe8-e50be90d4f77	\N	00000080-000a-0021-0000-000000000000	60	
 bd079e01-0000-7a69-7157-b99c2cbeda01	\N	00000080-0007-002c-0000-000000000000	50	82	2	f	0	\N	0
 bd079e01-0000-7e39-7f62-7d49520dfe35	\N	00000080-0007-002b-0000-000000000000	46	77	2	f	0	\N	0
 bd079e01-0000-7f87-0771-2e664bc96566	\N	00000080-000a-0021-0000-000000000000	44	84	2	f	0	\N	0
+2c5e9e01-0000-7910-94a0-5d4f38dbf6eb	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	35	255	0	f	0	\N	0
+2c5e9e01-0000-793c-3160-3ba5dd0e9005	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	54	255	0	f	0	\N	0
+2c5e9e01-0000-7967-1789-1ee7b8545801	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0001-0000-000000000000	48	255	0	f	0	\N	0
+2c5e9e01-0000-798b-95e1-fb3c32310222	f44e9e01-0000-7b8d-ccc2-162dc3095574	00000080-000e-0004-0000-000000000000	32	255	0	f	0	\N	0
 fe499e01-0000-75f4-f22a-2503a7d06ee4	fd499e01-0000-717f-ddf0-8a6e64254ee5	00000080-0004-000f-0000-000000000000	0	248	2	f	0	\N	0
 684f9e01-0000-75f4-59d0-32974cc098d4	\N	00000080-000d-0008-0000-000000000000	23	50	0	f	0	\N	0
 684f9e01-0000-766a-f536-fdd6fa1f1d51	\N	00000080-000d-0009-0000-000000000000	33	51	1	f	0	\N	0
@@ -48777,12 +48912,14 @@ cf4f9e01-0000-7fdf-b5b9-8b64b1f6a43c	00000088-0010-7a13-0000-000000000000	cf4f9e
 4f3b9e01-0000-7239-c5f8-69cdbb681b30	00000088-0001-0000-0000-000000000000	4b3b9e01-0000-762b-c62e-56d4607f296f	0	0
 4f3b9e01-0000-72ae-e0de-602e1a2ee3ba	00000088-0012-0006-0000-000000000000	4b3b9e01-0000-705a-5bb7-514ebe37f330	0	0
 06ff9d01-0000-708b-3d60-f88c60454e69	00000088-0004-0000-0000-000000000000	06ff9d01-0000-7986-c74f-a807c93a29e5	3	0
+095e9e01-0000-7172-d58c-3a129d4834d5	00000088-0013-0006-0000-000000000000	095e9e01-0000-704d-a8c3-8130898113eb	0	0
 4f3b9e01-0000-72b5-10a1-9a9c446bff01	00000088-0012-0005-0000-000000000000	4b3b9e01-0000-7422-08bd-d96885667780	0	0
 06ff9d01-0000-7099-30af-88eb07ff076b	00000088-0003-0000-0000-000000000000	06ff9d01-0000-7daf-97f5-5835f13e50d5	3	0
 4f3b9e01-0000-72b5-23ab-a8249aa59aa0	00000088-0012-0001-0000-000000000000	4b3b9e01-0000-7422-08bd-d96885667780	0	0
 06ff9d01-0000-70a2-ed83-316b6cae7e3d	00000088-0004-0000-0000-000000000000	06ff9d01-0000-772f-7da4-eaaec5306f42	3	0
 cd279e01-0000-7828-9c95-ded2035513de	00000088-0001-0000-0000-000000000000	cc279e01-0000-7e52-d172-cee74dc19e79	0	0
 06ff9d01-0000-70b9-cd6d-5ad90a0149dc	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7c17-3633-6cde5ebd45ad	0	0
+095e9e01-0000-725d-056d-247f18695317	00000088-0003-0000-0000-000000000000	095e9e01-0000-704d-a8c3-8130898113eb	7	0
 06ff9d01-0000-70ca-341b-4e2012da67cf	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7425-dba5-f902f26552d1	0	0
 06ff9d01-0000-70d4-940c-0b104104d0a9	00000088-0003-0000-0000-000000000000	06ff9d01-0000-780a-1ca8-f9b7a6eee725	3	0
 06ff9d01-0000-70e3-623f-3ca8f2b44526	00000088-0001-0000-0000-000000000000	06ff9d01-0000-740d-ffc5-15609f22f440	0	0
@@ -48792,12 +48929,15 @@ cd279e01-0000-7828-9c95-ded2035513de	00000088-0001-0000-0000-000000000000	cc279e
 cd279e01-0000-7b95-1ae1-96a0cd742d11	00000088-0001-0000-0000-000000000000	cc279e01-0000-73f9-e229-4f4c8539836d	0	0
 4f3b9e01-0000-730c-98ab-cdbc1b306ecb	00000088-0012-0001-0000-000000000000	4b3b9e01-0000-762b-c62e-56d4607f296f	0	0
 4f3b9e01-0000-7329-4fc7-729ce23ae9c9	00000088-0002-0000-0000-000000000000	4b3b9e01-0000-7874-7410-d8a635e1d4ce	1	0
+095e9e01-0000-729f-8b03-908fcf14f9cb	00000088-0013-0001-0000-000000000000	095e9e01-0000-704d-a8c3-8130898113eb	0	0
 06ff9d01-0000-7147-7c54-2e152883477d	00000088-0004-0000-0000-000000000000	06ff9d01-0000-7ee6-d354-e31cd05980aa	3	0
 06ff9d01-0000-714c-b527-9705c08e2984	00000088-0001-0000-0000-000000000000	06ff9d01-0000-73b1-372f-4bcc512b4b2c	0	0
 06ff9d01-0000-7157-86a1-d7022dd2bc37	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7ca9-de10-89835eae7326	0	0
 4f3b9e01-0000-73cc-74b2-cf721367f16b	00000088-0012-0004-0000-000000000000	4b3b9e01-0000-705a-5bb7-514ebe37f330	0	0
+095e9e01-0000-776b-2ffc-0d95f1849d41	00000088-0013-0003-0000-000000000000	095e9e01-0000-704d-a8c3-8130898113eb	0	0
 06ff9d01-0000-716d-d2e4-902d65c4f9ec	00000088-0002-0000-0000-000000000000	06ff9d01-0000-755d-8982-66b3c8c7d355	1	0
 06ff9d01-0000-717c-690d-7c5ed1dd5023	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7d91-275f-88d86e6dff8c	0	0
+095e9e01-0000-7826-dad7-f63b7d5a50b8	00000088-0013-0002-0000-000000000000	095e9e01-0000-704d-a8c3-8130898113eb	0	0
 06ff9d01-0000-7199-ed08-cc8dc7e3387a	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7d80-cfd9-9d7eb88710ee	0	0
 4f3b9e01-0000-73e4-fed0-c660dcfc56a2	00000088-0012-0002-0000-000000000000	4b3b9e01-0000-7422-08bd-d96885667780	0	0
 4f3b9e01-0000-73e5-7b2d-bdc281fa9e8a	00000088-0012-0003-0000-000000000000	4b3b9e01-0000-705a-5bb7-514ebe37f330	0	0
@@ -48810,11 +48950,14 @@ cd279e01-0000-7b95-1ae1-96a0cd742d11	00000088-0001-0000-0000-000000000000	cc279e
 06ff9d01-0000-7220-5c56-3be7dd1fa550	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7965-76c2-894aaa3797f6	0	0
 06ff9d01-0000-722f-f8a7-3ef84fff8479	00000088-0004-0000-0000-000000000000	06ff9d01-0000-7286-28b6-edd692580b17	3	0
 06ff9d01-0000-7264-ee73-800261ce751a	00000088-0004-0000-0000-000000000000	06ff9d01-0000-790c-4b19-233504fa523b	3	0
+095e9e01-0000-78ed-d828-f90b4460dbd7	00000088-0013-0005-0000-000000000000	095e9e01-0000-704d-a8c3-8130898113eb	0	0
 4f3b9e01-0000-7480-20b3-b401a0dfcfca	00000088-0012-0003-0000-000000000000	4b3b9e01-0000-7874-7410-d8a635e1d4ce	0	0
+095e9e01-0000-7a84-42cd-c3e9f0d70efe	00000088-0001-0000-0000-000000000000	095e9e01-0000-704d-a8c3-8130898113eb	0	0
 06ff9d01-0000-7293-2abc-42e4ecf8d1d4	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7802-ac70-0a348116af00	0	0
 06ff9d01-0000-729a-3194-7c2a38c72898	00000088-0003-0000-0000-000000000000	06ff9d01-0000-7f61-ac17-7614d68018fe	3	0
 06ff9d01-0000-72a2-ba41-65b49a2c3a91	00000088-0001-0000-0000-000000000000	06ff9d01-0000-75c1-0587-837c3a6892bd	0	0
 06ff9d01-0000-72a8-4a1f-5311399be287	00000088-0001-0000-0000-000000000000	06ff9d01-0000-78b6-b049-81fec861b8be	0	0
+095e9e01-0000-7c4a-eb68-110dfd24809d	00000088-0013-0004-0000-000000000000	095e9e01-0000-704d-a8c3-8130898113eb	0	0
 4f3b9e01-0000-74aa-219d-69da5b4a0eed	00000088-0012-0004-0000-000000000000	4b3b9e01-0000-762b-c62e-56d4607f296f	0	0
 06ff9d01-0000-72bc-d8f0-4453e8762764	00000088-0004-0000-0000-000000000000	06ff9d01-0000-7ccc-7ecc-cec41793ece5	3	0
 4f3b9e01-0000-74db-b3b0-64a24b62b46a	00000088-0001-0000-0000-000000000000	4b3b9e01-0000-7422-08bd-d96885667780	0	0
@@ -48845,23 +48988,33 @@ cd279e01-0000-7b95-1ae1-96a0cd742d11	00000088-0001-0000-0000-000000000000	cc279e
 94309e01-0000-7bcf-7de9-86da6dd279c4	00000088-0060-c004-0100-000000000000	\N	7	0
 06ff9d01-0000-73ff-faf7-c6a3fd23cd35	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7bef-91bc-9f39aa5e5286	0	0
 06ff9d01-0000-7403-9619-a45d55a17ff3	00000088-0004-0000-0000-000000000000	06ff9d01-0000-7d56-92db-8b0dfe20e249	3	0
+0a5e9e01-0000-7007-460c-3e9a51db655c	00000088-0012-0001-0000-000000000000	095e9e01-0000-7f91-337c-6872f818c352	0	0
 06ff9d01-0000-740a-4bc7-3bdf67966b5b	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7368-9439-6a757a8feb8f	0	0
 06ff9d01-0000-740c-c5ad-72be53c6f21d	00000088-0003-0000-0000-000000000000	06ff9d01-0000-7804-1980-30e55e0980ca	3	0
 06ff9d01-0000-7411-f558-ef6433cc7646	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7185-d6a5-9c13e9e34dcc	0	0
 06ff9d01-0000-7415-2278-6cca9773d9ec	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7d70-b845-628bb7b4afd1	0	0
 06ff9d01-0000-7425-c118-c0b95ef5f74e	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7a46-b876-c325ce579441	0	0
+0a5e9e01-0000-7065-0000-b90a48279075	00000088-0001-0000-0000-000000000000	095e9e01-0000-74ad-136e-1dae605b6fc4	0	0
+0a5e9e01-0000-716d-1260-598ca5042390	00000088-0012-0005-0000-000000000000	095e9e01-0000-7f91-337c-6872f818c352	0	0
 06ff9d01-0000-7435-aa2f-ae3ed96f2c73	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7b64-fd1c-2c00c42ea98b	0	0
 06ff9d01-0000-743b-ca2b-5504112801d6	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7838-9a94-08032a1c1a9b	0	0
 06ff9d01-0000-7440-3cbd-9d8d1d5f65ca	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7d36-c057-6537e88615ae	0	0
 06ff9d01-0000-7447-3f18-0a509be6e394	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7683-6b5c-9388140acff4	0	0
+0a5e9e01-0000-71fa-cb4c-d3a2dd93a021	00000088-0012-0003-0000-000000000000	095e9e01-0000-7325-40af-e15bfd6e9cda	0	0
+0a5e9e01-0000-7212-6eef-de2e331bedac	00000088-0002-0000-0000-000000000000	095e9e01-0000-7f91-337c-6872f818c352	7	0
 06ff9d01-0000-744d-b0cf-3a990bc46321	00000088-0004-0000-0000-000000000000	06ff9d01-0000-741f-ed5b-ac9108969c41	3	0
 06ff9d01-0000-7461-f107-e55b222513da	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7150-4eee-141b837f75ee	0	0
 06ff9d01-0000-7469-6f82-541259a49643	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7275-c0d1-2411934ebadc	0	0
+0a5e9e01-0000-722d-de57-ac3464118d38	00000088-0002-0000-0000-000000000000	095e9e01-0000-74ad-136e-1dae605b6fc4	7	0
 06ff9d01-0000-7483-1e6b-922e3265124f	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7009-e31f-098eb60913e4	0	0
+0a5e9e01-0000-7265-0ec4-83f7174ad66b	00000088-0012-0006-0000-000000000000	095e9e01-0000-7f91-337c-6872f818c352	0	0
+0a5e9e01-0000-72ab-7596-f415816435c0	00000088-0012-0001-0000-000000000000	095e9e01-0000-7f72-7e20-558228dfe147	0	0
+0a5e9e01-0000-72b0-87bf-0a9ce01a1b9c	00000088-0012-0005-0000-000000000000	095e9e01-0000-7e87-1392-dde70b84745d	0	0
 06ff9d01-0000-74c5-85e0-25608cfae42e	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7841-608b-8644b5b401e8	0	0
 06ff9d01-0000-74d0-526f-e06db8cdc62f	00000088-0001-0000-0000-000000000000	06ff9d01-0000-79bb-8efa-9c670cd9160b	0	0
 06ff9d01-0000-74df-37a5-9f2a195f448d	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7209-78d7-0db12bbc0df1	0	0
 06ff9d01-0000-74ee-8661-ca826ff1a585	00000088-0001-0000-0000-000000000000	06ff9d01-0000-79ff-e35d-1cc27f9155bb	0	0
+0a5e9e01-0000-72ba-5162-06b246b9d53a	00000088-0012-0001-0000-000000000000	095e9e01-0000-74ad-136e-1dae605b6fc4	0	0
 06ff9d01-0000-7522-0d0c-bd15942c3738	00000088-0001-0000-0000-000000000000	06ff9d01-0000-78e9-0e1c-152b4a74d345	0	0
 06ff9d01-0000-7525-acc1-9946bc1c66f3	00000088-0001-0000-0000-000000000000	06ff9d01-0000-76cc-2620-947b62ba5660	0	0
 b9189e01-0000-7999-42bd-bde57b831843	00000088-0012-0003-0000-000000000000	af189e01-0000-7763-9efa-ec99d14e093d	0	0
@@ -48939,6 +49092,7 @@ d34f9e01-0000-7bf6-2beb-c82e70b6add2	00000088-d01c-bbba-0000-000000000000	d34f9e
 dd279e01-0000-7667-3c89-7d19f8d938c4	00000088-0014-0002-0000-000000000000	dd279e01-0000-71cf-4128-7c954e2ba911	0	0
 dd279e01-0000-7672-831b-a2e0702a2c7f	00000088-0012-0001-0000-000000000000	dd279e01-0000-7438-129a-bb58c5c1371e	0	0
 dd279e01-0000-7680-6e49-4a8d6545f0ad	00000088-0002-0000-0000-000000000000	dd279e01-0000-7802-7e11-80da207c1227	1	0
+0a5e9e01-0000-7325-4f87-386ebd749b20	00000088-0012-0004-0000-000000000000	095e9e01-0000-7f72-7e20-558228dfe147	0	0
 dd279e01-0000-768d-72dc-dd9d71d1e338	00000088-0001-0000-0000-000000000000	dd279e01-0000-7802-7e11-80da207c1227	0	0
 dd279e01-0000-76e9-cc62-f3fe10b35c2a	00000088-0012-0003-0000-000000000000	dd279e01-0000-761a-2193-7c40d5523740	0	0
 06ff9d01-0000-7847-c6fa-e83fe52dd666	00000088-0003-0000-0000-000000000000	06ff9d01-0000-7424-d8db-8ed13ef91ca2	3	0
@@ -49000,6 +49154,7 @@ ba189e01-0000-73ab-4b7b-a4673e7930c8	00000088-0012-0005-0000-000000000000	ba189e
 ba189e01-0000-73b7-e161-e7efdbdbc094	00000088-0012-0004-0000-000000000000	ba189e01-0000-7e98-0e22-bde5ec7af7bd	0	0
 ba189e01-0000-74d7-05c2-7c63c30cb252	00000088-0012-0001-0000-000000000000	ba189e01-0000-7a77-baba-fb554c5ae76d	0	0
 06ff9d01-0000-7a54-b704-f5108e128504	00000088-0004-0000-0000-000000000000	06ff9d01-0000-7bb5-3c20-ea754ebf9196	3	0
+0a5e9e01-0000-73c6-24d4-396123fe7284	00000088-0012-0002-0000-000000000000	095e9e01-0000-74ad-136e-1dae605b6fc4	0	0
 06ff9d01-0000-7a65-8760-52c38566a7de	00000088-0003-0000-0000-000000000000	06ff9d01-0000-7a43-0a64-0fd17ff7d6a2	3	0
 06ff9d01-0000-7a89-ba0c-f6b64254feaf	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7a7e-9f6f-350c43973560	0	0
 ba189e01-0000-7596-652d-0b394e41b058	00000088-0030-76e4-0000-000000000000	ba189e01-0000-7e98-0e22-bde5ec7af7bd	1	0
@@ -49024,14 +49179,17 @@ ba189e01-0000-7cc9-8663-c2c509d6a80f	00000088-0030-76e4-0000-000000000000	ba189e
 06ff9d01-0000-7b49-d465-87944b4558fa	00000088-0001-0000-0000-000000000000	06ff9d01-0000-736d-7b31-5f49650b2658	0	0
 ba189e01-0000-7d02-c7ba-6df58f526835	00000088-0012-0006-0000-000000000000	ba189e01-0000-7a77-baba-fb554c5ae76d	0	0
 06ff9d01-0000-7b5e-e8d3-22f776e35e51	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7818-330c-ebd28661b0ec	0	0
+0a5e9e01-0000-7449-fd75-d69efdb59c4a	00000088-0002-0000-0000-000000000000	095e9e01-0000-7325-40af-e15bfd6e9cda	7	0
 ba189e01-0000-7db7-8b23-3b6c17510d3b	00000088-0012-0005-0000-000000000000	ba189e01-0000-7e98-0e22-bde5ec7af7bd	0	0
 ba189e01-0000-7e54-c77f-5ba6a71ee04d	00000088-0012-0002-0000-000000000000	ba189e01-0000-7e98-0e22-bde5ec7af7bd	0	0
 ba189e01-0000-7ea7-66b6-a37dca68758c	00000088-0012-0003-0000-000000000000	ba189e01-0000-7e98-0e22-bde5ec7af7bd	0	0
 06ff9d01-0000-7bd1-d904-d5324db18f30	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7c1d-c241-b2d3338c1d85	0	0
 06ff9d01-0000-7be7-8883-8cb094384830	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7317-7338-d770ca73624d	0	0
+0a5e9e01-0000-74c0-165f-3fb72023b5ae	00000088-0012-0003-0000-000000000000	095e9e01-0000-74ad-136e-1dae605b6fc4	0	0
 06ff9d01-0000-7bf8-216c-b597632b166d	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7101-971e-e4ebf6e4d01e	0	0
 06ff9d01-0000-7bf8-eb2f-99f56f31caa6	00000088-0001-0000-0000-000000000000	06ff9d01-0000-739e-6c0a-34fa1e6a1900	0	0
 06ff9d01-0000-7c01-3d4c-f3c81a31d366	00000088-0004-0000-0000-000000000000	06ff9d01-0000-7ec1-743b-a1f3e36c15ba	3	0
+0a5e9e01-0000-74fd-1c64-16ab75ff7d57	00000088-0012-0006-0000-000000000000	095e9e01-0000-7e87-1392-dde70b84745d	0	0
 06ff9d01-0000-7c2c-ffa8-7081346a71ee	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7bc4-cd34-919e4678e766	0	0
 dd279e01-0000-7ced-537b-7c1606488e2e	00000088-0012-0006-0000-000000000000	dd279e01-0000-761a-2193-7c40d5523740	0	0
 06ff9d01-0000-7c4b-b267-a6900324a00e	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7425-fcc5-a0c96c0c2a11	0	0
@@ -49060,11 +49218,13 @@ dd279e01-0000-7f38-ac73-04d135f073c0	00000088-0012-0006-0000-000000000000	dd279e
 06ff9d01-0000-7d1f-feb3-fe110a2cb1e5	00000088-0001-0000-0000-000000000000	06ff9d01-0000-76d2-0965-1148e6c7bd62	0	0
 dd279e01-0000-7f59-9126-597ba4dd5c15	00000088-0001-0000-0000-000000000000	dd279e01-0000-7c61-0f53-00bba79f0b33	0	0
 dd279e01-0000-7ffd-a9e0-b3ecf4d81dd0	00000088-0012-0002-0000-000000000000	dd279e01-0000-7c61-0f53-00bba79f0b33	0	0
+0a5e9e01-0000-74fe-b39c-3427d397e25a	00000088-0001-0000-0000-000000000000	095e9e01-0000-7f72-7e20-558228dfe147	0	0
 06ff9d01-0000-7d43-73a6-1c4d67b4d6f1	00000088-0001-0000-0000-000000000000	06ff9d01-0000-70b0-8b67-d4052c3d7b38	0	0
 06ff9d01-0000-7d4d-6077-a28f3d9aea2b	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7bb3-abe5-e49c4cc325c7	0	0
-1f599e01-0000-7007-2f9d-20c07c05c257	00000088-0013-0002-0000-000000000000	1e599e01-0000-783a-d1f5-c63bfc9dd2cb	0	0
-1f599e01-0000-7036-ec80-464b5a217190	00000088-0013-0006-0000-000000000000	1e599e01-0000-7564-cbac-8f991cf1633b	0	0
-1f599e01-0000-7059-00db-0025cedcc538	00000088-0013-0002-0000-000000000000	1e599e01-0000-7564-cbac-8f991cf1633b	0	0
+0a5e9e01-0000-7620-b757-e7ed204e7471	00000088-0012-0006-0000-000000000000	095e9e01-0000-74ad-136e-1dae605b6fc4	0	0
+0a5e9e01-0000-766e-a0f0-418284d11995	00000088-0001-0000-0000-000000000000	095e9e01-0000-7f91-337c-6872f818c352	0	0
+0a5e9e01-0000-76e8-fc98-9d80390d7d02	00000088-0012-0002-0000-000000000000	095e9e01-0000-7f91-337c-6872f818c352	0	0
+0a5e9e01-0000-778d-24ed-0e3151074e08	00000088-0012-0006-0000-000000000000	095e9e01-0000-7325-40af-e15bfd6e9cda	0	0
 94309e01-0000-7e0e-5c82-aa9cd8269bdb	00000088-0002-0000-0000-000000000000	\N	7	0
 06ff9d01-0000-7d68-5852-d0e04834e475	00000088-0003-0000-0000-000000000000	06ff9d01-0000-7ff3-09b5-c145e427d960	3	0
 06ff9d01-0000-7d6b-7cab-fb3ca8278421	00000088-0003-0000-0000-000000000000	06ff9d01-0000-7068-7412-e0ee7a42b3ae	3	0
@@ -49099,20 +49259,20 @@ e5309e01-0000-71d5-4ee2-ef5e0a764c82	00000088-0001-0000-0000-000000000000	e5309e
 06ff9d01-0000-7e71-07a1-9c3dbdb92758	00000088-0001-0000-0000-000000000000	06ff9d01-0000-755d-8982-66b3c8c7d355	0	0
 38319e01-0000-70b0-0538-ef1a72b0eb02	00000088-0001-0000-0000-000000000000	37319e01-0000-795c-cea4-613fa3b5b4be	0	0
 06ff9d01-0000-7e7b-28ed-d70d4fe8e0c3	00000088-0001-0000-0000-000000000000	06ff9d01-0000-73eb-b05f-c8b66d5d50a9	0	0
-1f599e01-0000-7063-1b33-d71931fc2c84	00000088-0013-0001-0000-000000000000	1e599e01-0000-73b3-a57a-5b8021d4cd80	0	0
+0a5e9e01-0000-77fb-cb3c-58c72bc98279	00000088-0012-0002-0000-000000000000	095e9e01-0000-7e87-1392-dde70b84745d	0	0
 06ff9d01-0000-7ea4-4868-dc029ab3385e	00000088-0001-0000-0000-000000000000	06ff9d01-0000-76d5-ccf4-86034d6ae0c9	0	0
 06ff9d01-0000-7ea5-ed12-85d8d967fb6f	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7259-b186-302ba69afab6	0	0
 06ff9d01-0000-7eb7-c049-5ffb60c0ae09	00000088-0003-0000-0000-000000000000	06ff9d01-0000-7ded-b537-ce2c0f3626cd	1	0
-1f599e01-0000-707d-8328-66328132a537	00000088-0013-0005-0000-000000000000	1e599e01-0000-7564-cbac-8f991cf1633b	0	0
+0a5e9e01-0000-78ed-cbb3-148ab6c0d2b5	00000088-0001-0000-0000-000000000000	095e9e01-0000-7e87-1392-dde70b84745d	0	0
 06ff9d01-0000-7ed9-06e9-3b558df3bb9f	00000088-0004-0000-0000-000000000000	06ff9d01-0000-79a3-d658-1dc120be99e4	3	0
 06ff9d01-0000-7ef2-4876-5d7b2220d3e3	00000088-0004-0000-0000-000000000000	06ff9d01-0000-7169-f48a-da0a0aa8b57a	3	0
-1f599e01-0000-70a3-e90d-00710092edc0	00000088-0001-0000-0000-000000000000	1e599e01-0000-7564-cbac-8f991cf1633b	0	0
-1f599e01-0000-70bc-443e-37de1d31e0cd	00000088-0013-0006-0000-000000000000	1e599e01-0000-73b3-a57a-5b8021d4cd80	0	0
-1f599e01-0000-70d3-5b28-578d2bdead9d	00000088-0013-0002-0000-000000000000	1e599e01-0000-73b3-a57a-5b8021d4cd80	0	0
-1f599e01-0000-710e-016a-f74789a014ad	00000088-0013-0004-0000-000000000000	1e599e01-0000-783a-d1f5-c63bfc9dd2cb	0	0
+0a5e9e01-0000-7950-6446-626abc836d83	00000088-0012-0003-0000-000000000000	095e9e01-0000-7f91-337c-6872f818c352	0	0
+0a5e9e01-0000-7a36-9a1d-1a67fbd4685e	00000088-0012-0005-0000-000000000000	095e9e01-0000-7f72-7e20-558228dfe147	0	0
+0a5e9e01-0000-7a56-8ebe-e863435f63ad	00000088-0012-0001-0000-000000000000	095e9e01-0000-7325-40af-e15bfd6e9cda	0	0
+0a5e9e01-0000-7a69-2802-a467b98a3632	00000088-0012-0003-0000-000000000000	095e9e01-0000-7f72-7e20-558228dfe147	0	0
 06ff9d01-0000-7f1e-18bb-d05642b801a8	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7b20-eecb-9172ede243de	0	0
-1f599e01-0000-713a-0f3c-e2d113837934	00000088-0013-0003-0000-000000000000	1e599e01-0000-783a-d1f5-c63bfc9dd2cb	0	0
-1f599e01-0000-71b0-a085-03cf8c4fe492	00000088-0013-0003-0000-000000000000	1e599e01-0000-7564-cbac-8f991cf1633b	0	0
+0a5e9e01-0000-7a77-0d3b-b4600f76af0b	00000088-0012-0004-0000-000000000000	095e9e01-0000-7325-40af-e15bfd6e9cda	0	0
+0a5e9e01-0000-7aa7-65de-45ad14f4cc88	00000088-0012-0004-0000-000000000000	095e9e01-0000-74ad-136e-1dae605b6fc4	0	0
 06ff9d01-0000-7f3e-8791-fb63cd2ee53c	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7bb9-a0d7-1fadc74ab2d2	0	0
 06ff9d01-0000-7f47-c8b5-264946bf2bb6	00000088-0001-0000-0000-000000000000	06ff9d01-0000-79af-1d03-06dd3f180ea5	0	0
 06ff9d01-0000-7f48-9227-193615fea135	00000088-0001-0000-0000-000000000000	06ff9d01-0000-79df-c373-97623dbb7e65	0	0
@@ -49121,6 +49281,8 @@ e5309e01-0000-71d5-4ee2-ef5e0a764c82	00000088-0001-0000-0000-000000000000	e5309e
 89189e01-0000-70c9-340f-2683d3d7fba2	00000088-0001-0000-0000-000000000000	68189e01-0000-7728-8b1d-3cc19f4cee91	0	0
 89189e01-0000-7622-bd2f-4abfbf45c77d	00000088-0014-0006-0000-000000000000	68189e01-0000-7728-8b1d-3cc19f4cee91	0	0
 06ff9d01-0000-7f7e-3e68-e50afdb69492	00000088-0001-0000-0000-000000000000	06ff9d01-0000-72b0-1cf0-a417f4e2e7c1	0	0
+0a5e9e01-0000-7abc-1f9e-77f7587b5a91	00000088-0012-0004-0000-000000000000	095e9e01-0000-7f91-337c-6872f818c352	0	0
+0a5e9e01-0000-7b67-5cc0-8d2a71391a66	00000088-0012-0001-0000-000000000000	095e9e01-0000-7e87-1392-dde70b84745d	0	0
 06ff9d01-0000-7fae-9093-0e1c53bd7bcb	00000088-0003-0000-0000-000000000000	06ff9d01-0000-7e19-a19b-98335926323c	3	0
 06ff9d01-0000-7fbd-c15d-6cb3051bdb74	00000088-0004-0000-0000-000000000000	06ff9d01-0000-7d8b-b4d1-db823fc55c49	3	0
 bf189e01-0000-7281-663b-4e347c3faf34	00000088-0012-0001-0000-000000000000	bd189e01-0000-7e10-2672-44d47d0eda8e	0	0
@@ -49132,7 +49294,10 @@ bf189e01-0000-7ef0-4276-44e7f42442d5	00000088-0012-0005-0000-000000000000	bd189e
 bf189e01-0000-7f33-199e-11e97c178ffb	00000088-0012-0004-0000-000000000000	bd189e01-0000-7e10-2672-44d47d0eda8e	0	0
 06ff9d01-0000-7272-664f-341faa255ec0	00000088-0003-0000-0000-000000000000	06ff9d01-0000-7cb2-0751-cb0bef24cb39	3	0
 d94f9e01-0000-742b-d6a5-1b7132306921	00000088-0001-0000-0000-000000000000	d84f9e01-0000-7220-a195-31309ec56035	0	0
+0a5e9e01-0000-7bbc-b176-db39d80767af	00000088-0001-0000-0000-000000000000	095e9e01-0000-7325-40af-e15bfd6e9cda	0	0
 06ff9d01-0000-72f0-441c-b6ddb56d11e4	00000088-0003-0000-0000-000000000000	06ff9d01-0000-7c38-1b4b-5272e3fb1d24	3	0
+0a5e9e01-0000-7c40-e661-a8d914e401cc	00000088-0012-0005-0000-000000000000	095e9e01-0000-74ad-136e-1dae605b6fc4	0	0
+0a5e9e01-0000-7d0b-fb5a-cbd5336d394d	00000088-0012-0003-0000-000000000000	095e9e01-0000-7e87-1392-dde70b84745d	0	0
 de279e01-0000-721a-00f0-5a5f4e5ace7a	00000088-0060-c025-0100-000000000000	dd279e01-0000-719b-eac3-a8f306086dc6	1	0
 06ff9d01-0000-7489-638b-f0fb520fc483	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7714-5bfd-cbd80e10ce15	0	0
 06ff9d01-0000-748e-4b3a-108220ac7774	00000088-0003-0000-0000-000000000000	06ff9d01-0000-726f-2cea-2429614c9baf	3	0
@@ -49164,12 +49329,19 @@ de279e01-0000-7d81-446a-ff71e34cddb0	00000088-0012-0001-0000-000000000000	dd279e
 06ff9d01-0000-7db3-6552-57b0ecbf761b	00000088-0001-0000-0000-000000000000	06ff9d01-0000-748b-30ca-92219c6e54ce	0	0
 06ff9d01-0000-7dc7-967d-557c2546d103	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7497-1135-e2821a2ce4fc	0	0
 06ff9d01-0000-7e9e-b6ee-c71750d02260	00000088-0003-0000-0000-000000000000	06ff9d01-0000-7fbb-6616-fc2ab46a03c8	3	0
+0a5e9e01-0000-7d0d-6e12-7d92a608ba98	00000088-0002-0000-0000-000000000000	095e9e01-0000-7f72-7e20-558228dfe147	7	0
+0a5e9e01-0000-7d7d-fa4e-b2c65da58fe8	00000088-0012-0004-0000-000000000000	095e9e01-0000-7e87-1392-dde70b84745d	0	0
 06ff9d01-0000-7fd7-b8a3-4adb523cafd4	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7a00-8793-787fa1c29540	0	0
 06ff9d01-0000-7141-2535-6bc5f316200d	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7c3d-8611-183acb639893	0	0
+0a5e9e01-0000-7e43-740b-48e4e5762bf5	00000088-0012-0002-0000-000000000000	095e9e01-0000-7325-40af-e15bfd6e9cda	0	0
+0a5e9e01-0000-7ec3-83af-da9d13dde94b	00000088-0012-0005-0000-000000000000	095e9e01-0000-7325-40af-e15bfd6e9cda	0	0
 06ff9d01-0000-74a4-4c2d-9d5cc4adecf8	00000088-0001-0000-0000-000000000000	06ff9d01-0000-736e-687c-f470e23d453e	0	0
+0a5e9e01-0000-7ef2-4a09-736ac6c4d275	00000088-0012-0006-0000-000000000000	095e9e01-0000-7f72-7e20-558228dfe147	0	0
 06ff9d01-0000-764b-ef96-4d5bf9f37786	00000088-0001-0000-0000-000000000000	06ff9d01-0000-78c2-9a7c-daee0b5a2ac4	0	0
+0a5e9e01-0000-7ef5-3a82-0d189b880ec9	00000088-0002-0000-0000-000000000000	095e9e01-0000-7e87-1392-dde70b84745d	7	0
 06ff9d01-0000-77d7-692e-66e8d390df3c	00000088-0001-0000-0000-000000000000	06ff9d01-0000-731b-4088-e43cfe1e6b1f	0	0
 06ff9d01-0000-786e-bb5d-3eb6e738ecaa	00000088-0001-0000-0000-000000000000	06ff9d01-0000-76e0-5752-022e3cabdba4	0	0
+0a5e9e01-0000-7fcf-d9fd-1d7d6ab830a6	00000088-0012-0002-0000-000000000000	095e9e01-0000-7f72-7e20-558228dfe147	0	0
 06ff9d01-0000-7a43-d6d8-d92b57c6aa22	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7f85-38f3-0ae48da74428	0	0
 06ff9d01-0000-7d17-e8a9-6d2a6bdf0077	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7b1b-0158-a87cf6b7b58a	0	0
 06ff9d01-0000-7d2b-b068-d426ff4b066e	00000088-0001-0000-0000-000000000000	06ff9d01-0000-7768-8163-32710ea7f671	0	0
@@ -50366,11 +50538,6 @@ bc079e01-0000-7f2d-bc9d-3b61da153910	00000088-0002-0000-0000-000000000000	bc079e
 bd079e01-0000-7a48-b91d-8c03bcaf3399	00000088-0001-0000-0000-000000000000	bd079e01-0000-70d7-5db5-d30c1cf72c9b	0	0
 bd079e01-0000-7d2f-dde3-5098de9b1c42	00000088-0002-0000-0000-000000000000	bd079e01-0000-7e39-7f62-7d49520dfe35	2	0
 bd079e01-0000-7f20-7fe6-2cbc01db8b65	00000088-0002-0000-0000-000000000000	bd079e01-0000-77f0-ffe8-e50be90d4f77	4	0
-1f599e01-0000-71c2-dfdc-9d5533e9de6a	00000088-0003-0000-0000-000000000000	1e599e01-0000-783a-d1f5-c63bfc9dd2cb	7	0
-1f599e01-0000-7211-78da-8a91b9d91c07	00000088-0001-0000-0000-000000000000	1e599e01-0000-760d-c81c-b6aeb48e8fc6	0	0
-1f599e01-0000-72b4-9396-716d24d9a411	00000088-0013-0003-0000-000000000000	1e599e01-0000-7929-7f1c-79e2920b1640	0	0
-1f599e01-0000-72f1-b3e7-13681a4e9381	00000088-0013-0003-0000-000000000000	1e599e01-0000-73b3-a57a-5b8021d4cd80	0	0
-1f599e01-0000-7356-85a3-32cc7a0152b2	00000088-0001-0000-0000-000000000000	1e599e01-0000-75c9-8a4f-bef8d207c0a0	0	0
 d0079e01-0000-737d-201c-c00eb61cee06	00000088-0001-0000-0000-000000000000	d0079e01-0000-7b8b-ae3b-b9d3dbf32975	0	0
 d1079e01-0000-7683-a2a7-c892d8bc4e7f	00000088-0065-1e04-0200-000000000000	d0079e01-0000-7b8b-ae3b-b9d3dbf32975	0	0
 d1079e01-0000-778c-cbbe-3c590f756837	00000088-0065-d3a2-0400-000000000000	d0079e01-0000-7b8b-ae3b-b9d3dbf32975	0	0
@@ -50382,41 +50549,14 @@ d5079e01-0000-7f32-0b31-cecc91c26611	00000088-0060-c025-0200-000000000000	\N	2	0
 00099e01-0000-72a2-e3f1-b0c59df56e58	00000088-0001-0000-0000-000000000000	ff089e01-0000-7117-9ec1-9bd30e913f14	0	0
 00099e01-0000-7f3e-83e4-219c049ac8a5	00000088-0002-0000-0000-000000000000	ff089e01-0000-7117-9ec1-9bd30e913f14	1	0
 01099e01-0000-756c-0b30-2490728a9d54	00000088-0001-0000-0000-000000000000	00099e01-0000-752f-cf92-b06d8ba35b4e	0	0
-1f599e01-0000-73d7-d373-a453d166410a	00000088-0013-0004-0000-000000000000	1e599e01-0000-760d-c81c-b6aeb48e8fc6	0	0
 01099e01-0000-79d1-745e-c8574170d43f	00000088-0001-0000-0000-000000000000	00099e01-0000-7bd7-a768-73adbe5928b0	0	0
 45099e01-0000-73b8-989b-89ad115e4da7	00000088-0002-0000-0000-000000000000	45099e01-0000-77c7-5c2d-2ca70f6f6a84	3	0
 47099e01-0000-7e3a-40fe-04a3cb77d678	00000088-0001-0000-0000-000000000000	47099e01-0000-7eef-c75a-f0a36273a66e	0	0
 48099e01-0000-754d-230c-20455507520b	00000088-0001-0000-0000-000000000000	47099e01-0000-7360-7cf1-bda024d391c9	0	0
 48099e01-0000-75dc-44df-92af95db0db6	00000088-0004-0000-0000-000000000000	47099e01-0000-7360-7cf1-bda024d391c9	2	0
-1f599e01-0000-7410-7f4b-c774a9894647	00000088-0013-0002-0000-000000000000	1e599e01-0000-760d-c81c-b6aeb48e8fc6	0	0
 4a099e01-0000-7b36-1dbe-572b11735759	00000088-0001-0000-0000-000000000000	49099e01-0000-7a70-7653-cfc0b26b5b79	0	0
-1f599e01-0000-7499-cdb9-d4c34c95c910	00000088-0013-0001-0000-000000000000	1e599e01-0000-760d-c81c-b6aeb48e8fc6	0	0
-1f599e01-0000-74bc-98f3-e951588b56da	00000088-0013-0004-0000-000000000000	1e599e01-0000-75c9-8a4f-bef8d207c0a0	0	0
-1f599e01-0000-74ed-a89c-148659fe2df2	00000088-0013-0002-0000-000000000000	1e599e01-0000-7929-7f1c-79e2920b1640	0	0
-1f599e01-0000-7589-2536-87e4f9a460cf	00000088-0013-0006-0000-000000000000	1e599e01-0000-783a-d1f5-c63bfc9dd2cb	0	0
-1f599e01-0000-7642-18e8-e52f6500195b	00000088-0001-0000-0000-000000000000	1e599e01-0000-7929-7f1c-79e2920b1640	0	0
-1f599e01-0000-7845-32b3-edaeeb5865ed	00000088-0013-0005-0000-000000000000	1e599e01-0000-783a-d1f5-c63bfc9dd2cb	0	0
 030e9e01-0000-713d-5467-0e94b910234e	00000088-0002-0000-0000-000000000000	f90d9e01-0000-7676-0e44-8a448f96e38c	1	0
 030e9e01-0000-7958-9e2c-e3e98f622fba	00000088-0001-0000-0000-000000000000	f90d9e01-0000-7676-0e44-8a448f96e38c	0	0
-1f599e01-0000-7852-0d21-6196092973bd	00000088-0003-0000-0000-000000000000	1e599e01-0000-760d-c81c-b6aeb48e8fc6	7	0
-1f599e01-0000-7852-582d-2407ab7261f1	00000088-0013-0006-0000-000000000000	1e599e01-0000-7929-7f1c-79e2920b1640	0	0
-1f599e01-0000-7894-bde2-4b41ae87bf64	00000088-0013-0002-0000-000000000000	1e599e01-0000-75c9-8a4f-bef8d207c0a0	0	0
-1f599e01-0000-78a0-90a0-dee1c1bf45d3	00000088-0003-0000-0000-000000000000	1e599e01-0000-7929-7f1c-79e2920b1640	7	0
-1f599e01-0000-78d0-c840-98fb92527909	00000088-0001-0000-0000-000000000000	1e599e01-0000-73b3-a57a-5b8021d4cd80	0	0
-1f599e01-0000-78df-8c76-07b6a351bab5	00000088-0001-0000-0000-000000000000	1e599e01-0000-783a-d1f5-c63bfc9dd2cb	0	0
-1f599e01-0000-795b-5567-6cd520522a34	00000088-0013-0006-0000-000000000000	1e599e01-0000-760d-c81c-b6aeb48e8fc6	0	0
-1f599e01-0000-7978-7ee8-b201d249dfe2	00000088-0013-0004-0000-000000000000	1e599e01-0000-7929-7f1c-79e2920b1640	0	0
-1f599e01-0000-798a-211c-9d1d05712952	00000088-0013-0005-0000-000000000000	1e599e01-0000-760d-c81c-b6aeb48e8fc6	0	0
-1f599e01-0000-79b3-2996-0e8b38cc2e28	00000088-0013-0004-0000-000000000000	1e599e01-0000-73b3-a57a-5b8021d4cd80	0	0
-1f599e01-0000-79e0-f3b5-ab1d08119192	00000088-0013-0005-0000-000000000000	1e599e01-0000-7929-7f1c-79e2920b1640	0	0
-1f599e01-0000-7a53-85bc-e6b622194017	00000088-0013-0001-0000-000000000000	1e599e01-0000-75c9-8a4f-bef8d207c0a0	0	0
-1f599e01-0000-7a97-9b8e-ad3aac6d51f1	00000088-0003-0000-0000-000000000000	1e599e01-0000-7564-cbac-8f991cf1633b	7	0
-1f599e01-0000-7aa1-ce2f-b208bf8c7e89	00000088-0013-0001-0000-000000000000	1e599e01-0000-7564-cbac-8f991cf1633b	0	0
-1f599e01-0000-7ade-97d8-f697c39a7a80	00000088-0013-0005-0000-000000000000	1e599e01-0000-75c9-8a4f-bef8d207c0a0	0	0
-1f599e01-0000-7b2a-f885-1428e0fb4516	00000088-0013-0006-0000-000000000000	1e599e01-0000-75c9-8a4f-bef8d207c0a0	0	0
-1f599e01-0000-7b70-5c2c-889e0f241fb5	00000088-0013-0003-0000-000000000000	1e599e01-0000-75c9-8a4f-bef8d207c0a0	0	0
-1f599e01-0000-7c48-02f5-22c46789d0c7	00000088-0003-0000-0000-000000000000	1e599e01-0000-75c9-8a4f-bef8d207c0a0	7	0
-1f599e01-0000-7c81-d184-c7f3e6c20e03	00000088-0003-0000-0000-000000000000	1e599e01-0000-73b3-a57a-5b8021d4cd80	7	0
 ae119e01-0000-77eb-f730-d4a1e5617a04	00000088-0001-0000-0000-000000000000	ad119e01-0000-7c49-bfe4-7a0f5882603f	0	0
 fb119e01-0000-755c-f8db-2f9bb7a8d29b	00000088-0001-0000-0000-000000000000	f7119e01-0000-751e-d1ea-db1f91831088	0	0
 da169e01-0000-7c32-a25c-797bb193e5a1	00000088-0001-0000-0000-000000000000	da169e01-0000-7eb0-d811-2381bcd9cbe1	0	0
@@ -50539,10 +50679,7 @@ ec279e01-0000-7fa0-3a7e-c5bae87b5132	00000088-0012-0003-0000-000000000000	eb279e
 95309e01-0000-7ba9-3df4-9a4094b9f3ae	00000088-0002-0000-0000-000000000000	\N	7	0
 36189e01-0000-7a25-3d92-5268254ff70e	00000088-0012-0002-0000-000000000000	34189e01-0000-763f-494c-f371b7747cee	0	0
 36189e01-0000-7a7e-59c2-bde8019f917d	00000088-0002-0000-0000-000000000000	32189e01-0000-77c5-5422-53ddd680157d	7	0
-aa549e01-0000-7040-49b5-cb5ef669beec	00000088-0013-0002-0000-000000000000	aa549e01-0000-7ef6-6e4b-85c3a9f96a9d	0	0
 36189e01-0000-7ce5-32dc-13d7f24cd5cb	00000088-0012-0005-0000-000000000000	32189e01-0000-77c5-5422-53ddd680157d	0	0
-aa549e01-0000-7ebb-2b76-9ff6ad6d6ace	00000088-0013-0004-0000-000000000000	aa549e01-0000-78db-9b7c-5f2192887083	0	0
-1f599e01-0000-7c86-2e73-5291ef313fa8	00000088-0013-0001-0000-000000000000	1e599e01-0000-783a-d1f5-c63bfc9dd2cb	0	0
 36189e01-0000-7e13-c691-c741ac49b6d6	00000088-0012-0004-0000-000000000000	34189e01-0000-763f-494c-f371b7747cee	0	0
 36189e01-0000-723b-4dfd-b5a5afd033a8	00000088-0012-0005-0000-000000000000	34189e01-0000-7bf9-9a53-010a2078abeb	0	0
 36189e01-0000-7308-2559-3a2621740323	00000088-0012-0001-0000-000000000000	34189e01-0000-7bf9-9a53-010a2078abeb	0	0
@@ -50557,11 +50694,8 @@ b9189e01-0000-752d-0279-96f5a20920f6	00000088-0012-0002-0000-000000000000	b0189e
 b9189e01-0000-7537-92f3-cf82aabe0a70	00000088-0012-0003-0000-000000000000	b0189e01-0000-72a0-98bd-447492797986	0	0
 96309e01-0000-7b94-197c-98e7d4408d74	00000088-0060-c004-0100-000000000000	\N	7	0
 96309e01-0000-7c35-3b80-e4307970a234	00000088-0002-0000-0000-000000000000	\N	7	0
-1f599e01-0000-7ddc-37d9-626fc18e01ed	00000088-0013-0005-0000-000000000000	1e599e01-0000-73b3-a57a-5b8021d4cd80	0	0
 e9309e01-0000-7988-9ae2-51dcaaac4daa	00000088-0001-0000-0000-000000000000	e7309e01-0000-7017-6bd6-d83092345a66	0	0
 b9189e01-0000-76a1-fcec-f3ed77cb548b	00000088-0012-0006-0000-000000000000	af189e01-0000-7763-9efa-ec99d14e093d	0	0
-1f599e01-0000-7e44-279b-5f599aacf643	00000088-0013-0004-0000-000000000000	1e599e01-0000-7564-cbac-8f991cf1633b	0	0
-1f599e01-0000-7e46-8a2e-1e8364d93716	00000088-0013-0003-0000-000000000000	1e599e01-0000-760d-c81c-b6aeb48e8fc6	0	0
 b9189e01-0000-7711-b86d-781f930da9fe	00000088-0012-0003-0000-000000000000	ad189e01-0000-756e-44d7-94e7e7ca7f97	0	0
 b9189e01-0000-7729-87c9-e6c9a3d020dd	00000088-0060-c002-0100-000000000000	b2189e01-0000-7439-a4d2-c1ebb077e094	1	0
 3d319e01-0000-74fd-b902-d88404e35cfc	00000088-0001-0000-0000-000000000000	3d319e01-0000-7f1c-b3d0-f29d71f05d89	0	0
@@ -50576,7 +50710,6 @@ b9189e01-0000-7729-87c9-e6c9a3d020dd	00000088-0060-c002-0100-000000000000	b2189e
 3f319e01-0000-7787-de2e-7222a8af570b	00000088-0001-0000-0000-000000000000	3f319e01-0000-7da9-c239-1c8acb895cf9	0	0
 3f319e01-0000-7ba6-d70b-33d8176320bf	00000088-0001-0000-0000-000000000000	3f319e01-0000-7494-fafe-546be800ceea	0	0
 b9189e01-0000-78d9-b4be-f5796a5e5728	00000088-0001-0000-0000-000000000000	b2189e01-0000-7439-a4d2-c1ebb077e094	0	0
-1f599e01-0000-7fae-07ae-3d20598536e4	00000088-0013-0001-0000-000000000000	1e599e01-0000-7929-7f1c-79e2920b1640	0	0
 ec329e01-0000-72be-337d-e333d8581b73	00000088-0060-c004-0100-000000000000	\N	1	0
 f9329e01-0000-7c27-3453-d5b5253e1645	00000088-0001-0000-0000-000000000000	f6329e01-0000-77d1-8df9-523f4259379b	0	0
 95279e01-0000-7512-1d48-487405db99b3	00000088-0065-d3a2-0400-000000000000	82279e01-0000-7a3c-9fd7-358adcf93cad	0	0
@@ -50869,16 +51002,11 @@ cc3f9e01-0000-75cb-2c20-1722bd315d5a	00000088-0003-0000-0000-000000000000	ca3f9e
 4a3b9e01-0000-71b3-8e17-faebb9dbfa05	00000088-0001-0000-0000-000000000000	4a3b9e01-0000-7e28-6602-fa5e8058a726	0	0
 4a3b9e01-0000-72ea-f23f-a10a66c465f9	00000088-0013-0001-0000-000000000000	4a3b9e01-0000-7e28-6602-fa5e8058a726	0	0
 4a3b9e01-0000-765f-a8cf-d50924a65508	00000088-0013-0005-0000-000000000000	4a3b9e01-0000-7e28-6602-fa5e8058a726	0	0
-00599e01-0000-705d-bc0e-fdc10b69d4ba	00000088-0013-0005-0000-000000000000	00599e01-0000-7dd4-a039-422afec8abdd	0	0
 4a3b9e01-0000-77fd-0f76-152c10205de1	00000088-0013-0006-0000-000000000000	4a3b9e01-0000-7e28-6602-fa5e8058a726	0	0
-00599e01-0000-709d-40d4-bf030a1056ea	00000088-0003-0000-0000-000000000000	00599e01-0000-7dd4-a039-422afec8abdd	7	0
 4a3b9e01-0000-79a7-54a7-fd86bc1d2728	00000088-0013-0002-0000-000000000000	4a3b9e01-0000-7e28-6602-fa5e8058a726	0	0
-00599e01-0000-71d4-d140-c2e87c2d5c02	00000088-0013-0006-0000-000000000000	00599e01-0000-7dd4-a039-422afec8abdd	0	0
 4a3b9e01-0000-7b1a-5497-ce7f99638fa6	00000088-0013-0003-0000-000000000000	4a3b9e01-0000-7e28-6602-fa5e8058a726	0	0
 4a3b9e01-0000-7f1d-19c9-97bff2da94d7	00000088-0003-0000-0000-000000000000	4a3b9e01-0000-7e28-6602-fa5e8058a726	7	0
-00599e01-0000-79c6-6351-4c6b1e418575	00000088-0001-0000-0000-000000000000	00599e01-0000-7dd4-a039-422afec8abdd	0	0
 913c9e01-0000-73d1-c3b6-52f7b2846ffc	00000088-0003-0000-0000-000000000000	903c9e01-0000-752e-d22d-1d0e5928d78d	2	0
-00599e01-0000-7cef-3220-133fe39414d6	00000088-0013-0003-0000-000000000000	00599e01-0000-7dd4-a039-422afec8abdd	0	0
 833e9e01-0000-74b0-8668-5ac3f5a6ef2a	00000088-0003-0000-0000-000000000000	823e9e01-0000-7ac9-25ad-31488e37fda2	1	0
 833e9e01-0000-7503-9380-047f53faff39	00000088-0001-0000-0000-000000000000	823e9e01-0000-7ac9-25ad-31488e37fda2	0	0
 be3e9e01-0000-766d-e4d8-25a064efac87	00000088-0001-0000-0000-000000000000	be3e9e01-0000-7eb5-5a27-297de218046d	0	0
@@ -50905,17 +51033,10 @@ da309e01-0000-721e-c6cc-abfb8c14474f	00000088-0001-0000-0000-000000000000	da309e
 2e3f9e01-0000-7a80-909f-ac48d899b8e2	00000088-0001-0000-0000-000000000000	2d3f9e01-0000-72b1-831f-ba5d945483f6	0	0
 2e3f9e01-0000-7b29-66e9-006ad59580cc	00000088-0002-0000-0000-000000000000	2d3f9e01-0000-7766-7548-827dd649b86b	1	0
 2e3f9e01-0000-7f9c-ff0d-baca70512835	00000088-0001-0000-0000-000000000000	2d3f9e01-0000-7466-6d37-55b10926f69b	0	0
-00599e01-0000-7e19-1a9e-79cc816527a9	00000088-0013-0002-0000-000000000000	00599e01-0000-7dd4-a039-422afec8abdd	0	0
 3f3f9e01-0000-72d0-282c-004da0aed8ce	00000088-0002-0000-0000-000000000000	3f3f9e01-0000-729d-1d76-988eaa3f530a	2	0
 3f3f9e01-0000-7bb2-04f8-607c8b78fd76	00000088-0001-0000-0000-000000000000	3f3f9e01-0000-76e4-c17c-eee1ccbeab0d	0	0
 3f3f9e01-0000-7cde-8df0-77f68aeeae91	00000088-0006-0000-0000-000000000000	3f3f9e01-0000-7a9b-622d-9e1c7680ee45	2	0
 3f3f9e01-0000-7f28-4d1e-88e657c4c163	00000088-0001-0000-0000-000000000000	3f3f9e01-0000-7a35-5da0-cbe4fa0a71ea	0	0
-00599e01-0000-7e6b-57e2-5a06206ba6a8	00000088-0013-0004-0000-000000000000	00599e01-0000-7dd4-a039-422afec8abdd	0	0
-00599e01-0000-7f39-21fe-20533420e883	00000088-0013-0001-0000-000000000000	00599e01-0000-7dd4-a039-422afec8abdd	0	0
-01599e01-0000-7322-8b7f-9b056f917bee	00000088-0012-0002-0000-000000000000	01599e01-0000-7519-5234-8e51a2e53ce9	0	0
-01599e01-0000-73cb-9c64-24dfb85044cc	00000088-0012-0005-0000-000000000000	01599e01-0000-7519-5234-8e51a2e53ce9	0	0
-01599e01-0000-7464-b7f4-4d734ad200c4	00000088-0012-0001-0000-000000000000	01599e01-0000-7519-5234-8e51a2e53ce9	0	0
-01599e01-0000-76d6-8cd4-0644ac65e547	00000088-0002-0000-0000-000000000000	01599e01-0000-7519-5234-8e51a2e53ce9	7	0
 703f9e01-0000-785e-1ff1-abfab1b900d2	00000088-0001-0000-0000-000000000000	703f9e01-0000-7a5b-a485-b5ac62622288	0	0
 733f9e01-0000-75b2-2d68-a9332de20acd	00000088-0002-0000-0000-000000000000	713f9e01-0000-72e6-7c65-edf70d1afb7d	2	0
 733f9e01-0000-7771-50c3-1cac52114b3c	00000088-0001-0000-0000-000000000000	713f9e01-0000-76e5-b6d3-96a3494af666	0	0
@@ -50928,7 +51049,6 @@ d3319e01-0000-7b83-bb6d-6b78717a28e7	00000088-d01c-bbba-0000-000000000000	c3319e
 8a3f9e01-0000-760f-e289-35f62783a7d8	00000088-0002-0000-0000-000000000000	8a3f9e01-0000-7654-c476-aec5c8a5f423	1	0
 8a3f9e01-0000-7e3e-ebc4-cf8e2ed16e3e	00000088-0002-0000-0000-000000000000	893f9e01-0000-79df-f65d-52e421ffa697	1	0
 a03f9e01-0000-7df8-3310-f863497733a0	00000088-0001-0000-0000-000000000000	a03f9e01-0000-766e-3996-7d47b4ad3a05	0	0
-01599e01-0000-77f2-8a44-f74b34ddacb3	00000088-0012-0004-0000-000000000000	01599e01-0000-7519-5234-8e51a2e53ce9	0	0
 fa3f9e01-0000-7005-b6a0-2fea31d594fa	00000088-0001-0000-0000-000000000000	fa3f9e01-0000-7eae-b824-1a7c3e162353	0	0
 0b419e01-0000-7010-b5d3-34ba87f9517c	00000088-0001-0000-0000-000000000000	08419e01-0000-7958-e298-26d55285bb2d	0	0
 0b419e01-0000-7087-76bb-7dd2924b1233	00000088-0002-0000-0000-000000000000	09419e01-0000-7e8c-9637-045242daf9b9	2	0
@@ -50948,9 +51068,6 @@ fa3f9e01-0000-7005-b6a0-2fea31d594fa	00000088-0001-0000-0000-000000000000	fa3f9e
 63419e01-0000-7591-0991-6f62bcf4c8a1	00000088-0001-0000-0000-000000000000	63419e01-0000-7ac1-d928-aaa6f10adde6	0	0
 63419e01-0000-7674-e428-f229006b5891	00000088-0002-0000-0000-000000000000	63419e01-0000-7ac1-d928-aaa6f10adde6	2	0
 63419e01-0000-7a4f-13b7-afd089450367	00000088-0001-0000-0000-000000000000	63419e01-0000-753e-d4ce-aa668e1a9964	0	0
-01599e01-0000-7cbf-da48-e483e37b88ce	00000088-0012-0003-0000-000000000000	01599e01-0000-7519-5234-8e51a2e53ce9	0	0
-01599e01-0000-7f29-ac62-4f41a81a6b69	00000088-0012-0006-0000-000000000000	01599e01-0000-7519-5234-8e51a2e53ce9	0	0
-01599e01-0000-7ffd-6d38-33e5207cdcff	00000088-0001-0000-0000-000000000000	01599e01-0000-7519-5234-8e51a2e53ce9	0	0
 03599e01-0000-7240-958f-3c84f74646c9	00000088-0001-0000-0000-000000000000	03599e01-0000-7caf-8aa7-c6c445e91c50	0	0
 03599e01-0000-76db-e06a-ca37be4c6b51	00000088-0013-0001-0000-000000000000	03599e01-0000-7caf-8aa7-c6c445e91c50	0	0
 30429e01-0000-71d0-c0a1-5f1479e4b79b	00000088-0013-0005-0000-000000000000	30429e01-0000-7167-195b-96affa58067f	0	0
@@ -50966,45 +51083,6 @@ fa3f9e01-0000-7005-b6a0-2fea31d594fa	00000088-0001-0000-0000-000000000000	fa3f9e
 03599e01-0000-7ce5-3c3b-7a6aac034ca0	00000088-0013-0006-0000-000000000000	03599e01-0000-7caf-8aa7-c6c445e91c50	0	0
 03599e01-0000-7d13-890c-a4ba0fe9a470	00000088-0003-0000-0000-000000000000	03599e01-0000-7caf-8aa7-c6c445e91c50	4	0
 36429e01-0000-7589-b7e6-754e30ace3bc	00000088-0001-0000-0000-000000000000	35429e01-0000-7580-a83e-51ed2b59288b	0	0
-38429e01-0000-703a-ac9b-cf893064ebef	00000088-0012-0004-0000-000000000000	37429e01-0000-7be1-9eb3-7a10fc19644b	0	0
-38429e01-0000-705c-514a-5264344d5ee1	00000088-0012-0001-0000-000000000000	37429e01-0000-72bd-6df2-45c5fe530af2	0	0
-38429e01-0000-7162-f52c-5a02a81e061b	00000088-0002-0000-0000-000000000000	37429e01-0000-77c9-c55f-750be8b80702	1	0
-38429e01-0000-71a6-9cc0-cc13f90be6ea	00000088-0012-0004-0000-000000000000	37429e01-0000-7146-bdf4-33f7e2d37bdd	0	0
-38429e01-0000-729f-e4fd-e29f7756145b	00000088-0012-0001-0000-000000000000	37429e01-0000-7be1-9eb3-7a10fc19644b	0	0
-38429e01-0000-72c8-163e-c50f18be2c39	00000088-0012-0006-0000-000000000000	37429e01-0000-72bd-6df2-45c5fe530af2	0	0
-38429e01-0000-7540-e312-def7a8eafa9a	00000088-0012-0004-0000-000000000000	37429e01-0000-72bd-6df2-45c5fe530af2	0	0
-38429e01-0000-7554-d218-3fe698b3befe	00000088-0012-0001-0000-000000000000	38429e01-0000-74f1-296a-d562d879584e	0	0
-38429e01-0000-7558-f00c-62a2481b0c02	00000088-0001-0000-0000-000000000000	37429e01-0000-7be1-9eb3-7a10fc19644b	0	0
-38429e01-0000-7604-937c-f31a16637bb7	00000088-0012-0002-0000-000000000000	37429e01-0000-7146-bdf4-33f7e2d37bdd	0	0
-38429e01-0000-7627-0336-484d40f5984c	00000088-0012-0002-0000-000000000000	37429e01-0000-72bd-6df2-45c5fe530af2	0	0
-38429e01-0000-76d1-1807-30f693fde062	00000088-0012-0002-0000-000000000000	37429e01-0000-7be1-9eb3-7a10fc19644b	0	0
-38429e01-0000-76d8-fa4e-d7dc96adc6ec	00000088-0001-0000-0000-000000000000	37429e01-0000-72bd-6df2-45c5fe530af2	0	0
-38429e01-0000-774a-6800-3bf9c4c95d02	00000088-0012-0006-0000-000000000000	37429e01-0000-7be1-9eb3-7a10fc19644b	0	0
-38429e01-0000-77a7-c48b-f133d6b65cc7	00000088-0012-0004-0000-000000000000	37429e01-0000-77c9-c55f-750be8b80702	0	0
-38429e01-0000-77d2-857d-69c14ff4aac8	00000088-0012-0003-0000-000000000000	37429e01-0000-77c9-c55f-750be8b80702	0	0
-38429e01-0000-77d3-6092-339a63071b54	00000088-0012-0002-0000-000000000000	37429e01-0000-77c9-c55f-750be8b80702	0	0
-38429e01-0000-77f3-4557-d96c01411c29	00000088-0001-0000-0000-000000000000	37429e01-0000-7146-bdf4-33f7e2d37bdd	0	0
-38429e01-0000-7859-376b-2a7b6b58cc8c	00000088-0012-0006-0000-000000000000	37429e01-0000-77c9-c55f-750be8b80702	0	0
-38429e01-0000-7860-f23c-1a2fc17cfbf4	00000088-0012-0002-0000-000000000000	38429e01-0000-74f1-296a-d562d879584e	0	0
-38429e01-0000-7893-d8f9-fdddbedffe53	00000088-0012-0005-0000-000000000000	37429e01-0000-7be1-9eb3-7a10fc19644b	0	0
-38429e01-0000-78cf-64be-9aa75be2c25a	00000088-0012-0003-0000-000000000000	38429e01-0000-74f1-296a-d562d879584e	0	0
-38429e01-0000-78f7-6ef8-924894fac4e2	00000088-0001-0000-0000-000000000000	37429e01-0000-77c9-c55f-750be8b80702	0	0
-38429e01-0000-7a29-d8b5-709954e54dfd	00000088-0012-0001-0000-000000000000	37429e01-0000-77c9-c55f-750be8b80702	0	0
-38429e01-0000-7a3c-6d2c-57cd8f2f3742	00000088-0012-0005-0000-000000000000	38429e01-0000-74f1-296a-d562d879584e	0	0
-38429e01-0000-7a50-e01d-da075b1e4b69	00000088-0012-0005-0000-000000000000	37429e01-0000-72bd-6df2-45c5fe530af2	0	0
-38429e01-0000-7b80-08d9-b20052a9c117	00000088-0012-0003-0000-000000000000	37429e01-0000-7146-bdf4-33f7e2d37bdd	0	0
-38429e01-0000-7bc4-af0e-3e109c543e68	00000088-0012-0003-0000-000000000000	37429e01-0000-72bd-6df2-45c5fe530af2	0	0
-38429e01-0000-7c13-cded-b2fd5afdf40d	00000088-0002-0000-0000-000000000000	38429e01-0000-74f1-296a-d562d879584e	1	0
-38429e01-0000-7c38-2bfe-4f770db8b8f8	00000088-0012-0006-0000-000000000000	37429e01-0000-7146-bdf4-33f7e2d37bdd	0	0
-38429e01-0000-7cef-4eab-632b12e5f946	00000088-0012-0003-0000-000000000000	37429e01-0000-7be1-9eb3-7a10fc19644b	0	0
-38429e01-0000-7d3f-6aeb-8db258688ede	00000088-0012-0006-0000-000000000000	38429e01-0000-74f1-296a-d562d879584e	0	0
-38429e01-0000-7e23-07b0-b0982f417375	00000088-0012-0004-0000-000000000000	38429e01-0000-74f1-296a-d562d879584e	0	0
-38429e01-0000-7e2e-49cc-8b253b0ce662	00000088-0012-0005-0000-000000000000	37429e01-0000-77c9-c55f-750be8b80702	0	0
-38429e01-0000-7e8c-b3c1-96ff107c3293	00000088-0012-0001-0000-000000000000	37429e01-0000-7146-bdf4-33f7e2d37bdd	0	0
-38429e01-0000-7ea4-997b-f6c8cd1c4262	00000088-0001-0000-0000-000000000000	38429e01-0000-74f1-296a-d562d879584e	0	0
-38429e01-0000-7f5f-a6f6-d02ec1b0be07	00000088-0002-0000-0000-000000000000	37429e01-0000-7be1-9eb3-7a10fc19644b	1	0
-38429e01-0000-7faa-0892-513c7dc0b6b6	00000088-0002-0000-0000-000000000000	37429e01-0000-72bd-6df2-45c5fe530af2	1	0
-38429e01-0000-7fbe-43a1-43f3ae6bbd58	00000088-0012-0005-0000-000000000000	37429e01-0000-7146-bdf4-33f7e2d37bdd	0	0
 39429e01-0000-784b-26d2-970729bdb5b7	00000088-0001-0000-0000-000000000000	38429e01-0000-7bed-b07e-96966307dc65	0	0
 a8429e01-0000-7275-e317-e6a8f8af096b	00000088-0001-0000-0000-000000000000	a7429e01-0000-78bb-8202-89e053f56729	0	0
 b5429e01-0000-7255-c09f-a1a1e8000877	00000088-0002-0000-0000-000000000000	b5429e01-0000-7b6b-d7dd-0f46c58f7382	2	0
@@ -51033,7 +51111,6 @@ a2459e01-0000-776d-aaf4-4539fa4d4fe2	00000088-0012-0002-0000-000000000000	a2459e
 a2459e01-0000-77e8-5fda-033591c8e496	00000088-0012-0005-0000-000000000000	a2459e01-0000-715c-6472-45de81a486f6	0	0
 a2459e01-0000-79d5-94aa-7734fec1a4f5	00000088-0001-0000-0000-000000000000	a2459e01-0000-715c-6472-45de81a486f6	0	0
 a2459e01-0000-7bca-52e7-3f744114a486	00000088-0002-0000-0000-000000000000	a2459e01-0000-715c-6472-45de81a486f6	1	0
-38429e01-0000-76a4-ded6-699b945b24b0	00000088-0002-0000-0000-000000000000	37429e01-0000-7146-bdf4-33f7e2d37bdd	4	0
 a9459e01-0000-7009-c665-3c2f44780cee	00000088-0012-0001-0000-000000000000	a7459e01-0000-7e0f-e825-6c45a10982fd	0	0
 a9459e01-0000-7110-e084-ef31db94a023	00000088-0012-0005-0000-000000000000	a7459e01-0000-7b83-ed6d-644a6d1e1a7f	0	0
 a9459e01-0000-71c3-99c6-e3f945b1471c	00000088-0002-0000-0000-000000000000	a7459e01-0000-7e0f-e825-6c45a10982fd	1	0
@@ -51060,9 +51137,6 @@ a9459e01-0000-7eaa-38c1-6b02c4203ea8	00000088-0002-0000-0000-000000000000	a7459e
 a9459e01-0000-7fb3-fba3-0805010bb8e5	00000088-0012-0004-0000-000000000000	a7459e01-0000-7e0f-e825-6c45a10982fd	0	0
 a9459e01-0000-7455-1072-9a55fd5e6c5d	00000088-0060-c027-0100-000000000000	a9459e01-0000-77a3-970c-603975fd2ec6	1	0
 a9459e01-0000-7496-6bb6-90df47d3a312	00000088-0001-0000-0000-000000000000	a9459e01-0000-77a3-970c-603975fd2ec6	0	0
-c3459e01-0000-7350-7a24-5f7a218c1c0e	00000088-0050-0008-0000-000000000000	37429e01-0000-7146-bdf4-33f7e2d37bdd	13	0
-c3459e01-0000-769f-cc24-9fa7a2e7af56	00000088-0041-0008-0000-000000000000	37429e01-0000-7146-bdf4-33f7e2d37bdd	0	0
-c3459e01-0000-7770-89bb-d4716b44f29c	00000088-0042-0008-0000-000000000000	37429e01-0000-7146-bdf4-33f7e2d37bdd	0	0
 c4459e01-0000-7928-d646-a57498c89948	00000088-0050-0008-0000-000000000000	ef1a9e01-0000-7aa7-bbd2-23af5e3b7453	13	0
 c5459e01-0000-76b6-26af-8137a89345f6	00000088-0033-0001-0000-000000000000	ef1a9e01-0000-7aa7-bbd2-23af5e3b7453	5	0
 c5459e01-0000-7a4b-6521-185eb77112a9	00000088-0031-0005-0000-000000000000	ef1a9e01-0000-7aa7-bbd2-23af5e3b7453	0	0
@@ -51079,7 +51153,6 @@ f84e9e01-0000-7a5b-49cb-b41fe8a57fea	00000088-0001-0000-0000-000000000000	f54e9e
 f84e9e01-0000-7b3a-e4b5-9a997fa5d215	00000088-0001-0000-0000-000000000000	f54e9e01-0000-745d-60fc-de76f011854c	0	0
 f84e9e01-0000-7c38-e196-d499df4fb12d	00000088-0001-0000-0000-000000000000	f64e9e01-0000-7216-4648-3822ee9b8135	0	0
 f84e9e01-0000-7d0f-356d-ea98c206d9f9	00000088-0001-0000-0000-000000000000	f54e9e01-0000-74d8-92b4-8ae1c1f04b63	0	0
-33509e01-0000-7077-2276-d31a1a0199b4	00000088-0013-0005-0000-000000000000	32509e01-0000-789e-b537-811fb9b27def	0	0
 f84e9e01-0000-7f3c-f881-9ac443d1ef58	00000088-0001-0000-0000-000000000000	f54e9e01-0000-7677-3383-48eaca6d7a42	0	0
 f84e9e01-0000-7f6e-8b56-ace9a0fd213a	00000088-0001-0000-0000-000000000000	f84e9e01-0000-7a67-5c44-c13c4677f7d8	0	0
 2c4f9e01-0000-75b6-4318-b9a32c3d9815	00000088-0003-0000-0000-000000000000	2c4f9e01-0000-7e2c-8302-8a279f531256	2	0
@@ -51123,13 +51196,6 @@ f84e9e01-0000-7f6e-8b56-ace9a0fd213a	00000088-0001-0000-0000-000000000000	f84e9e
 794f9e01-0000-719c-2ca8-944023c87538	00000088-0001-0000-0000-000000000000	784f9e01-0000-7208-bc35-3d376c2b6a6e	0	0
 794f9e01-0000-7262-e261-3b3fb78f1f40	00000088-0002-0000-0000-000000000000	784f9e01-0000-7c5b-eea6-d3cabf0ebcb0	2	0
 794f9e01-0000-764f-b6eb-e4b27453d33f	00000088-0001-0000-0000-000000000000	794f9e01-0000-7a9c-0abb-b0c7c42e8641	0	0
-33509e01-0000-709e-8375-fa42417e2d09	00000088-0013-0004-0000-000000000000	32509e01-0000-789e-b537-811fb9b27def	0	0
-33509e01-0000-7347-a63f-4b4108278d51	00000088-0013-0001-0000-000000000000	32509e01-0000-789e-b537-811fb9b27def	0	0
-33509e01-0000-734e-096d-fee145793d53	00000088-0013-0003-0000-000000000000	32509e01-0000-789e-b537-811fb9b27def	0	0
-33509e01-0000-7478-ac52-ab60eb24b2dd	00000088-0013-0006-0000-000000000000	32509e01-0000-789e-b537-811fb9b27def	0	0
-33509e01-0000-795d-2ae2-c850cc57f43d	00000088-0013-0002-0000-000000000000	32509e01-0000-789e-b537-811fb9b27def	0	0
-33509e01-0000-7e83-e9af-6f6d964e323c	00000088-0003-0000-0000-000000000000	32509e01-0000-789e-b537-811fb9b27def	1	0
-33509e01-0000-7f96-3552-5e8212047e51	00000088-0001-0000-0000-000000000000	32509e01-0000-789e-b537-811fb9b27def	0	0
 36509e01-0000-7764-1b60-7939a3e9ee7a	00000088-0013-0001-0000-000000000000	34509e01-0000-74f8-5027-92b1eb637bd0	0	0
 36509e01-0000-7a22-e8ec-8cb536fd1bac	00000088-0013-0004-0000-000000000000	34509e01-0000-74f8-5027-92b1eb637bd0	0	0
 a94f9e01-0000-70a9-8c6f-fe87ae51f8aa	00000088-0012-0001-0000-000000000000	a84f9e01-0000-71f6-a433-3869a79a9a95	0	0
@@ -51454,6 +51520,8 @@ c84f9e01-0000-7f8a-2422-faee32e6d86f	00000088-0014-0003-0000-000000000000	c74f9e
 09599e01-0000-7f4f-6ca3-75a4d974a5d3	00000088-0001-0000-0000-000000000000	09599e01-0000-73c6-0c93-47251e3ec8ce	0	0
 09599e01-0000-7fa8-d136-1faa6fbabdf7	00000088-0012-0002-0000-000000000000	09599e01-0000-73c6-0c93-47251e3ec8ce	0	0
 09599e01-0000-7fe6-edea-d4549536f15f	00000088-0002-0000-0000-000000000000	09599e01-0000-73c6-0c93-47251e3ec8ce	7	0
+195b9e01-0000-74e5-c90d-ac7a5f503bae	00000088-0013-0001-0000-000000000000	185b9e01-0000-704d-c2fd-5cf6f3fdb6e2	0	0
+195b9e01-0000-791c-7662-52640c1a4887	00000088-0013-0004-0000-000000000000	185b9e01-0000-704d-c2fd-5cf6f3fdb6e2	0	0
 \.
 
 
@@ -51584,12 +51652,11 @@ COPY data."ItemStorage" ("Id", "Money") FROM stdin;
 bc4e9e01-0000-7f07-2c03-b472bac63c72	961
 0e3f9e01-0000-7f13-fa7b-a5bfc4d53609	0
 96039e01-0000-759a-498c-d0f8b7b74bec	0
-f44e9e01-0000-7b8d-ccc2-162dc3095574	357632
+1c3b9e01-0000-71e3-1f57-9761f741008a	505748259
 a44f9e01-0000-7bcf-409d-7e41089ca566	999999999
 d7169e01-0000-719c-096f-ee61a334038f	1862829830
 95409e01-0000-7178-ab86-dbabee4a7e51	99895999
 bf469e01-0000-7aad-b27c-4a311d3cb024	6570
-f6119e01-0000-78cc-4a04-a66c201c1dc4	616934687
 3d499e01-0000-7ce5-21b5-f0110e35aac9	0
 243f9e01-0000-7028-94cc-703dbef90db7	55418
 9d3c9e01-0000-7079-eb1b-a64574f51cc3	9999999
@@ -51598,12 +51665,14 @@ a44f9e01-0000-7b63-a113-ab3852e0e8e0	0
 2f549e01-0000-70bb-3ef4-b56e35cd6d07	0
 15419e01-0000-7467-66ec-5887daef2ce1	93991999
 bc4f9e01-0000-7db5-f9f3-d366dee0d7cb	1559255373
-80019e01-0000-7dd3-7532-ee0fd0cd5c4d	501351277
+92039e01-0000-70f1-afd4-69c7fadc4501	1561943449
 a44f9e01-0000-7585-14fb-1a67927e4bd6	888132371
 fd499e01-0000-717f-ddf0-8a6e64254ee5	386266
-05599e01-0000-7478-8f12-9baeb4b168f2	935979629
-92039e01-0000-70f1-afd4-69c7fadc4501	1573404371
-1c3b9e01-0000-71e3-1f57-9761f741008a	506758259
+05599e01-0000-7478-8f12-9baeb4b168f2	865939845
+f44e9e01-0000-7b8d-ccc2-162dc3095574	2095714
+f6119e01-0000-78cc-4a04-a66c201c1dc4	619102064
+a5599e01-0000-7866-d554-93cd78525cc2	0
+80019e01-0000-7dd3-7532-ee0fd0cd5c4d	501583129
 \.
 
 
@@ -51732,6 +51801,15 @@ f2409e01-0000-7380-748f-b79a2bd9bb71	00000400-00e6-0000-0000-000000000000	9d3c9e
 0b599e01-0000-7bab-11d0-88465a450ec6	00000400-0109-0000-0000-000000000000	05599e01-0000-765e-ddec-673595de09eb	0
 0b599e01-0000-7c2a-6088-dfd31fbb2038	00000400-010a-0000-0000-000000000000	05599e01-0000-765e-ddec-673595de09eb	0
 0b599e01-0000-7eb6-237c-75b8581a2cb1	00000400-0108-0000-0000-000000000000	05599e01-0000-765e-ddec-673595de09eb	0
+c0599e01-0000-78f8-d2c2-ff0d286d7fa6	00000400-012c-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c1599e01-0000-7160-2ab6-6ccf72500986	00000400-012f-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c1599e01-0000-7492-f317-338a09a6000c	00000400-012d-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c1599e01-0000-79b2-f9ed-93b616555644	00000400-0137-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c1599e01-0000-7d25-2ee2-670e396e8a8a	00000400-0134-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c1599e01-0000-7e02-8db4-610b96ae0160	00000400-0130-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c1599e01-0000-7104-d043-e156d25db73f	00000400-0133-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c1599e01-0000-70c6-e972-bac5a467d474	00000400-012e-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c1599e01-0000-71bd-cb08-872917abeafd	00000400-0132-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
 f9119e01-0000-7c01-283e-b487622d1830	00000400-0002-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	0
 80019e01-0000-7c04-a220-baa76cd2dae4	00000400-0011-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	0
 33029e01-0000-7f99-488a-38432d127cc9	00000400-0026-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	0
@@ -51751,7 +51829,6 @@ ff109e01-0000-7a0f-77fe-41845f323b09	00000400-000e-0000-0000-000000000000	80019e
 23189e01-0000-7778-1ee3-d41325e350d7	00000400-000c-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	0
 bd4f9e01-0000-7030-12c1-9b8b75cb7d4a	00000400-000b-0000-0000-000000000000	bc4f9e01-0000-7e32-cfad-fcc6543fc832	0
 bd4f9e01-0000-71ce-6281-f7e253fcf307	00000400-0004-0000-0000-000000000000	bc4f9e01-0000-7e32-cfad-fcc6543fc832	0
-ee079e01-0000-7a53-b2fe-a1666c35fa6b	00000400-012c-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	3
 bd4f9e01-0000-71e1-f4f9-b49733b19903	00000400-00d6-0000-0000-000000000000	bc4f9e01-0000-7e32-cfad-fcc6543fc832	0
 981d9e01-0000-7717-53c0-eaf98cd9881a	00000400-0009-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	0
 bd4f9e01-0000-7734-455e-5cadf8ac358a	00000400-00db-0000-0000-000000000000	bc4f9e01-0000-7e32-cfad-fcc6543fc832	0
@@ -51778,15 +51855,121 @@ f84f9e01-0000-796a-e7cb-578676019cbb	00000400-00e6-0000-0000-000000000000	bc4f9e
 653f9e01-0000-76b4-3730-a47d66dc0c25	00000400-00d6-0000-0000-000000000000	9d3c9e01-0000-7109-3b7d-1409f52336d6	0
 653f9e01-0000-79ff-8565-0c7e25ca84b4	00000400-00db-0000-0000-000000000000	9d3c9e01-0000-7109-3b7d-1409f52336d6	0
 32409e01-0000-77c2-465b-5de86ae0bcd0	00000400-001a-0000-0000-000000000000	92039e01-0000-74ba-abcf-044a7feec5a5	0
+a5599e01-0000-72ba-3c47-669f67e38b5d	00000400-002e-0000-0000-000000000000	a5599e01-0000-77b3-fe14-bf5096a763fa	0
+c1599e01-0000-73b5-6955-fd9569901d58	00000400-0135-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c1599e01-0000-7526-9fdb-eae8544a1c4f	00000400-0136-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c1599e01-0000-7986-f172-373b35ed3d9b	00000400-0139-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c1599e01-0000-7d9a-ea1b-d8c74d94147a	00000400-0131-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c2599e01-0000-722b-f5b2-e81d4d273544	00000400-01c1-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c2599e01-0000-7408-3b28-abbe8fdfd24c	00000400-01c0-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c2599e01-0000-74e7-90e0-620c283e3b01	00000400-0138-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
 98409e01-0000-766c-d284-037f7a8767ba	00000400-0026-0000-0000-000000000000	95409e01-0000-75cb-8c7f-fafd09fc5a7f	0
 07419e01-0000-7091-9853-f0f324064377	00000400-002e-0000-0000-000000000000	07419e01-0000-7a55-eb71-ce92de75f6a8	0
 59419e01-0000-70cf-9548-888452133a2e	00000400-000b-0000-0000-000000000000	9d3c9e01-0000-7109-3b7d-1409f52336d6	0
 5b419e01-0000-745a-0153-c33f46f1a12d	00000400-0004-0000-0000-000000000000	9d3c9e01-0000-7109-3b7d-1409f52336d6	0
+c2599e01-0000-7ddf-167f-c62aefc766d9	00000400-0145-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c2599e01-0000-7715-275a-61142a531396	00000400-01c2-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c2599e01-0000-71b9-2c43-d413e1861502	00000400-01c5-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c2599e01-0000-722d-13d4-60ed21d89c61	00000400-014e-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c2599e01-0000-73ff-206c-ebf719036fbf	00000400-01ca-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
 bf469e01-0000-7b24-805d-c015ecbb6851	00000400-002c-0000-0000-000000000000	bf469e01-0000-78d3-eaf1-4bb1bda12e2e	0
 ca499e01-0000-7696-337a-cbe499d8e6ea	00000400-0034-0000-0000-000000000000	92039e01-0000-74ba-abcf-044a7feec5a5	0
 ca499e01-0000-7b81-9c35-ea8138699114	00000400-0033-0000-0000-000000000000	92039e01-0000-74ba-abcf-044a7feec5a5	0
 ce499e01-0000-7c61-e412-ceb569f7d7c7	00000400-0034-0000-0000-000000000000	15419e01-0000-7606-fd6f-2bc4bb6e2717	0
 cf499e01-0000-7f3b-8e89-290d6db9c112	00000400-0033-0000-0000-000000000000	15419e01-0000-7606-fd6f-2bc4bb6e2717	0
+c2599e01-0000-78fb-69dc-4cdde047f3c2	00000400-01c8-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c2599e01-0000-7bb0-7b9c-d514afa2906e	00000400-01c6-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c2599e01-0000-7c3b-2110-fe05994a3668	00000400-0152-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c2599e01-0000-7c88-d6c2-c7785f6d2127	00000400-01c4-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c2599e01-0000-7ebf-ccbc-733d23c262cd	00000400-01c3-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c3599e01-0000-75ae-c2ea-2b6b5bcf0759	00000400-01c7-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c3599e01-0000-79cc-159a-102600de3ce3	00000400-01c9-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c3599e01-0000-701a-c2c2-ebd833c709d3	00000400-01d7-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c3599e01-0000-7218-9b16-615a8c6de321	00000400-0166-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c3599e01-0000-73b1-8059-369a0bff1fb3	00000400-01d2-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c3599e01-0000-7545-fe61-f081747d94b7	00000400-015b-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c3599e01-0000-79ad-06fb-a5f10e637172	00000400-01d4-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	10
+c3599e01-0000-7b99-0e20-79f0546f79c6	00000400-0165-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c3599e01-0000-7bc6-9e49-395be4de142d	00000400-01d6-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c3599e01-0000-7c44-ee34-3b43d4bba0e0	00000400-01d5-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c3599e01-0000-7dc0-1c1e-7f05b5eaf656	00000400-01d1-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c3599e01-0000-7e31-6460-222e34828567	00000400-01d3-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c4599e01-0000-7039-5325-88d6f53ba94a	00000400-0167-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+c4599e01-0000-7983-49ab-090d85c14035	00000400-016a-0000-0000-000000000000	1b3b9e01-0000-704d-c1a1-d6adc287c492	20
+815a9e01-0000-7413-ddfa-88ae5a2a738b	00000400-0145-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+815a9e01-0000-7ce9-e846-4b16c0b7a01f	00000400-017a-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+815a9e01-0000-7cf3-0edb-89c253d93675	00000400-017f-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+815a9e01-0000-7d3e-f399-3c3b11818909	00000400-017c-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+815a9e01-0000-74ad-8f5c-4d60795eece6	00000400-014e-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+815a9e01-0000-74a8-c197-dc48a6ed5ba3	00000400-0181-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+815a9e01-0000-792a-cd29-66c183e23df4	00000400-0152-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+815a9e01-0000-7e99-090e-5da5994aee3b	00000400-0184-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+ee079e01-0000-7a53-b2fe-a1666c35fa6b	00000400-012c-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+835a9e01-0000-71ff-1ba7-e6f0aeacfc99	00000400-0002-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	0
+835a9e01-0000-7467-b0ad-3af8ea9e488e	00000400-0001-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	0
+835a9e01-0000-7500-958c-486068c77ea8	00000400-0007-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	0
+835a9e01-0000-763f-29cf-8eda44e74d84	00000400-000f-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	0
+835a9e01-0000-765f-03eb-5c24d7fa4ee9	00000400-0003-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	0
+835a9e01-0000-7805-8246-d6343b3a2cca	00000400-0004-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	0
+835a9e01-0000-780b-c6d9-55bbf8d890a9	00000400-000b-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	0
+835a9e01-0000-7cf0-1727-a6eb7cc405f8	00000400-0008-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	0
+835a9e01-0000-7eb1-e33b-7d853ab9559a	00000400-017e-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+835a9e01-0000-7f96-87e4-b50d87edc0e1	00000400-017b-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+845a9e01-0000-71f1-28c9-17c281b56fdc	00000400-0183-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+845a9e01-0000-79dd-5615-c5632d2af074	00000400-0182-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+845a9e01-0000-7c5d-9c5b-2742f164ba3f	00000400-0180-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+845a9e01-0000-7000-5022-c64b4ca0050a	00000400-018d-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+845a9e01-0000-74f5-da40-70f501545836	00000400-0185-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+845a9e01-0000-751f-f76b-368a404939f4	00000400-015b-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+845a9e01-0000-773a-14f0-422ddbc7967f	00000400-0192-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+845a9e01-0000-79f3-5676-a9bc869f7d2f	00000400-018f-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+845a9e01-0000-7b26-608c-693db6099dc8	00000400-018e-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+845a9e01-0000-7c41-ebe7-fe58f7a861f2	00000400-0190-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	10
+845a9e01-0000-7c51-0398-e2ef8474a606	00000400-0191-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+845a9e01-0000-7e92-3ea1-c0ee819f00d0	00000400-0193-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+855a9e01-0000-7891-b470-de49df64c455	00000400-0165-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+855a9e01-0000-7ab8-ee16-c527e050b561	00000400-0194-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+855a9e01-0000-7cb2-c00c-ede5d33cac48	00000400-0195-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+855a9e01-0000-7fc2-4b66-3dd52c7dab7d	00000400-0166-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+855a9e01-0000-7185-0c9b-02aee30733d0	00000400-0137-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+855a9e01-0000-7398-fc34-76e2cfcc00c0	00000400-012f-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+855a9e01-0000-73f5-18cf-7e2461298726	00000400-0130-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+855a9e01-0000-7582-6c10-7fd4d88badbd	00000400-0132-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+855a9e01-0000-7a12-b315-6d02fb55b0b2	00000400-0133-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+855a9e01-0000-7b8c-f7f0-f0c6411c6c1d	00000400-012d-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+855a9e01-0000-7bbc-e74d-a649d96f9ab3	00000400-012e-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+855a9e01-0000-7cee-7076-d8bcbde64c77	00000400-0134-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+855a9e01-0000-7f02-ce4f-afebfaa9d497	00000400-0167-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+855a9e01-0000-7ff2-ea96-d253e6aacf26	00000400-016a-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+865a9e01-0000-7625-1bce-925ba215d166	00000400-0135-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+865a9e01-0000-7983-b9d3-da649109d5ac	00000400-0136-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+865a9e01-0000-7e7a-3c1e-26dad53782d4	00000400-0139-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+865a9e01-0000-71fc-e340-151809a8432b	00000400-017d-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+865a9e01-0000-76da-702b-8781a0cbde2e	00000400-0138-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+865a9e01-0000-7f58-45e1-d4f2db56e0af	00000400-0131-0000-0000-000000000000	80019e01-0000-7e09-f312-859757c5eac7	20
+145b9e01-0000-7e38-6bc2-f20870026b1c	00000400-0009-0000-0000-000000000000	f44e9e01-0000-7f6a-d568-ed839904674f	0
+3c5b9e01-0000-734f-7a83-eb6c86f694af	00000400-0145-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	20
+3c5b9e01-0000-77ba-08e5-9ffc737845d3	00000400-01e3-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	20
+3c5b9e01-0000-7bcf-d9d0-921be0e19463	00000400-01e2-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	20
+3d5b9e01-0000-75c2-52cc-a76df9e8061f	00000400-01e7-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	20
+3d5b9e01-0000-75de-03c0-734ca2891d33	00000400-014e-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	20
+3d5b9e01-0000-7a83-fd39-051e7afa3a66	00000400-01e8-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	20
+3e5b9e01-0000-7102-134b-df8341d06474	00000400-015c-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	20
+3e5b9e01-0000-74bb-ae3c-f5671461ddbb	00000400-0166-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	20
+3e5b9e01-0000-75f4-792c-1bc9df63da47	00000400-0169-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	20
+3e5b9e01-0000-7678-3ccc-da9371e473e8	00000400-0165-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	20
+3e5b9e01-0000-76ea-90cb-81333da70dea	00000400-015b-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	20
+3e5b9e01-0000-7760-00bf-d4b2950686c3	00000400-015d-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	20
+3e5b9e01-0000-780f-98c7-c97e504ef8d4	00000400-0160-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	20
+3e5b9e01-0000-7ae3-6498-41ab8efce69f	00000400-0195-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	20
+3e5b9e01-0000-7d09-e410-213610d970a5	00000400-0161-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	10
+3e5b9e01-0000-7fbf-9120-38372cd426b3	00000400-018d-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	20
+3f5b9e01-0000-7473-cb97-7077325f196d	00000400-018e-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	20
+3f5b9e01-0000-756d-91e8-a4b1711fa211	00000400-0190-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	10
+3f5b9e01-0000-7665-76bd-217b0b84effa	00000400-0167-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	20
+3f5b9e01-0000-796a-8610-09587fe7de35	00000400-0191-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	20
+3f5b9e01-0000-79c9-9cf6-82e363c4be91	00000400-0152-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	20
+3f5b9e01-0000-7b47-53b0-3c6abbc8cfa7	00000400-016a-0000-0000-000000000000	f6119e01-0000-79c6-bde7-382203b18326	20
 \.
 
 
@@ -51797,10 +51980,10 @@ cf499e01-0000-7f3b-8e89-290d6db9c112	00000400-0033-0000-0000-000000000000	15419e
 COPY data."StatAttribute" ("Id", "DefinitionId", "CharacterId", "Value", "AccountId") FROM stdin;
 f6119e01-0000-7436-8979-ed8112716844	48074bc6-ddc9-4264-8f1e-004d46d5b6ec	f6119e01-0000-79c6-bde7-382203b18326	7	\N
 f6119e01-0000-79e9-27f5-29feea96fbd5	89a891a7-f9f9-4ab5-af36-12056e53a5f7	f6119e01-0000-79c6-bde7-382203b18326	0	\N
+05599e01-0000-7512-3101-6d1cb34a932e	39eb6747-0689-4bbf-b832-8936e00c5df6	05599e01-0000-765e-ddec-673595de09eb	107250	\N
 2f549e01-0000-71d3-b41c-506880a518b3	123282fe-fead-448e-ad2c-baece939b4b1	2f549e01-0000-743c-112f-1d83719f8d11	32	\N
 05599e01-0000-71d0-0212-14bca9bbbaf4	48074bc6-ddc9-4264-8f1e-004d46d5b6ec	05599e01-0000-765e-ddec-673595de09eb	7	\N
 fd499e01-0000-713b-cec0-3156a2a16413	0e255161-8a3d-4367-bff0-efcd238c16fd	fd499e01-0000-78ee-2d76-510ae2c5d5c0	6078.0337	\N
-f6119e01-0000-7351-8bba-f7e58dd4b096	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	f6119e01-0000-79c6-bde7-382203b18326	152850.19	\N
 3d499e01-0000-76b9-0271-cfd4b404656b	48074bc6-ddc9-4264-8f1e-004d46d5b6ec	3d499e01-0000-7d99-4a1d-3e759db1d426	5	\N
 3d499e01-0000-7723-10b2-eb71cb5b57ad	123282fe-fead-448e-ad2c-baece939b4b1	3d499e01-0000-7d99-4a1d-3e759db1d426	18	\N
 3d499e01-0000-779b-cf3c-a1cba94dbacc	6ca5c3a6-b109-45a5-87a7-fdcb107b4982	3d499e01-0000-7d99-4a1d-3e759db1d426	15	\N
@@ -51825,30 +52008,37 @@ fd499e01-0000-7c41-e4f6-3a2ec20b5177	89a891a7-f9f9-4ab5-af36-12056e53a5f7	fd499e
 95409e01-0000-751f-266d-f04c2da520db	39eb6747-0689-4bbf-b832-8936e00c5df6	95409e01-0000-75cb-8c7f-fafd09fc5a7f	37918.668	\N
 3d499e01-0000-7b48-0625-c268b1600fcc	39eb6747-0689-4bbf-b832-8936e00c5df6	3d499e01-0000-7d99-4a1d-3e759db1d426	33.3	\N
 3d499e01-0000-77f7-1df0-6e8a74574df4	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	3d499e01-0000-7d99-4a1d-3e759db1d426	73	\N
+2f549e01-0000-7363-6e28-2bb0ccc31d79	82044df9-f528-4ad6-9aaa-6feaa4c786e7	2f549e01-0000-743c-112f-1d83719f8d11	0	\N
 3d499e01-0000-79cc-31dd-64b213431216	0e255161-8a3d-4367-bff0-efcd238c16fd	3d499e01-0000-7d99-4a1d-3e759db1d426	177.08334	\N
 bc4e9e01-0000-71b4-6940-28e8490af1e2	b3299ee6-3815-4e48-b620-95db78f8a142	bc4e9e01-0000-71c5-3499-23d06f188493	27.5	\N
+a5599e01-0000-758d-5338-f916cd921704	48074bc6-ddc9-4264-8f1e-004d46d5b6ec	a5599e01-0000-77b3-fe14-bf5096a763fa	5	\N
 a44f9e01-0000-714c-00ae-ce75c2c3372e	82044df9-f528-4ad6-9aaa-6feaa4c786e7	a44f9e01-0000-78b7-1af8-42593d2d41e2	1	\N
 cc4f9e01-0000-792b-8223-c5eb901d65d1	4a847231-171b-4fe2-a203-009cb4a26227	bc4f9e01-0000-7e32-cfad-fcc6543fc832	1	\N
 fd499e01-0000-7e2e-c57d-5ec35cd55d06	48074bc6-ddc9-4264-8f1e-004d46d5b6ec	fd499e01-0000-78ee-2d76-510ae2c5d5c0	6	\N
 fd499e01-0000-78b4-47ed-e2eb833ebafc	064543e6-2559-4033-b363-ae76214e7dee	fd499e01-0000-78ee-2d76-510ae2c5d5c0	248	\N
+bc4e9e01-0000-7819-e71e-9ea599f0e876	39eb6747-0689-4bbf-b832-8936e00c5df6	bc4e9e01-0000-71c5-3499-23d06f188493	25.7	\N
 bc4e9e01-0000-7065-9d5a-51eded7e6d51	89a891a7-f9f9-4ab5-af36-12056e53a5f7	bc4e9e01-0000-71c5-3499-23d06f188493	0	\N
+f6119e01-0000-7351-8bba-f7e58dd4b096	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	f6119e01-0000-79c6-bde7-382203b18326	153746	\N
+a5599e01-0000-770b-4106-86a66b790a4c	89a891a7-f9f9-4ab5-af36-12056e53a5f7	a5599e01-0000-77b3-fe14-bf5096a763fa	0	\N
 9d3c9e01-0000-7683-e067-88b43826dd73	1ae9c014-e3cd-4703-bd05-1b65f5f94ceb	9d3c9e01-0000-7109-3b7d-1409f52336d6	65000	\N
 bc4e9e01-0000-759a-c062-15851575c3e9	0e255161-8a3d-4367-bff0-efcd238c16fd	bc4e9e01-0000-71c5-3499-23d06f188493	110.433334	\N
 fd499e01-0000-7848-a207-1ff168ce66c0	82044df9-f528-4ad6-9aaa-6feaa4c786e7	fd499e01-0000-78ee-2d76-510ae2c5d5c0	1	\N
 7d279e01-0000-7002-dfd6-48dadf01083f	70cd8c10-391a-4c51-9aa4-a854600e3a9f	92039e01-0000-74ba-abcf-044a7feec5a5	19	\N
+a5599e01-0000-780a-bf68-608ae9c422bd	01b0ef28-f7a0-46b5-97ba-2b624a54cd75	a5599e01-0000-77b3-fe14-bf5096a763fa	15	\N
+05599e01-0000-7a22-d4b9-ba0cfbb8fc9e	82044df9-f528-4ad6-9aaa-6feaa4c786e7	05599e01-0000-765e-ddec-673595de09eb	0	\N
 a44f9e01-0000-75ae-77e2-18ee774fc48e	89a891a7-f9f9-4ab5-af36-12056e53a5f7	a44f9e01-0000-78b7-1af8-42593d2d41e2	0	\N
+a5599e01-0000-715d-e6d0-b8eb0113ab66	064543e6-2559-4033-b363-ae76214e7dee	a5599e01-0000-77b3-fe14-bf5096a763fa	186	\N
 bc4e9e01-0000-7243-0752-4e3a9d3bb8fb	1ae9c014-e3cd-4703-bd05-1b65f5f94ceb	bc4e9e01-0000-71c5-3499-23d06f188493	20	\N
-f6119e01-0000-78e1-649e-64d972ce246f	0e255161-8a3d-4367-bff0-efcd238c16fd	f6119e01-0000-79c6-bde7-382203b18326	332965	\N
+f44e9e01-0000-7e04-3205-de0917122ff1	560931ad-0901-4342-b7f4-fd2e2fcc0563	f44e9e01-0000-7f6a-d568-ed839904674f	229	\N
 05599e01-0000-7635-8fae-0dcede3d047c	89a891a7-f9f9-4ab5-af36-12056e53a5f7	05599e01-0000-765e-ddec-673595de09eb	0	\N
 9d3c9e01-0000-7854-3586-c018758f2c2a	123282fe-fead-448e-ad2c-baece939b4b1	9d3c9e01-0000-7109-3b7d-1409f52336d6	65000	\N
 95409e01-0000-7a67-c008-f89769d423cf	48074bc6-ddc9-4264-8f1e-004d46d5b6ec	95409e01-0000-75cb-8c7f-fafd09fc5a7f	5	\N
-f6119e01-0000-7aaa-6783-642b22b66982	b3299ee6-3815-4e48-b620-95db78f8a142	f6119e01-0000-79c6-bde7-382203b18326	152791.69	\N
-f6119e01-0000-7ae6-9691-4aef30db0d60	39eb6747-0689-4bbf-b832-8936e00c5df6	f6119e01-0000-79c6-bde7-382203b18326	38123.453	\N
-2f549e01-0000-7363-6e28-2bb0ccc31d79	82044df9-f528-4ad6-9aaa-6feaa4c786e7	2f549e01-0000-743c-112f-1d83719f8d11	1	\N
+f6119e01-0000-7aaa-6783-642b22b66982	b3299ee6-3815-4e48-b620-95db78f8a142	f6119e01-0000-79c6-bde7-382203b18326	153682	\N
+bc4e9e01-0000-787f-a5b9-72d70866c331	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	bc4e9e01-0000-71c5-3499-23d06f188493	140	\N
 fd499e01-0000-705d-9c1c-1f6a02647d91	01b0ef28-f7a0-46b5-97ba-2b624a54cd75	fd499e01-0000-78ee-2d76-510ae2c5d5c0	3000	\N
-bc4e9e01-0000-787f-a5b9-72d70866c331	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	bc4e9e01-0000-71c5-3499-23d06f188493	127.800026	\N
 263b9e01-0000-7458-aac7-5ea158c38847	70cd8c10-391a-4c51-9aa4-a854600e3a9f	1b3b9e01-0000-704d-c1a1-d6adc287c492	1	\N
 fd499e01-0000-7248-d231-7d39cc707914	6ca5c3a6-b109-45a5-87a7-fdcb107b4982	fd499e01-0000-78ee-2d76-510ae2c5d5c0	200	\N
+f6119e01-0000-78e1-649e-64d972ce246f	0e255161-8a3d-4367-bff0-efcd238c16fd	f6119e01-0000-79c6-bde7-382203b18326	332965	\N
 f6119e01-0000-71a1-58a2-c0dae3a88fad	01b0ef28-f7a0-46b5-97ba-2b624a54cd75	f6119e01-0000-79c6-bde7-382203b18326	65000	\N
 f6119e01-0000-73ae-12d3-afe489a09834	1ae9c014-e3cd-4703-bd05-1b65f5f94ceb	f6119e01-0000-79c6-bde7-382203b18326	65000	\N
 05599e01-0000-728d-94b4-f51894040788	123282fe-fead-448e-ad2c-baece939b4b1	05599e01-0000-765e-ddec-673595de09eb	65000	\N
@@ -51863,11 +52053,9 @@ bc4e9e01-0000-7df7-75ca-481915ba2f0d	01b0ef28-f7a0-46b5-97ba-2b624a54cd75	bc4e9e
 bc4e9e01-0000-7fb1-a2df-18a159dad788	123282fe-fead-448e-ad2c-baece939b4b1	bc4e9e01-0000-71c5-3499-23d06f188493	28	\N
 2f549e01-0000-76ac-1f82-8a5971ebe7b4	89a891a7-f9f9-4ab5-af36-12056e53a5f7	2f549e01-0000-743c-112f-1d83719f8d11	0	\N
 05599e01-0000-7349-546a-95f26d1b1a43	1ae9c014-e3cd-4703-bd05-1b65f5f94ceb	05599e01-0000-765e-ddec-673595de09eb	65000	\N
-bc4e9e01-0000-7819-e71e-9ea599f0e876	39eb6747-0689-4bbf-b832-8936e00c5df6	bc4e9e01-0000-71c5-3499-23d06f188493	25.7	\N
 fd499e01-0000-7c8c-0eef-01169988a3e4	560931ad-0901-4342-b7f4-fd2e2fcc0563	fd499e01-0000-78ee-2d76-510ae2c5d5c0	229	\N
 bc4e9e01-0000-7a2d-5d3c-e912788e1aeb	82044df9-f528-4ad6-9aaa-6feaa4c786e7	bc4e9e01-0000-71c5-3499-23d06f188493	1	\N
 fd499e01-0000-73f6-5af0-160c1bd45efe	123282fe-fead-448e-ad2c-baece939b4b1	fd499e01-0000-78ee-2d76-510ae2c5d5c0	200	\N
-05599e01-0000-7512-3101-6d1cb34a932e	39eb6747-0689-4bbf-b832-8936e00c5df6	05599e01-0000-765e-ddec-673595de09eb	107250	\N
 9d3c9e01-0000-7602-54a4-2f4f073106b1	89a891a7-f9f9-4ab5-af36-12056e53a5f7	9d3c9e01-0000-7109-3b7d-1409f52336d6	0	\N
 f6119e01-0000-7044-cf31-d3d69e8d8f8c	560931ad-0901-4342-b7f4-fd2e2fcc0563	f6119e01-0000-79c6-bde7-382203b18326	400	\N
 bc4e9e01-0000-7ad3-a115-8336f326fd47	560931ad-0901-4342-b7f4-fd2e2fcc0563	bc4e9e01-0000-71c5-3499-23d06f188493	15	\N
@@ -51878,7 +52066,6 @@ a44f9e01-0000-74ba-aa7a-498cbb1ee037	6ca5c3a6-b109-45a5-87a7-fdcb107b4982	a44f9e
 95409e01-0000-70e3-48e8-691c84447345	1ae9c014-e3cd-4703-bd05-1b65f5f94ceb	95409e01-0000-75cb-8c7f-fafd09fc5a7f	65000	\N
 95409e01-0000-72c3-4873-ee0ee213f02d	6ca5c3a6-b109-45a5-87a7-fdcb107b4982	95409e01-0000-75cb-8c7f-fafd09fc5a7f	65000	\N
 a44f9e01-0000-7797-5492-367193f4efce	123282fe-fead-448e-ad2c-baece939b4b1	a44f9e01-0000-78b7-1af8-42593d2d41e2	65000	\N
-05599e01-0000-7a22-d4b9-ba0cfbb8fc9e	82044df9-f528-4ad6-9aaa-6feaa4c786e7	05599e01-0000-765e-ddec-673595de09eb	0	\N
 95409e01-0000-7648-7a01-dd1e5316ac6a	123282fe-fead-448e-ad2c-baece939b4b1	95409e01-0000-75cb-8c7f-fafd09fc5a7f	65000	\N
 95409e01-0000-76b1-80c6-c6948d77f6de	560931ad-0901-4342-b7f4-fd2e2fcc0563	95409e01-0000-75cb-8c7f-fafd09fc5a7f	400	\N
 95409e01-0000-7a47-a6c3-e13ef2bc31f3	01b0ef28-f7a0-46b5-97ba-2b624a54cd75	95409e01-0000-75cb-8c7f-fafd09fc5a7f	65000	\N
@@ -51895,18 +52082,19 @@ bf469e01-0000-7bf7-b66a-c4dd6dee652a	0e255161-8a3d-4367-bff0-efcd238c16fd	bf469e
 07419e01-0000-78bc-ca82-d3b5bcfda4f1	39eb6747-0689-4bbf-b832-8936e00c5df6	07419e01-0000-7a55-eb71-ce92de75f6a8	471	\N
 bf469e01-0000-7fe2-d3e6-d9e9b614fa3c	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	bf469e01-0000-78d3-eaf1-4bb1bda12e2e	154	\N
 95409e01-0000-7ec6-1f71-d5d671b36f06	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	95409e01-0000-75cb-8c7f-fafd09fc5a7f	130315	\N
-1c3b9e01-0000-7441-c74b-1fb24bb1e1fa	1ae9c014-e3cd-4703-bd05-1b65f5f94ceb	1b3b9e01-0000-704d-c1a1-d6adc287c492	32000	\N
-1c3b9e01-0000-7808-2d8b-5a75831211e8	0e255161-8a3d-4367-bff0-efcd238c16fd	1b3b9e01-0000-704d-c1a1-d6adc287c492	56960	\N
-f44e9e01-0000-79f2-302c-118b1bed2396	39eb6747-0689-4bbf-b832-8936e00c5df6	f44e9e01-0000-7f6a-d568-ed839904674f	84.46212	\N
-f44e9e01-0000-7255-d1c5-4f50467f3253	6ca5c3a6-b109-45a5-87a7-fdcb107b4982	f44e9e01-0000-7f6a-d568-ed839904674f	26	\N
+f44e9e01-0000-7070-8329-09ec3e77d427	01b0ef28-f7a0-46b5-97ba-2b624a54cd75	f44e9e01-0000-7f6a-d568-ed839904674f	972	\N
+1c3b9e01-0000-75a5-4e51-75a6093c8c71	b3299ee6-3815-4e48-b620-95db78f8a142	1b3b9e01-0000-704d-c1a1-d6adc287c492	135179.23	\N
+f44e9e01-0000-756b-a52c-1435b23ab2f7	1ae9c014-e3cd-4703-bd05-1b65f5f94ceb	f44e9e01-0000-7f6a-d568-ed839904674f	480	\N
 f44e9e01-0000-799c-c4ac-1d554aef788d	89a891a7-f9f9-4ab5-af36-12056e53a5f7	f44e9e01-0000-7f6a-d568-ed839904674f	0	\N
-1c3b9e01-0000-75a5-4e51-75a6093c8c71	b3299ee6-3815-4e48-b620-95db78f8a142	1b3b9e01-0000-704d-c1a1-d6adc287c492	66925.02	\N
+f44e9e01-0000-75f8-6739-60a98a1e6582	0e255161-8a3d-4367-bff0-efcd238c16fd	f44e9e01-0000-7f6a-d568-ed839904674f	3890.5334	\N
 bf469e01-0000-7d22-b28a-969ce02b4e67	123282fe-fead-448e-ad2c-baece939b4b1	bf469e01-0000-78d3-eaf1-4bb1bda12e2e	78	\N
 bf469e01-0000-709d-13cf-57a35b1cd0d1	82044df9-f528-4ad6-9aaa-6feaa4c786e7	bf469e01-0000-78d3-eaf1-4bb1bda12e2e	0	\N
 bf469e01-0000-72d9-3658-d4ded7a434e0	b3299ee6-3815-4e48-b620-95db78f8a142	bf469e01-0000-78d3-eaf1-4bb1bda12e2e	31	\N
 bf469e01-0000-7b0d-6e0b-74967f78f4fa	560931ad-0901-4342-b7f4-fd2e2fcc0563	bf469e01-0000-78d3-eaf1-4bb1bda12e2e	22	\N
 f44e9e01-0000-7c4c-d2c1-9fdb299d4b89	48074bc6-ddc9-4264-8f1e-004d46d5b6ec	f44e9e01-0000-7f6a-d568-ed839904674f	7	\N
-f44e9e01-0000-7353-059e-c6351e13664b	82044df9-f528-4ad6-9aaa-6feaa4c786e7	f44e9e01-0000-7f6a-d568-ed839904674f	0	\N
+05599e01-0000-7530-1395-cfc4cbadedb7	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	05599e01-0000-765e-ddec-673595de09eb	152756.6	\N
+f44e9e01-0000-7a4f-03d5-4fa00d51eefc	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	f44e9e01-0000-7f6a-d568-ed839904674f	538	\N
+05599e01-0000-7604-ea62-e60d47085b1a	0e255161-8a3d-4367-bff0-efcd238c16fd	05599e01-0000-765e-ddec-673595de09eb	323150	\N
 1c3b9e01-0000-7d98-182c-0b2dd8e52563	48074bc6-ddc9-4264-8f1e-004d46d5b6ec	1b3b9e01-0000-704d-c1a1-d6adc287c492	5	\N
 9d3c9e01-0000-7fdb-ed29-36ded7e2fe1f	48074bc6-ddc9-4264-8f1e-004d46d5b6ec	9d3c9e01-0000-7109-3b7d-1409f52336d6	5	\N
 9d3c9e01-0000-7ece-d78d-44aabe54f957	01b0ef28-f7a0-46b5-97ba-2b624a54cd75	9d3c9e01-0000-7109-3b7d-1409f52336d6	65000	\N
@@ -51917,18 +52105,18 @@ a44f9e01-0000-732c-efd2-8fbea79e2523	39eb6747-0689-4bbf-b832-8936e00c5df6	a44f9e
 2f549e01-0000-7764-337f-5114ba6a22f7	01b0ef28-f7a0-46b5-97ba-2b624a54cd75	2f549e01-0000-743c-112f-1d83719f8d11	20	\N
 a44f9e01-0000-7de4-2f65-5e91ff98f929	01b0ef28-f7a0-46b5-97ba-2b624a54cd75	a44f9e01-0000-78b7-1af8-42593d2d41e2	65000	\N
 07419e01-0000-7ffe-ddb0-7c993b86e4dc	123282fe-fead-448e-ad2c-baece939b4b1	07419e01-0000-7a55-eb71-ce92de75f6a8	350	\N
-1c3b9e01-0000-7afb-7149-d4e0aa6d796a	82044df9-f528-4ad6-9aaa-6feaa4c786e7	1b3b9e01-0000-704d-c1a1-d6adc287c492	0	\N
-f44e9e01-0000-7ee9-86f8-b3679e322ccf	b3299ee6-3815-4e48-b620-95db78f8a142	f44e9e01-0000-7f6a-d568-ed839904674f	1099	\N
+1c3b9e01-0000-7441-c74b-1fb24bb1e1fa	1ae9c014-e3cd-4703-bd05-1b65f5f94ceb	1b3b9e01-0000-704d-c1a1-d6adc287c492	65000	\N
+1c3b9e01-0000-7808-2d8b-5a75831211e8	0e255161-8a3d-4367-bff0-efcd238c16fd	1b3b9e01-0000-704d-c1a1-d6adc287c492	329737.56	\N
 07419e01-0000-767b-42e6-fec27b517c63	1ae9c014-e3cd-4703-bd05-1b65f5f94ceb	07419e01-0000-7a55-eb71-ce92de75f6a8	1500	\N
 fd499e01-0000-7d4a-416e-f96cfcdfe023	1ae9c014-e3cd-4703-bd05-1b65f5f94ceb	fd499e01-0000-78ee-2d76-510ae2c5d5c0	200	\N
 a44f9e01-0000-76d6-5569-aff508e69ec6	89a891a7-f9f9-4ab5-af36-12056e53a5f7	a44f9e01-0000-7646-b8cf-c1cf585394c3	0	\N
 1c3b9e01-0000-7682-53c7-6886c1d086bf	560931ad-0901-4342-b7f4-fd2e2fcc0563	1b3b9e01-0000-704d-c1a1-d6adc287c492	400	\N
 07419e01-0000-7480-13b9-01ad90f2a972	b3299ee6-3815-4e48-b620-95db78f8a142	07419e01-0000-7a55-eb71-ce92de75f6a8	1056	\N
-f44e9e01-0000-7070-8329-09ec3e77d427	01b0ef28-f7a0-46b5-97ba-2b624a54cd75	f44e9e01-0000-7f6a-d568-ed839904674f	477	\N
 f44e9e01-0000-7ac5-d27a-23306371b738	123282fe-fead-448e-ad2c-baece939b4b1	f44e9e01-0000-7f6a-d568-ed839904674f	122	\N
 07419e01-0000-7aa6-0ce8-ece97f7da2ec	064543e6-2559-4033-b363-ae76214e7dee	07419e01-0000-7a55-eb71-ce92de75f6a8	245	\N
 a44f9e01-0000-7650-fe88-1a3106579b2f	0e255161-8a3d-4367-bff0-efcd238c16fd	a44f9e01-0000-78b7-1af8-42593d2d41e2	323100.78	\N
-f44e9e01-0000-75f8-6739-60a98a1e6582	0e255161-8a3d-4367-bff0-efcd238c16fd	f44e9e01-0000-7f6a-d568-ed839904674f	1708	\N
+2f549e01-0000-78b8-651d-df9133d40e49	b3299ee6-3815-4e48-b620-95db78f8a142	2f549e01-0000-743c-112f-1d83719f8d11	47	\N
+1c3b9e01-0000-7977-be7d-722e7c9e0980	123282fe-fead-448e-ad2c-baece939b4b1	1b3b9e01-0000-704d-c1a1-d6adc287c492	65000	\N
 a44f9e01-0000-7f0a-4886-2c292ef60ad3	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	a44f9e01-0000-78b7-1af8-42593d2d41e2	102162.2	\N
 95409e01-0000-7e9a-5915-b98afacb7802	b3299ee6-3815-4e48-b620-95db78f8a142	95409e01-0000-75cb-8c7f-fafd09fc5a7f	130800	\N
 07419e01-0000-7462-e191-3d7190d5c1dc	89a891a7-f9f9-4ab5-af36-12056e53a5f7	07419e01-0000-7a55-eb71-ce92de75f6a8	0	\N
@@ -51939,50 +52127,52 @@ a44f9e01-0000-7105-1fd0-47e14fddb75c	064543e6-2559-4033-b363-ae76214e7dee	a44f9e
 a44f9e01-0000-7ae2-b614-b15d5bda7c81	39eb6747-0689-4bbf-b832-8936e00c5df6	a44f9e01-0000-7646-b8cf-c1cf585394c3	56160.344	\N
 07599e01-0000-7b70-94f2-848275851d33	70cd8c10-391a-4c51-9aa4-a854600e3a9f	05599e01-0000-765e-ddec-673595de09eb	0	\N
 fd499e01-0000-7c89-fcd6-8433dc344326	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	fd499e01-0000-78ee-2d76-510ae2c5d5c0	-86.32	\N
-f44e9e01-0000-7e04-3205-de0917122ff1	560931ad-0901-4342-b7f4-fd2e2fcc0563	f44e9e01-0000-7f6a-d568-ed839904674f	138	\N
+1c3b9e01-0000-7afb-7149-d4e0aa6d796a	82044df9-f528-4ad6-9aaa-6feaa4c786e7	1b3b9e01-0000-704d-c1a1-d6adc287c492	0	\N
 07419e01-0000-7215-5bc3-62f36c8b4ed7	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	07419e01-0000-7a55-eb71-ce92de75f6a8	479	\N
 a44f9e01-0000-7fe2-e7b4-56499e9f3afa	560931ad-0901-4342-b7f4-fd2e2fcc0563	a44f9e01-0000-7646-b8cf-c1cf585394c3	400	\N
-f44e9e01-0000-7a4f-03d5-4fa00d51eefc	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	f44e9e01-0000-7f6a-d568-ed839904674f	19	\N
+f44e9e01-0000-7353-059e-c6351e13664b	82044df9-f528-4ad6-9aaa-6feaa4c786e7	f44e9e01-0000-7f6a-d568-ed839904674f	0	\N
 a44f9e01-0000-7d66-e019-ceb101ea880e	82044df9-f528-4ad6-9aaa-6feaa4c786e7	a44f9e01-0000-7646-b8cf-c1cf585394c3	0	\N
 a44f9e01-0000-7d91-3b55-f2c7b6413a70	b3299ee6-3815-4e48-b620-95db78f8a142	a44f9e01-0000-78b7-1af8-42593d2d41e2	99329.164	\N
 07419e01-0000-78f3-90a3-73da27ea25e4	560931ad-0901-4342-b7f4-fd2e2fcc0563	07419e01-0000-7a55-eb71-ce92de75f6a8	400	\N
 a44f9e01-0000-7c1f-2fa6-2f27be9aefa4	123282fe-fead-448e-ad2c-baece939b4b1	a44f9e01-0000-7646-b8cf-c1cf585394c3	65000	\N
-f44e9e01-0000-756b-a52c-1435b23ab2f7	1ae9c014-e3cd-4703-bd05-1b65f5f94ceb	f44e9e01-0000-7f6a-d568-ed839904674f	207	\N
 a44f9e01-0000-7e71-da76-4420c1ad79ae	48074bc6-ddc9-4264-8f1e-004d46d5b6ec	a44f9e01-0000-78b7-1af8-42593d2d41e2	7	\N
 a44f9e01-0000-76c5-1e3f-84610919c6b9	6ca5c3a6-b109-45a5-87a7-fdcb107b4982	a44f9e01-0000-7646-b8cf-c1cf585394c3	65000	\N
 a44f9e01-0000-7d38-28fc-727f09eb297b	01b0ef28-f7a0-46b5-97ba-2b624a54cd75	a44f9e01-0000-7646-b8cf-c1cf585394c3	65000	\N
 f6119e01-0000-7d4e-a074-1f61db6ee53b	82044df9-f528-4ad6-9aaa-6feaa4c786e7	f6119e01-0000-79c6-bde7-382203b18326	0	\N
 a44f9e01-0000-7fd8-5539-5d9e04c68b77	0e255161-8a3d-4367-bff0-efcd238c16fd	a44f9e01-0000-7646-b8cf-c1cf585394c3	320948	\N
-2f549e01-0000-7a85-3377-1c47c587097c	560931ad-0901-4342-b7f4-fd2e2fcc0563	2f549e01-0000-743c-112f-1d83719f8d11	1	\N
 a44f9e01-0000-7075-c95d-e002b0cb173b	b3299ee6-3815-4e48-b620-95db78f8a142	a44f9e01-0000-7646-b8cf-c1cf585394c3	119360.92	\N
 a44f9e01-0000-7072-bcbc-56cb1bacd86d	48074bc6-ddc9-4264-8f1e-004d46d5b6ec	a44f9e01-0000-7646-b8cf-c1cf585394c3	6	\N
 a44f9e01-0000-76b2-6f9d-6545c2a8adda	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	a44f9e01-0000-7646-b8cf-c1cf585394c3	123297.16	\N
 2f549e01-0000-7c38-dd07-107429d98806	1ae9c014-e3cd-4703-bd05-1b65f5f94ceb	2f549e01-0000-743c-112f-1d83719f8d11	27	\N
 2f549e01-0000-7d64-610a-251dbb178b9d	48074bc6-ddc9-4264-8f1e-004d46d5b6ec	2f549e01-0000-743c-112f-1d83719f8d11	7	\N
-2f549e01-0000-78b8-651d-df9133d40e49	b3299ee6-3815-4e48-b620-95db78f8a142	2f549e01-0000-743c-112f-1d83719f8d11	34	\N
-2f549e01-0000-7921-312c-77526b117eae	0e255161-8a3d-4367-bff0-efcd238c16fd	2f549e01-0000-743c-112f-1d83719f8d11	126.520836	\N
-1c3b9e01-0000-7820-41b1-921595031717	01b0ef28-f7a0-46b5-97ba-2b624a54cd75	1b3b9e01-0000-704d-c1a1-d6adc287c492	32000	\N
+2f549e01-0000-7921-312c-77526b117eae	0e255161-8a3d-4367-bff0-efcd238c16fd	2f549e01-0000-743c-112f-1d83719f8d11	133.02084	\N
 05599e01-0000-7c6d-7df5-d80b82bbf942	b3299ee6-3815-4e48-b620-95db78f8a142	05599e01-0000-765e-ddec-673595de09eb	99329.164	\N
 05599e01-0000-7661-d9b6-2a0ed55c6bf8	560931ad-0901-4342-b7f4-fd2e2fcc0563	05599e01-0000-765e-ddec-673595de09eb	400	\N
-1c3b9e01-0000-78f4-cba9-5ce13247be8b	39eb6747-0689-4bbf-b832-8936e00c5df6	1b3b9e01-0000-704d-c1a1-d6adc287c492	28800	\N
-1c3b9e01-0000-7977-be7d-722e7c9e0980	123282fe-fead-448e-ad2c-baece939b4b1	1b3b9e01-0000-704d-c1a1-d6adc287c492	32000	\N
-1c3b9e01-0000-7d14-0412-929fedc612e7	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	1b3b9e01-0000-704d-c1a1-d6adc287c492	63933.023	\N
-05599e01-0000-7530-1395-cfc4cbadedb7	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	05599e01-0000-765e-ddec-673595de09eb	152756	\N
-1c3b9e01-0000-7f05-c62a-35f55f0f00af	6ca5c3a6-b109-45a5-87a7-fdcb107b4982	1b3b9e01-0000-704d-c1a1-d6adc287c492	32000	\N
+1c3b9e01-0000-7f05-c62a-35f55f0f00af	6ca5c3a6-b109-45a5-87a7-fdcb107b4982	1b3b9e01-0000-704d-c1a1-d6adc287c492	65000	\N
+1c3b9e01-0000-7820-41b1-921595031717	01b0ef28-f7a0-46b5-97ba-2b624a54cd75	1b3b9e01-0000-704d-c1a1-d6adc287c492	65000	\N
+f44e9e01-0000-7255-d1c5-4f50467f3253	6ca5c3a6-b109-45a5-87a7-fdcb107b4982	f44e9e01-0000-7f6a-d568-ed839904674f	126	\N
+f44e9e01-0000-79f2-302c-118b1bed2396	39eb6747-0689-4bbf-b832-8936e00c5df6	f44e9e01-0000-7f6a-d568-ed839904674f	328	\N
 05599e01-0000-7e6b-83b2-4e88b469c648	6ca5c3a6-b109-45a5-87a7-fdcb107b4982	05599e01-0000-765e-ddec-673595de09eb	65000	\N
-05599e01-0000-7604-ea62-e60d47085b1a	0e255161-8a3d-4367-bff0-efcd238c16fd	05599e01-0000-765e-ddec-673595de09eb	323150	\N
+2f549e01-0000-7a85-3377-1c47c587097c	560931ad-0901-4342-b7f4-fd2e2fcc0563	2f549e01-0000-743c-112f-1d83719f8d11	14	\N
+a5599e01-0000-78d2-f602-a4a9489f3361	6ca5c3a6-b109-45a5-87a7-fdcb107b4982	a5599e01-0000-77b3-fe14-bf5096a763fa	20	\N
+a5599e01-0000-7ab6-41ca-a654fdc65cda	1ae9c014-e3cd-4703-bd05-1b65f5f94ceb	a5599e01-0000-77b3-fe14-bf5096a763fa	25	\N
+a5599e01-0000-7850-e4ad-b99505fab465	39eb6747-0689-4bbf-b832-8936e00c5df6	a5599e01-0000-77b3-fe14-bf5096a763fa	20.6	\N
 b33c9e01-0000-7b04-3652-ff79897517d5	4a847231-171b-4fe2-a203-009cb4a26227	80019e01-0000-7e09-f312-859757c5eac7	1	\N
 15419e01-0000-7ce7-ab53-a21a9185a7e1	89a891a7-f9f9-4ab5-af36-12056e53a5f7	15419e01-0000-7606-fd6f-2bc4bb6e2717	0	\N
 a44f9e01-0000-7be9-03f9-6e321761c29b	560931ad-0901-4342-b7f4-fd2e2fcc0563	a44f9e01-0000-78b7-1af8-42593d2d41e2	400	\N
 a44f9e01-0000-7c73-7b40-ee61df400d40	1ae9c014-e3cd-4703-bd05-1b65f5f94ceb	a44f9e01-0000-78b7-1af8-42593d2d41e2	65000	\N
+2f549e01-0000-7399-b3eb-335b26b91d17	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	2f549e01-0000-743c-112f-1d83719f8d11	125	\N
 2f549e01-0000-733f-ab6e-50052661a7ab	39eb6747-0689-4bbf-b832-8936e00c5df6	2f549e01-0000-743c-112f-1d83719f8d11	37.7	\N
-2f549e01-0000-7399-b3eb-335b26b91d17	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	2f549e01-0000-743c-112f-1d83719f8d11	108.3	\N
 15419e01-0000-7363-f228-b5edb7ac82fc	39eb6747-0689-4bbf-b832-8936e00c5df6	15419e01-0000-7606-fd6f-2bc4bb6e2717	42358.477	\N
 15419e01-0000-7c11-b512-49bcb8e8bf0c	064543e6-2559-4033-b363-ae76214e7dee	15419e01-0000-7606-fd6f-2bc4bb6e2717	0	\N
 15419e01-0000-7609-a75b-80e5accfb76f	6ca5c3a6-b109-45a5-87a7-fdcb107b4982	15419e01-0000-7606-fd6f-2bc4bb6e2717	65000	\N
+a5599e01-0000-7ed7-295a-14da93a8c7b6	123282fe-fead-448e-ad2c-baece939b4b1	a5599e01-0000-77b3-fe14-bf5096a763fa	22	\N
 15419e01-0000-7c9b-d0f8-f0e28a1fad62	1ae9c014-e3cd-4703-bd05-1b65f5f94ceb	15419e01-0000-7606-fd6f-2bc4bb6e2717	65000	\N
 15419e01-0000-7114-f76c-fbc644fecdd3	01b0ef28-f7a0-46b5-97ba-2b624a54cd75	15419e01-0000-7606-fd6f-2bc4bb6e2717	65000	\N
+a5599e01-0000-7d89-fa5e-5674cd073315	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	a5599e01-0000-77b3-fe14-bf5096a763fa	93	\N
+a5599e01-0000-7f8d-e52d-5893b2f2c4c2	82044df9-f528-4ad6-9aaa-6feaa4c786e7	a5599e01-0000-77b3-fe14-bf5096a763fa	1	\N
 15419e01-0000-7c33-17db-da236be1f1c5	123282fe-fead-448e-ad2c-baece939b4b1	15419e01-0000-7606-fd6f-2bc4bb6e2717	65000	\N
+f6119e01-0000-7ae6-9691-4aef30db0d60	39eb6747-0689-4bbf-b832-8936e00c5df6	f6119e01-0000-79c6-bde7-382203b18326	58500	\N
 15419e01-0000-7579-c405-e92f02bfb5ae	560931ad-0901-4342-b7f4-fd2e2fcc0563	15419e01-0000-7606-fd6f-2bc4bb6e2717	300	\N
 15419e01-0000-759f-d97f-dd8effd00972	b3299ee6-3815-4e48-b620-95db78f8a142	15419e01-0000-7606-fd6f-2bc4bb6e2717	97956	\N
 15419e01-0000-73c7-d2b7-f098daf9a4eb	0e255161-8a3d-4367-bff0-efcd238c16fd	15419e01-0000-7606-fd6f-2bc4bb6e2717	318250	\N
@@ -51995,7 +52185,11 @@ a44f9e01-0000-7c73-7b40-ee61df400d40	1ae9c014-e3cd-4703-bd05-1b65f5f94ceb	a44f9e
 b04f9e01-0000-7552-4fb1-5364e95243a0	4a847231-171b-4fe2-a203-009cb4a26227	a44f9e01-0000-7646-b8cf-c1cf585394c3	1	\N
 243f9e01-0000-7580-7ec4-bc85edca25b7	82044df9-f528-4ad6-9aaa-6feaa4c786e7	243f9e01-0000-75f6-6515-c8790a6ed98a	1	\N
 243f9e01-0000-75ac-1d87-efc7c57395f8	39eb6747-0689-4bbf-b832-8936e00c5df6	243f9e01-0000-75f6-6515-c8790a6ed98a	69.1	\N
+a5599e01-0000-75fa-1f42-70d777891d6b	560931ad-0901-4342-b7f4-fd2e2fcc0563	a5599e01-0000-77b3-fe14-bf5096a763fa	14	\N
 243f9e01-0000-7492-8a02-87437bb2b27d	01b0ef28-f7a0-46b5-97ba-2b624a54cd75	243f9e01-0000-75f6-6515-c8790a6ed98a	170	\N
+a5599e01-0000-7d6e-99aa-8f7a3f4947f9	b3299ee6-3815-4e48-b620-95db78f8a142	a5599e01-0000-77b3-fe14-bf5096a763fa	49.5	\N
+a5599e01-0000-7605-51b1-f673f7608ae8	0e255161-8a3d-4367-bff0-efcd238c16fd	a5599e01-0000-77b3-fe14-bf5096a763fa	106.183334	\N
+f44e9e01-0000-7ee9-86f8-b3679e322ccf	b3299ee6-3815-4e48-b620-95db78f8a142	f44e9e01-0000-7f6a-d568-ed839904674f	2180	\N
 243f9e01-0000-700d-6e5c-c942038172cf	123282fe-fead-448e-ad2c-baece939b4b1	243f9e01-0000-75f6-6515-c8790a6ed98a	38	\N
 243f9e01-0000-796b-8302-94d4c7463cba	560931ad-0901-4342-b7f4-fd2e2fcc0563	243f9e01-0000-75f6-6515-c8790a6ed98a	47	\N
 243f9e01-0000-74dc-26d8-39b790191fc3	b3299ee6-3815-4e48-b620-95db78f8a142	243f9e01-0000-75f6-6515-c8790a6ed98a	434	\N
@@ -52009,37 +52203,39 @@ bc4f9e01-0000-76dd-ca48-844001349141	123282fe-fead-448e-ad2c-baece939b4b1	bc4f9e
 bc4f9e01-0000-7df6-e5ab-1995e28c41dd	01b0ef28-f7a0-46b5-97ba-2b624a54cd75	bc4f9e01-0000-7e32-cfad-fcc6543fc832	65000	\N
 bc4f9e01-0000-7e5b-0209-d3c241805a26	6ca5c3a6-b109-45a5-87a7-fdcb107b4982	bc4f9e01-0000-7e32-cfad-fcc6543fc832	65000	\N
 bc4f9e01-0000-7bbc-222b-6f6981ea84ee	89a891a7-f9f9-4ab5-af36-12056e53a5f7	bc4f9e01-0000-7e32-cfad-fcc6543fc832	1	\N
+1c3b9e01-0000-78f4-cba9-5ce13247be8b	39eb6747-0689-4bbf-b832-8936e00c5df6	1b3b9e01-0000-704d-c1a1-d6adc287c492	58500	\N
+1c3b9e01-0000-7d14-0412-929fedc612e7	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	1b3b9e01-0000-704d-c1a1-d6adc287c492	142830.14	\N
 bc4f9e01-0000-7031-1e0e-5a6e45cd163e	b3299ee6-3815-4e48-b620-95db78f8a142	bc4f9e01-0000-7e32-cfad-fcc6543fc832	135177.4	\N
 bc4f9e01-0000-77f6-73af-f5ab722b050d	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	bc4f9e01-0000-7e32-cfad-fcc6543fc832	142829	\N
 bc4f9e01-0000-72a6-ce6c-5ad5f9355219	560931ad-0901-4342-b7f4-fd2e2fcc0563	bc4f9e01-0000-7e32-cfad-fcc6543fc832	400	\N
 bc4f9e01-0000-7908-dcf8-12b1dd17a00e	82044df9-f528-4ad6-9aaa-6feaa4c786e7	bc4f9e01-0000-7e32-cfad-fcc6543fc832	0	\N
 bc4f9e01-0000-7a2b-8f1a-44c05f335562	39eb6747-0689-4bbf-b832-8936e00c5df6	bc4f9e01-0000-7e32-cfad-fcc6543fc832	58455	\N
+80019e01-0000-7408-e27c-12b28b81a38a	6ca5c3a6-b109-45a5-87a7-fdcb107b4982	80019e01-0000-7e09-f312-859757c5eac7	65000	\N
 80019e01-0000-761e-00e8-04d485a9bd50	48074bc6-ddc9-4264-8f1e-004d46d5b6ec	80019e01-0000-7e09-f312-859757c5eac7	6	\N
-80019e01-0000-7408-e27c-12b28b81a38a	6ca5c3a6-b109-45a5-87a7-fdcb107b4982	80019e01-0000-7e09-f312-859757c5eac7	1300	\N
-80019e01-0000-75d7-3761-906b2f2e6381	01b0ef28-f7a0-46b5-97ba-2b624a54cd75	80019e01-0000-7e09-f312-859757c5eac7	13100	\N
+80019e01-0000-75d7-3761-906b2f2e6381	01b0ef28-f7a0-46b5-97ba-2b624a54cd75	80019e01-0000-7e09-f312-859757c5eac7	65000	\N
 35029e01-0000-7034-8799-8693089e9ed8	70cd8c10-391a-4c51-9aa4-a854600e3a9f	80019e01-0000-7e09-f312-859757c5eac7	200	\N
-92039e01-0000-748a-bcde-7ef614355b0f	01b0ef28-f7a0-46b5-97ba-2b624a54cd75	92039e01-0000-74ba-abcf-044a7feec5a5	65000	\N
 92039e01-0000-763b-7ecd-b1317869fb7b	89a891a7-f9f9-4ab5-af36-12056e53a5f7	92039e01-0000-74ba-abcf-044a7feec5a5	3	\N
+80019e01-0000-7e36-6777-736067703c28	82044df9-f528-4ad6-9aaa-6feaa4c786e7	80019e01-0000-7e09-f312-859757c5eac7	0	\N
+80019e01-0000-7d45-4e78-f3b7308dba43	89a891a7-f9f9-4ab5-af36-12056e53a5f7	80019e01-0000-7e09-f312-859757c5eac7	10	\N
+80019e01-0000-7656-c8ff-82e6733f8725	560931ad-0901-4342-b7f4-fd2e2fcc0563	80019e01-0000-7e09-f312-859757c5eac7	400	\N
+92039e01-0000-777c-2471-b56697a6973b	82044df9-f528-4ad6-9aaa-6feaa4c786e7	92039e01-0000-74ba-abcf-044a7feec5a5	0	\N
+92039e01-0000-788d-fd35-05795b592fc0	560931ad-0901-4342-b7f4-fd2e2fcc0563	92039e01-0000-74ba-abcf-044a7feec5a5	400	\N
 92039e01-0000-7684-9722-92c5b0329a69	1ae9c014-e3cd-4703-bd05-1b65f5f94ceb	92039e01-0000-74ba-abcf-044a7feec5a5	65000	\N
 92039e01-0000-784e-a38a-fcc33693f6ab	123282fe-fead-448e-ad2c-baece939b4b1	92039e01-0000-74ba-abcf-044a7feec5a5	65000	\N
-80019e01-0000-7d45-4e78-f3b7308dba43	89a891a7-f9f9-4ab5-af36-12056e53a5f7	80019e01-0000-7e09-f312-859757c5eac7	6	\N
-80019e01-0000-7656-c8ff-82e6733f8725	560931ad-0901-4342-b7f4-fd2e2fcc0563	80019e01-0000-7e09-f312-859757c5eac7	400	\N
-92039e01-0000-788d-fd35-05795b592fc0	560931ad-0901-4342-b7f4-fd2e2fcc0563	92039e01-0000-74ba-abcf-044a7feec5a5	400	\N
-92039e01-0000-777c-2471-b56697a6973b	82044df9-f528-4ad6-9aaa-6feaa4c786e7	92039e01-0000-74ba-abcf-044a7feec5a5	1	\N
-92039e01-0000-720d-1254-481a96cfe905	b3299ee6-3815-4e48-b620-95db78f8a142	92039e01-0000-74ba-abcf-044a7feec5a5	119395.6	\N
-92039e01-0000-792d-5e45-1ace99b25b05	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	92039e01-0000-74ba-abcf-044a7feec5a5	12723.753	\N
-92039e01-0000-7bcf-d704-ab7deb2e6c86	0e255161-8a3d-4367-bff0-efcd238c16fd	92039e01-0000-74ba-abcf-044a7feec5a5	250732.83	\N
-80019e01-0000-7623-e308-b4047507677f	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	80019e01-0000-7e09-f312-859757c5eac7	4086.9792	\N
-80019e01-0000-7e36-6777-736067703c28	82044df9-f528-4ad6-9aaa-6feaa4c786e7	80019e01-0000-7e09-f312-859757c5eac7	0	\N
-80019e01-0000-7169-31f8-3e7f57772825	39eb6747-0689-4bbf-b832-8936e00c5df6	80019e01-0000-7e09-f312-859757c5eac7	5130	\N
-80019e01-0000-7681-9b00-fe08950c51c4	b3299ee6-3815-4e48-b620-95db78f8a142	80019e01-0000-7e09-f312-859757c5eac7	34669.73	\N
-80019e01-0000-7b7c-684f-dbaf37b22ab2	0e255161-8a3d-4367-bff0-efcd238c16fd	80019e01-0000-7e09-f312-859757c5eac7	37397.504	\N
-80019e01-0000-7c15-b783-f57115bdf402	123282fe-fead-448e-ad2c-baece939b4b1	80019e01-0000-7e09-f312-859757c5eac7	600	\N
-80019e01-0000-7d44-2c52-5d8649dfb28e	1ae9c014-e3cd-4703-bd05-1b65f5f94ceb	80019e01-0000-7e09-f312-859757c5eac7	5000	\N
-92039e01-0000-7c41-2653-3edf436a7397	064543e6-2559-4033-b363-ae76214e7dee	92039e01-0000-74ba-abcf-044a7feec5a5	255	\N
-92039e01-0000-749c-d9d4-3d88fddede89	6ca5c3a6-b109-45a5-87a7-fdcb107b4982	92039e01-0000-74ba-abcf-044a7feec5a5	5000	\N
+92039e01-0000-748a-bcde-7ef614355b0f	01b0ef28-f7a0-46b5-97ba-2b624a54cd75	92039e01-0000-74ba-abcf-044a7feec5a5	65000	\N
+92039e01-0000-749c-d9d4-3d88fddede89	6ca5c3a6-b109-45a5-87a7-fdcb107b4982	92039e01-0000-74ba-abcf-044a7feec5a5	65000	\N
+80019e01-0000-7c15-b783-f57115bdf402	123282fe-fead-448e-ad2c-baece939b4b1	80019e01-0000-7e09-f312-859757c5eac7	65000	\N
+80019e01-0000-7d44-2c52-5d8649dfb28e	1ae9c014-e3cd-4703-bd05-1b65f5f94ceb	80019e01-0000-7e09-f312-859757c5eac7	65000	\N
+80019e01-0000-7169-31f8-3e7f57772825	39eb6747-0689-4bbf-b832-8936e00c5df6	80019e01-0000-7e09-f312-859757c5eac7	71370	\N
+80019e01-0000-7623-e308-b4047507677f	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	80019e01-0000-7e09-f312-859757c5eac7	165288.58	\N
+80019e01-0000-7681-9b00-fe08950c51c4	b3299ee6-3815-4e48-b620-95db78f8a142	80019e01-0000-7e09-f312-859757c5eac7	166009.8	\N
+80019e01-0000-7b7c-684f-dbaf37b22ab2	0e255161-8a3d-4367-bff0-efcd238c16fd	80019e01-0000-7e09-f312-859757c5eac7	335147.5	\N
+92039e01-0000-7c41-2653-3edf436a7397	064543e6-2559-4033-b363-ae76214e7dee	92039e01-0000-74ba-abcf-044a7feec5a5	0	\N
+92039e01-0000-720d-1254-481a96cfe905	b3299ee6-3815-4e48-b620-95db78f8a142	92039e01-0000-74ba-abcf-044a7feec5a5	120327.99	\N
+92039e01-0000-792d-5e45-1ace99b25b05	20686ffd-7a96-4be2-9889-2a4dd9ff5a25	92039e01-0000-74ba-abcf-044a7feec5a5	159654.47	\N
+92039e01-0000-7bcf-d704-ab7deb2e6c86	0e255161-8a3d-4367-bff0-efcd238c16fd	92039e01-0000-74ba-abcf-044a7feec5a5	326779.66	\N
 92039e01-0000-7a83-de7f-d1dd91a2d9ee	48074bc6-ddc9-4264-8f1e-004d46d5b6ec	92039e01-0000-74ba-abcf-044a7feec5a5	5	\N
-92039e01-0000-7dfa-567d-1c6d0dc820f5	39eb6747-0689-4bbf-b832-8936e00c5df6	92039e01-0000-74ba-abcf-044a7feec5a5	47000	\N
+92039e01-0000-7dfa-567d-1c6d0dc820f5	39eb6747-0689-4bbf-b832-8936e00c5df6	92039e01-0000-74ba-abcf-044a7feec5a5	65000	\N
 \.
 
 
@@ -52126,6 +52322,8 @@ COPY public."__EFMigrationsHistory" ("MigrationId", "ProductVersion") FROM stdin
 20260405170905_UpdateDaybreakWeaponDimensions	10.0.2
 20260425205521_MaximumDropLevel	10.0.2
 20260515120000_AddAccountVipExpirationDate	10.0.2
+20260524120000_AddJewelBank	10.0.2
+20260525120000_AddItemBankBoxes	10.0.2
 \.
 
 
@@ -56686,5 +56884,5 @@ ALTER DEFAULT PRIVILEGES FOR ROLE postgres IN SCHEMA guild GRANT ALL ON TABLES T
 -- PostgreSQL database dump complete
 --
 
-\unrestrict O0XM25ZEogXgMOhUhKoMA3vxqIXvhVKsrbLuYq9OeXIf8WxV2EpkxpCgd5dMNHB
+\unrestrict gWpCAfxoPuIC0jJvCGSbqM4ZWCnxJQ0OMhkyygK8xcnjbOvr9RipaUFQmdriy6Q
 

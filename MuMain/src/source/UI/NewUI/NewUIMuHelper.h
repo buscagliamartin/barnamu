@@ -5,6 +5,7 @@
 
 #include "UI/NewUI/NewUIBase.h"
 #include "UI/NewUI/NewUIManager.h"
+#include "UI/NewUI/NewUI3DRenderMng.h"
 #include "UI/NewUI/Widgets/NewUIButton.h"
 #include "MUHelper/MuHelper.h"
 
@@ -383,6 +384,82 @@ namespace SEASON3B
         int m_iCurrentHealThreshold;
         int m_iCurrentPartyHealThreshold;
         int m_iCurrentPotionThreshold;
+    };
+
+    // BarnaMu: per-account Jewel Bank window, opened from the MU Helper menu.
+    class CNewUIJewelBank : public CNewUIObj, public INewUI3DRenderObj
+    {
+    public:
+        CNewUIJewelBank();
+        ~CNewUIJewelBank();
+
+        bool Create(CNewUIManager* pNewUIMng, CNewUI3DRenderMng* pNewUI3DRenderMng, int x, int y);
+        void Release();
+
+        bool Render();
+        void Render3D();
+        bool Update();
+        bool UpdateMouseEvent();
+        bool UpdateKeyEvent();
+        bool IsVisible() const override;
+
+        float GetLayerDepth();
+        float GetKeyEventOrder();
+
+    public:
+        void Toggle();
+        void SetBalances(const unsigned int* pBalances);
+
+        static constexpr int ITEM_COUNT = 17;
+
+    public:
+        enum IMAGE_LIST
+        {
+            IMAGE_BASE_WINDOW_BACK = BITMAP_INTERFACE_NEW_MESSAGEBOX_BEGIN + 3,
+            IMAGE_BASE_WINDOW_TOP = BITMAP_INTERFACE_NEW_PERSONALINVENTORY_BEGIN,
+            IMAGE_BASE_WINDOW_LEFT = BITMAP_INTERFACE_NEW_PERSONALINVENTORY_BEGIN + 2,
+            IMAGE_BASE_WINDOW_RIGHT = BITMAP_INTERFACE_NEW_PERSONALINVENTORY_BEGIN + 3,
+            IMAGE_BASE_WINDOW_BOTTOM = BITMAP_INTERFACE_NEW_PERSONALINVENTORY_BEGIN + 4,
+            IMAGE_BASE_WINDOW_BTN_EXIT = BITMAP_INTERFACE_NEW_PERSONALINVENTORY_BEGIN + 17,
+            IMAGE_ITEM_BOX = BITMAP_INTERFACE_NEW_INVENTORY_BASE_BEGIN,
+            IMAGE_TABLE_TOP_LEFT,
+            IMAGE_TABLE_TOP_RIGHT,
+            IMAGE_TABLE_BOTTOM_LEFT,
+            IMAGE_TABLE_BOTTOM_RIGHT,
+            IMAGE_TABLE_TOP_PIXEL,
+            IMAGE_TABLE_BOTTOM_PIXEL,
+            IMAGE_TABLE_LEFT_PIXEL,
+            IMAGE_TABLE_RIGHT_PIXEL,
+            IMAGE_IGS_BUTTON = BITMAP_IGS_MSGBOX_BUTTON,
+            IMAGE_ROUND_BUTTON = BITMAP_CATAPULT_BEGIN + 1,
+            IMAGE_JEWEL_BANK_BACK = BITMAP_EFFECT_TEXTURE_END - 1,
+        };
+
+    private:
+        static constexpr int WINDOW_WIDTH = 620;
+        static constexpr int WINDOW_HEIGHT = 430;
+        static constexpr int ROW_START_Y = 64;
+        static constexpr int ROW_HEIGHT = 20;
+
+        void SetPos(int x, int y);
+        void InitButtons();
+        void LoadImages();
+        void UnloadImages();
+        void SendRequest(BYTE op, BYTE arg1, WORD arg2, WORD arg3);
+        void RenderBack();
+        void RenderTable();
+        void RenderBankButton(CNewUIButton& button, const wchar_t* glyph);
+
+    private:
+        CNewUIManager* m_pNewUIMng;
+        CNewUI3DRenderMng* m_pNewUI3DRenderMng;
+        POINT m_Pos;
+        unsigned int m_Balances[ITEM_COUNT];
+        CNewUIButton m_BtnDepSingle[ITEM_COUNT];
+        CNewUIButton m_BtnDepPack[ITEM_COUNT];
+        CNewUIButton m_BtnWdrSingle[ITEM_COUNT];
+        CNewUIButton m_BtnWdrPack[ITEM_COUNT];
+        CNewUIButton m_BtnClose;
     };
 
 }

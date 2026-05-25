@@ -1,0 +1,131 @@
+@page
+@model BarnaMu.Web.Pages.Panel.IndexModel
+@{
+    ViewData["Title"] = "Mi Panel";
+    var vipRemaining = Model.Account.VipRemaining;
+}
+
+<div class="hero hero-small">
+    <h1>Bienvenido, @Model.Account.LoginName</h1>
+    <p class="hero-subtitle">Panel de tu cuenta — personajes, VIP y configuración.</p>
+</div>
+
+<!-- VIP Status -->
+<div class="card" style="margin-bottom:20px;">
+    <h2>Estado VIP</h2>
+    @if (Model.Account.IsVip && vipRemaining.HasValue)
+    {
+        var r = vipRemaining.Value;
+        var days  = (int)r.TotalDays;
+        var hours = r.Hours;
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+            <span class="badge-vip" style="font-size:13px;padding:5px 14px;">★ VIP ACTIVO</span>
+            <span style="color:var(--barna-gold-light);font-size:14px;">
+                Vence en
+                <strong>
+                    @if (days > 0) { @days <text>d </text> } @hours<text>h</text>
+                </strong>
+                — hasta <strong>@Model.Account.VipExpirationDate!.Value.ToString("dd/MM/yyyy")</strong>
+            </span>
+        </div>
+        <p style="margin-top:10px;font-size:12px;color:var(--barna-text-muted);">
+            Disfrutás de ×35 EXP, ×7 Drop y acceso prioritario al servidor.
+        </p>
+    }
+    else
+    {
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+            <span style="color:var(--barna-text-muted);font-size:13px;">No tenés VIP activo.</span>
+            <a asp-page="/Vip" class="btn btn-gold" style="padding:7px 18px;font-size:11px;">
+                <i class="fa fa-star"></i> Obtener VIP
+            </a>
+        </div>
+    }
+</div>
+
+<!-- Personajes -->
+<div class="card">
+    <h2>Mis Personajes</h2>
+    @if (!Model.Characters.Any())
+    {
+        <p class="muted" style="padding:12px 0;">No tenés personajes creados en esta cuenta.</p>
+    }
+    else
+    {
+        <div style="overflow-x:auto;">
+            <table class="barna-table">
+                <thead>
+                    <tr>
+                        <th>Personaje</th>
+                        <th>Clase</th>
+                        <th>Resets</th>
+                        <th>Level</th>
+                        <th>Master Lv</th>
+                        <th>Guild</th>
+                        <th>Creado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ch in Model.Characters)
+                    {
+                        <tr>
+                            <td class="char-name">@ch.Name</td>
+                            <td style="color:var(--barna-text-muted);">@ch.ClassName</td>
+                            <td class="val-gold">@ch.Resets</td>
+                            <td>@ch.Level <span class="muted">/ 400</span></td>
+                            <td class="val-teal">@ch.MasterLevel</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(ch.GuildName))
+                                {
+                                    <span style="color:var(--barna-gold-light);">@ch.GuildName</span>
+                                }
+                                else
+                                {
+                                    <span class="muted">—</span>
+                                }
+                            </td>
+                            <td style="color:var(--barna-text-muted);font-size:11px;">@ch.CreateDate.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                <a asp-page="/Char" asp-route-name="@ch.Name"
+                                   style="font-size:11px;color:var(--barna-gold-light);">
+                                    Ver perfil →
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<!-- Acciones -->
+<div class="grid-2">
+    <div class="card" style="margin-bottom:0;">
+        <h2>Seguridad</h2>
+        <p style="font-size:13px;color:var(--barna-text-muted);margin-bottom:16px;">
+            Cambiá tu contraseña de acceso a la cuenta y al juego.
+        </p>
+        <a asp-page="/Panel/ChangePassword" class="btn btn-secondary">
+            <i class="fa fa-lock"></i> Cambiar contraseña
+        </a>
+    </div>
+    <div class="card" style="margin-bottom:0;">
+        <h2>Rankings</h2>
+        <p style="font-size:13px;color:var(--barna-text-muted);margin-bottom:16px;">
+            Mirá tu posición en los rankings globales del servidor.
+        </p>
+        <a asp-page="/Rankings" class="btn btn-secondary">
+            <i class="fa fa-trophy"></i> Ver Rankings
+        </a>
+    </div>
+</div>
+
+<div style="text-align:center;margin-top:8px;">
+    <form method="post" asp-page="/Logout" style="display:inline;">
+        <button type="submit" class="btn btn-secondary" style="font-size:11px;padding:7px 18px;">
+            <i class="fa fa-sign-out"></i> Cerrar sesión
+        </button>
+    </form>
+</div>

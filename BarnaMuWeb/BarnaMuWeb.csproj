@@ -13,6 +13,7 @@
          shares only the Account table schema and BCrypt password hashing (same package
          version OpenMU uses). This keeps the website self-contained and easy to migrate
          to a separate VPS in the future. -->
+    <PackageReference Include="MailKit" Version="4.16.0" />
     <PackageReference Include="Npgsql" Version="9.0.3" />
     <PackageReference Include="Dapper" Version="2.1.66" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />

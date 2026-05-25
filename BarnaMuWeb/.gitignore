@@ -1,0 +1,17 @@
+bin/
+obj/
+
+.vs/
+.vscode/
+*.user
+*.suo
+*.rsuser
+
+appsettings.Local.json
+appsettings.*.Local.json
+
+*.log
+logs/
+
+TestResults/
+coverage/

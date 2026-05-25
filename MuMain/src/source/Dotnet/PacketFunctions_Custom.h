@@ -55,6 +55,15 @@ public:
     /// Causes reaction on server side: The server is authenticating the sent login name and password. If it's correct, the state of the player is proceeding to be logged in.
     /// </remarks>
     void SendLogin(const wchar_t* username, const wchar_t* password, const BYTE* clientVersion, const BYTE* clientSerial);
+
+    /// <summary>
+    /// BarnaMu: Sends a jewel bank request (0xBF, sub-code 0x30) to this connection.
+    /// </summary>
+    /// <param name="operation">0 = query, 1 = deposit slot, 2 = withdraw, 3 = deposit all.</param>
+    /// <param name="arg1">Inventory slot (deposit) or jewel mix number (withdraw).</param>
+    /// <param name="arg2">Single jewel count (withdraw).</param>
+    /// <param name="arg3">Packed jewel count (withdraw).</param>
+    void SendJewelBankRequest(BYTE operation, BYTE arg1, uint16_t arg2, uint16_t arg3);
 };
 
 /// <summary>

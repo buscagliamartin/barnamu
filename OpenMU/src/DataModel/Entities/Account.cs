@@ -162,6 +162,92 @@ public class Account
     [MemberOfAggregate]
     public virtual ICollection<StatAttribute> Attributes { get; protected set; } = null!;
 
+    /// <summary>
+    /// Gets or sets the Jewel of Bless balance held in the MU Helper jewel bank, counted in single jewels.
+    /// </summary>
+    /// <remarks>BarnaMu: per-account jewel bank. A balance of N represents N/10 packed jewels plus N%10 singles.</remarks>
+    public int JewelBankBless { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Jewel of Soul balance held in the MU Helper jewel bank, counted in single jewels.
+    /// </summary>
+    public int JewelBankSoul { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Jewel of Life balance held in the MU Helper jewel bank, counted in single jewels.
+    /// </summary>
+    public int JewelBankLife { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Jewel of Creation balance held in the MU Helper jewel bank, counted in single jewels.
+    /// </summary>
+    public int JewelBankCreation { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Jewel of Guardian balance held in the MU Helper jewel bank, counted in single jewels.
+    /// </summary>
+    public int JewelBankGuardian { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Gemstone balance held in the MU Helper jewel bank, counted in single jewels.
+    /// </summary>
+    public int JewelBankGemstone { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Jewel of Harmony balance held in the MU Helper jewel bank, counted in single jewels.
+    /// </summary>
+    public int JewelBankHarmony { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Jewel of Chaos balance held in the MU Helper jewel bank, counted in single jewels.
+    /// </summary>
+    public int JewelBankChaos { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Lower Refine Stone balance held in the MU Helper jewel bank, counted in single stones.
+    /// </summary>
+    public int JewelBankLowerRefineStone { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Higher Refine Stone balance held in the MU Helper jewel bank, counted in single stones.
+    /// </summary>
+    public int JewelBankHigherRefineStone { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Box of Kundun +1 balance held in the MU Helper item bank.
+    /// </summary>
+    public int JewelBankKundun1 { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Box of Kundun +2 balance held in the MU Helper item bank.
+    /// </summary>
+    public int JewelBankKundun2 { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Box of Kundun +3 balance held in the MU Helper item bank.
+    /// </summary>
+    public int JewelBankKundun3 { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Box of Kundun +4 balance held in the MU Helper item bank.
+    /// </summary>
+    public int JewelBankKundun4 { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Box of Kundun +5 balance held in the MU Helper item bank.
+    /// </summary>
+    public int JewelBankKundun5 { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Blue Chocolate Box balance held in the MU Helper item bank.
+    /// </summary>
+    public int JewelBankChocoBlue { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Pink Chocolate Box balance held in the MU Helper item bank.
+    /// </summary>
+    public int JewelBankChocoPink { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {

@@ -1,0 +1,53 @@
+@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Ingresar";
+}
+
+<div class="hero hero-small">
+    <h1>Ingresar</h1>
+    <p class="hero-subtitle">Accedé a tu cuenta para ver tus personajes y beneficios VIP.</p>
+</div>
+
+<div class="page-narrow">
+    <div class="card">
+        <h2>Acceso a tu cuenta</h2>
+
+        @if (Model.ErrorMessage is not null)
+        {
+            <div class="alert alert-danger">@Model.ErrorMessage</div>
+        }
+
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+            <div class="field">
+                <label asp-for="LoginName">Usuario</label>
+                <input asp-for="LoginName" type="text" autocomplete="username" placeholder="Tu nombre de usuario" />
+                <span asp-validation-for="LoginName" class="field-validation-error"></span>
+            </div>
+
+            <div class="field">
+                <label asp-for="Password">Contraseña</label>
+                <input asp-for="Password" type="password" autocomplete="current-password" placeholder="••••••••" />
+                <span asp-validation-for="Password" class="field-validation-error"></span>
+            </div>
+
+            <div class="field" style="display:flex;align-items:center;gap:10px;margin-bottom:24px;">
+                <input asp-for="RememberMe" type="checkbox" id="rememberMe"
+                       style="width:auto;accent-color:var(--barna-gold);" />
+                <label for="rememberMe" style="text-transform:none;letter-spacing:0;font-size:12px;margin:0;color:var(--barna-text);">
+                    Recordarme por 14 días
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-gold btn-block">
+                <i class="fa fa-sign-in"></i> Ingresar
+            </button>
+        </form>
+
+        <p style="text-align:center;margin-top:18px;font-size:12px;color:var(--barna-text-muted);">
+            ¿No tenés cuenta? <a asp-page="/Register">Registrarse gratis</a>
+        </p>
+    </div>
+</div>

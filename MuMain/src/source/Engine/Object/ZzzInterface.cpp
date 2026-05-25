@@ -1506,6 +1506,42 @@ static ActionSkillType GetMovementSkill()
     return static_cast<ActionSkillType>(g_MovementSkill.m_iSkill);
 }
 
+static bool IsManualBeneficialPlayerSkill(ActionSkillType skill)
+{
+    switch (skill)
+    {
+    case AT_SKILL_TELEPORT_ALLY:
+    case AT_SKILL_SOUL_BARRIER:
+    case AT_SKILL_SOUL_BARRIER_STR:
+    case AT_SKILL_SOUL_BARRIER_PROFICIENCY:
+    case AT_SKILL_SWELL_LIFE:
+    case AT_SKILL_SWELL_LIFE_STR:
+    case AT_SKILL_SWELL_LIFE_PROFICIENCY:
+    case AT_SKILL_HEALING:
+    case AT_SKILL_HEALING_STR:
+    case AT_SKILL_DEFENSE:
+    case AT_SKILL_DEFENSE_STR:
+    case AT_SKILL_DEFENSE_MASTERY:
+    case AT_SKILL_ATTACK:
+    case AT_SKILL_ATTACK_STR:
+    case AT_SKILL_ATTACK_MASTERY:
+    case AT_SKILL_ADD_CRITICAL:
+    case AT_SKILL_ADD_CRITICAL_STR1:
+    case AT_SKILL_ADD_CRITICAL_STR2:
+    case AT_SKILL_ADD_CRITICAL_STR3:
+    case AT_SKILL_RECOVER:
+    case AT_SKILL_ATT_UP_OURFORCES:
+    case AT_SKILL_HP_UP_OURFORCES:
+    case AT_SKILL_HP_UP_OURFORCES_STR:
+    case AT_SKILL_DEF_UP_OURFORCES:
+    case AT_SKILL_DEF_UP_OURFORCES_STR:
+    case AT_SKILL_DEF_UP_OURFORCES_MASTERY:
+        return true;
+    default:
+        return false;
+    }
+}
+
 static bool IsBeneficialSkillTarget(CHARACTER* c, int selected)
 {
     if (c == nullptr || selected < 0 || selected >= MAX_CHARACTERS_CLIENT)
@@ -1520,6 +1556,11 @@ static bool IsBeneficialSkillTarget(CHARACTER* c, int selected)
     }
 
     if (c == Hero || g_pPartyManager->IsPartyMember(selected))
+    {
+        return true;
+    }
+
+    if (c->Object.Kind == KIND_PLAYER && IsManualBeneficialPlayerSkill(skill))
     {
         return true;
     }
@@ -2683,6 +2724,7 @@ void UseSkillElf(CHARACTER* c, OBJECT* o)
     case AT_SKILL_HEALING_STR:
     case AT_SKILL_ATTACK:
     case AT_SKILL_ATTACK_STR:
+    case AT_SKILL_ATTACK_MASTERY:
     case AT_SKILL_RECOVER:
     case AT_SKILL_DEFENSE:
     case AT_SKILL_DEFENSE_STR:
@@ -2825,6 +2867,7 @@ void UseSkillSummon(CHARACTER* pCha, OBJECT* pObj)
     break;
     case AT_SKILL_ALICE_BERSERKER:
     case AT_SKILL_ALICE_BERSERKER_STR:
+    case AT_SKILL_BerserkerProficiency:
         LetHeroStop();
         switch (pCha->Helper.Type)
         {
@@ -6259,6 +6302,7 @@ void AttackWizard(CHARACTER* c, int Skill, float Distance)
             && Skill != AT_SKILL_REMOVAL_INVISIBLE && Skill != AT_SKILL_PLASMA_STORM_FENRIR
             && Skill != AT_SKILL_ALICE_BERSERKER
             && Skill != AT_SKILL_ALICE_BERSERKER_STR
+            && Skill != AT_SKILL_BerserkerProficiency
             && Skill != AT_SKILL_ALICE_WEAKNESS && Skill != AT_SKILL_ALICE_ENERVATION
             )
             return;
@@ -6549,6 +6593,7 @@ void AttackWizard(CHARACTER* c, int Skill, float Distance)
         break;
         case AT_SKILL_ALICE_BERSERKER:
         case AT_SKILL_ALICE_BERSERKER_STR:
+        case AT_SKILL_BerserkerProficiency:
         case AT_SKILL_ALICE_WEAKNESS:
         case AT_SKILL_ALICE_ENERVATION:
             UseSkillSummon(c, o);
@@ -7087,6 +7132,7 @@ bool CanExecuteSkill(CHARACTER* c, ActionSkillType Skill, float Distance)
                 && Skill != AT_SKILL_RECOVER
                 && Skill != AT_SKILL_ALICE_BERSERKER
                 && Skill != AT_SKILL_ALICE_BERSERKER_STR
+                && Skill != AT_SKILL_BerserkerProficiency
                 && Skill != AT_SKILL_IMPROVE_AG
                 && Skill != AT_SKILL_ADD_CRITICAL
                 && Skill != AT_SKILL_ADD_CRITICAL_STR1
@@ -7250,6 +7296,7 @@ int ExecuteSkill(CHARACTER* c, ActionSkillType Skill, float Distance)
         else if (Skill == AT_SKILL_ALICE_THORNS
             || Skill == AT_SKILL_ALICE_BERSERKER
             || Skill == AT_SKILL_ALICE_BERSERKER_STR
+            || Skill == AT_SKILL_BerserkerProficiency
             || Skill == AT_SKILL_ALICE_SLEEP
             || Skill == AT_SKILL_ALICE_SLEEP_STR
             || Skill == AT_SKILL_ALICE_BLIND || Skill == AT_SKILL_ALICE_WEAKNESS || Skill == AT_SKILL_ALICE_ENERVATION)

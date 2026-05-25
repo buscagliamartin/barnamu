@@ -1,0 +1,62 @@
+@page
+@model DownloadModel
+@inject IOptions<BarnaMuOptions> BarnaMuOpts
+@{
+    ViewData["Title"] = "Descargar Cliente";
+    var opts = BarnaMuOpts.Value;
+    var hasUrl = !string.IsNullOrWhiteSpace(opts.ClientDownloadUrl) && !opts.ClientDownloadUrl.Contains("REEMPLAZAR");
+}
+
+<div class="hero hero-small">
+    <h1>Descargas</h1>
+    <p class="hero-subtitle">Obtené la versión oficial de @opts.ServerName y comenzá tu aventura.</p>
+</div>
+
+<div class="page-medium">
+
+    <div class="card" style="text-align:center;padding:40px 36px;">
+        <span class="dl-version-badge">Versión: @opts.ClientVersion</span>
+        <h2 style="font-size:1.6rem;border:none;padding:0;margin:0 0 12px;">Cliente Full Season 6</h2>
+        <p class="muted" style="font-size:13px;margin-bottom:28px;">
+            Acordate de <strong style="color:var(--barna-text-head)">ejecutar como Administrador</strong> al menos la primera vez para actualizar los parches correctamente.
+        </p>
+
+        @if (hasUrl)
+        {
+            <a class="btn btn-gold" href="@opts.ClientDownloadUrl" target="_blank" rel="noopener" style="font-size:1rem;padding:14px 40px;">
+                <i class="fa fa-download"></i> Descargar Cliente
+            </a>
+
+            @if (!string.IsNullOrWhiteSpace(opts.ClientChecksum) && !opts.ClientChecksum.Contains("REEMPLAZAR"))
+            {
+                <span class="sha-code">SHA256: @opts.ClientChecksum</span>
+            }
+        }
+        else
+        {
+            <div style="background:var(--barna-gold-dim);border:1px dashed var(--barna-border2);padding:22px;border-radius:var(--radius);color:var(--barna-gold-light);">
+                El link de descarga todavía no está configurado en el servidor.
+            </div>
+        }
+    </div>
+
+    <div class="grid-2">
+        <div class="card">
+            <h2>Cómo conectarse</h2>
+            <ol class="step-list">
+                <li>Descargá y descomprimí el cliente (WinRAR / 7Zip).</li>
+                <li>Abrí <code>Launcher.exe</code> (o <code>main.exe</code>).</li>
+                <li>¿Sin cuenta? <a asp-page="/Register">Registrate aquí</a>.</li>
+            </ol>
+        </div>
+
+        <div class="card">
+            <h2>Problemas comunes</h2>
+            <ul class="step-list">
+                <li>Faltan DLLs: instalá <a href="https://aka.ms/vs/17/release/vc_redist.x86.exe" target="_blank">Visual C++ x86</a>.</li>
+                <li>Soporte: reportá en Discord o en <a asp-page="/ReportBug">Reportar Bug</a>.</li>
+            </ul>
+        </div>
+    </div>
+
+</div>

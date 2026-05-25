@@ -70,7 +70,8 @@ void CSkillManager::GetSkillInformation_Energy(int iType, int* piEnergy)
 {
     if (!piEnergy) return;
 
-    SKILL_ATTRIBUTE* p = &SkillAttribute[iType];
+    const auto requirementSkill = MasterSkillToBaseSkillIndex(static_cast<ActionSkillType>(iType));
+    SKILL_ATTRIBUTE* p = &SkillAttribute[requirementSkill];
 
     // Skills with no energy cost in the BMD are free regardless of their
     // character-level requirement. Without this short-circuit the formula
@@ -94,7 +95,7 @@ void CSkillManager::GetSkillInformation_Energy(int iType, int* piEnergy)
 
     *piEnergy = ENERGY_REQ_BASE_DEFAULT + (p->Energy * p->Level * ENERGY_REQ_SCALE_DEFAULT_PERCENT / 100);
 
-    if (iType == AT_SKILL_SUMMON_EXPLOSION || iType == AT_SKILL_SUMMON_REQUIEM)
+    if (requirementSkill == AT_SKILL_SUMMON_EXPLOSION || requirementSkill == AT_SKILL_SUMMON_REQUIEM)
     {
         *piEnergy = ENERGY_REQ_BASE_DEFAULT + (p->Energy * p->Level * ENERGY_REQ_SCALE_SUMMON_PERCENT / 100);
     }
@@ -107,7 +108,8 @@ void CSkillManager::GetSkillInformation_Energy(int iType, int* piEnergy)
 
 void CSkillManager::GetSkillInformation_Charisma(int iType, int* piCharisma)
 {
-    SKILL_ATTRIBUTE* p = &SkillAttribute[iType];
+    const auto requirementSkill = MasterSkillToBaseSkillIndex(static_cast<ActionSkillType>(iType));
+    SKILL_ATTRIBUTE* p = &SkillAttribute[requirementSkill];
 
     if (piCharisma)
     {

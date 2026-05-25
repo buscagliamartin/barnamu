@@ -70,4 +70,46 @@ public unsafe partial class ConnectionManager
             // Log exception
         }
     }
+
+    /// <summary>
+    /// BarnaMu: Sends a jewel bank request (0xBF, sub-code 0x30) to this connection.
+    /// </summary>
+    /// <param name="handle">The handle of the connection.</param>
+    /// <param name="operation">0 = query, 1 = deposit slot, 2 = withdraw, 3 = deposit all.</param>
+    /// <param name="arg1">Inventory slot (deposit) or jewel mix number (withdraw).</param>
+    /// <param name="arg2">Single jewel count (withdraw).</param>
+    /// <param name="arg3">Packed jewel count (withdraw).</param>
+    [UnmanagedCallersOnly(EntryPoint = "ConnectionManager_SendJewelBankRequest")]
+    public static void SendJewelBankRequest(int handle, byte @operation, byte @arg1, ushort @arg2, ushort @arg3)
+    {
+        if (!Connections.TryGetValue(handle, out var connection))
+        {
+            return;
+        }
+
+        try
+        {
+            connection.CreateAndSend(pipeWriter =>
+            {
+                const int length = 10;
+                var span = pipeWriter.GetSpan(length)[..length];
+                span.Clear();
+                span[0] = 0xC1;
+                span[1] = (byte)length;
+                span[2] = 0xBF;
+                span[3] = 0x30;
+                span[4] = @operation;
+                span[5] = @arg1;
+                span[6] = (byte)(@arg2 & 0xFF);
+                span[7] = (byte)(@arg2 >> 8);
+                span[8] = (byte)(@arg3 & 0xFF);
+                span[9] = (byte)(@arg3 >> 8);
+                return length;
+            });
+        }
+        catch
+        {
+            // Log exception
+        }
+    }
 }

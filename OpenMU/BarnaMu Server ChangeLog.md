@@ -81,6 +81,23 @@ The OpenMU server now includes BarnaMu-specific VIP systems, progression rates, 
 - Added T9 Box reward work.
 - Added Red Dragon ancient reward box.
 
+### Item Audit Logging
+
+- Added `ItemAuditLogger`, a central file-based forensic logger for item creation and transfer events.
+- Writes to `%BARNAMU_AUDIT_DIR%` (default `C:\MuDev\Logs\ItemAudit`), one log file per UTC day.
+- Each entry records timestamp, source, actor (character/account), item description, group, number, level, excellent count, ancient flag, skill flag, socket count, persistent serial, location, and optional context.
+- Added source-attributed logging hooks:
+  - `MonsterDrop`: actor is the killer.
+  - `GmCommand`: actor is the GM who used `/item`.
+  - `BoxReward`: actor is the box opener.
+  - `Crafting`: actor is the crafter, on Chaos Machine success.
+  - `Pickup`: actor is the player who picked the item up.
+  - `Trade`: actor is the receiver, sender recorded as context.
+- High-volume sources (monster drops, pickups) log only notable items: excellent, ancient, socketed, or level `7` and above.
+- Other sources log every item.
+- Audit writes never throw, so logging cannot disrupt gameplay.
+- Retired the Phase 1 `DropAuditLoggerPlugIn` map catch-all in favor of source-attributed logging.
+
 ### Invasions
 
 - Added periodic Golden Invasion.
@@ -118,6 +135,17 @@ The OpenMU server now includes BarnaMu-specific VIP systems, progression rates, 
 - Kept utility/buff targeted skill throttle at `300ms`.
 - Kept Nova, Beast Uppercut, and Darkside targeted skills unthrottled.
 - Improved MU Helper attack cadence by running attack ticks every `50ms` while keeping full helper work at `250ms`, closer to held right-click behavior for skills like Penetration.
+
+### Buffs And Master Skills
+
+- Safe checkpoint: party buffs and self-buffs are working again after the buff/helper fix pass.
+- Fixed elf `Attack Increase Mastery` client dispatch so the mastery buff casts instead of doing nothing.
+- Allowed normal buffs and regeneration skills to apply in safe zones instead of only during mini-games.
+- Prevented MU Helper from using player/PVP targets for automated attacks.
+- Added a mandatory configuration update for active buff master skill target attributes and aggregate types.
+- Pending: manual buffs on non-party players still incorrectly require holding `CTRL`.
+- Pending: Wizardry Enhance Strengthener/Mastery tooltip and real damage effect must be corrected and verified.
+- Checkpoint: manual non-party buff targeting and Wizardry Enhance damage/tooltip fixes are compiled and deployed, pending in-game verification.
 
 ### Map Access
 
@@ -186,6 +214,14 @@ The OpenMU server now includes BarnaMu-specific VIP systems, progression rates, 
   - Prefer player-to-player item sales where W Coin transfers from buyer to seller, with an optional marketplace tax burned by the server.
   - Require W Coin balances, transaction logs, item escrow, and full audit logging before enabling real-money W Coin purchases or player-market sales.
 
+### Jewel Bank
+
+- Added the first Jewel Bank plugin checkpoint with server-side account balances, client packet handling, MU Helper access, 17 supported item slots, live balance refresh, deposit/withdraw single-item actions, and deposit/withdraw 10-pack actions.
+- Added the first client UI checkpoint: dark metal frame, live item icons rendered through the client 3D UI pass, aligned table columns, live counts, and custom plus/minus action buttons.
+- Replaced the temporary flat/code-painted Jewel Bank background with a dedicated gothic MU-style client skin asset.
+- Removed the client-side black table repainting so the ornate frame, textured grid, row shading, and target visual design render correctly.
+- Kept the Jewel Bank technical layer unchanged: server balances/actions, live client counts, 3D item icons, and plus/minus button actions remain dynamic.
+
 ### Network And Access
 
 - Set Connect Server max connections per IP to `2`.
@@ -248,6 +284,7 @@ The web project can register accounts, show server status, display rankings, pub
 - `GameLogic/Party.cs`
 - `GameLogic/DefaultDropGenerator.cs`
 - `GameLogic/AttackableNpcBase.cs`
+- `GameLogic/ItemAuditLogger.cs`
 - `GameLogic/PoisonMagicEffect.cs`
 - `GameLogic/PartyAutoMode.cs`
 - `Persistence/Initialization/GameConfigurationInitializerBase.cs`
@@ -262,9 +299,13 @@ The web project can register accounts, show server status, display rankings, pub
 - `GameLogic/PlayerActions/Party/PartyRequestAction.cs`
 - `GameLogic/PlayerActions/Chat/ChatMessageNormalProcessor.cs`
 - `GameLogic/PlayerActions/Items/ItemCraftAction.cs`
+- `GameLogic/PlayerActions/Items/ItemBoxDroppedPlugIn.cs`
+- `GameLogic/PlayerActions/Items/PickupItemAction.cs`
 - `GameLogic/Actions/Items/SimpleItemCraftingHandler.cs`
 - `GameLogic/PlugIns/PartyAutoCommandPlugIn.cs`
 - `GameLogic/PlugIns/VipExpirationCheckPlugIn.cs`
+- `GameLogic/PlugIns/ItemTradeAuditPlugIn.cs`
+- `GameLogic/PlugIns/ChatCommands/ItemChatCommandPlugIn.cs`
 - `GameLogic/PlugIns/ChatCommands/SetVipChatCommandPlugIn.cs`
 - `GameLogic/PlugIns/ChatCommands/VipInfoChatCommandPlugIn.cs`
 - `GameLogic/PlugIns/ChatCommands/PKClearChatCommandPlugIn.cs`
@@ -289,7 +330,10 @@ The web project can register accounts, show server status, display rankings, pub
 - `MuMain/src/source/Engine/Object/ZzzInterface.cpp`
 - `MuMain/src/source/MUHelper/MuHelper.cpp`
 - `MuMain/src/source/MUHelper/MuHelper.h`
+- `MuMain/src/source/UI/NewUI/NewUIMuHelper.cpp`
+- `MuMain/src/source/UI/NewUI/NewUIMuHelper.h`
 - `MuMain/src/source/Platform/Windows/Winmain.cpp`
+- `MuMain/src/bin/Data/Interface/barna_jewelbank_back.OZJ`
 
 ## Main Web Files
 
@@ -313,6 +357,8 @@ The web project can register accounts, show server status, display rankings, pub
 
 ## Session Timeline
 
+- `2026-05-25`: Jewel Bank plugin/client checkpoint: account-backed jewel/box balances, deposit/withdraw actions, live client balance updates, MU Helper entry point, first gothic table UI pass with 3D item icons, and final dedicated gothic skin asset replacing the flat black prototype background.
+- `2026-05-24`: Added the Drop Audit Logger: central `ItemAuditLogger` with source-attributed item logging for monster drops, GM commands, box rewards, crafting, pickups, and trades, written to per-day forensic log files; retired the Phase 1 map-hook plugin.
 - `2026-05-23`: Client combat and invasion balance pass: fixed Twisting Slash hold/movement behavior, added Twisting Slash area range, reduced targeted combat skill throttle, improved MU Helper attack ticks, rebalanced low/mid Golden mobs, Golden Tantallos-tier mobs, Red Dragon, and T9 boss combat stats, and capped monster poison ticks.
 - `2026-05-22`: Slow-medium drop-quality pass: reduced Tier A-F box rates, common jewel and excellent rates, Jewel of Guardian rate, second excellent option chance, random Luck/option/skill chances, capped normal option level, and weighted normal item level generation.
 - `2026-05-17`: Map level overhaul, VIP map access sync, invasion GM commands, NuGet warning suppression, backup/push script fix, web template reorganization.
@@ -329,6 +375,8 @@ The web project can register accounts, show server status, display rankings, pub
 - Polish `/resetinfo`.
 - Add resets ranking improvements.
 - Investigate Vulcanus M-menu red display if still client-side.
+- Audit logger: extend the notable-item filter to also cover jewels and special consumables.
+- Audit logger: capture the persistent serial for freshly created items (currently recorded only once the item becomes persistent).
 
 ## Future Plugin Backlog
 
@@ -339,7 +387,6 @@ The web project can register accounts, show server status, display rankings, pub
 - Web Market Browser.
 - Guild Bank.
 - Boss Token System.
-- Drop Audit Logger.
 - Event Reward Balancer.
 - Item Lock / Protection.
 - Jewel Pack / Unpack Commands.

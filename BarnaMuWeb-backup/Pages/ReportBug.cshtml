@@ -1,0 +1,59 @@
+@page
+@model ReportBugModel
+@{
+    ViewData["Title"] = "Reportar un bug";
+}
+
+<div class="hero hero-small">
+    <h1>Reportar un Bug</h1>
+    <p class="hero-subtitle">Tu feedback nos ayuda a mejorar la experiencia de todos.</p>
+</div>
+
+<div class="page-narrow">
+    <div class="card">
+        <p class="muted" style="font-size:13px;margin-bottom:22px;">
+            Si encontraste algo raro en el servidor (drops, mapas, skills, lag, etc.), contanos lo más detallado posible.
+        </p>
+
+        @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+        {
+            <div class="alert alert-success">@Model.SuccessMessage</div>
+        }
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger">@Model.ErrorMessage</div>
+        }
+
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+            <div class="field">
+                <label>Tu nombre o Nick</label>
+                <input asp-for="Input.Reporter" maxlength="50" placeholder="¿Cómo te conocemos en el server?" />
+                <span asp-validation-for="Input.Reporter" class="field-validation-error"></span>
+            </div>
+
+            <div class="field">
+                <label>Email (opcional)</label>
+                <input asp-for="Input.Email" type="email" placeholder="Por si necesitamos contactarte" />
+                <span asp-validation-for="Input.Email" class="field-validation-error"></span>
+            </div>
+
+            <div class="field">
+                <label>Título del reporte</label>
+                <input asp-for="Input.Title" maxlength="120" placeholder="Un resumen corto del problema" />
+                <span asp-validation-for="Input.Title" class="field-validation-error"></span>
+            </div>
+
+            <div class="field">
+                <label>Descripción detallada</label>
+                <textarea asp-for="Input.Body" rows="7" maxlength="4000" placeholder="Pasos para reproducir el bug, qué esperabas que pase y qué pasó realmente..."></textarea>
+                <span asp-validation-for="Input.Body" class="field-validation-error"></span>
+            </div>
+
+            <button class="btn btn-gold btn-block" type="submit">
+                <i class="fa fa-paper-plane"></i> Enviar reporte al Staff
+            </button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Registrarse";
+}
+
+<div class="hero hero-small">
+    <h1>Crear cuenta</h1>
+    <p class="hero-subtitle">Una cuenta sirve para todos tus personajes.</p>
+</div>
+
+<div class="page-narrow">
+    <div class="card">
+        <p class="muted" style="font-size:13px;margin-bottom:22px;">
+            Usá el <strong style="color:var(--barna-text-head)">security code</strong> numérico cuando quieras borrar un personaje.
+        </p>
+
+        @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+        {
+            <div class="alert alert-success">@Model.SuccessMessage</div>
+        }
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger">@Model.ErrorMessage</div>
+        }
+
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+            <div class="field">
+                <label>Nombre de cuenta</label>
+                <input asp-for="Input.LoginName" placeholder="Máximo 10 caracteres" autocomplete="username" maxlength="10" autofocus />
+                <span asp-validation-for="Input.LoginName" class="field-validation-error"></span>
+            </div>
+
+            <div class="field">
+                <label>Contraseña</label>
+                <input asp-for="Input.Password" type="password" placeholder="Tu clave secreta" autocomplete="new-password" maxlength="20" />
+                <span asp-validation-for="Input.Password" class="field-validation-error"></span>
+            </div>
+
+            <div class="field">
+                <label>Confirmar contraseña</label>
+                <input asp-for="Input.ConfirmPassword" type="password" placeholder="Repetí tu clave" autocomplete="new-password" maxlength="20" />
+                <span asp-validation-for="Input.ConfirmPassword" class="field-validation-error"></span>
+            </div>
+
+            <div class="field">
+                <label>Security code (numérico)</label>
+                <input asp-for="Input.SecurityCode" placeholder="Ej: 123456" inputmode="numeric" pattern="[0-9]*" maxlength="10" />
+                <span asp-validation-for="Input.SecurityCode" class="field-validation-error"></span>
+            </div>
+
+            <div class="field">
+                <label>Email (opcional)</label>
+                <input asp-for="Input.Email" type="email" placeholder="Para recuperar tu cuenta" autocomplete="email" />
+                <span asp-validation-for="Input.Email" class="field-validation-error"></span>
+            </div>
+
+            <button class="btn btn-gold btn-block" type="submit">
+                <i class="fa fa-user-plus"></i> Crear cuenta ahora
+            </button>
+        </form>
+    </div>
+</div>

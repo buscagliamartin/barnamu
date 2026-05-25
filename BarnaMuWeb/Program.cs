@@ -12,6 +12,10 @@ using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Keep private/local overrides out of Git while allowing the committed appsettings.json
+// to stay safe for GitHub. Example: BarnaMu:ConnectionString with the real DB password.
+builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true);
+
 // Bind the BarnaMu options section to a strongly-typed object so pages and services can
 // inject IOptions<BarnaMuOptions>.
 builder.Services.Configure<BarnaMuOptions>(builder.Configuration.GetSection("BarnaMu"));
@@ -36,6 +40,7 @@ builder.Services.AddRazorPages();
 // Application services.
 builder.Services.AddSingleton<BarnaMuDb>();
 builder.Services.AddSingleton<ServerStatusService>();
+builder.Services.AddSingleton<EmailService>();
 
 // Basic rate limiting — protects /Register and /ReportBug from abuse without external deps.
 builder.Services.AddRateLimiter(options =>
@@ -49,6 +54,19 @@ builder.Services.AddRateLimiter(options =>
             factory: _ => new FixedWindowRateLimiterOptions
             {
                 PermitLimit = 5,
+                Window = TimeSpan.FromHours(1),
+                QueueLimit = 0,
+                AutoReplenishment = true,
+            }));
+
+    // 10 password-recovery attempts per IP per hour — limits brute-forcing the security code
+    // and mailbombing the email-reset endpoint, while leaving room for honest retries.
+    options.AddPolicy("recover", httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "anon",
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 10,
                 Window = TimeSpan.FromHours(1),
                 QueueLimit = 0,
                 AutoReplenishment = true,

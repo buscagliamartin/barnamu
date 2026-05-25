@@ -423,6 +423,11 @@ public abstract class AttackableNpcBase : NonPlayerCharacter, IAttackable
             var owners = killer.Party?.PartyList.AsEnumerable() ?? killer.GetAsEnumerable();
             var droppedItem = new DroppedItem(item, dropCoordinates, this.CurrentMap, null, owners);
             await this.CurrentMap.AddAsync(droppedItem).ConfigureAwait(false);
+
+            if (ItemAuditLogger.IsNotable(item))
+            {
+                ItemAuditLogger.Log(ItemAuditLogger.AuditSource.MonsterDrop, killer, item, this.CurrentMap, dropCoordinates, this.Definition.Designation);
+            }
         }
     }
 

@@ -1459,6 +1459,32 @@ void ReceiveMuHelperStatusUpdate(std::span<const BYTE> ReceiveBuffer)
     g_ConsoleDebug->Write(MCD_RECEIVE, L"0x51 [ReceiveMuHelperStatusUpdate]");
 }
 
+// BarnaMu: jewel bank balances (0xBF, sub-code 0x30) - 10 little-endian uint32 counts.
+void ReceiveJewelBankBalances(std::span<const BYTE> ReceiveBuffer)
+{
+    if (ReceiveBuffer.size() < 72)
+    {
+        return;
+    }
+
+    unsigned int balances[17];
+    for (int i = 0; i < 17; i++)
+    {
+        size_t o = 4 + (size_t)i * 4;
+        balances[i] = (unsigned int)ReceiveBuffer[o]
+            | ((unsigned int)ReceiveBuffer[o + 1] << 8)
+            | ((unsigned int)ReceiveBuffer[o + 2] << 16)
+            | ((unsigned int)ReceiveBuffer[o + 3] << 24);
+    }
+
+    if (g_pNewUIJewelBank)
+    {
+        g_pNewUIJewelBank->SetBalances(balances);
+    }
+
+    g_ConsoleDebug->Write(MCD_RECEIVE, L"0xBF [0x30] [ReceiveJewelBankBalances]");
+}
+
 void ReceiveDeleteInventory(const BYTE* ReceiveBuffer)
 {
     auto Data = (LPPHEADER_DEFAULT_SUBCODE)ReceiveBuffer;
@@ -3827,6 +3853,7 @@ void ReceiveMagicFinish(const BYTE* ReceiveBuffer)
         break;
     case AT_SKILL_ALICE_BERSERKER:
     case AT_SKILL_ALICE_BERSERKER_STR:
+    case AT_SKILL_BerserkerProficiency:
         UnRegisterBuff(eBuff_Berserker, o);
         break;
     }
@@ -3994,6 +4021,7 @@ static bool IsMuHelperBeneficialTargetSkill(WORD SkillNumber)
     case AT_SKILL_RECOVER:
     case AT_SKILL_ALICE_BERSERKER:
     case AT_SKILL_ALICE_BERSERKER_STR:
+    case AT_SKILL_BerserkerProficiency:
     case AT_SKILL_IMPROVE_AG:
     case AT_SKILL_ADD_CRITICAL:
     case AT_SKILL_ADD_CRITICAL_STR1:
@@ -4003,6 +4031,12 @@ static bool IsMuHelperBeneficialTargetSkill(WORD SkillNumber)
     case AT_SKILL_REMOVAL_STUN:
     case AT_SKILL_REMOVAL_INVISIBLE:
     case AT_SKILL_REMOVAL_BUFF:
+    case AT_SKILL_ATT_UP_OURFORCES:
+    case AT_SKILL_HP_UP_OURFORCES:
+    case AT_SKILL_HP_UP_OURFORCES_STR:
+    case AT_SKILL_DEF_UP_OURFORCES:
+    case AT_SKILL_DEF_UP_OURFORCES_STR:
+    case AT_SKILL_DEF_UP_OURFORCES_MASTERY:
         return true;
     }
 
@@ -4859,6 +4893,7 @@ BOOL ReceiveMagic(const BYTE* ReceiveBuffer, int Size, BOOL bEncrypted)
         break;
     case AT_SKILL_ALICE_BERSERKER:
     case AT_SKILL_ALICE_BERSERKER_STR:
+    case AT_SKILL_BerserkerProficiency:
         sc->AttackTime = 1; // todo: what is this?
 
         SetAttackSpeed();
@@ -14551,6 +14586,9 @@ static void ProcessPacket(const BYTE* ReceiveBuffer, int32_t Size)
 #endif //LJH_ADD_SYSTEM_OF_EQUIPPING_ITEM_FROM_INVENTORY
         case 0x51:
             ReceiveMuHelperStatusUpdate(received_span);
+            break;
+        case 0x30:
+            ReceiveJewelBankBalances(received_span);
             break;
         }
     }

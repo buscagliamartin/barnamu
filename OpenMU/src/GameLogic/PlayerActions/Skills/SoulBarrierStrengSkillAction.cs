@@ -37,7 +37,7 @@ public class SoulBarrierStrengSkillAction : TargetedSkillDefaultPlugin
         var miniGame = player.CurrentMiniGame;
         var inMiniGame = miniGame is { };
         var isBuff = skill.SkillType is SkillType.Buff or SkillType.Regeneration;
-        if (player.IsAtSafezone() && !(inMiniGame && isBuff))
+        if (player.IsAtSafezone() && !isBuff)
         {
             return;
         }

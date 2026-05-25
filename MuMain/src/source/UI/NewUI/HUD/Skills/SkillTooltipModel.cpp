@@ -107,6 +107,49 @@ void AddFormattedWide(Model& m, int globalTextIdx, LineColor color, const wchar_
     l.isBlank = false;
 }
 
+float GetMasterSkillValue(ActionSkillType skill)
+{
+    return CharacterAttribute ? CharacterAttribute->MasterSkillInfo[skill].GetSkillValue() : 0.0f;
+}
+
+void EmitWizardryEnhanceTag(Model& m, int skillType)
+{
+    if (skillType != AT_SKILL_EXPANSION_OF_WIZARDRY
+        && skillType != AT_SKILL_EXPANSION_OF_WIZARDRY_STR
+        && skillType != AT_SKILL_EXPANSION_OF_WIZARDRY_MASTERY)
+    {
+        return;
+    }
+
+    float totalBoost = 20.0f;
+    if (skillType == AT_SKILL_EXPANSION_OF_WIZARDRY_STR
+        || skillType == AT_SKILL_EXPANSION_OF_WIZARDRY_MASTERY)
+    {
+        totalBoost += GetMasterSkillValue(AT_SKILL_EXPANSION_OF_WIZARDRY_STR);
+    }
+
+    if (skillType == AT_SKILL_EXPANSION_OF_WIZARDRY_MASTERY)
+    {
+        totalBoost += GetMasterSkillValue(AT_SKILL_EXPANSION_OF_WIZARDRY_MASTERY);
+    }
+
+    wchar_t buf[MAX_TOOLTIP_LINE_TEXT];
+    if (skillType == AT_SKILL_EXPANSION_OF_WIZARDRY_MASTERY)
+    {
+        mu_swprintf(buf, L"Wizardry damage increase: %.1f%% (Mastery)", totalBoost);
+    }
+    else if (skillType == AT_SKILL_EXPANSION_OF_WIZARDRY_STR)
+    {
+        mu_swprintf(buf, L"Wizardry damage increase: %.1f%% (Strengthener)", totalBoost);
+    }
+    else
+    {
+        mu_swprintf(buf, L"Wizardry damage increase: %.1f%%", totalBoost);
+    }
+
+    AddRaw(m, buf, LineColor::Blue);
+}
+
 // Requirement line. In game mode, compares value vs current and colors
 // red/white accordingly, optionally emitting a `(lacking N)` deficit line.
 // In editor mode (currentValue == -1), always white, no deficit line.
@@ -465,9 +508,10 @@ void EmitBodyStats(Model& m, int skillType, int iDistance, int iMana, int iSkill
 void EmitRequirements(Model& m, const BuildOptions& options, int skillType)
 {
     const int before = m.count;
+    const auto requirementSkill = gSkillManager.MasterSkillToBaseSkillIndex(static_cast<ActionSkillType>(skillType));
 
     int reqEnergy = 0;
-    gSkillManager.GetSkillInformation_Energy(skillType, &reqEnergy);
+    gSkillManager.GetSkillInformation_Energy(requirementSkill, &reqEnergy);
 
     int curLevel = -1, curStr = -1, curDex = -1, curEnergy = -1, curCha = -1;
     if (options.includeCharacterSpecific)
@@ -479,11 +523,11 @@ void EmitRequirements(Model& m, const BuildOptions& options, int skillType)
         curCha = CharacterAttribute->Charisma + CharacterAttribute->AddCharisma;
     }
 
-    AddRequirementLine(m, SkillAttribute[skillType].Level, curLevel, GLOBAL_TEXT_REQUIRED_LEVEL);
-    AddRequirementLine(m, SkillAttribute[skillType].Strength, curStr, GLOBAL_TEXT_REQUIRED_STRENGTH);
-    AddRequirementLine(m, SkillAttribute[skillType].Dexterity, curDex, GLOBAL_TEXT_REQUIRED_DEXTERITY);
+    AddRequirementLine(m, SkillAttribute[requirementSkill].Level, curLevel, GLOBAL_TEXT_REQUIRED_LEVEL);
+    AddRequirementLine(m, SkillAttribute[requirementSkill].Strength, curStr, GLOBAL_TEXT_REQUIRED_STRENGTH);
+    AddRequirementLine(m, SkillAttribute[requirementSkill].Dexterity, curDex, GLOBAL_TEXT_REQUIRED_DEXTERITY);
     AddRequirementLine(m, reqEnergy, curEnergy, GLOBAL_TEXT_REQUIRED_ENERGY);
-    AddRequirementLine(m, SkillAttribute[skillType].Charisma, curCha, GLOBAL_TEXT_REQUIRED_CHARISMA);
+    AddRequirementLine(m, SkillAttribute[requirementSkill].Charisma, curCha, GLOBAL_TEXT_REQUIRED_CHARISMA);
     EndSection(m, before);
 }
 
@@ -596,7 +640,7 @@ void EmitBlueTags(Model& m, int skillType)
         || skillType == AT_SKILL_EXPANSION_OF_WIZARDRY_STR
         || skillType == AT_SKILL_EXPANSION_OF_WIZARDRY_MASTERY)
     {
-        AddRaw(m, GlobalText[2054], LineColor::Blue);
+        EmitWizardryEnhanceTag(m, skillType);
     }
     EndSection(m, before);
 }

@@ -23,11 +23,15 @@ if not "%BUILD_RC%"=="0" (
 
 echo.
 echo ========================================================
-echo [2/2] Copying compiled client to local release folder...
+echo [2/2] Copying build output to local release folder...
 echo ========================================================
 
-copy /Y "%ORIGEN_VM%\Main.exe" "%DESTINO_LOCAL%\Main.exe"
-if errorlevel 1 (
+rem Copy the whole Release build output (Main.exe + MUnique.Client.Library.dll + any
+rem other binaries) so the client and its managed library never get out of sync.
+rem /E = include subfolders ; no /MIR, so existing game data in the destination is kept.
+robocopy "%ORIGEN_VM%" "%DESTINO_LOCAL%" /E /NFL /NDL /R:3 /W:5
+rem robocopy exit codes 0-7 mean success; 8 or higher means a real failure.
+if errorlevel 8 (
     echo.
     echo Copy failed.
     pause

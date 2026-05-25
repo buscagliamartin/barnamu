@@ -41,6 +41,57 @@ namespace MUnique.OpenMU.Persistence.EntityFramework.Migrations
                     b.Property<bool>("IsVaultExtended")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("JewelBankBless")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("JewelBankChaos")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("JewelBankCreation")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("JewelBankGemstone")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("JewelBankGuardian")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("JewelBankHarmony")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("JewelBankHigherRefineStone")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("JewelBankLife")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("JewelBankLowerRefineStone")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("JewelBankSoul")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("JewelBankKundun1")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("JewelBankKundun2")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("JewelBankKundun3")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("JewelBankKundun4")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("JewelBankKundun5")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("JewelBankChocoBlue")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("JewelBankChocoPink")
+                        .HasColumnType("integer");
+
                     b.Property<string>("LanguageIsoCode")
                         .IsRequired()
                         .ValueGeneratedOnAdd()

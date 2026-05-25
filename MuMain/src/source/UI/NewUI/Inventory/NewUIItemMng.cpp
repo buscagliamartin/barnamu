@@ -25,6 +25,7 @@ ItemCreationParams ParseItemData(std::span<const BYTE> itemData)
     auto flags = static_cast<ItemOptionFlags>(itemData[4]);
     params.WithLuck = flags & ItemOptionFlags::HasLuck;
     params.WithSkill = flags & ItemOptionFlags::HasSkill;
+    params.HasGuardianOption = flags & ItemOptionFlags::HasGuardian;
 
     int offset = 0;
     if (flags & ItemOptionFlags::HasOption)

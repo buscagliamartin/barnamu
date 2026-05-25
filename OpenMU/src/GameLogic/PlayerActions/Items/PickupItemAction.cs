@@ -122,6 +122,10 @@ public class PickupItemAction
         if (result.Success)
         {
             await player.OnPickedUpItemAsync(droppedItem).ConfigureAwait(false);
+            if (ItemAuditLogger.IsNotable(droppedItem.Item))
+            {
+                ItemAuditLogger.Log(ItemAuditLogger.AuditSource.Pickup, player, droppedItem.Item);
+            }
         }
 
         return result;
