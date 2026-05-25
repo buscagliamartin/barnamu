@@ -2521,6 +2521,15 @@ public class Player : AsyncDisposable, IBucketMapObserver, IAttackable, IAttacke
         this.Attributes[Stats.NearbyPartyMemberCount] = 0;
         this.LogInvalidInventoryItems();
 
+        // BarnaMu: the inventory extensions (K window) are a VIP perk. While the account is
+        // VIP, all four extension rows are granted; otherwise they are locked. This is
+        // re-evaluated on every enter-game, so extensions lock on the first login after VIP
+        // expires. Items left in extension slots are not deleted - they just become
+        // inaccessible until VIP is renewed.
+        selectedCharacter.InventoryExtensions = this.Account?.State == AccountState.Vip
+            ? InventoryConstants.MaximumNumberOfExtensions
+            : 0;
+
         this.Inventory = new InventoryStorage(this, this.GameContext);
         this.ShopStorage = new ShopStorage(selectedCharacter);
         this.TemporaryStorage = new Storage(InventoryConstants.TemporaryStorageSize, new TemporaryItemStorage());
