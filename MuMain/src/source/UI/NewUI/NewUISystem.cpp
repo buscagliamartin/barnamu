@@ -117,6 +117,11 @@ CNewUISystem::CNewUISystem()
     m_pNewGensRanking = nullptr;
 #endif //PBG_ADD_GENSRANKING
     m_pNewUnitedMarketPlaceWindow = nullptr;
+    m_pNewUIMuHelper = nullptr;
+    m_pNewUIMuHelperExt = nullptr;
+    m_pNewUIMuHelperSkillList = nullptr;
+    m_pNewUIJewelBank = nullptr;
+    m_pNewUIAuctionHouse = nullptr;
 }
 
 CNewUISystem::~CNewUISystem()
@@ -528,6 +533,14 @@ bool CNewUISystem::LoadMainSceneInterface()
     if (m_pNewUIJewelBank->Create(m_pNewUIMng, m_pNewUI3DRenderMng, PanelColumnX(2), 0) == false)
         return false;
 
+    m_pNewUIAuctionHouse = new CNewUIAuctionHouse;
+    if (m_pNewUIAuctionHouse->Create(m_pNewUIMng, m_pNewUI3DRenderMng, PanelColumnX(2), 0) == false)
+        return false;
+
+    m_pNewUIDuelLadder = new CNewUIDuelLadder;
+    if (m_pNewUIDuelLadder->Create(m_pNewUIMng, PanelColumnX(1), 0) == false)
+        return false;
+
     return true;
 }
 
@@ -612,6 +625,11 @@ void CNewUISystem::UnloadMainSceneInterface()
 #endif //PBG_MOD_STAMINA_UI
     SAFE_DELETE(m_pNewGensRanking);
     SAFE_DELETE(m_pNewUnitedMarketPlaceWindow);
+    SAFE_DELETE(m_pNewUIAuctionHouse);
+    SAFE_DELETE(m_pNewUIJewelBank);
+    SAFE_DELETE(m_pNewUIMuHelperSkillList);
+    SAFE_DELETE(m_pNewUIMuHelperExt);
+    SAFE_DELETE(m_pNewUIMuHelper);
 #ifdef LEM_FIX_LUCKYITEM_UICLASS_SAFEDELETE
     SAFE_DELETE(m_pNewUILuckyItemWnd);
 #endif // LEM_FIX_LUCKYITEM_UICLASS_SAFEDELETE
@@ -1603,6 +1621,7 @@ void CNewUISystem::HideAllGroupA()
         INTERFACE_MUHELPER_EXT,
         INTERFACE_MUHELPER_SKILL_LIST,
         INTERFACE_JEWELBANK,
+        INTERFACE_DUELLADDER,
         INTERFACE_MIXINVENTORY,
         INTERFACE_STORAGE,
         INTERFACE_NPCSHOP,
@@ -1723,6 +1742,7 @@ void CNewUISystem::HideGroupBeforeOpenInterface()
         INTERFACE_MUHELPER_EXT,
         INTERFACE_MUHELPER_SKILL_LIST,
         INTERFACE_JEWELBANK,
+        INTERFACE_DUELLADDER,
         0,
     };
 
@@ -2449,4 +2469,14 @@ CNewUIMuHelperSkillList* CNewUISystem::Get_pNewUIMuHelperSkillList() const
 CNewUIJewelBank* CNewUISystem::Get_pNewUIJewelBank() const
 {
     return m_pNewUIJewelBank;
+}
+
+CNewUIAuctionHouse* CNewUISystem::Get_pNewUIAuctionHouse() const
+{
+    return m_pNewUIAuctionHouse;
+}
+
+CNewUIDuelLadder* CNewUISystem::Get_pNewUIDuelLadder() const
+{
+    return m_pNewUIDuelLadder;
 }

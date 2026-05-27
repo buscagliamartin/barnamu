@@ -64,6 +64,24 @@ public:
     /// <param name="arg2">Single jewel count (withdraw).</param>
     /// <param name="arg3">Packed jewel count (withdraw).</param>
     void SendJewelBankRequest(BYTE operation, BYTE arg1, uint16_t arg2, uint16_t arg3);
+
+    /// <summary>
+    /// BarnaMu: Sends an Auction House request (0xBF, sub-code 0x31) to this connection.
+    /// </summary>
+    /// <param name="operation">The auction house operation.</param>
+    /// <param name="arg1">Small operation argument, such as page or inventory slot.</param>
+    /// <param name="currency">Currency code: 0 = Zen, 1 = W Coin, 2 = jewel.</param>
+    /// <param name="jewelSlot">Jewel bank slot, or 0xFF when unused.</param>
+    /// <param name="arg2">Main numeric argument, such as listing id or price.</param>
+    /// <param name="arg3">Secondary numeric argument, such as confirmed price.</param>
+    void SendAuctionHouseRequest(BYTE operation, BYTE arg1, BYTE currency, BYTE jewelSlot, uint32_t arg2, uint32_t arg3);
+
+    /// <summary>
+    /// BarnaMu: Sends a Duel Ladder request (0xBF, sub-code 0x32) to this connection.
+    /// </summary>
+    /// <param name="operation">0 = request top-10 for bracket (<paramref name="arg"/> = bracket 1-5); 1 = request own profile.</param>
+    /// <param name="arg">Reset bracket id when <paramref name="operation"/> = 0, ignored otherwise.</param>
+    void SendDuelLadderRequest(BYTE operation, BYTE arg);
 };
 
 /// <summary>

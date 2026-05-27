@@ -517,6 +517,12 @@ public class Player : AsyncDisposable, IBucketMapObserver, IAttackable, IAttacke
     }
 
     /// <summary>
+    /// BarnaMu: Gets the remote IP address of the player's connection, or <see langword="null"/> if not network-connected.
+    /// </summary>
+    /// <remarks>Overridden by <c>RemotePlayer</c> to expose the underlying connection endpoint. Used by anti-farm checks (Duel Ladder).</remarks>
+    public virtual System.Net.IPAddress? RemoteAddress => null;
+
+    /// <summary>
     /// Gets the pet command manager.
     /// </summary>
     public IPetCommandManager? PetCommandManager

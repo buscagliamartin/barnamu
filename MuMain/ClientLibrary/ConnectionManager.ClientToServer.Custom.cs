@@ -79,6 +79,42 @@ public unsafe partial class ConnectionManager
     /// <param name="arg1">Inventory slot (deposit) or jewel mix number (withdraw).</param>
     /// <param name="arg2">Single jewel count (withdraw).</param>
     /// <param name="arg3">Packed jewel count (withdraw).</param>
+    /// <summary>
+    /// BarnaMu: Sends a Duel Ladder request (0xBF, sub-code 0x32) to this connection.
+    /// </summary>
+    /// <param name="handle">The handle of the connection.</param>
+    /// <param name="operation">0 = request top-10 for the bracket given in <paramref name="arg"/> (1-5); 1 = request own profile.</param>
+    /// <param name="arg">When operation = 0: the reset bracket id. Ignored otherwise.</param>
+    [UnmanagedCallersOnly(EntryPoint = "ConnectionManager_SendDuelLadderRequest")]
+    public static void SendDuelLadderRequest(int handle, byte @operation, byte @arg)
+    {
+        if (!Connections.TryGetValue(handle, out var connection))
+        {
+            return;
+        }
+
+        try
+        {
+            connection.CreateAndSend(pipeWriter =>
+            {
+                const int length = 6;
+                var span = pipeWriter.GetSpan(length)[..length];
+                span.Clear();
+                span[0] = 0xC1;
+                span[1] = (byte)length;
+                span[2] = 0xBF;
+                span[3] = 0x32;
+                span[4] = @operation;
+                span[5] = @arg;
+                return length;
+            });
+        }
+        catch
+        {
+            // Log exception
+        }
+    }
+
     [UnmanagedCallersOnly(EntryPoint = "ConnectionManager_SendJewelBankRequest")]
     public static void SendJewelBankRequest(int handle, byte @operation, byte @arg1, ushort @arg2, ushort @arg3)
     {
@@ -104,6 +140,56 @@ public unsafe partial class ConnectionManager
                 span[7] = (byte)(@arg2 >> 8);
                 span[8] = (byte)(@arg3 & 0xFF);
                 span[9] = (byte)(@arg3 >> 8);
+                return length;
+            });
+        }
+        catch
+        {
+            // Log exception
+        }
+    }
+
+    /// <summary>
+    /// BarnaMu: Sends an Auction House request (0xBF, sub-code 0x31) to this connection.
+    /// </summary>
+    /// <param name="handle">The handle of the connection.</param>
+    /// <param name="operation">The auction house operation.</param>
+    /// <param name="arg1">Small operation argument, such as page or inventory slot.</param>
+    /// <param name="currency">Currency code: 0 = Zen, 1 = W Coin, 2 = jewel.</param>
+    /// <param name="jewelSlot">Jewel bank slot, or 0xFF when unused.</param>
+    /// <param name="arg2">Main numeric argument, such as listing id or price.</param>
+    /// <param name="arg3">Secondary numeric argument, such as confirmed price.</param>
+    [UnmanagedCallersOnly(EntryPoint = "ConnectionManager_SendAuctionHouseRequest")]
+    public static void SendAuctionHouseRequest(int handle, byte @operation, byte @arg1, byte @currency, byte @jewelSlot, uint @arg2, uint @arg3)
+    {
+        if (!Connections.TryGetValue(handle, out var connection))
+        {
+            return;
+        }
+
+        try
+        {
+            connection.CreateAndSend(pipeWriter =>
+            {
+                const int length = 16;
+                var span = pipeWriter.GetSpan(length)[..length];
+                span.Clear();
+                span[0] = 0xC1;
+                span[1] = (byte)length;
+                span[2] = 0xBF;
+                span[3] = 0x31;
+                span[4] = @operation;
+                span[5] = @arg1;
+                span[6] = @currency;
+                span[7] = @jewelSlot;
+                span[8] = (byte)(@arg2 & 0xFF);
+                span[9] = (byte)((@arg2 >> 8) & 0xFF);
+                span[10] = (byte)((@arg2 >> 16) & 0xFF);
+                span[11] = (byte)(@arg2 >> 24);
+                span[12] = (byte)(@arg3 & 0xFF);
+                span[13] = (byte)((@arg3 >> 8) & 0xFF);
+                span[14] = (byte)((@arg3 >> 16) & 0xFF);
+                span[15] = (byte)(@arg3 >> 24);
                 return length;
             });
         }

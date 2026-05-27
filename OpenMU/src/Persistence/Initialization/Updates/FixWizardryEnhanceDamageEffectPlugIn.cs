@@ -66,14 +66,14 @@ public class FixWizardryEnhanceDamageEffectPlugIn : UpdatePlugInBase
             return;
         }
 
-        var oldTargets = new[]
+        var oldTargets = new HashSet<AttributeDefinition>
         {
             Stats.MinimumWizBaseDmg.GetPersistent(gameConfiguration),
             Stats.MaximumWizBaseDmg.GetPersistent(gameConfiguration),
             Stats.CriticalDamageChance.GetPersistent(gameConfiguration),
         };
 
-        foreach (var oldPowerUp in effect.PowerUpDefinitions.Where(p => oldTargets.Contains(p.TargetAttribute)).ToList())
+        foreach (var oldPowerUp in effect.PowerUpDefinitions.Where(p => p.TargetAttribute is { } target && oldTargets.Contains(target)).ToList())
         {
             effect.PowerUpDefinitions.Remove(oldPowerUp);
         }

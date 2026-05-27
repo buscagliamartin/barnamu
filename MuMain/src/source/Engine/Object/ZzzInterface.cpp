@@ -4369,7 +4369,7 @@ bool CheckCommand(wchar_t* Text, bool bMacroText)
             int level = CharacterAttribute->Level;
             if (level >= 6)
             {
-                g_pNewUISystem->Show(SEASON3B::INTERFACE_MYSHOP_INVENTORY);
+                g_pNewUIAuctionHouse->Toggle();
             }
             else
             {

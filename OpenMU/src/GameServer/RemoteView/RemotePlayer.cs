@@ -69,6 +69,10 @@ public class RemotePlayer : Player, IClientVersionProvider
     /// </summary>
     internal IConnection? Connection { get; private set; }
 
+    /// <inheritdoc />
+    public override System.Net.IPAddress? RemoteAddress =>
+        this.Connection?.EndPoint is System.Net.IPEndPoint ipEndPoint ? ipEndPoint.Address : null;
+
     /// <summary>
     /// Gets the currently effective appearance serializer.
     /// </summary>

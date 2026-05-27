@@ -464,11 +464,7 @@ bool SEASON3B::CNewUICommandWindow::CommandTrade(CHARACTER* pSelectedCha)
 
 bool SEASON3B::CNewUICommandWindow::CommandPurchase(CHARACTER* pSelectedCha)
 {
-    if (pSelectedCha == nullptr)
-        return false;
-
-    SocketClient->ToGameServer()->SendPlayerShopItemListRequest(pSelectedCha->Key, pSelectedCha->ID);
-
+    g_pNewUIAuctionHouse->Toggle();
     return true;
 }
 

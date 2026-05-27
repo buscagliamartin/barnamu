@@ -220,6 +220,8 @@ namespace SEASON3B
         CNewUIMuHelperExt* m_pNewUIMuHelperExt;
         CNewUIMuHelperSkillList* m_pNewUIMuHelperSkillList;
         CNewUIJewelBank* m_pNewUIJewelBank;
+        CNewUIAuctionHouse* m_pNewUIAuctionHouse;
+        CNewUIDuelLadder* m_pNewUIDuelLadder;
     public:
         CNewUIChatInputBox* GetUI_NewChatInputBox() const;
         CNewUIChatLogWindow* GetUI_NewChatLogWindow() const;
@@ -302,6 +304,8 @@ namespace SEASON3B
         CNewUIMuHelperExt* Get_pNewUIMuHelperExt() const;
         CNewUIMuHelperSkillList* Get_pNewUIMuHelperSkillList() const;
         CNewUIJewelBank* Get_pNewUIJewelBank() const;
+        CNewUIAuctionHouse* Get_pNewUIAuctionHouse() const;
+        CNewUIDuelLadder* Get_pNewUIDuelLadder() const;
     };
 }
 
@@ -391,4 +395,6 @@ namespace SEASON3B
 #define g_pNewUIMuHelperExt SEASON3B::CNewUISystem::GetInstance()->Get_pNewUIMuHelperExt()
 #define g_pNewUIMuHelperSkillList SEASON3B::CNewUISystem::GetInstance()->Get_pNewUIMuHelperSkillList()
 #define g_pNewUIJewelBank SEASON3B::CNewUISystem::GetInstance()->Get_pNewUIJewelBank()
+#define g_pNewUIAuctionHouse SEASON3B::CNewUISystem::GetInstance()->Get_pNewUIAuctionHouse()
+#define g_pNewUIDuelLadder SEASON3B::CNewUISystem::GetInstance()->Get_pNewUIDuelLadder()
 #endif // _NEWUISYSTEM_H_

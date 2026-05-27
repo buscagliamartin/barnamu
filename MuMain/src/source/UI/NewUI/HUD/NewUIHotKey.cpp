@@ -267,6 +267,17 @@ bool SEASON3B::CNewUIHotKey::UpdateKeyEvent()
 
         return false;
     }
+    else if (SEASON3B::IsPress('L') == true)
+    {
+        // BarnaMu: open the PvP Duel Ladder window.
+        if (g_pNewUIDuelLadder)
+        {
+            g_pNewUIDuelLadder->Toggle();
+            PlayBuffer(SOUND_CLICK01);
+        }
+
+        return false;
+    }
     else if (SEASON3B::IsPress(VK_TAB) == true && gMapManager.InBattleCastle() == true)
     {
         g_pNewUISystem->Toggle(SEASON3B::INTERFACE_SIEGEWARFARE);

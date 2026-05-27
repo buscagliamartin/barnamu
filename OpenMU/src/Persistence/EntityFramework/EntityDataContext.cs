@@ -56,6 +56,8 @@ public class EntityDataContext : ExtendedTypeContext
         modelBuilder.Entity<PowerUpDefinitionValue>().Apply();
         modelBuilder.Entity<Model.ConstValueAttribute>().Apply();
         modelBuilder.Entity<Account>().Apply();
+        modelBuilder.Entity<AuctionListing>().Apply();
+        modelBuilder.Entity<WCoinTransaction>().Apply();
         modelBuilder.Entity<Character>().Apply();
         modelBuilder.Entity<CharacterClass>().Apply();
         modelBuilder.Entity<DropItemGroup>().Apply();

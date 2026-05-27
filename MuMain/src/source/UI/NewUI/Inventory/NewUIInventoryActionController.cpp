@@ -254,6 +254,24 @@ bool CNewUIInventoryActionController::HandleSellToNPC(CNewUIInventoryCtrl* targe
 
 bool CNewUIInventoryActionController::HandleInventoryRightClickActions(CNewUIInventoryCtrl* targetControl) const
 {
+    if (g_pNewUIAuctionHouse != nullptr
+        && g_pNewUIAuctionHouse->IsCreateListingView()
+        && targetControl != nullptr
+        && targetControl->GetStorageType() == STORAGE_TYPE::INVENTORY)
+    {
+        ITEM* pAuctionItem = targetControl->FindItemAtPt(MouseX, MouseY);
+        if (pAuctionItem != nullptr)
+        {
+            const int auctionSlot = targetControl->GetIndexByItem(pAuctionItem);
+            if (auctionSlot >= MAX_EQUIPMENT_INDEX
+                && auctionSlot < MAX_MY_INVENTORY_EX_INDEX
+                && g_pNewUIAuctionHouse->TrySetCreateListingItemFromInventorySlot(auctionSlot))
+            {
+                return true;
+            }
+        }
+    }
+
     if (g_pNewUISystem->IsVisible(INTERFACE_INVENTORY_EXT))
     {
         return TryTransferBetweenInventorySections(targetControl);

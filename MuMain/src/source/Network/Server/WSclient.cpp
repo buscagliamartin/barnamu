@@ -1485,6 +1485,143 @@ void ReceiveJewelBankBalances(std::span<const BYTE> ReceiveBuffer)
     g_ConsoleDebug->Write(MCD_RECEIVE, L"0xBF [0x30] [ReceiveJewelBankBalances]");
 }
 
+// BarnaMu: Duel Ladder response (0xBF, sub-code 0x31). Op at [4]: 0 = top-10 list, 1 = own profile.
+void ReceiveDuelLadderResponse(std::span<const BYTE> ReceiveBuffer)
+{
+    if (ReceiveBuffer.size() < 5 || g_pNewUIDuelLadder == nullptr)
+    {
+        return;
+    }
+
+    BYTE op = ReceiveBuffer[4];
+    if (op == 0)
+    {
+        if (ReceiveBuffer.size() < 7)
+        {
+            return;
+        }
+
+        BYTE bracket = ReceiveBuffer[5];
+        BYTE count = ReceiveBuffer[6];
+        if (count > 10)
+        {
+            count = 10;
+        }
+
+        const size_t needed = 7 + (size_t)count * 23;
+        if (ReceiveBuffer.size() < needed)
+        {
+            return;
+        }
+
+        g_pNewUIDuelLadder->SetTopData(bracket, count, ReceiveBuffer.data() + 7, (int)(count * 23));
+    }
+    else if (op == 1)
+    {
+        if (ReceiveBuffer.size() < 21)
+        {
+            return;
+        }
+
+        BYTE bracket = ReceiveBuffer[5];
+        BYTE tier = ReceiveBuffer[6];
+        unsigned int rating = (unsigned int)ReceiveBuffer[7]
+            | ((unsigned int)ReceiveBuffer[8] << 8)
+            | ((unsigned int)ReceiveBuffer[9] << 16)
+            | ((unsigned int)ReceiveBuffer[10] << 24);
+        unsigned int wins = (unsigned int)ReceiveBuffer[11]
+            | ((unsigned int)ReceiveBuffer[12] << 8)
+            | ((unsigned int)ReceiveBuffer[13] << 16)
+            | ((unsigned int)ReceiveBuffer[14] << 24);
+        unsigned int losses = (unsigned int)ReceiveBuffer[15]
+            | ((unsigned int)ReceiveBuffer[16] << 8)
+            | ((unsigned int)ReceiveBuffer[17] << 16)
+            | ((unsigned int)ReceiveBuffer[18] << 24);
+        unsigned short rank = (unsigned short)ReceiveBuffer[19]
+            | ((unsigned short)ReceiveBuffer[20] << 8);
+
+        g_pNewUIDuelLadder->SetProfileData(bracket, tier, rating, wins, losses, rank);
+    }
+
+    g_ConsoleDebug->Write(MCD_RECEIVE, L"0xBF [0x31] [ReceiveDuelLadderResponse op=%u]", op);
+}
+
+namespace
+{
+    unsigned int ReadAuctionUInt32(const BYTE* data)
+    {
+        return static_cast<unsigned int>(data[0])
+            | (static_cast<unsigned int>(data[1]) << 8)
+            | (static_cast<unsigned int>(data[2]) << 16)
+            | (static_cast<unsigned int>(data[3]) << 24);
+    }
+
+    unsigned short ReadAuctionUInt16(const BYTE* data)
+    {
+        return static_cast<unsigned short>(data[0] | (data[1] << 8));
+    }
+
+    void ReadAuctionUtf8(const BYTE* source, int sourceLength, wchar_t* target, int targetLength)
+    {
+        if (target == NULL || targetLength <= 0)
+        {
+            return;
+        }
+
+        target[0] = L'\0';
+        int length = 0;
+        while (length < sourceLength && source[length] != 0)
+        {
+            length++;
+        }
+
+        if (length == 0)
+        {
+            return;
+        }
+
+        const int written = MultiByteToWideChar(CP_UTF8, 0, reinterpret_cast<const char*>(source), length, target, targetLength - 1);
+        target[written >= 0 ? written : 0] = L'\0';
+    }
+}
+
+// BarnaMu: Auction House UI packets (0xBF, sub-code 0x31).
+void ReceiveAuctionHousePacket(std::span<const BYTE> ReceiveBuffer)
+{
+    if (ReceiveBuffer.size() < 5 || g_pNewUIAuctionHouse == NULL)
+    {
+        return;
+    }
+
+    const BYTE op = ReceiveBuffer[4];
+    if (op == 0 && ReceiveBuffer.size() >= 8)
+    {
+        g_pNewUIAuctionHouse->SetListingsHeader(ReceiveBuffer[5], ReceiveBuffer[6], ReceiveBuffer[7]);
+    }
+    else if (op == 1 && ReceiveBuffer.size() >= 80)
+    {
+        SEASON3B::CNewUIAuctionHouse::ListingView listing = {};
+        listing.Status = ReceiveBuffer[6];
+        listing.Currency = ReceiveBuffer[7];
+        listing.ListingNumber = ReadAuctionUInt32(&ReceiveBuffer[8]);
+        listing.ItemType = ReadAuctionUInt16(&ReceiveBuffer[12]);
+        listing.ItemLevel = ReceiveBuffer[14];
+        listing.Price = ReadAuctionUInt32(&ReceiveBuffer[15]);
+        ReadAuctionUtf8(&ReceiveBuffer[19], 48, listing.ItemName, 48);
+        ReadAuctionUtf8(&ReceiveBuffer[67], 12, listing.SellerName, 12);
+        listing.JewelSlot = ReceiveBuffer[79];
+        g_pNewUIAuctionHouse->AddListing(listing);
+    }
+    else if (op == 2 && ReceiveBuffer.size() > 5)
+    {
+        wchar_t message[128] = { 0 };
+        ReadAuctionUtf8(&ReceiveBuffer[5], static_cast<int>(ReceiveBuffer.size() - 5), message, 128);
+        g_pNewUIAuctionHouse->SetStatusMessage(message);
+    }
+
+    g_ConsoleDebug->Write(MCD_RECEIVE, L"0xBF [0x31] [ReceiveAuctionHousePacket]");
+}
+
 void ReceiveDeleteInventory(const BYTE* ReceiveBuffer)
 {
     auto Data = (LPPHEADER_DEFAULT_SUBCODE)ReceiveBuffer;
@@ -14589,6 +14726,12 @@ static void ProcessPacket(const BYTE* ReceiveBuffer, int32_t Size)
             break;
         case 0x30:
             ReceiveJewelBankBalances(received_span);
+            break;
+        case 0x31:
+            ReceiveAuctionHousePacket(received_span);
+            break;
+        case 0x32:
+            ReceiveDuelLadderResponse(received_span);
             break;
         }
     }

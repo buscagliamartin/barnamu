@@ -44,6 +44,9 @@ public static class MapsterConfigurator
         Mapster.TypeAdapterConfig.GlobalSettings.NewConfig<MUnique.OpenMU.DataModel.Entities.AppearanceData, MUnique.OpenMU.DataModel.Entities.AppearanceData>()
             .Include<AppearanceData, BasicModel.AppearanceData>();
 
+        Mapster.TypeAdapterConfig.GlobalSettings.NewConfig<MUnique.OpenMU.DataModel.Entities.AuctionListing, MUnique.OpenMU.DataModel.Entities.AuctionListing>()
+            .Include<AuctionListing, BasicModel.AuctionListing>();
+
         Mapster.TypeAdapterConfig.GlobalSettings.NewConfig<MUnique.OpenMU.DataModel.Entities.Character, MUnique.OpenMU.DataModel.Entities.Character>()
             .Include<Character, BasicModel.Character>();
 
@@ -76,6 +79,9 @@ public static class MapsterConfigurator
 
         Mapster.TypeAdapterConfig.GlobalSettings.NewConfig<MUnique.OpenMU.DataModel.Entities.SkillEntry, MUnique.OpenMU.DataModel.Entities.SkillEntry>()
             .Include<SkillEntry, BasicModel.SkillEntry>();
+
+        Mapster.TypeAdapterConfig.GlobalSettings.NewConfig<MUnique.OpenMU.DataModel.Entities.WCoinTransaction, MUnique.OpenMU.DataModel.Entities.WCoinTransaction>()
+            .Include<WCoinTransaction, BasicModel.WCoinTransaction>();
 
         Mapster.TypeAdapterConfig.GlobalSettings.NewConfig<MUnique.OpenMU.DataModel.Configuration.AreaSkillSettings, MUnique.OpenMU.DataModel.Configuration.AreaSkillSettings>()
             .Include<AreaSkillSettings, BasicModel.AreaSkillSettings>();

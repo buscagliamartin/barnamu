@@ -455,6 +455,9 @@ public sealed class DuelRoom : AsyncDisposable
         var winner = this.ScoreRequester > this.ScoreOpponent ? this.Requester : this.Opponent;
         var loser = this.Requester == winner ? this.Opponent : this.Requester;
         await this.AllPlayers.ForEachAsync(player => player.InvokeViewPlugInAsync<IDuelFinishedPlugIn>(p => p.DuelFinishedAsync(winner, loser))).ConfigureAwait(false);
+
+        // BarnaMu: record the result on the Duel Ladder (ELO + W/L, gated by anti-farm checks).
+        await DuelLadderService.RecordResultAsync(winner, loser).ConfigureAwait(false);
     }
 
     private async ValueTask SendCurrentStateToAllPlayersAsync()

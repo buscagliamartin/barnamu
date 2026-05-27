@@ -207,6 +207,32 @@ public class Character
     public int InventoryExtensions { get; set; }
 
     /// <summary>
+    /// Gets or sets the character's current Duel Ladder ELO rating (BarnaMu).
+    /// </summary>
+    /// <remarks>Starts at <c>1200</c>. Updated on every ranked duel end that passes anti-farm checks; reset on bracket promotion.</remarks>
+    public int DuelRating { get; set; }
+
+    /// <summary>
+    /// Gets or sets the character's Duel Ladder wins in the current season (BarnaMu).
+    /// </summary>
+    public int DuelWins { get; set; }
+
+    /// <summary>
+    /// Gets or sets the character's Duel Ladder losses in the current season (BarnaMu).
+    /// </summary>
+    public int DuelLosses { get; set; }
+
+    /// <summary>
+    /// Gets or sets the last-known Duel Ladder reset bracket (BarnaMu). <c>0</c> = uninitialized.
+    /// </summary>
+    /// <remarks>
+    /// Used to detect bracket promotion across duels: when a character's current reset count
+    /// maps to a different bracket than this stored value, their rating and W/L are reset
+    /// before the next ranked duel is recorded (clean slate in the new bracket).
+    /// </remarks>
+    public byte DuelResetBracket { get; set; }
+
+    /// <summary>
     /// Gets or sets the key configuration, which is set by the client and just saved as is.
     /// </summary>
     public byte[]? KeyConfiguration { get; set; }

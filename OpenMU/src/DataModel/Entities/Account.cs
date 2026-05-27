@@ -117,6 +117,14 @@ public class Account
     public DateTime? VipExpirationDate { get; set; }
 
     /// <summary>
+    /// Gets or sets the authoritative W Coin balance of the account.
+    /// </summary>
+    /// <remarks>
+    /// BarnaMu: server-side premium currency foundation for cash shop display and future auction house escrow.
+    /// </remarks>
+    public long WCoin { get; set; }
+
+    /// <summary>
     /// Gets or sets the timezone of the player, difference to UTC.
     /// </summary>
     public short TimeZone { get; set; }

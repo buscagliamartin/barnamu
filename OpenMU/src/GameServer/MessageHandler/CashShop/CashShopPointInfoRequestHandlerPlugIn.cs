@@ -34,6 +34,12 @@ internal class CashShopPointInfoRequestHandlerPlugIn : ISubPacketHandlerPlugIn
             return;
         }
 
-        await connection.SendPointInfoAsync(0, 0, 0, 0).ConfigureAwait(false);
+        var wCoin = player.Account?.WCoin ?? 0;
+        if (wCoin < 0)
+        {
+            wCoin = 0;
+        }
+
+        await connection.SendPointInfoAsync(wCoin, 0, 0, 0).ConfigureAwait(false);
     }
 }
