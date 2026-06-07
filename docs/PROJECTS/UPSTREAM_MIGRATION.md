@@ -61,6 +61,15 @@ Runtime compatibility fix record:
 - No DB mutation was applied for that compatibility fix.
 - Clean server starts successfully after the source/model alignment.
 
+Account economy foundation record:
+
+- `codex/custom-account-economy-foundation` aligns clean source/model files with the existing BarnaMu account economy schema already present in the preserved `openmu` database.
+- Scope is limited to `Account.VipExpirationDate`, `Account.WCoin`, the 17 account `JewelBank...` balances, and `WCoinTransaction` persistence/model mapping.
+- Existing custom migration source files were copied for history consistency only: `20260515120000_AddAccountVipExpirationDate`, `20260524120000_AddJewelBank`, `20260525120000_AddItemBankBoxes`, and `20260525183000_AddWCoinLedger`.
+- No DB SQL was executed except read-only metadata checks. No schema/data mutation was applied, no migration was generated, and no migration was applied.
+- `AccountState.Vip`, VIP runtime behavior, Jewel Bank handlers, Cash Shop/WCoin behavior, Auction, Duel, Mu Helper, client UI, and gameplay logic remain deferred to later isolated branches.
+- Verification: DataModel, Persistence, Persistence.EntityFramework, GameServer, and Startup builds passed. Clean Startup reached host started/listeners against the current DB with no migration prompt and no missing column/table error.
+
 ## Custom Feature Isolation Audit
 
 Date: 2026-06-05
